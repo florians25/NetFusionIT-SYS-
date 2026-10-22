@@ -1,0 +1,49 @@
+name: Preview release
+on:
+  push:
+    tags: ['v*-preview.*']
+permissions:
+  contents: write
+jobs:
+  preview:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      UI5_DATA_DIR: ${{ runner.temp }}/ui5-cache
+      CHROMIUM_PATH: /usr/bin/google-chrome
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --include=dev --no-fund
+      - run: npm run build
+      - run: npm test
+      - run: npm run test:browser:all
+      - run: npm audit --omit=dev
+      - name: Archive exact source version
+        run: git archive --format=tar.gz --prefix=netfusion-erp/ --output="netfusion-erp-${GITHUB_REF_NAME}.tar.gz" HEAD
+      - name: Publish tested prerelease and screenshots
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh release create "$GITHUB_REF_NAME"
+          --verify-tag --prerelease
+          --title "NetFusion ERP $GITHUB_REF_NAME"
+          --notes-file "docs/releases/${GITHUB_REF_NAME}.md"
+          "netfusion-erp-${GITHUB_REF_NAME}.tar.gz"
+          test-results/cockpit-desktop.png
+          test-results/cockpit-mobile.png
+          test-results/ticket-desktop.png
+          test-results/ticket-sla.png
+          test-results/planning-desktop.png
+          test-results/planning-mobile.png
+          test-results/service-master.png
+          test-results/workflow-inbox.png
+      - name: Preserve browser diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-browser-diagnostics
+          path: test-results/

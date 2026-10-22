@@ -48,7 +48,7 @@ export class ApiController {
   @Post('tickets/:id/assign')@Permission('service.assign')assign(@Req() r:AuthRequest,@Param('id') id:string,@Body() b:unknown){csrf(r);return this.service.assign(r.user,id,b,r.get('Idempotency-Key'),r.correlationId);}
   @Post('tickets/:id/status')@Roles('ADMIN','SERVICE_MANAGER','DISPATCHER','SUPPORT','TECHNICIAN','FIELD_TECHNICIAN')status(@Req() r:AuthRequest,@Param('id') id:string,@Body() b:unknown){csrf(r);return this.service.status(r.user,id,b,r.get('Idempotency-Key'),r.correlationId);}
   @Get('cases/:id')serviceCase(@Req() r:AuthRequest,@Param('id') id:string){return this.service.serviceCase(r.user,id);}
-  @Get('documents/:id/flow')flow(@Req() r:AuthRequest,@Param('id') id:string){return this.service.flow(r.user,id);}
+  @Get('documents/:id/flow')@Permission('document.read')flow(@Req() r:AuthRequest,@Param('id') id:string){return this.service.flow(r.user,id);}
   @Get('admin/organization')@Roles('ADMIN')org(@Req() r:AuthRequest){return this.admin.organization(r.user);}
   @Get('admin/users')@Roles('ADMIN')users(@Req() r:AuthRequest){return this.admin.users(r.user);}
   @Post('admin/users')@Roles('ADMIN')createUser(@Req() r:AuthRequest,@Body() b:unknown){csrf(r);return this.admin.createUser(r.user,b,r.correlationId);}

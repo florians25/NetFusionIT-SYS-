@@ -22,7 +22,7 @@ sap.ui.define(["sap/ui/core/UIComponent","sap/ui/model/json/JSONModel","sap/ui/D
     setSession:function(data){
       var model=this.getModel("state"),role=data.user&&data.user.role,has=function(p){return !!data.user&&(data.user.permissions||[]).includes(p);};
       model.setProperty("/user",data.user);model.setProperty("/csrfToken",data.csrfToken);
-      model.setProperty("/access",{admin:role==="ADMIN",assign:has("service.assign"),internal:!!role&&role!=="CUSTOMER",customer:role==="CUSTOMER",partners:has("partner.read")&&role!=="CUSTOMER",partnerWrite:has("partner.write"),service:has("service.read"),workflow:has("workflow.read"),create:has("service.create")});
+      model.setProperty("/access",{admin:role==="ADMIN",assign:has("service.assign"),internal:!!role&&role!=="CUSTOMER",customer:role==="CUSTOMER",partners:has("partner.read")&&role!=="CUSTOMER",partnerWrite:has("partner.write"),service:has("service.read"),workflow:has("workflow.read"),create:has("service.create"),assetRead:has("asset.read"),assetWrite:has("asset.write"),contractRead:has("contract.read"),contractWrite:has("contract.write"),serviceConfig:has("service.config.read"),serviceManage:has("service.manage")});
       model.setProperty("/connectionError",null);
       if(data.user)this.getModel().refresh();
       return data;

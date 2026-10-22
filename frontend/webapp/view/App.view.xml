@@ -2,7 +2,7 @@
   <VBox height="100%" >
     <f:ShellBar title="NetFusion" secondTitle="Service Workspace" showMenuButton="false" visible="{= !!${state&gt;/user} }">
       <f:profile><Avatar initials="{path:'state&gt;/user/name',formatter:'.formatter.initials'}" tooltip="{state&gt;/user/name}" press=".onProfile" displaySize="XS"/></f:profile>
-      <f:additionalContent><ObjectStatus text="Entwicklungsstand 0.1" visible="{device&gt;/system/desktop}"/></f:additionalContent>
+      <f:additionalContent><ObjectStatus text="Preview 0.2" visible="{device&gt;/system/desktop}"/></f:additionalContent>
     </f:ShellBar>
     <IconTabHeader selectedKey="{state&gt;/navKey}" select=".onNav" visible="{= !!${state&gt;/user} }"  mode="Inline" backgroundDesign="Solid">
       <items>
@@ -10,6 +10,8 @@
         <IconTabFilter text="Service-Cockpit" key="cockpit" visible="{state&gt;/access/service}"/>
         <IconTabFilter text="Tickets" key="tickets" visible="{state&gt;/access/service}"/>
         <IconTabFilter text="Dispatching" key="dispatch" visible="{state&gt;/access/assign}"/>
+        <IconTabFilter text="Einsatzplanung" key="planning" visible="{state&gt;/access/service}"/>
+        <IconTabFilter text="Objekte &amp; Verträge" key="serviceMaster" visible="{= ${state&gt;/access/assetRead} || ${state&gt;/access/contractRead} }"/>
         <IconTabFilter text="Kunden" key="partners" visible="{state&gt;/access/partners}"/>
         <IconTabFilter text="Genehmigungen" key="workflow" visible="{state&gt;/access/workflow}"/>
         <IconTabFilter text="Administration" key="admin" visible="{state&gt;/access/admin}"/>

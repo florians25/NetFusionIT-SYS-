@@ -3,14 +3,16 @@ export const ROLES=['ADMIN','SERVICE_MANAGER','DISPATCHER','SUPPORT','TECHNICIAN
 export type Role=typeof ROLES[number];
 const service:Role[]=['ADMIN','SERVICE_MANAGER','DISPATCHER','SUPPORT','TECHNICIAN','FIELD_TECHNICIAN','CUSTOMER'];
 export const grants:Record<string,readonly Role[]>={
+ 'document.read':ROLES,
  'service.read':service,'service.create':['ADMIN','SERVICE_MANAGER','DISPATCHER','SUPPORT','CUSTOMER'],
  'service.manage':['ADMIN','SERVICE_MANAGER','DISPATCHER','SUPPORT'],
  'service.assign':['ADMIN','SERVICE_MANAGER','DISPATCHER'],
+ 'service.config.read':['ADMIN','SERVICE_MANAGER','DISPATCHER','SUPPORT','SALES'],
  'partner.read':['ADMIN','SERVICE_MANAGER','DISPATCHER','SUPPORT','MASTER_DATA','BUYER','PURCHASING_MANAGER','SALES','BILLING','ACCOUNTANT','EXECUTIVE','CUSTOMER'],
  'partner.write':['ADMIN','MASTER_DATA'],
  'workflow.read':ROLES.filter(r=>r!=='CUSTOMER'), 'workflow.configure':['ADMIN'],
  'asset.read':service,'asset.write':['ADMIN','SERVICE_MANAGER','SUPPORT','TECHNICIAN','FIELD_TECHNICIAN'],
- 'contract.read':service,'contract.write':['ADMIN','SERVICE_MANAGER','SALES'],
+ 'contract.read':[...service,'SALES','BILLING','ACCOUNTANT','EXECUTIVE'],'contract.write':['ADMIN','SERVICE_MANAGER','SALES'],
  'inventory.read':['ADMIN','SERVICE_MANAGER','DISPATCHER','SUPPORT','TECHNICIAN','FIELD_TECHNICIAN','BUYER','PURCHASING_MANAGER','WAREHOUSE','SALES','BILLING','ACCOUNTANT','CONTROLLER','EXECUTIVE'],
  'inventory.write':['ADMIN','WAREHOUSE'], 'material.write':['ADMIN','MASTER_DATA'],
  'procurement.read':['ADMIN','BUYER','PURCHASING_MANAGER','WAREHOUSE','ACCOUNTANT','CONTROLLER','EXECUTIVE'],

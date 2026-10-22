@@ -1,8 +1,8 @@
 # NetFusion · Enterprise Service ERP
 
-Eigenständiger modularer Monolith mit echtem **OpenUI5**, **NestJS/TypeScript** und **PostgreSQL**. Die Oberfläche verwendet ausschließlich **OpenUI5-Standardcontrols**, das Standardtheme und Standard-Abstandsklassen. Keine eigenen UI-Controls, Renderer, CSS-Dateien oder SVG-Logos. Erste Lieferung: Architektur, technisches Fundament und der durchgängige Prozess **Kundenformular → Ticket + Servicefall → Belegfluss → Technikerzuweisung**.
+Eigenständiger modularer Monolith mit echtem **OpenUI5**, **NestJS/TypeScript** und **PostgreSQL**. Die Oberfläche verwendet ausschließlich **OpenUI5-Standardcontrols**, das Standardtheme und Standard-Abstandsklassen. Keine eigenen UI-Controls, Renderer, CSS-Dateien oder SVG-Logos. Preview 0.2: **Kundenformular → Ticket + Servicefall → Belegfluss → Technikerbearbeitung**, Kundenfreigabe, SLA, Servicebasis und Einsatzplanung.
 
-Kein SAP-Backend nötig. Eigene Marke; Screenshots dienen als Fiori-/Prozessreferenz. Noch keine Produktivfreigabe. Einkauf, Lager, Faktura, Finanzbuchhaltung und die vollständige Workflow-/SLA-Engine sind geplante Module, keine fertigen Funktionen.
+Kein SAP-Backend nötig. Eigene Marke; Screenshots dienen als Fiori-/Prozessreferenz. Noch keine Produktivfreigabe. Einkauf, Lager, Faktura, Finanzbuchhaltung und erweiterte Workflow-/Vertragsfunktionen sind geplante Module, keine fertigen Funktionen.
 
 Nach Anmeldung öffnet sich das **Service-Cockpit**: klickbare Kennzahlenkarten, Arbeitsvorräte für neue/unzugewiesene/kritische/laufende Tickets, Such-/Prioritäts-/Typfilter, Prioritätsverteilung und direkte Technikerzuweisung. Alle Werte stammen aus autorisierten Datenbankabfragen. Die separate App-Übersicht enthält nur App-Kacheln.
 
@@ -24,7 +24,7 @@ Zufällig erzeugte Zugänge für Administration, Disposition, Support, Technik u
 ```sh
 npm run build
 npm test
-npm run test:browser
+npm run test:browser:all
 ```
 
 Tests erzeugen und entfernen eigene isolierte PostgreSQL-Datenbanken. Sie verändern keine Entwicklungs-/Produktionsbelege. Wenn die lokale DB noch nicht läuft, startet der Test-Harness sie für den Test. Browserbilder unter `test-results/` enthalten ausschließlich Testdaten.
@@ -46,6 +46,8 @@ In dieser Cloud wurde Compose nicht live getestet, da kein Docker-Daemon zugäng
 
 ## Dokumentation
 
+- [Preview 0.2 mit Screenshots](docs/previews/v0.2.0-preview.1/README.md) und [Versionsnotizen](docs/releases/v0.2.0-preview.1.md)
+- [Zusätzlicher Fachbacklog mit Originalanhängen](docs/backlog.md)
 - [Architektur und Modulgrenzen](docs/architecture.md)
 - [Domänenmodell](docs/domain-model.md) und [Datenbankschema](docs/database-schema.md)
 - [Geschäftsprozesse](docs/business-processes.md), [Service](docs/service-management.md), [Dispatching](docs/dispatching.md)

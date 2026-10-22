@@ -2,11 +2,11 @@ sap.ui.define(["netfusion/erp/controller/Base.controller","sap/m/Dialog","sap/m/
   "use strict";
   return Base.extend("netfusion.erp.controller.Ticket",{
     onInit:function(){this.model({ticket:{events:[],allowedTransitions:[]},flow:[],transitions:[]});this.getOwnerComponent().getRouter().getRoute("ticket").attachPatternMatched(function(e){this.id=e.getParameter("arguments").id;this.load();},this);},
-    load:async function(){if(!await this.guard())return;this.run(async function(){var t=await this.api("/api/tickets/"+this.id),flow=await this.api("/api/documents/"+this.id+"/flow");this.vm().setData({ticket:t,flow:flow,transitions:this.formatter.transitionItems(t.allowedTransitions),nextStatus:t.allowedTransitions[0]||"",comments:await this.api("/api/tickets/"+this.id+"/comments"),commentBody:"",commentVisibility:"PUBLIC"});});},
+    load:async function(){if(!await this.guard())return;this.run(async function(){var t=await this.api("/api/tickets/"+this.id),flow=await this.api("/api/documents/"+this.id+"/flow");this.vm().setData({ticket:t,flow:flow,slaDetail:await this.api("/api/tickets/"+this.id+"/sla"),transitions:this.formatter.transitionItems(t.allowedTransitions),nextStatus:t.allowedTransitions[0]||"",comments:await this.api("/api/tickets/"+this.id+"/comments"),commentBody:"",commentVisibility:"PUBLIC"});});},
     onComment:function(){this.run(async function(){var body={body:this.vm().getProperty("/commentBody"),visibility:this.vm().getProperty("/commentVisibility")},signature=JSON.stringify(body);if(this.commentSignature!==signature){this.commentSignature=signature;this.commentKey=crypto.randomUUID();}await this.api("/api/tickets/"+this.id+"/comments",{method:"POST",body:body,key:this.commentKey});this.commentSignature=null;this.load();});},
     onCase:function(){this.route("case",{id:this.vm().getProperty("/ticket/caseId")});},
-    onFlowSource:function(e){var d=e.getSource().getBindingContext("view").getObject();this.route(d.sourceKind==="TICKET"?"ticket":"case",{id:d.sourceId});},
-    onFlowTarget:function(e){var d=e.getSource().getBindingContext("view").getObject();this.route(d.targetKind==="TICKET"?"ticket":"case",{id:d.targetId});},
+    onFlowSource:function(e){var d=e.getSource().getBindingContext("view").getObject();this.onDocument(d.sourceKind,d.sourceId);},
+    onFlowTarget:function(e){var d=e.getSource().getBindingContext("view").getObject();this.onDocument(d.targetKind,d.targetId);},
     onAssign:function(){this.run(async function(){
       var ticket=this.vm().getProperty("/ticket"),techs=(await this.api("/api/technicians")).filter(function(t){return t.organizationId===ticket.organizationId;});
       if(!techs.length)throw new Error("Kein aktiver Techniker dieser Organisation verfügbar. Administration prüfen.");

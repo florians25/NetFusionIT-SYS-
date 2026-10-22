@@ -15,7 +15,7 @@ export function parse<T>(schema:z.ZodType<T>,value:unknown):T {
 export const ticketInput=z.object({
   title:z.string().trim().min(5).max(160), description:z.string().trim().min(10).max(10000),
   type:z.enum(['INCIDENT','SERVICE_REQUEST','PROBLEM','CHANGE','MAINTENANCE','REPAIR','INSTALLATION','COMPLAINT','WARRANTY','INTERNAL']),
-  priority:z.enum(['LOW','MEDIUM','HIGH','CRITICAL']), partnerId:uuid.optional()
+  priority:z.enum(['LOW','MEDIUM','HIGH','CRITICAL']), partnerId:uuid.optional(),contractId:uuid.optional(),technicalObjectId:uuid.optional()
 }).strict();
 export const transitions:Record<string,string[]>={
   NEW:['QUALIFYING','ESCALATED','CANCELLED'], QUALIFYING:['ESCALATED','CANCELLED'],
@@ -75,9 +75,12 @@ export function ticketQuery(u:Principal){
   const values:unknown[]=[u.tenantId,u.orgIds];
   let condition='d.tenant_id=$1 AND d.organization_id=ANY($2::uuid[])';
   if(u.role==='CUSTOMER'){values.push(u.partnerId);condition+=` AND t.partner_id=$${values.length}`;}
-  if(['TECHNICIAN','FIELD_TECHNICIAN'].includes(u.role)){values.push(u.id);condition+=` AND EXISTS(SELECT 1 FROM dispatch_assignments a JOIN technicians tech ON tech.tenant_id=a.tenant_id AND tech.id=a.technician_id WHERE a.tenant_id=t.tenant_id AND a.ticket_id=t.id AND a.active AND tech.user_id=$${values.length})`;}
+  if(['TECHNICIAN','FIELD_TECHNICIAN'].includes(u.role)){
+    values.push(u.id);
+    condition+=` AND (EXISTS(SELECT 1 FROM dispatch_assignments a JOIN technicians tech ON tech.tenant_id=a.tenant_id AND tech.id=a.technician_id WHERE a.tenant_id=t.tenant_id AND a.ticket_id=t.id AND a.active AND tech.user_id=$${values.length}) OR EXISTS(SELECT 1 FROM field_visits fv JOIN visit_technicians vt ON vt.tenant_id=fv.tenant_id AND vt.visit_id=fv.id JOIN technicians tech ON tech.tenant_id=vt.tenant_id AND tech.id=vt.technician_id WHERE fv.tenant_id=t.tenant_id AND fv.case_id=t.case_id AND fv.status<>'CANCELLED' AND tech.user_id=$${values.length}))`;
+  }
   const sql=`SELECT t.id,d.number,t.title,t.description,t.type,t.priority,t.status,t.version,t.source,
-    t.correlation_id AS "correlationId",t.case_id AS "caseId",cd.number AS "caseNumber",
+    t.correlation_id AS "correlationId",t.contract_id AS "contractId",t.case_id AS "caseId",cd.number AS "caseNumber",
     p.id AS "partnerId",p.name AS "partnerName",p.email AS "partnerEmail",d.organization_id AS "organizationId",
     d.created_at AS "createdAt",t.updated_at AS "updatedAt",tech.id AS "technicianId",coalesce(tech.name,'Nicht zugewiesen') AS "technicianName"
     FROM tickets t JOIN documents d ON d.tenant_id=t.tenant_id AND d.id=t.id

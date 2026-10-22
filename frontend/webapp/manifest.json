@@ -5,7 +5,7 @@
     "type": "application",
     "title": "NetFusion Service Workspace",
     "applicationVersion": {
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "dataSources": {
       "service": {
@@ -34,7 +34,8 @@
         "sap.f": {},
         "sap.ui.layout": {},
         "sap.ui.table": {},
-        "sap.uxap": {}
+        "sap.uxap": {},
+        "sap.ui.unified": {}
       }
     },
     "rootView": {
@@ -133,6 +134,21 @@
           "pattern": "workflow",
           "name": "workflow",
           "target": "Workflow"
+        },
+        {
+          "name": "planning",
+          "target": "Planning",
+          "pattern": "planning"
+        },
+        {
+          "name": "serviceMaster",
+          "target": "ServiceMaster",
+          "pattern": "service-master"
+        },
+        {
+          "name": "serviceSetup",
+          "target": "ServiceSetup",
+          "pattern": "service-setup"
         }
       ],
       "targets": {
@@ -177,6 +193,15 @@
         },
         "Workflow": {
           "viewName": "Workflow"
+        },
+        "Planning": {
+          "viewName": "Planning"
+        },
+        "ServiceMaster": {
+          "viewName": "ServiceMaster"
+        },
+        "ServiceSetup": {
+          "viewName": "ServiceSetup"
         }
       }
     }

@@ -3,7 +3,7 @@ import { Db,Principal,ticketQuery,caseQuery,uuid,parse } from './core';
 import { requirePermission } from './permissions';
 type Fields=Record<string,string>;
 export const entityFields:Record<string,Fields>={
-  Tickets:{id:'Guid',number:'String',title:'String',description:'String',type:'String',priority:'String',status:'String',version:'Int32',source:'String',correlationId:'Guid',caseId:'Guid',caseNumber:'String',partnerId:'Guid',partnerName:'String',partnerEmail:'String',organizationId:'Guid',createdAt:'DateTimeOffset',updatedAt:'DateTimeOffset',technicianId:'Guid',technicianName:'String'},
+  Tickets:{id:'Guid',number:'String',title:'String',description:'String',type:'String',priority:'String',status:'String',version:'Int32',source:'String',correlationId:'Guid',contractId:'Guid',caseId:'Guid',caseNumber:'String',partnerId:'Guid',partnerName:'String',partnerEmail:'String',organizationId:'Guid',createdAt:'DateTimeOffset',updatedAt:'DateTimeOffset',technicianId:'Guid',technicianName:'String'},
   ServiceCases:{id:'Guid',number:'String',title:'String',status:'String',technicalStatus:'String',commercialStatus:'String',version:'Int32',partnerName:'String',createdAt:'DateTimeOffset'},
   BusinessPartners:{id:'Guid',number:'String',name:'String',email:'String',status:'String',organizationId:'Guid'},
   Technicians:{id:'Guid',name:'String',organizationId:'Guid'}
@@ -45,7 +45,7 @@ function filterSQL(raw:string,fields:Fields,values:unknown[]){
   const result=or();if(i!==tokens.length)bad();return result;
 }
 export function metadata(){
-  const types=Object.entries(entityFields).map(([set,fields])=>`<EntityType Name="${set}"><Key><PropertyRef Name="id"/></Key>${Object.entries(fields).map(([name,type])=>`<Property Name="${name}" Type="Edm.${type}"${type==='DateTimeOffset'?' Precision="3"':''} Nullable="${name==='technicianId'?'true':'false'}"/>`).join('')}</EntityType>`).join('');
+  const types=Object.entries(entityFields).map(([set,fields])=>`<EntityType Name="${set}"><Key><PropertyRef Name="id"/></Key>${Object.entries(fields).map(([name,type])=>`<Property Name="${name}" Type="Edm.${type}"${type==='DateTimeOffset'?' Precision="3"':''} Nullable="${['technicianId','contractId'].includes(name)?'true':'false'}"/>`).join('')}</EntityType>`).join('');
   const sets=Object.keys(entityFields).map(set=>`<EntitySet Name="${set}" EntityType="NetFusion.${set}"/>`).join('');
   return `<?xml version="1.0" encoding="UTF-8"?><edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx"><edmx:DataServices><Schema Namespace="NetFusion" xmlns="http://docs.oasis-open.org/odata/ns/edm">${types}<EntityContainer Name="Service">${sets}</EntityContainer></Schema></edmx:DataServices></edmx:Edmx>`;
 }

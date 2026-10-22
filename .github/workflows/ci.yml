@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
+      CHROMIUM_PATH: /usr/bin/google-chrome
       UI5_DATA_DIR: ${{ runner.temp }}/ui5-cache
     steps:
       - uses: actions/checkout@v4
@@ -20,4 +21,5 @@ jobs:
       - run: npm ci --include=dev --no-fund
       - run: npm run build
       - run: npm test
+      - run: npm run test:browser:all
       - run: npm audit --omit=dev

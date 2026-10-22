@@ -18,29 +18,14 @@
 
 Workflow-Engine wird vor ersten genehmigungspflichtigen Stammdaten/Belegen eingeführt; Finance-Kern muss vor finaler Rechnungsbuchung existieren, auch wenn die UI-Phasen anders nummeriert sind. Architekturphasen sind keine Ausrede für inkonsistente Vorabbuchungen.
 
-## Aktueller Stand
+## Aktueller Stand · Preview 0.2
 
-Architektur in 18 Fach-/Technikkapiteln definiert. Phase 1 und erster vertikaler Prozess implementiert: Anmeldung, serverseitige Rollen, Org-Scope, einfacher aktiver Kundenstamm, authentifiziertes Kundenformular, persistentes Ticket und separater Servicefall, Korrelation, Belegrelation, Audit, idempotente Annahme, Technikerzuweisung und zentrale Ticket-Zustandsmaschine. Die Oberfläche verwendet ausschließlich Standardcontrols und Standardklassen von OpenUI5; eigene CSS-/SVG-Dateien und Renderer sind ausgeschlossen.
+Der [vollständige Originalauftrag](master-prompt.md) und der [zusätzliche Fachbacklog mit Quellen](backlog.md) sind versioniert. Der Nutzer hat fortlaufende Entwicklung, regelmäßige GitHub-Pushes und Preview-Versionen mit Screenshots beauftragt. Keine erneute Bestätigung pro Phase nötig.
 
-Nachweise am 22.10.2026:
+Umgesetzt: technisches Fundament und erster Serviceprozess, differenzierte Rollen, Kundenfreigabe mit Snapshot/Vier-Augen-Prinzip/Rückfrage, Kontakte/Adressen, öffentliche Kommentare/interne Notizen, Servicekalender, SLA-Policies und Ticket-Snapshots, Basisverträge, technische Objekte und Einsatzplanung mit Arbeitszeit-/Qualifikations-/Abwesenheits-/Kollisionsprüfung. Standard-OpenUI5-Oberflächen einschließlich separatem Ticket-Cockpit, Freigabearbeitsplatz, Servicebasis und PlanningCalendar.
 
-- TypeScript- und offizieller OpenUI5-Build mit Horizon-Themes und Versionsmetadaten bestanden.
-- 20 automatisierte Prüfungen bestanden, 0 fehlgeschlagen/übersprungen: 19 echte PostgreSQL/API-Integrationstests und 1 UI-Vorgabenprüfung. Die zusätzliche Kennzahlenprüfung stimmt Cockpit-Zähler und Prioritätsverteilung mit gespeicherten, sichtbaren Belegen ab.
-- Browserprozess in echtem Chromium bestanden: Kunde → Ticket/Fall → Liste/Objektseite/Belegrelation → direkte Dispatcherzuweisung im Service-Cockpit → Technikerstatus. Zusätzlich Kundenanlage, Administration, Abmeldung/Neuanmeldung und Mobilprofil geprüft. Klickbare Cockpit-Arbeitsvorräte, direkte Zuweisung und mobiles Cockpit bestanden ohne Browser-/HTTP-Fehler. Eigene Browserbilder verwenden ausschließlich isolierte, über Business-APIs angelegte Testbelege. Die Entwicklungsdatenbank erhält keine künstlichen Tickets.
-- Parallele Idempotenzrequests, Konkurrenz auf Belegversion, mehrere Mandanten/Organisationen/Kunden und absichtlich ausgelöster DB-Fehler mit vollständigem Rollback geprüft.
-- API-Neustart erhält Session, Geschäftsbelege, Zuweisung und Historie. Separater vollständiger Cluster-/Host-Recoverytest ist noch offen.
-- Setup zweimal gegen bestehende Datenbank wiederholt; kein Duplizieren von Entwicklungsbenutzern.
-- Compose-Konfiguration mit Platzhalterwerten statisch gültig; Shell-/Node-Skripte syntaktisch geprüft. Kein Live-Docker-Deployment, HTTPS-/Backup-/Restoretest oder Produktivhostingtest ausgeführt.
-- npm-Laufzeitabhängigkeiten ohne bekannte Audit-Befunde. 14 Entwicklungs-Tooling-Befunde verbleiben, siehe `security.md`.
+Nachweise und genaue Grenzen stehen in den [Versionsnotizen](releases/v0.2.0-preview.1.md); echte Desktop-/Mobilbilder in der [Preview](previews/v0.2.0-preview.1/README.md). 41 automatisierte Prüfungen verwenden echte isolierte PostgreSQL-Datenbanken und reproduzierbare Kalenderfälle. Nummern, Belege und Audit rollen bei Fehlern atomar zurück. Rollenänderungen greifen im nächsten Request; API-Neustart erhält Sitzung und Belege. Die Entwicklungsdatenbank enthält keine künstlichen Tickets.
 
-Noch keine Produktivfreigabe. Zielhosting: Ubuntu mit Docker laut Nutzer; kein Zugriff und noch kein Deployment-/Ressourcennachweis. Der OData-Service ist der dokumentierte lesende V4-Teilumfang, keine vollständige OData-Implementierung. Kundenfreigabe, SLA/Kalender, Material, Einkauf, Rechnungen, FI, MFA und alle weiteren Phasen bleiben offen. Offene Fachentscheidungen sind in `domain-model.md` und den Modulkapiteln genannt.
+Offen bleiben insbesondere sichere Uploads, vollständige Stammdatenänderungsfreigaben, Delegation/Betragsgrenzen, weitergehende Disposition und die kaufmännischen Folgephasen. Die zusätzlichen SERVICE-01 bis SERVICE-05 sind Anforderungen mit Abnahmekriterien, keine fertiggestellten Funktionen. Der nächste vertikale Prozess führt vom Serviceauftrag über freigegebene Leistungen und Material zu Faktura und ausgeglichener Buchung. Keine Finanzbuchungen ohne explizit konfigurierte fachliche Regeln.
 
-Nach dieser Lieferung erst den ersten Prozess abnehmen, dann Phase 2b/3 vertiefen. Keine parallele Scheinimplementierung aller Fachmodule.
-
-## Fortlaufende Umsetzung des vollständigen Masterprompts
-
-Der Originalauftrag ist vollständig in `docs/master-prompt.md` versioniert. Der Nutzer hat die fortlaufende Entwicklung aller Phasen und regelmäßige GitHub-Pushes ausdrücklich beauftragt. Keine erneute Bestätigung pro Phase erforderlich. GitHub-Grundstand: `d149c62` auf `main`, Remote-SHA überprüft.
-
-Nächster Zwischenstand: Migration 002, differenzierte Aktionsrechte für 16 Fachrollen, mehrstufige organisationsbezogene Kundenfreigabe mit Definitionssnapshot, Vier-Augen-Prinzip, Rückfrage/Antwort, Versionsschutz, Historie und persistenten internen Benachrichtigungen. Neue Kunden starten als Entwurf; ohne ausdrücklich konfigurierte Freigabedefinition erfolgt keine Aktivierung. Kontakte/Adressen und Stammdatenänderungen im Entwurf sind persistent. Öffentliche Kundenkommentare und interne Notizen sind getrennt; interne Notizen werden auch aus der Kundenhistorie ausgeblendet. Native OpenUI5-Objektseiten und Freigabearbeitsplatz sind vorhanden.
-
-27 PostgreSQL/API-/UI-Vorgabenprüfungen bestehen. Der bestehende Browserprozess wurde um echte Kundenkommentare ergänzt. Der separate Freigabe-Browserprozess konfiguriert eine Definition, reicht einen Kunden ein und lässt ihn von einem zweiten Benutzer freigeben. Freigabegrenzen nach Betrag, Delegationen, aktive Stammdatenänderungsanträge, Upload-/Virenscan und externe Benachrichtigung sind weiterhin eigene offene Anforderungen und werden nicht als fertig ausgegeben.
+Ubuntu mit Docker ist laut Nutzer vorhanden. Kein Zugriff auf den Zielserver, kein Live-Docker-/HTTPS-/Restoretest, keine Produktivfreigabe. OData bleibt der dokumentierte lesende V4-Teilumfang. Wiederverwendbares Cloud-Setup ist gespeichert; neue Aufgaben müssen Installation und Prozessstart anhand des gespeicherten Start-Skills ausführen.
