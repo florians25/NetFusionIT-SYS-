@@ -1,0 +1,11 @@
+{
+  "movement": "UL-55000000",
+  "delivery": "WA-54000000",
+  "splitPositions": 2,
+  "finalBuffer": "6.000000",
+  "nativeUI5": true,
+  "mobileWidths": [
+    390
+  ],
+  "errors": []
+}

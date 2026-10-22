@@ -1,0 +1,16 @@
+[
+  {
+    "file": "warehouse-label-browser.pdf",
+    "rasterDpi": 150,
+    "decoder": "ZXing 0.23.0",
+    "format": "CODE_128",
+    "value": "LP-0313387925505032364309623636756546051064"
+  },
+  {
+    "file": "warehouse-transfer.pdf",
+    "rasterDpi": 150,
+    "decoder": "ZXing 0.23.0",
+    "format": "CODE_128",
+    "value": "UL-55000000"
+  }
+]

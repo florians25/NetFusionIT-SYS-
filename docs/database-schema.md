@@ -28,7 +28,7 @@ Journalpositionen/gebuchte Inhalte und Audit sind gegen nachträgliches UPDATE/D
 
 ## Noch keine implementierten Tabellen
 
-Angebote, Service-/Reparaturvorlagen, Werkstattreparaturen/Retouren, Inventur/Umlagerung, Lieferantenrechnungen/Abnahmen, Fakturakandidaten/Rechnungen, offene Posten/Zahlungsausgleich, sichere Anhänge, DATEV-Läufe und Integrations-Inbox sind Ausbau. Vorhandene Outbox/Vertragsbasis bedeutet keine vollständige Versand-/Vertragslösung. Jede Erweiterung benötigt eigene Tenant-/Scope-/Audit-/Korrekturregeln und Migrationstests.
+Angebote, Service-/Reparaturvorlagen, Werkstattreparaturen/Retouren, lagerortübergreifende Umlagerung/Inventur, Nichtlager-/Fremdleistungsabnahmen, Zahlungsausgleich, DATEV-Läufe und Integrations-Inbox sind Ausbau. Vorhandene Outbox/Vertragsbasis bedeutet keine vollständige Versand-/Vertragslösung. Jede Erweiterung benötigt eigene Tenant-/Scope-/Audit-/Korrekturregeln und Migrationstests.
 
 Warenausgangspositionen projizieren physischen Bestand, offenen Reservierungsanteil, verbrauchte Menge und gleitenden Wert atomar. Die letzte Menge nimmt den Restwert mit. Rücknahmen vergleichen vollständige gruppierte Material-/Journalpositionen mit dem Ursprung. SRM-Positionen besitzen genau eine Zeit-, Pauschalen- oder Materialquelle und bleiben unveränderlich; Einfügen prüft Aufgabe, Ticket, Auftragsposition und tatsächliche Menge/Kosten.
 
@@ -39,3 +39,7 @@ Warenausgangspositionen projizieren physischen Bestand, offenen Reservierungsant
 Migration012 registriert außerdem ältere Geschäftspartner ohne zentralen Belegeintrag unter ihrer bestehenden Nummer. Ein expliziter technischer Audit unterscheidet dies von einer historischen fachlichen Erstellerzuordnung. Neue Entwicklungsstämme werden direkt registriert.
 
 Migrationen001–012 sind nach Anwendung in der Entwicklungsdatenbank unveränderlich; weitere Schemaänderungen erfolgen ausschließlich in neuen Migrationen. Readiness und echte Anmeldung wurden mit zwölf angewandten Migrationen geprüft.
+
+## Migration019 · Physische Platzmengen
+
+`warehouse_areas`, `warehouse_racks` und `warehouse_bins` beschreiben die tatsächliche Struktur. `warehouse_bin_openings` hält ausschließlich beim Upgrade beobachtete unzugeordnete positive Altbestände fest. `warehouse_transfers`/`warehouse_transfer_items` speichern unveränderliche UL-/SB-Belege samt Firmen-/Artikel-/Platzsnapshot. `warehouse_bin_entries` hat genau eine tatsächliche WE-, WA- oder Platzwechselquelle; geschützte Trigger führen `warehouse_bin_balances` fort. Aufgeschobene Constraints verlangen dieselbe Gesamtmenge wie `stock_balances`, vollständige ausgeglichene Platzbelege und genaue Gegenbewegungen. Laufzeitprojektionen bleiben SELECT-only. `goods_issue_items.bin_id` bindet neue Fachentnahmen; historische Quellen bleiben unverändert. `warehouse_bin_labels` archiviert eigene DO-Etiketten mit Hash und vollständigem Strukturstand. Alle neun Tabellen haben erzwungene Tenant-RLS; API ergänzt Organisations-/Buchungskreisscope. [Prozess und Grenzen](warehouse.md). Migrationen001–019 sind eingefroren.

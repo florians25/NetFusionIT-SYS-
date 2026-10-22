@@ -1,0 +1,14 @@
+import {inventoryFixture} from './inventory-fixture.mjs';
+import {cmd,ok} from './service-fixture.mjs';
+export async function warehouseFixture(h,{tracked=false}={}){
+ const f=await inventoryFixture(h);if(tracked)ok(await f.admin('/api/inventory/materials/'+f.product.id+'/settings',cmd({version:0,serialRequired:true,batchRequired:true,valuationMethod:'MOVING_AVERAGE'})));else ok(await f.configure());ok(await f.rules());
+ const body=await f.body(f.pos[0],tracked?'1':'6');if(tracked)body.items=['WH-SERIAL-1','WH-SERIAL-2'].map(serial=>({...body.items[0],quantity:'1',batch:'WH-BATCH-A',serial}));
+ const receipt=ok(await f.warehouse('/api/procurement/documents/'+f.pos[0].id+'/receipts',cmd(body))),context=()=>f.warehouse('/api/warehouse/companies/'+f.company.id),initial=ok(await context(),200),buffer=initial.bins.find(b=>b.systemBuffer);
+ const area=ok(await f.warehouse('/api/warehouse/areas',cmd({locationId:f.location.id,code:'A',name:'Netzwerk-Ersatzteile'}))),rack=ok(await f.warehouse('/api/warehouse/racks',cmd({areaId:area.id,aisle:'01',code:'R03',name:'Ersatzteilregal 03'})));
+ const bins=[];for(const [code,level,compartment,capacity] of [['BER-A-R03-02-04','02','04','4'],['BER-A-R03-02-05','02','05','10']])bins.push(ok(await f.warehouse('/api/warehouse/bins',cmd({rackId:rack.id,code,name:'Netzwerk-Ersatzteile '+compartment,level,compartment,capacity,capacityUnit:'EA',allowMixedProducts:false,allowMixedBatches:false}))));
+ const task=ok(await f.tech('/api/tickets/'+f.ticket.id+'/tasks',cmd({title:'Teile aus konkreten Lagerfächern verbauen',description:'Physische Entnahme und tatsächlichen Serviceverbrauch zusammen dokumentieren.',orderId:f.order.id}))),expense=ok(await f.admin('/api/finance/companies/'+f.company.id+'/accounts',cmd({code:'6000',name:'Materialaufwand Service',kind:'EXPENSE'})));ok(await f.admin('/api/finance/companies/'+f.company.id+'/rules',cmd({event:'STOCK_ISSUE',version:0,accounts:{inventory:f.inventory.id,consumption:expense.id}})));
+ const line=(fromBinId,toBinId,quantity,batch='',serial='')=>({fromBinId,toBinId,productId:f.product.id,quantity,batch,serial});
+ const transfer=(items,movementType='PUTAWAY',key)=>f.warehouse('/api/warehouse/transfers',cmd({companyId:f.company.id,locationId:f.location.id,movementType,reason:'Tatsächlichen Lagerplatzwechsel anhand von Quelle, Artikel und Zielfach bestätigen.',items},key));
+ async function delivery(items,key){const c=ok(await f.warehouse('/api/service/orders/'+f.order.id+'/delivery-context'),200);return f.warehouse('/api/service/orders/'+f.order.id+'/deliveries',cmd({version:c.version,taskId:task.id,periodId:f.period.id,postingDate:'2026-10-22',documentDate:'2026-10-22',description:'Physisch aus dem bestätigten Fach zum Serviceauftrag ausliefern.',items:items(c)},key));}
+ return {...f,receipt,area,rack,bins,buffer,context,line,transfer,task,expense,delivery};
+}

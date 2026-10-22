@@ -28,6 +28,7 @@
       <FlexBox wrap="Wrap" class="sapUiSmallMarginBottom">
         <GenericTile header="Serviceaufträge" subheader="Positionen und Freigaben" press=".onOrders" visible="{state&gt;/access/orders}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Auftragsbestand"><content><ImageContent src="sap-icon://sales-order"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Lager &amp; Materialbewegungen" subheader="Bestände, Bewertung und Wareneingänge" press=".onInventory" visible="{state&gt;/access/inventory}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Materialwirtschaft"><content><ImageContent src="sap-icon://inventory"/></content></TileContent></tileContent></GenericTile>
+        <GenericTile header="Lagerplätze &amp; Einlagerung" subheader="Bereiche, Regale und tatsächliche Fachbestände" press=".onWarehouse" visible="{state&gt;/access/inventory}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Einlagern, scannen und Platzetiketten"><content><ImageContent src="sap-icon://shelf"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Artikel &amp; Servicekatalog" subheader="Artikelstamm und Freigabe" press=".onCatalog" visible="{state&gt;/access/inventory}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Leistungen und Material"><content><ImageContent src="sap-icon://product"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Preisfindung" subheader="Konditionen und Gültigkeit" press=".onPricing" visible="{state&gt;/access/pricing}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Preise, Rabatte und Steuern"><content><ImageContent src="sap-icon://sales-document"/></content></TileContent></tileContent></GenericTile>
       </FlexBox>
@@ -43,7 +44,7 @@
         <GenericTile header="Organisation" subheader="Serviceorganisationen" press=".onAdmin" visible="{state&gt;/access/admin}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Organisationsstruktur"><content><ImageContent src="sap-icon://org-chart"/></content></TileContent></tileContent></GenericTile>
       </FlexBox>
 
-      <HBox justifyContent="SpaceBetween" class="sapUiMediumMarginTop" wrap="Wrap"><Text text="NETFUSION · ENTERPRISE SERVICE ERP"/><Text text="OpenUI5 · Preview 0.14.1"/></HBox>
+      <HBox justifyContent="SpaceBetween" class="sapUiMediumMarginTop" wrap="Wrap"><Text text="NETFUSION · ENTERPRISE SERVICE ERP"/><Text text="OpenUI5 · Preview 0.15.1"/></HBox>
     </VBox>
   </Page>
 </mvc:View>

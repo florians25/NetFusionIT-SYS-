@@ -109,3 +109,21 @@ Schreiben benötigt CSRF/Idempotenz; veränderlicher Auftragszustand wird versio
 ## Vorgangsbezogene PDF-Anlagen
 
 `GET /api/documents/:id/attachments` liefert Quellenstand, erlaubte Dokumentarten und geschützte Metadaten; beim Serviceauftrag zusätzlich berechtigte Folgebelegdateien. `POST .../generate` benötigt Idempotency-Key, Quellversion, DocumentType und Sichtbarkeit. `POST .../upload?filename=...` sendet maximal5MiB `application/pdf` als rohe Bytes mit CSRF und Idempotency-Key. `POST .../:attachmentId/scan` startet einen weiteren protokollierten Scan. `GET .../:attachmentId/download` liefert nach erneuter Quellenprüfung die archivierten Bytes als Anhang; Quarantäne409, fremde Quelle/Datei404. Kunden können nur ausdrücklich veröffentlichte PDFs ihrer Vorgänge lesen; keine Erzeugung/Uploads/Scans. Siehe [Archiv, Dateitypen und Grenzen](attachments.md).
+
+## Physischer Lagerarbeitsplatz (0.15)
+
+Alle Mutationen benötigen Session/CSRF/Idempotency-Key. `inventory.read` erlaubt autorisierte Anzeige/Scan/Download; `inventory.write` erlaubt Struktur, Platzbewegung und Etikettenerstellung. Veränderbare Stammdaten verlangen aktuelle Version und Grund. Mengen bleiben Dezimalstrings.
+
+| Methode/Pfad | Zweck |
+| --- | --- |
+| GET /api/warehouse/companies/:id | Tatsächliche Struktur, Fach-/Puffermengen, letzte100 Platzbelege/200 Buchungen |
+| POST /api/warehouse/areas, /racks, /bins | Bereich, Gang/Regal und Fach anlegen |
+| PATCH /api/warehouse/structure/:kind/:id | Versionierte Bezeichnung, Sperre und Fachregeln |
+| POST /api/warehouse/transfers | Tatsächliche Teil-Einlagerung bzw. Platzwechsel im selben Lagerort |
+| GET /api/warehouse/transfers/:id | Unveränderlicher gebuchter Stand und Gegenbezug |
+| POST /api/warehouse/transfers/:id/reverse | Exakte Gegenbewegung mit tatsächlich verfügbarem Bestand |
+| GET /api/warehouse/scan?companyId=…&kind=BIN\|PRODUCT&value=… | Autorisierte Identitätsprüfung; keine Mengenbuchung |
+| GET/POST /api/warehouse/bins/:id/labels | Kleine Etikettenliste / unveränderlichen aktuellen PDF-Stand archivieren |
+| GET /api/warehouse/bins/:id/labels/:labelId/download | Autorisierter, hashgeprüfter PDF-Download |
+
+SA-Auslieferungszeilen ergänzen `binId`; eine Reservierung darf über mehrere unterschiedliche Fächer verteilt werden. Ohne `binId` ist ausschließlich tatsächlicher Eingangspufferbestand verwendbar. Rücknahmen verwenden das Originalfach. Normale Dokumentanlagen unterstützen `STOCK_TRANSFER`. [Fachlicher Vertrag und Grenzen](warehouse.md).

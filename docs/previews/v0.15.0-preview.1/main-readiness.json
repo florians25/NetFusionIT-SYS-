@@ -1,0 +1,14 @@
+{
+  "version": "0.15.0-preview.1",
+  "time": "2026-10-22T20:35:59.621Z",
+  "readiness": 200,
+  "authenticatedRole": "ADMIN",
+  "emptyIncomingWorklist": true,
+  "migrations": 19,
+  "incoming": 0,
+  "invoices": 0,
+  "reversals": 0,
+  "companies": 0,
+  "warehouse_transfers": 0,
+  "warehouse_labels": 0
+}

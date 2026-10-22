@@ -1,0 +1,33 @@
+{
+  "version": "0.15.0-preview.1",
+  "time": "2026-10-22T20:39:23.812585+00:00",
+  "automatedTests": 204,
+  "passed": 204,
+  "failed": 0,
+  "newWarehouseTests": 14,
+  "fullSuiteDurationMs": 157520.057834,
+  "browserChains": [
+    {
+      "chain": "warehouse",
+      "passed": true
+    },
+    {
+      "chain": "deliveries",
+      "passed": true
+    },
+    {
+      "chain": "inventory",
+      "passed": true
+    },
+    {
+      "chain": "attachments",
+      "passed": true
+    },
+    {
+      "chain": "reversal",
+      "passed": true
+    }
+  ],
+  "nativeUI5Policy": true,
+  "barcodeRasterDpi": 150
+}

@@ -1,4 +1,4 @@
-# Materialwirtschaft · Preview 0.9
+# Materialwirtschaft · Preview 0.15
 
 Die [verbindliche Nutzerpräzisierung](requirements/material-fulfillment.md) führt den Prozess vom Serviceauftrag aus. Freigegebene Lager-, Nichtlager- und Fremdleistungspositionen erzeugen automatisch ihren Bedarf. Arbeitszeit, Fahrt und Pauschalen erzeugen keinen Ersatzteilbedarf. Herkunft, Mengen, Termin und Kontierung bleiben an der genehmigten Position; ein automatischer Bedarf kann nicht unabhängig vom Auftrag gelöscht werden.
 
@@ -26,4 +26,4 @@ Ausgabe vom Serviceauftrag auf eine offene technische Ticketaufgabe reduziert Be
 
 ## Ausstehender Umfang
 
-Reservierung ist vom tatsächlichen Verbrauch getrennt. [Auslieferung, Rücknahme, gleitende Verbrauchsbewertung und WOT-/SRM-Übergabe](material-deliveries.md) sind ab 0.9 implementiert. Korrekturen nach freigegebener/fakturierter SRM, Anfangsbestand, Umlagerung, Inventur, Einheitenumrechnung und historische ATP/MRP-Terminplanung sind noch offen. Nichtlager-/Fremdleistungsbestellungen besitzen noch keine Leistungsabnahme. Lieferantenrechnung/Drei-Wege-Abgleich und Faktura sind ebenfalls offen. Es gibt keine direkte Bestandskorrektur als Ersatz für diese Prozesse.
+Reservierung ist vom tatsächlichen Verbrauch getrennt. [Auslieferung, Rücknahme, gleitende Verbrauchsbewertung und WOT-/SRM-Übergabe](material-deliveries.md) sind ab 0.9 implementiert. [Physische Fachstruktur, Teil-Einlagerung, interne Platzwechsel, Gegenbewegungen, Etiketten/Tastaturscan und geteilte Fachentnahme](warehouse.md) sind ab0.15 implementiert. Korrekturen nach freigegebener/fakturierter SRM, fachliche Anfangsbestandsbuchung, lagerortübergreifende Umlagerung, Inventur, Einheitenumrechnung und historische ATP/MRP-Terminplanung sind noch offen. Nichtlager-/Fremdleistungsbestellungen besitzen noch keine Leistungsabnahme. Teil-WE-/Bestellabgleich, verbindliche Eingangsrechnungsbuchung mit unabhängiger Finanzprüfung sowie interner vollständiger Storno sind als Teilumfang vorhanden; erweiterte Abweichungs-/Steuer-/Gutschrifts-/Zahlungsfälle bleiben offen. Faktura besitzt Anforderung/Freigabe/Vorrat, Teil-/Endrechnung zu einem SA, FI/OP und validiertes ZUGFeRD. Es gibt keine direkte Bestandskorrektur als Ersatz für diese Prozesse.

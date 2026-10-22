@@ -1,6 +1,6 @@
 # Masterbacklog: vollständige Modulabdeckung und offene Prozesslücken
 
-Stand22.10.2026, Basis Preview0.14.0-preview.1. Die [Originalspezifikation](master-prompt.md) gilt vollständig; [Zusatzanforderungen](backlog.md) und [37 SD-/Faktura-/CRM-Arbeitspakete](requirements/sales-billing-crm.md) ergänzen sie. „Teilbasis“ bedeutet ausdrücklich keinen abgeschlossenen SAP-Ersatz. Jeder offene Ablauf benötigt Datenmodell, API, Rechte, Status/Mengen/Werte, native OpenUI5-Maske und aussagekräftige Prozessprüfung.
+Stand22.10.2026, Basis Preview0.15.0-preview.1. Die [Originalspezifikation](master-prompt.md) gilt vollständig; [Zusatzanforderungen](backlog.md) und [37 SD-/Faktura-/CRM-Arbeitspakete](requirements/sales-billing-crm.md) ergänzen sie. „Teilbasis“ bedeutet ausdrücklich keinen abgeschlossenen SAP-Ersatz. Jeder offene Ablauf benötigt Datenmodell, API, Rechte, Status/Mengen/Werte, native OpenUI5-Maske und aussagekräftige Prozessprüfung.
 
 | Modul / Bereich | Vorhandene Teilbasis | Weiterer verbindlicher Umfang |
 | --- | --- | --- |
@@ -23,7 +23,7 @@ Stand22.10.2026, Basis Preview0.14.0-preview.1. Die [Originalspezifikation](mast
 | Bedarf/BANF | Automatischer Artikelbedarf, Lager zuerst, Fehlmenge, unabhängige Freigabe | Alternativartikel, Direktlieferung, Umplanung, Wunschlieferant, Sammelbedarf, vollständige Bearbeiter-/Freigabe-/Änderungsprozesse |
 | Einkauf | Lieferant, Teilbestellung aus BANF, Mengenbindung, Freigabe/PDF | Lieferantenanfrage/Angebotsvergleich, freie auftragsgebundene Bestellung, Kopf-/Positionsdetails, Bestätigung/Einteilungen, Änderung, Storno, Versand/Status |
 | Wareneingang | Tatsächliche Teilmengen, Bewertung, Serie/Charge, Storno und FI | Anlieferung/Prüfung/Sperrbestand, Nichtlager-/Fremdleistungsabnahme, Retouren, Mehr-/Mindermengen und vollständige Lieferantenbelegzuordnung |
-| Physisches Lager | Werk/Lagerort, Bestands-/Reservierungs-/Bewertungsbuch | Regal/Fach/Platzbestand, Einlagerung, Labels/Scanner, Kommissionierung, Umlagerung, mobile Lager, Inventur/Differenzen und Gegenbewegungen |
+| Physisches Lager | Werk/Lagerort und Bewertung;0.15 ergänzt Bereich/Gang/Regal/Ebene/Fach, tatsächliche Platzmengen, Teil-Einlagerung/Platzwechsel mit Gegenbelegen, Kapazität/Sperre/Mischregeln, Code128-Etiketten/Archiv, Tastaturscan und geteilte Fachentnahme an SA | Lagerortübergreifende Umlagerung, Einheitenumrechnung, Inventur/Differenzen, Prüflager/Sperrbestand, Pickwellen/Packstücke, Geräte-/Drucker-/Kamera-/Offlineabnahme und Korrekturen nach Faktura |
 | Auslieferung/Retoure | Teil-Ausgabe an SA, WA/LS, Bewertung, Originalgegenbewegung, SRM | Versand/Packstücke/Tracking, Retouren-/Eigentumsfälle, Wiederaufbereitung, gutgeschriebene/fakturierte Rückgabe und ungeplante Materialrückgabe |
 | Werkstattreparatur | Noch offen | RMA/Retoure, Reparaturobjekte, Vorprüfung, Diagnose, Angebot, Annahme, Reparatur/Fremdbeschaffung, Rückmeldung, Faktura/Rücksendung |
 | Faktura | Anforderung/Freigabe/Vorrat, Teil-/Endrechnung zu einem SA, Inland-Normalsteuer, FI/Forderung und validiertes ZUGFeRD | BILL-01–10: Anforderung → Freigabe → Vorrat → Teil-/Sammel-/periodische Rechnung → FI/OP; Leistungserbringung, valides ZUGFeRD/XRechnung, Storno/Korrektur |

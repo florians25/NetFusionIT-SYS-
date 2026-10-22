@@ -5,7 +5,7 @@
     "type": "application",
     "title": "NetFusion Service Workspace",
     "applicationVersion": {
-      "version": "0.14.0-preview.1"
+      "version": "0.15.0-preview.1"
     },
     "dataSources": {
       "service": {
@@ -244,6 +244,16 @@
           "pattern": "supplier-invoice-reversals/{id}",
           "name": "supplierReversal",
           "target": "SupplierReversal"
+        },
+        {
+          "name": "warehouse",
+          "target": "Warehouse",
+          "pattern": "warehouse"
+        },
+        {
+          "name": "warehouseTransfer",
+          "target": "WarehouseTransfer",
+          "pattern": "warehouse/transfers/{id}"
         }
       ],
       "targets": {
@@ -360,6 +370,12 @@
         },
         "SupplierReversal": {
           "viewName": "SupplierReversal"
+        },
+        "Warehouse": {
+          "viewName": "Warehouse"
+        },
+        "WarehouseTransfer": {
+          "viewName": "WarehouseTransfer"
         }
       }
     }
