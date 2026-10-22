@@ -31,6 +31,7 @@ export const grants:Record<string,readonly Role[]>={
  'order.execute':['ADMIN','SERVICE_MANAGER','DISPATCHER','SUPPORT','TECHNICIAN','FIELD_TECHNICIAN'],
  'work.approve':['ADMIN','SERVICE_MANAGER'],
  'ap.read':['ADMIN','BUYER','PURCHASING_MANAGER','ACCOUNTANT','CONTROLLER','EXECUTIVE'],
+ 'ap.post':['ADMIN','ACCOUNTANT'],
  'ap.receive':['ADMIN','BUYER','ACCOUNTANT'],
  'billing.read.internal':['ADMIN','SERVICE_MANAGER','BILLING','ACCOUNTANT','CONTROLLER','EXECUTIVE'],
  'billing.release':['ADMIN','SERVICE_MANAGER','BILLING'],

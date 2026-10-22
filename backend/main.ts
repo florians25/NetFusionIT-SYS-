@@ -11,6 +11,7 @@ import path from 'node:path';
 import { Db } from './core';
 import {IncomingInvoices} from './incoming-invoices';
 import {IncomingInvoiceMatching} from './incoming-invoice-matching';
+import {SupplierPosting} from './supplier-posting';
 import {IncomingInvoicesController} from './incoming-invoices.controller';
 import {Billing} from './billing';
 import {PartnerFinance} from './partner-finance';
@@ -45,7 +46,7 @@ import { Sla } from './sla';
 import { Operations } from './operations';
 import { Dispatch } from './dispatch';
 import { OperationsController } from './operations.controller';
-@Module({controllers:[IncomingInvoicesController,BillingController,PartnerFinanceController,AttachmentsController,ServiceDeliveriesController,NumberSeriesController,MaterialPlanningController,InventoryController,ProcurementController,FinanceController,WorkController,CommerceController,HealthController,AuthController,ApiController,ODataController,WorkflowController,OperationsController],providers:[IncomingInvoiceMatching,IncomingInvoices,Billing,PartnerFinance,Attachments,ServiceDeliveries,NumberSeries,MaterialPlanning,Inventory,Procurement,Finance,Work,Commerce,Db,AuthService,SessionGuard,Service,Admin,OData,Workflow,Collaboration,Sla,Operations,Dispatch]})
+@Module({controllers:[IncomingInvoicesController,BillingController,PartnerFinanceController,AttachmentsController,ServiceDeliveriesController,NumberSeriesController,MaterialPlanningController,InventoryController,ProcurementController,FinanceController,WorkController,CommerceController,HealthController,AuthController,ApiController,ODataController,WorkflowController,OperationsController],providers:[SupplierPosting,IncomingInvoiceMatching,IncomingInvoices,Billing,PartnerFinance,Attachments,ServiceDeliveries,NumberSeries,MaterialPlanning,Inventory,Procurement,Finance,Work,Commerce,Db,AuthService,SessionGuard,Service,Admin,OData,Workflow,Collaboration,Sla,Operations,Dispatch]})
 class AppModule{}
 @Catch()
 class SafeErrors implements ExceptionFilter {

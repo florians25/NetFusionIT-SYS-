@@ -2,7 +2,7 @@
  <VBox height="100%">
   <f:ShellBar title="NetFusion" secondTitle="{state&gt;/navigation/title}" showMenuButton="false" showNavButton="{state&gt;/navigation/active}" navButtonPressed=".onHome" visible="{= !!${state&gt;/user} }">
    <f:profile><Avatar initials="{path:'state&gt;/user/name',formatter:'.formatter.initials'}" tooltip="{state&gt;/user/name}" press=".onProfile" displaySize="XS"/></f:profile>
-   <f:additionalContent><Button text="App-Zentrale" icon="sap-icon://home" press=".onHome" visible="{state&gt;/navigation/active}"/><ObjectStatus text="Preview 0.12.2" visible="{device&gt;/system/desktop}"/></f:additionalContent>
+   <f:additionalContent><Button text="App-Zentrale" icon="sap-icon://home" press=".onHome" visible="{state&gt;/navigation/active}"/><ObjectStatus text="Preview 0.13.1" visible="{device&gt;/system/desktop}"/></f:additionalContent>
   </f:ShellBar>
   <IconTabHeader id="appNavigation" selectedKey="{state&gt;/navigation/selectedKey}" select=".onNav" items="{path:'state&gt;/navigation/tabs',templateShareable:false}" visible="{= !!${state&gt;/user} &amp;&amp; ${state&gt;/navigation/tabs}.length &gt; 1 }" mode="Inline" backgroundDesign="Solid"><items><IconTabFilter text="{state&gt;text}" key="{state&gt;key}"/></items></IconTabHeader>
   <App id="innerApp"><layoutData><FlexItemData growFactor="1" baseSize="0%"/></layoutData></App>

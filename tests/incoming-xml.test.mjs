@@ -36,6 +36,7 @@ test('Schema-, XInclude- und externe Signaturreferenzen werden vor der Java-Vali
  rejects(cii.replace('<rsm:CrossIndustryInvoice','<rsm:CrossIndustryInvoice xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:test file:///etc/passwd"'),'UNSUPPORTED');rejects(cii.replace('<ram:BuyerReference>','<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="file:///etc/passwd"/><ram:BuyerReference>'),'UNSUPPORTED');rejects(cii.replace('<ram:BuyerReference>','<ds:Reference xmlns:ds="http://www.w3.org/2000/09/xmldsig#" URI="https://example.invalid/secret"/><ram:BuyerReference>'),'UNSUPPORTED');
 });
 
+test('XML-Basis-URLs können lokale Signaturreferenzen nicht auf fremde Ressourcen umlenken',()=>{rejects(cii.replace('<rsm:CrossIndustryInvoice ','<rsm:CrossIndustryInvoice xml:base="file:///etc/passwd" '),'UNSUPPORTED');});
 test('Zeichenkodierungsdeklaration darf die normative Interpretation nicht von den übernommenen Daten trennen',()=>{
  const xml=cii.toString();assert.throws(()=>parse(Buffer.from(xml.replace('encoding="UTF-8"','encoding="ISO-8859-1"'))),/Zeichenkodierungsdeklaration/);
 });

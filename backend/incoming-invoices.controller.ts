@@ -4,11 +4,16 @@ import {AuthRequest,SessionGuard,csrf} from './auth';
 import {Permission} from './permissions';
 import {IncomingInvoices} from './incoming-invoices';
 import {IncomingInvoiceMatching} from './incoming-invoice-matching';
+import {SupplierPosting} from './supplier-posting';
 @Controller('api/incoming-invoices')@UseGuards(SessionGuard)@Permission('ap.read')
 export class IncomingInvoicesController{
- constructor(private incoming:IncomingInvoices,private matching:IncomingInvoiceMatching){}
+ constructor(private incoming:IncomingInvoices,private matching:IncomingInvoiceMatching,private posting:SupplierPosting){}
  @Get('context')context(@Req() r:AuthRequest){return this.incoming.context(r.user);}
  @Get()list(@Req() r:AuthRequest){return this.incoming.list(r.user);}
+ @Get(':id/financial')financial(@Req() r:AuthRequest,@Param('id') id:string){return this.posting.context(r.user,id);}
+ @Post(':id/prepare')@Permission('ap.post')prepare(@Req() r:AuthRequest,@Param('id') id:string,@Body() b:unknown){csrf(r);return this.posting.prepare(r.user,id,b,r.get('Idempotency-Key'),r.correlationId);}
+ @Post(':id/withdraw')@Permission('ap.post')withdraw(@Req() r:AuthRequest,@Param('id') id:string,@Body() b:unknown){csrf(r);return this.posting.withdraw(r.user,id,b,r.get('Idempotency-Key'),r.correlationId);}
+ @Post(':id/post')@Permission('ap.post')post(@Req() r:AuthRequest,@Param('id') id:string,@Body() b:unknown){csrf(r);return this.posting.post(r.user,id,b,r.get('Idempotency-Key'),r.correlationId);}
  @Get(':id/matching')matchingContext(@Req() r:AuthRequest,@Param('id') id:string){return this.matching.context(r.user,id);}
  @Post(':id/matching')@Permission('ap.receive')saveMatching(@Req() r:AuthRequest,@Param('id') id:string,@Body() b:unknown){csrf(r);return this.matching.save(r.user,id,b,r.get('Idempotency-Key'),r.correlationId);}
  @Get(':id')detail(@Req() r:AuthRequest,@Param('id') id:string){return this.incoming.detail(r.user,id);}
