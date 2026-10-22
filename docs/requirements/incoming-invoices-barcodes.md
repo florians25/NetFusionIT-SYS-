@@ -1,6 +1,6 @@
 # Eingangsrechnungen und Barcodes
 
-Nutzerauftrag22.10.2026; Ergänzung des bestehenden Masterprompts, keine Ablösung von Faktura, Einkauf oder Serviceausführung. Status: nachfolgende Eingangsrechnungsprozesse offen. Der Nummernkreis EG und die allgemeine Anlagen-/Buchungsgrundlage sind vorhanden und ersetzen diese Prozesse nicht. Rechtliche Abhängigkeiten: [Compliance-Prüfung](../compliance-gap-analysis.md). Alle Masken ausschließlich native OpenUI5-Controls; Einstieg über App-Zentrale, Schnellzugriffe nur innerhalb „Rechnungsprüfung“.
+Nutzerauftrag22.10.2026; Ergänzung des bestehenden Masterprompts, keine Ablösung von Faktura, Einkauf oder Serviceausführung. Status: Preview0.12 setzt den technischen Originaleingang und Teile von AP-01/02/04/11 um; kaufmännische Zuordnung/Buchung und übrige Schritte bleiben offen. [Aktueller Umfang](../incoming-invoices.md). Der Nummernkreis EG und die allgemeine Anlagen-/Buchungsgrundlage sind vorhanden und ersetzen diese Prozesse nicht. Rechtliche Abhängigkeiten: [Compliance-Prüfung](../compliance-gap-analysis.md). Alle Masken ausschließlich native OpenUI5-Controls; Einstieg über App-Zentrale, Schnellzugriffe nur innerhalb „Rechnungsprüfung“.
 
 ## Eingangsrechnungen: verbindliche Arbeitspakete
 

@@ -24,10 +24,11 @@ sap.ui.define(["sap/ui/core/mvc/Controller","sap/m/MessageBox","sap/ui/model/jso
     onInventory:function(){this.route("inventory");},
     onAttachments:function(e){var source=e.getSource(),ctx=source.getBindingContext('view')||source.getBindingContext(),id=source.data('documentId')||(ctx&&ctx.getProperty('id'))||this.id;this.run(function(){if(!id)throw new Error('Zuerst einen Vorgang auswählen.');return attachments(this,id);});},
     onSuppliers:function(){this.route("suppliers");},
+    onIncomingInvoices:function(){this.route("incomingInvoices");},
     onBilling:function(){this.route("billing");},
     onFinance:function(){this.route("finance");},
     onOrders:function(){this.route("orders");},onCatalog:function(){this.route("catalog");},onPricing:function(){this.route("pricing");},onPlanning:function(){this.route("planning");},onServiceMaster:function(){this.route("serviceMaster");},onServiceSetup:function(){this.route("serviceSetup");},
-    onDocument:function(kind,id){if(kind==="WORK_ORDER_TASK"){this.run(async function(){var task=await this.api("/api/service/tasks/"+id);this.route("ticket",{id:task.ticketId});});return;}var route={BILLING_REQUEST:"billingRequest",INVOICE:"invoice",GOODS_RECEIPT:"goodsReceipt",GOODS_ISSUE:"goodsIssue",MATERIAL_REQUIREMENT:"procurement",REQUISITION:"procurement",PURCHASE_ORDER:"procurement",ACCOUNTING:"journal",SERVICE_ORDER:"order",SERVICE_REPORT:"report",MATERIAL:"catalog",TICKET:"ticket",SERVICE_CASE:"case",BUSINESS_PARTNER:"partner",TECHNICAL_OBJECT:"serviceMaster",SERVICE_CONTRACT:"serviceMaster",FIELD_VISIT:"planning"}[kind];if(route)this.route(route,{id:id});},
+    onDocument:function(kind,id){if(kind==="WORK_ORDER_TASK"){this.run(async function(){var task=await this.api("/api/service/tasks/"+id);this.route("ticket",{id:task.ticketId});});return;}var route={SUPPLIER_INVOICE:"incomingInvoice",BILLING_REQUEST:"billingRequest",INVOICE:"invoice",GOODS_RECEIPT:"goodsReceipt",GOODS_ISSUE:"goodsIssue",MATERIAL_REQUIREMENT:"procurement",REQUISITION:"procurement",PURCHASE_ORDER:"procurement",ACCOUNTING:"journal",SERVICE_ORDER:"order",SERVICE_REPORT:"report",MATERIAL:"catalog",TICKET:"ticket",SERVICE_CASE:"case",BUSINESS_PARTNER:"partner",TECHNICAL_OBJECT:"serviceMaster",SERVICE_CONTRACT:"serviceMaster",FIELD_VISIT:"planning"}[kind];if(route)this.route(route,{id:id});},
     onTicketPress:function(e){var item=e.getParameter("listItem")||e.getSource(),ctx=item.getBindingContext()||item.getBindingContext("view");if(ctx)this.route("ticket",{id:ctx.getProperty("id")});}
   });
 });

@@ -5,7 +5,7 @@
     "type": "application",
     "title": "NetFusion Service Workspace",
     "applicationVersion": {
-      "version": "0.11.0-preview.1"
+      "version": "0.12.0-preview.1"
     },
     "dataSources": {
       "service": {
@@ -229,6 +229,16 @@
           "name": "invoice",
           "target": "Invoice",
           "pattern": "billing/invoices/{id}"
+        },
+        {
+          "name": "incomingInvoices",
+          "target": "IncomingInvoices",
+          "pattern": "incoming-invoices"
+        },
+        {
+          "name": "incomingInvoice",
+          "target": "IncomingInvoice",
+          "pattern": "incoming-invoices/{id}"
         }
       ],
       "targets": {
@@ -336,6 +346,12 @@
         },
         "Invoice": {
           "viewName": "Invoice"
+        },
+        "IncomingInvoices": {
+          "viewName": "IncomingInvoices"
+        },
+        "IncomingInvoice": {
+          "viewName": "IncomingInvoice"
         }
       }
     }

@@ -23,7 +23,7 @@ test('Geschäfts-PDF erhält lange Positionen, Unicode und letzte Zeile über me
 test('Belegbarcodes sind aus den gerasterten Geschäftsformularen unabhängig als Code128 lesbar, auch auf Folgeseiten',async()=>{
  const {MultiFormatReader,BarcodeFormat,DecodeHintType,RGBLuminanceSource,BinaryBitmap,HybridBinarizer}=await import('@zxing/library');
  const folder=await mkdtemp('/tmp/erp-barcode-scan-');try{
-  for(const [kind,number] of [['Bestellung','BE-52000001'],['Auftragsbestätigung','AB-43000001'],['Wareneingang','WE-53000001'],['Lieferschein','LS-44000001'],['Servicerückmeldung','TN-78000001'],['Vorgangsblatt','DO-87000001'],['Rechnung','RE-45000001'],['Historischer Beleg','SRM-2026-00000001']]){
+  for(const [kind,number] of [['Bestellung','BE-52000001'],['Auftragsbestätigung','AB-43000001'],['Wareneingang','WE-53000001'],['Lieferschein','LS-44000001'],['Servicerückmeldung','TN-78000001'],['Vorgangsblatt','DO-87000001'],['Rechnung','RE-45000001'],['Rechnungseingangsblatt','EG-59000001'],['Historischer Beleg','SRM-2026-00000001']]){
    const pdf=folder+'/'+number+'.pdf';await writeFile(pdf,await renderBusinessPdf({title:kind,number,sourceNumber:'SA-61000001',status:'Gebucht',date:'2026-10-22',issuer:{name:'Testgesellschaft GmbH'},fields:[],columns:[{title:'Pos.',width:40},{title:'Artikel',width:400}],rows:Array.from({length:kind==='Lieferschein'?70:1},(_,n)=>[String(n+1),'Dokumentierte Materialposition'])},'DO-87000002'));
    const {stdout}=await exec('pdfinfo',[pdf]);const count=Number(stdout.match(/^Pages:\s+(\d+)/m)[1]);if(kind==='Lieferschein')assert.ok(count>1);
    for(let page=1;page<=count;page++){

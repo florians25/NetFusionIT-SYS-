@@ -141,3 +141,7 @@ Fakturaanforderung mit tatsächlichen SRM-Quellen, unabhängiger Freigabe, Faktu
 ## UI-DATE-01 / BILL-TICKET-01 · Deutsche Datumsanzeige und Ticketnummer auf Rechnung
 
 [Verbindliche Präzisierung](requirements/dates-ticket-invoice-references.md): sichtbare Datumswerte `TT.MM.JJJJ`, kompakte Leistungsdatum-/Zeitraumdarstellung und tatsächliche Ticketnummern aus abgerechneten SRM-Quellen auf Serviceauftragsrechnungen. Neue Ausgabe und eingefrorener Snapshot werden entsprechend ergänzt; historische Archivbytes und maschinenlesbare Normformate bleiben erhalten. Der Nutzer hat die vollständige weitere Bearbeitung ohne Phasenrückfragen erneut beauftragt.
+
+### Technischer Teilstand Preview0.12
+
+Originaler Rechnungseingang mit EG, unveränderlichem Original, externer Rechnungsnummer, sicherer CII/UBL-Verarbeitung und tatsächlicher normativer Prüfung, PDF-Quarantäne, Dublettenhinweis, nativer OpenUI5-Arbeitsliste/Detail/Anlagenliste und eigenem Schwarz-Weiß-Prüfblatt mit Barcode. Keine FI/OP aus technischer Validierung. AP-01/02/04/11 teilweise umgesetzt; Drei-Wege-Abgleich, Kreditor, fachliche Freigabe, WE/RE-/Vorsteuerbuchung, Korrektur und Zahlung bleiben offen. [Details und Grenzen](incoming-invoices.md).

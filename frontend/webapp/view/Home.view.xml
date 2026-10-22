@@ -35,6 +35,7 @@
       <FlexBox wrap="Wrap" class="sapUiSmallMarginBottom" visible="{state&gt;/access/internal}">
         <GenericTile header="Lieferanten" subheader="Stammdaten und Freigaben" press=".onSuppliers" visible="{state&gt;/access/supplierRead}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Geschäftspartner im Einkauf"><content><ImageContent src="sap-icon://supplier"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Kundenstamm" subheader="Geschäftspartner" press=".onPartners" visible="{state&gt;/access/partners}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Kunden und Kontaktdaten"><content><ImageContent src="sap-icon://business-card"/></content></TileContent></tileContent></GenericTile>
+        <GenericTile header="Rechnungseingang" subheader="Lieferantenoriginale und Rechnungsprüfung" press=".onIncomingInvoices" visible="{state&gt;/access/apRead}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Originale, Prüfungen und Dubletten"><content><ImageContent src="sap-icon://accounting-document-verification"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Fakturavorrat" subheader="Anforderungen, Teilfaktura und Rechnungen" press=".onBilling" visible="{state&gt;/access/billingInternal}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Freigabe, Leistung und Debitorenposten"><content><ImageContent src="sap-icon://sales-document"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Finanzbuchhaltung" subheader="Konten, Perioden und Journal" press=".onFinance" visible="{state&gt;/access/financeRead}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Buchhaltung und Salden"><content><ImageContent src="sap-icon://accounting-document-verification"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Genehmigungen" subheader="Freigaben und Rückfragen" press=".onWorkflow" visible="{state&gt;/access/workflow}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Freigabehistorie"><content><ImageContent src="sap-icon://approvals"/></content></TileContent></tileContent></GenericTile>
@@ -42,7 +43,7 @@
         <GenericTile header="Organisation" subheader="Serviceorganisationen" press=".onAdmin" visible="{state&gt;/access/admin}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Organisationsstruktur"><content><ImageContent src="sap-icon://org-chart"/></content></TileContent></tileContent></GenericTile>
       </FlexBox>
 
-      <HBox justifyContent="SpaceBetween" class="sapUiMediumMarginTop" wrap="Wrap"><Text text="NETFUSION · ENTERPRISE SERVICE ERP"/><Text text="OpenUI5 · Preview 0.11.1"/></HBox>
+      <HBox justifyContent="SpaceBetween" class="sapUiMediumMarginTop" wrap="Wrap"><Text text="NETFUSION · ENTERPRISE SERVICE ERP"/><Text text="OpenUI5 · Preview 0.12.1"/></HBox>
     </VBox>
   </Page>
 </mvc:View>

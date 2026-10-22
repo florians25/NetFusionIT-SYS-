@@ -1,14 +1,16 @@
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
-import {mkdtemp,writeFile,readFile,rm,access} from 'node:fs/promises';
+import {mkdtemp,writeFile,readFile,rm,access,stat} from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
 import {createHash} from 'node:crypto';
 import Decimal from 'decimal.js';
 import {renderBusinessPdf,BusinessPdf} from './business-pdf';
+import {parseIncomingInvoiceXml,IncomingInvoiceData,IncomingInvoiceXmlError} from './incoming-invoice-xml';
 const exec=promisify(execFile);
 let validationRunning=false;
 export class EInvoiceBusyError extends Error {}
+export class IncomingOriginalValidationError extends Error{constructor(message:string,public readonly report:string){super(message);this.name='IncomingOriginalValidationError';}}
 export const E_INVOICE_TOOL_VERSION='2.26.0';
 export const E_INVOICE_TOOL_SHA256='42d7868cb68264874a7b8cab4c3587b03b23ccc7cd72373da917f66758bb9736';
 export interface InvoiceData {
@@ -47,16 +49,49 @@ export async function createValidatedEInvoice(i:InvoiceData,archiveNumber:string
  validationRunning=true;
  try{return await createOutput(i,archiveNumber);}finally{validationRunning=false;}
 }
-async function createOutput(i:InvoiceData,archiveNumber:string){
+async function verifiedValidatorJar(){
  const jar=process.env.ERP_EINVOICE_VALIDATOR_JAR||path.resolve(__dirname,'../.local/tools/Mustang-CLI-'+E_INVOICE_TOOL_VERSION+'.jar');await access(jar);
  if(createHash('sha256').update(await readFile(jar)).digest('hex')!==E_INVOICE_TOOL_SHA256)throw new Error('Prüfsumme des E-Rechnungswerkzeugs ist ungültig.');
+ return jar;
+}
+function validatorRunner(folder:string,jar:string){
+ // The vendor's bundled schema includes need local file/JAR resolution. The
+ // strict invoice parser rejects DTD, schema hints, XInclude and external
+ // signature references before untrusted XML reaches this subprocess.
+ return (args:string[])=>exec('java',['-Xmx512m','-Dfile.encoding=UTF-8','-Djavax.xml.accessExternalDTD=','-Djavax.xml.accessExternalSchema=file,jar:file','-Djavax.xml.accessExternalStylesheet=jar:file','-jar',jar,'--disable-file-logging',...args],{cwd:folder,timeout:90000,maxBuffer:2*1024*1024});
+}
+function validReport(report:string){return /<summary[^>]*status="valid"/.test(report)&&!report.includes('status="invalid"')&&!/<(?:error|exception)\b/.test(report);}
+async function createOutput(i:InvoiceData,archiveNumber:string){
+ const jar=await verifiedValidatorJar();
  const folder=await mkdtemp(path.join(os.tmpdir(),'erp-einvoice-'));
  try{
   const data=renderInvoiceXml(i),base=await renderBusinessPdf(invoicePdfData(i),archiveNumber,{pdfa:true});await writeFile(path.join(folder,'base.pdf'),base,{mode:0o600});await writeFile(path.join(folder,'factur-x.xml'),data,{mode:0o600});
-  const run=async(args:string[])=>exec('java',['-Xmx512m','-Dfile.encoding=UTF-8','-jar',jar,'--disable-file-logging',...args],{cwd:folder,timeout:90000,maxBuffer:2*1024*1024});
+  const run=validatorRunner(folder,jar);
   await run(['--action','combine','--source','base.pdf','--source-xml','factur-x.xml','--out','invoice.pdf','--format','fx','--version','2','--profile','E','--no-additional-attachments']);
   const report=await run(['--action','validate','--source','invoice.pdf']);
-  if(!/<summary[^>]*status="valid"/.test(report.stdout)||/<(?:error|exception)\b/.test(report.stdout))throw new Error('ZUGFeRD-/PDF-A-Validierung fehlgeschlagen: '+report.stdout.slice(-1500));
+  if(!validReport(report.stdout))throw new Error('ZUGFeRD-/PDF-A-Validierung fehlgeschlagen: '+report.stdout.slice(-1500));
   return {pdf:await readFile(path.join(folder,'invoice.pdf')),xml:Buffer.from(data),validation:report.stdout,validator:'Mustang-CLI '+E_INVOICE_TOOL_VERSION};
  }finally{await rm(folder,{recursive:true,force:true});}
+}
+
+export async function validateIncomingInvoiceOriginal(content:Buffer,mediaType:'application/xml'|'application/pdf'):Promise<{xml:Buffer;data:IncomingInvoiceData;validation:string;validator:string}>{
+ if(content.length<1||content.length>5*1024*1024)throw new IncomingInvoiceXmlError('Originaldatei überschreitet die zulässige Größe.');
+ if(validationRunning)throw new EInvoiceBusyError('E-Rechnungsprüfung ist ausgelastet; der Eingang bleibt zur späteren Prüfung erhalten.');
+ validationRunning=true;let folder:string|undefined;
+ try{
+  // Reject active or ambiguous XML before Java is invoked. Hybrid PDFs require
+  // a separate successful malware scan in the intake service before this call.
+  let data:IncomingInvoiceData|undefined,xml:Buffer=content;
+  if(mediaType==='application/xml')data=parseIncomingInvoiceXml(content);
+  const jar=await verifiedValidatorJar();folder=await mkdtemp(path.join(os.tmpdir(),'erp-incoming-invoice-'));const run=validatorRunner(folder,jar),source=mediaType==='application/pdf'?'source.pdf':'source.xml';await writeFile(path.join(folder,source),content,{mode:0o600});
+  if(mediaType==='application/pdf'){
+   if(!content.subarray(0,5).equals(Buffer.from('%PDF-')))throw new IncomingInvoiceXmlError('Original ist keine PDF-Datei.');
+   await run(['--action','extract','--source',source,'--out','extracted.xml']);let size=0;
+   try{size=(await stat(path.join(folder,'extracted.xml'))).size;}catch{throw new IncomingInvoiceXmlError('PDF enthält kein unterstütztes strukturiertes Rechnungsoriginal.','UNSUPPORTED');}
+   if(size>5*1024*1024)throw new IncomingInvoiceXmlError('Eingebettetes XML überschreitet die Verarbeitungsgrenze.');xml=await readFile(path.join(folder,'extracted.xml'));data=parseIncomingInvoiceXml(xml);
+  }
+  let report:string;try{report=(await run(['--action','validate','--source',source])).stdout;}catch(e){const output=(e as {stdout?:string}).stdout;if(output?.includes('<validation'))report=output;else throw e;}
+  if(!validReport(report))throw new IncomingOriginalValidationError('Normative Rechnungsvalidierung fehlgeschlagen. Original bleibt zur Klärung erhalten.',report);
+  return {xml,data:data!,validation:report,validator:'Mustang-CLI '+E_INVOICE_TOOL_VERSION};
+ }finally{if(folder)await rm(folder,{recursive:true,force:true});validationRunning=false;}
 }

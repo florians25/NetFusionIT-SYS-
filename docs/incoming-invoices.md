@@ -1,0 +1,24 @@
+# Rechnungseingang · Preview 0.12
+
+Ein Lieferantenoriginal wird unter einer festen internen `EG-59000000…` angenommen. Seine externe Rechnungsnummer bleibt separat. Originalbytes, SHA-256, Empfangszeit, Benutzer, Buchungskreis und Dateiname werden unveränderlich gespeichert. Gleicher Hash im selben Mandanten/Buchungskreis ergibt auch bei parallelen Uploads denselben Eingang. Abbrechen erhält den Vorgang und seine Dateien.
+
+Die Anwendung ist über die App-Zentrale erreichbar. Native OpenUI5-Arbeitsliste mit Suche, Prüfstatusfilter und Kennzahlen; Detail mit Positionen, Leistungsdatum, Originalparteien, Prüfhistorie und Dublettenhinweisen. Die kleine Anlagenliste enthält Original, geprüfte XML-Fassung, normatives Prüfprotokoll und eigene archivierte Prüfblätter. Letztere verwenden das klassische Schwarz-Weiß-Geschäftsformular mit EG-Code128; das fremde Original wird niemals gestempelt oder ersetzt.
+
+## Prüfung und Sicherheit
+
+- XML: CII und UBL mit unterstütztem EN16931-/Factur-X-Profil. Strenger Namespace-Parser vor Java; DTD/XXE, Verarbeitungsanweisungen, externe Signaturreferenzen, XInclude und eigene Schema-Verweise werden nicht ausgeführt. Dokumente mit solchen Verweisen erhalten einen kontrollierten Fehler oder Klärungsstatus. Größen-, Tiefen-, Knoten-, Feld- und Mengenlimits sowie eindeutige Kopffelder/Positionsnummern. UTF-8 und BOM-gestütztes UTF-16; widersprüchliche Kodierungsdeklarationen werden abgewiesen.
+- Tatsächliches Original wird zusätzlich mit der unverändert per SHA-256 geprüften offiziellen Mustang-CLI 2.26.0 normativ validiert. Eine intern gerenderte Ersatzdatei ist kein Validierungsnachweis des Originals. Rechnungswerte werden erst nach erfolgreicher Prüfung übernommen. Rechenfehler werden nicht automatisch korrigiert.
+- Hybrid-PDF: erfolgreicher ClamAV-INSTREAM-Scan vor PDF-/XML-Verarbeitung erforderlich. Fehlender/nicht erreichbarer Prüfdienst hält das PDF in Quarantäne. Anschließend eingebettetes XML sicher auslesen und tatsächliches Original normativ prüfen. Reine Bild-/Papierrechnungen benötigen den noch offenen manuellen Erfassungsprozess.
+- Ohne konfigurierten ClamAV-Dienst kann **reines XML** nach struktureller Sicherheits- und normativer Prüfung den ausdrücklich getrennten Status `STRUCTURAL_XML` erhalten. Das ist **kein Virenscan**. Bei konfiguriertem Dienst führt dessen Ausfall auch für XML zur Quarantäne. Ein späterer tatsächlicher Virenscan kann die Downloadfreigabe widerrufen, während der historische technische Prüfstand erhalten bleibt.
+- Downloads benötigen passende Rolle, Mandant und Organisation, prüfen den gespeicherten Hash und liefern Dateien ausschließlich als Attachment mit `nosniff`, Sandbox-CSP und `no-store`. Ein fremder Kunde oder Techniker erhält keinen Zugriff. Das normative Prüfprotokoll wird als Textdatei geladen, nicht als aktives XML dargestellt.
+- Importauftrag mit Token und Lease; parallele Verarbeitung ist gesperrt. Werkzeugfehler erhalten Original und Status für gezielte Wiederholung. Die Java-Kapazität wird mit der Ausgangsfaktura geteilt und pro API-Prozess auf einen Lauf begrenzt. Noch kein automatischer Hintergrundworker oder clusterweiter Scheduler.
+
+## Fachlicher Umfang und offene Schritte
+
+Übernommen werden positive Rechnungen der Art 380 mit normalen positiven Umsatzsteuersätzen, exakten Mengen/Preisen, Steuergruppen und Zahlungsbetrag. Kopf und Positionen enthalten tatsächliche Leistungsdaten, soweit angegeben. sichtbare Daten `TT.MM.JJJJ`; gleicher Beginn/Ende wird einmal angezeigt. Nicht unterstützte Steuerfälle, Gutschriften, Zu-/Abschläge, Anzahlungen, Währungs-/Einheitenumrechnung und nicht exakt darstellbare Preise bleiben gekennzeichneter Klärungsbedarf.
+
+Technische Validität bedeutet weder sachliche Freigabe noch Vorsteuerberechtigung oder eine Verbindlichkeit. Das Rechnungsoriginal überschreibt insbesondere keine freigegebenen Lieferanten-/Bankstammdaten. Gleiche normalisierte externe Belegnummer im Buchungskreis erzeugt einen bewusst breiten Hinweis; eine belastbare Kreditoren-Dublettensperre folgt mit der kaufmännischen Zuordnung/Buchung.
+
+**Noch offen:** Kreditor-/Bestell-/SA-Positionszuordnung, Abgleich mit tatsächlichen Teil-Wareneingängen und bereits verrechneten Mengen, Abweichungen/Toleranzen, unabhängige sachliche/steuerliche Freigabe, atomare WE/RE-/Vorsteuer-/Kreditorenbuchung und OP, Gutschrift/Storno, Zahlungsvorrat und Ausgleich, manuelle Nicht-E-Rechnung, vollständiger Auditexport/Aufbewahrungs- und Löschprozess. Kein leerer Buchungsbutton und keine scheinbare Verbindlichkeit aus einem bloßen XML-Erfolg.
+
+Die Arbeitspakete [AP-01–12](requirements/incoming-invoices-barcodes.md) und [LEG-00–10](compliance-gap-analysis.md) bleiben maßgeblich. Es wird keine GoBD-/DIN-/Steuer-/Produktivzertifizierung behauptet. Die vorher dokumentierte Netzwerksperre zu amtlichen Rechtsquellen ist durch diesen technischen Stand nicht aufgehoben.
