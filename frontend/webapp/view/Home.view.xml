@@ -44,7 +44,7 @@
         <GenericTile header="Organisation" subheader="Serviceorganisationen" press=".onAdmin" visible="{state&gt;/access/admin}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Organisationsstruktur"><content><ImageContent src="sap-icon://org-chart"/></content></TileContent></tileContent></GenericTile>
       </FlexBox>
 
-      <HBox justifyContent="SpaceBetween" class="sapUiMediumMarginTop" wrap="Wrap"><Text text="NETFUSION · ENTERPRISE SERVICE ERP"/><Text text="OpenUI5 · Preview 0.15.1"/></HBox>
+      <HBox justifyContent="SpaceBetween" class="sapUiMediumMarginTop" wrap="Wrap"><Text text="NETFUSION · ENTERPRISE SERVICE ERP"/><Text text="OpenUI5 · Preview 0.16.1"/></HBox>
     </VBox>
   </Page>
 </mvc:View>

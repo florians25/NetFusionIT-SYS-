@@ -1,0 +1,36 @@
+{
+  "version": "0.16.0-preview.1",
+  "time": "2026-10-22T20:57:39.105439+00:00",
+  "automatedTests": 211,
+  "passed": 211,
+  "failed": 0,
+  "newLocationTransferTests": 7,
+  "fullSuiteDurationMs": 158417.726003,
+  "browserChains": [
+    {
+      "chain": "location",
+      "passed": true
+    },
+    {
+      "chain": "warehouse",
+      "passed": true
+    },
+    {
+      "chain": "deliveries",
+      "passed": true
+    },
+    {
+      "chain": "inventory",
+      "passed": true
+    },
+    {
+      "chain": "attachments",
+      "passed": true
+    }
+  ],
+  "repeatedAfterFinalSnapshotChange": [
+    "location",
+    "warehouse"
+  ],
+  "barcodeRasterDpi": 150
+}

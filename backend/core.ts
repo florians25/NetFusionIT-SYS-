@@ -41,14 +41,15 @@ export class Db {
     this.pool=new Pool({connectionString:process.env.DATABASE_URL,max:10,connectionTimeoutMillis:5000,idleTimeoutMillis:30000});
     this.pool.on('error',()=>console.error(JSON.stringify({level:'error',event:'database_connection_error'})));
   }
-  async as<T>(u:Principal,fn:(db:PoolClient)=>Promise<T>):Promise<T>{
+  async as<T>(u:Principal,fn:(db:PoolClient)=>Promise<T>,readSnapshot=false):Promise<T>{
     const db=await this.pool.connect();
     try{
-      await db.query('BEGIN');
+      await db.query(readSnapshot?'BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY':'BEGIN');
       await db.query("SELECT set_config('app.tenant_id',$1,true)",[u.tenantId]);
       const result=await fn(db);await db.query('COMMIT');return result;
     }catch(e){await db.query('ROLLBACK');throw e;}finally{db.release();}
   }
+  async snapshot<T>(u:Principal,fn:(db:PoolClient)=>Promise<T>):Promise<T>{return this.as(u,fn,true);}
   async onApplicationShutdown(){await this.pool.end();}
 }
 export async function nextNumber(db:PoolClient,tenant:string,kind:string){

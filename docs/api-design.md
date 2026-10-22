@@ -127,3 +127,5 @@ Alle Mutationen benötigen Session/CSRF/Idempotency-Key. `inventory.read` erlaub
 | GET /api/warehouse/bins/:id/labels/:labelId/download | Autorisierter, hashgeprüfter PDF-Download |
 
 SA-Auslieferungszeilen ergänzen `binId`; eine Reservierung darf über mehrere unterschiedliche Fächer verteilt werden. Ohne `binId` ist ausschließlich tatsächlicher Eingangspufferbestand verwendbar. Rücknahmen verwenden das Originalfach. Normale Dokumentanlagen unterstützen `STOCK_TRANSFER`. [Fachlicher Vertrag und Grenzen](warehouse.md).
+
+Ab0.16 akzeptiert `POST /api/warehouse/transfers` zusätzlich `movementType: "LOCATION_TRANSFER"` mit `destinationLocationId`. Alle Positionen verbinden tatsächliche Fächer der angegebenen unterschiedlichen Quell-/Ziel-Lagerorte im selben Buchungskreis. Nur freie Menge ist verwendbar; Reservierungen bleiben erhalten. Die exakte Gegenbewegung verwendet die umgekehrten Originalorte/-fächer und freie Zielmenge. Kontext/Detail ergänzt `destinationLocationId`/-codes und je Fachzeile `locationQuantity`, `locationFreeQuantity`, `locationReservedQuantity` aus demselben lesenden Snapshot.

@@ -5,7 +5,7 @@
     "type": "application",
     "title": "NetFusion Service Workspace",
     "applicationVersion": {
-      "version": "0.15.0-preview.1"
+      "version": "0.16.0-preview.1"
     },
     "dataSources": {
       "service": {

@@ -1,0 +1,11 @@
+{
+  "number": "UL-55000000",
+  "movedQuantity": "2.500000",
+  "source": "BER / 0001",
+  "destination": "HAM / 0002",
+  "finalBuffer": "6.000000",
+  "finalValue": "240.0000",
+  "nativeUI5": true,
+  "mobileWidth": 390,
+  "errors": []
+}
