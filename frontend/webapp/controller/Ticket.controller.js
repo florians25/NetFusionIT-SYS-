@@ -1,22 +1,20 @@
 sap.ui.define(["netfusion/erp/controller/Base.controller","sap/m/Dialog","sap/m/Select","sap/ui/core/Item","sap/m/Button","sap/m/MessageToast","sap/ui/model/json/JSONModel","netfusion/erp/util/TicketWork"],function(Base,Dialog,Select,Item,Button,Toast,JSONModel,TicketWork){
   "use strict";
   return Base.extend("netfusion.erp.controller.Ticket",Object.assign({},TicketWork,{
-    onInit:function(){this.model({ticket:{events:[],allowedTransitions:[]},flow:[],transitions:[]});this.getOwnerComponent().getRouter().getRoute("ticket").attachPatternMatched(function(e){this.id=e.getParameter("arguments").id;this.load();},this);},
+    onInit:function(){this.model({ticket:{events:[],allowedTransitions:[]},transitions:[]});this.getOwnerComponent().getRouter().getRoute("ticket").attachPatternMatched(function(e){this.id=e.getParameter("arguments").id;this.load();},this);},
     load:async function(){if(!await this.guard())return;return this.run(async function(){
       var id=this.id,userId=this.state("/user/id"),internal=this.state("/access/internal"),results=await Promise.all([
-        this.api("/api/tickets/"+id),this.api("/api/documents/"+id+"/flow"),
+        this.api("/api/tickets/"+id),
         internal?this.api("/api/tickets/"+id+"/execution"):Promise.resolve({tasks:[],times:[],charges:[],orders:[]}),
         this.state("/access/inventory")?this.api("/api/catalog/products"):Promise.resolve([]),
         this.api("/api/tickets/"+id+"/sla"),this.api("/api/tickets/"+id+"/comments")
       ]);
       if(this.id!==id||this.state("/user/id")!==userId)return;
-      var t=results[0],execution=results[2];execution.tasks.forEach(function(w){w.canEdit=w.workerId===userId&&["OPEN","IN_PROGRESS"].includes(w.status);});execution.times.concat(execution.charges).forEach(function(w){w.canEdit=w.workerId===userId&&w.status==="RECORDED"&&!w.reportId;w.canAllocate=w.canEdit&&!w.orderId;});
-      this.vm().setData({execution:execution,ownTimer:!!execution.timer&&execution.timer.ticketId===id,workProducts:results[3],ticket:t,flow:results[1],slaDetail:results[4],transitions:this.formatter.transitionItems(t.allowedTransitions),nextStatus:t.allowedTransitions[0]||"",comments:results[5],commentBody:"",commentVisibility:"PUBLIC"});
+      var t=results[0],execution=results[1];execution.tasks.forEach(function(w){w.canEdit=w.workerId===userId&&["OPEN","IN_PROGRESS"].includes(w.status);});execution.times.concat(execution.charges).forEach(function(w){w.canEdit=w.workerId===userId&&w.status==="RECORDED"&&!w.reportId;w.canAllocate=w.canEdit&&!w.orderId;});
+      this.vm().setData({execution:execution,ownTimer:!!execution.timer&&execution.timer.ticketId===id,workProducts:results[2],ticket:t,slaDetail:results[3],transitions:this.formatter.transitionItems(t.allowedTransitions),nextStatus:t.allowedTransitions[0]||"",comments:results[4],commentBody:"",commentVisibility:"PUBLIC"});
     });},
     onComment:function(){this.run(async function(){var body={body:this.vm().getProperty("/commentBody"),visibility:this.vm().getProperty("/commentVisibility")},signature=JSON.stringify(body);if(this.commentSignature!==signature){this.commentSignature=signature;this.commentKey=crypto.randomUUID();}await this.api("/api/tickets/"+this.id+"/comments",{method:"POST",body:body,key:this.commentKey});this.commentSignature=null;return this.load();});},
     onCase:function(){this.route("case",{id:this.vm().getProperty("/ticket/caseId")});},
-    onFlowSource:function(e){var d=e.getSource().getBindingContext("view").getObject();this.onDocument(d.sourceKind,d.sourceId);},
-    onFlowTarget:function(e){var d=e.getSource().getBindingContext("view").getObject();this.onDocument(d.targetKind,d.targetId);},
     onAssign:function(){this.run(async function(){
       var ticket=this.vm().getProperty("/ticket"),techs=(await this.api("/api/technicians")).filter(function(t){return t.organizationId===ticket.organizationId;});
       if(!techs.length)throw new Error("Kein aktiver Techniker dieser Organisation verfügbar. Administration prüfen.");

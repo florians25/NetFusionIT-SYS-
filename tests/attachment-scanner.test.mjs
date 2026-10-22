@@ -1,0 +1,9 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {createServer} from 'node:net';
+import {createRequire} from 'node:module';
+const {scanPdf}=createRequire(import.meta.url)('../dist/attachment-scanner.js');
+// Protocol simulator only. This does not replace a real ClamAV acceptance test.
+async function simulated(reply,fn){let received=Buffer.alloc(0);const server=createServer(socket=>{socket.on('data',data=>{received=Buffer.concat([received,data]);if(received.length>=10&&received.subarray(-4).equals(Buffer.alloc(4)))socket.end(reply);});});await new Promise(r=>server.listen(0,'127.0.0.1',r));const previous=[process.env.ERP_CLAMAV_HOST,process.env.ERP_CLAMAV_PORT];process.env.ERP_CLAMAV_HOST='127.0.0.1';process.env.ERP_CLAMAV_PORT=String(server.address().port);try{await fn(()=>received);}finally{for(const [i,key] of ['ERP_CLAMAV_HOST','ERP_CLAMAV_PORT'].entries())if(previous[i]===undefined)delete process.env[key];else process.env[key]=previous[i];await new Promise(r=>server.close(r));}}
+test('ClamAV INSTREAM überträgt Kopf, Netzwerklängen und exakte Bytes und akzeptiert nur eindeutiges OK',async()=>{const data=Buffer.from('%PDF-1.7\nProtocol test\n%%EOF');await simulated('stream: OK\0',async received=>{assert.equal((await scanPdf(data)).status,'CLEAN');const b=received();assert.equal(b.subarray(0,10).toString(),'zINSTREAM\0');assert.equal(b.readUInt32BE(10),data.length);assert.deepEqual(b.subarray(14,-4),data);});});
+test('Virenfund und nicht bestätigte Antworten werden nicht zum Download freigegeben',async()=>{await simulated('stream: Eicar-Signature FOUND\0',async()=>assert.equal((await scanPdf(Buffer.from('x'))).status,'INFECTED'));await simulated('stream: scan ERROR\0',async()=>assert.equal((await scanPdf(Buffer.from('x'))).status,'UNAVAILABLE'));});

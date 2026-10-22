@@ -1,4 +1,4 @@
-sap.ui.define(["sap/ui/core/mvc/Controller","sap/m/MessageBox","sap/ui/model/json/JSONModel","netfusion/erp/model/formatter","sap/ui/model/Filter","sap/ui/model/FilterOperator"],function(Controller,MessageBox,JSONModel,formatter,Filter,Op){
+sap.ui.define(["sap/ui/core/mvc/Controller","sap/m/MessageBox","sap/ui/model/json/JSONModel","netfusion/erp/model/formatter","sap/ui/model/Filter","sap/ui/model/FilterOperator","netfusion/erp/util/AttachmentsDialog"],function(Controller,MessageBox,JSONModel,formatter,Filter,Op,attachments){
   "use strict";
   return Controller.extend("netfusion.erp.controller.Base",{
     formatter:formatter,
@@ -22,6 +22,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller","sap/m/MessageBox","sap/ui/model/jso
     onWorklistUpdate:function(e){if(this.vm())this.vm().setProperty('/filteredCount',e.getParameter('total'));},
     onHome:function(){this.route("home");},onCockpit:function(){this.route("cockpit");},onTickets:function(){this.route("tickets");},onCases:function(){this.route("cases");},onDispatch:function(){this.route("dispatch");},onPartners:function(){this.route("partners");},onAdmin:function(){this.route("admin");},onWorkflow:function(){this.route("workflow");},onRoadmap:function(){this.route("roadmap");},onNew:function(){this.route("newTicket");},
     onInventory:function(){this.route("inventory");},
+    onAttachments:function(e){var source=e.getSource(),ctx=source.getBindingContext('view')||source.getBindingContext(),id=source.data('documentId')||(ctx&&ctx.getProperty('id'))||this.id;this.run(function(){if(!id)throw new Error('Zuerst einen Vorgang auswählen.');return attachments(this,id);});},
     onSuppliers:function(){this.route("suppliers");},
     onFinance:function(){this.route("finance");},
     onOrders:function(){this.route("orders");},onCatalog:function(){this.route("catalog");},onPricing:function(){this.route("pricing");},onPlanning:function(){this.route("planning");},onServiceMaster:function(){this.route("serviceMaster");},onServiceSetup:function(){this.route("serviceSetup");},

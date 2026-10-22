@@ -15,3 +15,11 @@ Die Vorgaben gelten auch für folgende Module und Preview-Versionen. Zusätzlich
 ## Informationsdichte aller Fachmasken
 
 Nutzerpräzisierung vom 22.10.2026: Alle Fachseiten sollen die Informationsdichte und Gestaltung der Materialbedarfe erhalten. Native Belegköpfe und Anwendungsarbeitsplätze mit realen Geschäfts-/Organisationsbezügen, Status, Mengen/Werten, Herkunft/Folgebelegen, Filtern und Positionsaktionen ausbauen. Keine reinen Dekorationskennzahlen und keine leeren Platzhalterbereiche. Kleine PDF-Anlagenliste im nativen Modal nach der zusätzlichen [Lager-/Auslieferungs-/Anlagenvorgabe](warehouse-delivery-attachments.md). Auf Mobilgeräten kompakter Kopf, native Pop-ins und Abschnittsnavigation; Details bleiben erreichbar. Ausschließlich OpenUI5-Standardcontrols und Standardklassen.
+
+Preview0.10 erweitert zusätzlich Disposition, Einsatzplanung, Genehmigungen und Geschäftspartner mit nativen Arbeitsplatz-/Objektköpfen, tatsächlichen Statuszählern, Herkunft, Team-/Qualifikationskontext, Filtern und Belegaktionen. Ticketerstellung zeigt die tatsächlich ausgewählten Objekt-/Vertragsstammdaten vor dem Speichern. PDF-Anlagen bleiben kleine Vorgangsdialoge. Screenshots unter docs/previews/v0.10.0-preview.1/.
+
+Für mobile native Header-Aktionsmenüs ist ab Preview0.10 OpenUI5 1.152.1 festgelegt. Der beobachtete Frameworkfehler in1.153.0 wird nicht durch eigene Controls oder Frameworkänderungen umgangen.
+
+## Zusätzliche Nutzerkorrekturen
+
+In der Ticketmaske entfällt der Belegfluss ausdrücklich; direkte Servicefallnavigation bleibt erhalten. Nachrichten-/Notizverlauf und technische Bearbeitung werden weiter ausgebaut. Die neuen SAP-Auftrags-/Einkaufsbilder und DIN-Belegvorgaben sind unter [Geschäftsbelege und SAP-Muster](business-documents.md) erfasst. Kostenpflichtige Folgebelege bleiben am Serviceauftrag.

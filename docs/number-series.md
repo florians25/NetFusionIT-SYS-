@@ -22,3 +22,5 @@ Die Zuteilung erfolgt in der Transaktion des Fachbelegs. Zeilensperre/UPDATE, Ve
 Artikelnummern sind vom frei gepflegten SKU/externen Artikelschlüssel getrennt. Die bei Artikelanlage gewählte Gruppe muss zur Artikelart passen. Der Artikelkatalog zeigt beide Kennungen. Nummerngruppen für spätere Module sind reserviert, erzeugen aber keine vermeintlich vorhandenen Rechnungen, Lieferungen oder Projekte.
 
 Bestehende Geschäftsbelegnummern bleiben erhalten. Interne technische Belege ohne ausdrücklich passende fachliche Nutzergruppe, insbesondere Servicefall, Work Order Task und technischer Materialbedarf, behalten vorerst ihre bisherigen technischen Nummern. Eine Zuordnung einer WOT zu einem fachfremden Projektaufgabenbereich wird nicht behauptet.
+
+Ab0.10 nutzt das unveränderliche PDF-Archiv den Nummernkreis DO. Die PDF-Datei behält zusätzlich ihre konkrete kaufmännische Ursprungsnummer (z.B.BE/LS/TN). Ein PDF zum Serviceauftrag erzeugt noch keinen eigenständigen AB-Geschäftsbeleg.

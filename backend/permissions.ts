@@ -4,6 +4,7 @@ export type Role=typeof ROLES[number];
 const service:Role[]=['ADMIN','SERVICE_MANAGER','DISPATCHER','SUPPORT','TECHNICIAN','FIELD_TECHNICIAN','CUSTOMER'];
 export const grants:Record<string,readonly Role[]>={
  'document.read':ROLES,
+ 'attachment.write':ROLES.filter(r=>r!=='CUSTOMER'),
  'service.read':service,'service.create':['ADMIN','SERVICE_MANAGER','DISPATCHER','SUPPORT','CUSTOMER'],
  'service.manage':['ADMIN','SERVICE_MANAGER','DISPATCHER','SUPPORT'],
  'service.assign':['ADMIN','SERVICE_MANAGER','DISPATCHER'],

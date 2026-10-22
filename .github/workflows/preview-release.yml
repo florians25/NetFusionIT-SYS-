@@ -19,6 +19,7 @@ jobs:
           cache: npm
       - run: npm ci --include=dev --no-fund
       - run: npm run build
+      - run: sudo apt-get update && sudo apt-get install -y poppler-utils
       - run: npm test
       - run: npm run test:browser:all
       - run: npm audit --omit=dev
@@ -88,6 +89,15 @@ jobs:
           test-results/service-report-material-actuals.png
           test-results/service-report-material-customer.png
           test-results/order-material-delivered.png
+          test-results/attachments-purchase-order.png
+          test-results/attachments-goods-receipt.png
+          test-results/attachments-order-overview.png
+          test-results/attachments-ticket-quarantine.png
+          test-results/attachments-mobile.png
+          test-results/partner-object-page.png
+          test-results/approval-workspace.png
+          test-results/dispatch-workspace.png
+          test-results/business-purchase-order.pdf
       - name: Preserve browser diagnostics
         if: failure()
         uses: actions/upload-artifact@v4

@@ -107,4 +107,10 @@ Neue Nutzerpräzisierungen: tatsächliche Teil-Eingangsmengen, auftragsbezogene 
 
 NUMBER-01 ist ab 0.8 für alle 66 reservierten Bereiche und die bereits implementierten Fachvorgänge verfügbar. UI-02 wurde für die aktuellen Facharbeitslisten, Servicefall und Administration erweitert; weitere Maskenangleichung bleibt laufend. WAREHOUSE-02/DOCUMENT-01 sind weiterhin in Umsetzung, nicht durch Nummernkreisreservierung erledigt.
 
-WAREHOUSE-02 ab 0.9: editierbare Teil-Auslieferung zum Serviceauftrag, tatsächlicher bewerteter Abgang mit WA/LS, Originalgegenbewegung, Istmengen im Ticket und automatische Materialquelle der SRM sind implementiert. Freigegebene/fakturierte Nachweiskorrektur, PDF-Anlagenlisten und physische Lagerplatz-/Label-/Scanprozesse bleiben folgende Arbeiten.
+WAREHOUSE-02 ab 0.9: editierbare Teil-Auslieferung zum Serviceauftrag, tatsächlicher bewerteter Abgang mit WA/LS, Originalgegenbewegung, Istmengen im Ticket und automatische Materialquelle der SRM sind implementiert. Freigegebene/fakturierte Nachweiskorrektur und physische Lagerplatz-/Label-/Scanprozesse bleiben folgende Arbeiten. PDF-Anlagenlisten sind ab0.10 umgesetzt.
+
+WAREHOUSE-02 / Anlagen ab0.10: kleine native Dialoge an bestehenden Geschäftsbelegen, Auftragsbündelung berechtigter Folgebeleg-PDFs, unveränderliches Archiv/DO, Auftrags-/Bestell-/WE-/LS-/SRM-PDFs, interne Vorgangsblätter, geschützte Downloads und PDF-Upload-Quarantäne implementiert. Echte ClamAV-/Docker-Zielabnahme, Fakturaprozess/Rechnungs-PDFs, Positionsanlagen, vollständige Ausgabe-/Aufbewahrungs-/Löschprozesse bleiben offen. [Genaue Grenzen](attachments.md).
+
+## SALES-01 / TICKET-UI-03 / DOCUMENT-02
+
+Zusätzliche SAP-Muster für vollständige Kundenauftrags- und Einkaufsprozesse sowie umfangreichere Ticketbearbeitung und Nachrichtenhistorie sind unter [verbindliche Nutzerpräzisierung](requirements/business-documents.md) aufgenommen. Kein Belegfluss in der Ticketmaske; in0.10 entfernt. Eigener AU-Kundenauftrag mit Partnerrollen, Termin-/Positions-/Konditionsführung, Sperren und unabhängiger Freigabe bleibt offen. DIN-5008-Form-B-Geschäftsbrief mit SAP-orientierter Beleggliederung ist als PDF-Vorlagenstand2 in0.10 implementiert; unabhängige vollständige Norm-/Pflichtangabenabnahme steht aus.

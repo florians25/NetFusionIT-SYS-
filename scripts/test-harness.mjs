@@ -31,9 +31,9 @@ export async function client(base,account){
   let cookie='',csrf='';
   async function request(path,options={}){
     const headers={...(cookie?{Cookie:cookie}:{}),...(options.method&&options.method!=='GET'?{'Content-Type':'application/json','X-CSRF-Token':csrf}:{}),...options.headers};
-    const response=await fetch(base+path,{method:options.method||'GET',headers,body:options.body===undefined?undefined:JSON.stringify(options.body)});
+    const response=await fetch(base+path,{method:options.method||'GET',headers,body:options.body===undefined?undefined:Buffer.isBuffer(options.body)?options.body:JSON.stringify(options.body)});
     const set=response.headers.get('set-cookie');if(set)cookie=set.split(';')[0];
-    const content=await response.text();let data;try{data=JSON.parse(content);}catch{data=content;}
+    let data;if(options.binary)data=Buffer.from(await response.arrayBuffer());else{const content=await response.text();try{data=JSON.parse(content);}catch{data=content;}}
     if(data.csrfToken)csrf=data.csrfToken;
     return {status:response.status,data,headers:response.headers};
   }

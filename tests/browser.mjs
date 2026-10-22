@@ -47,8 +47,8 @@ try{
   await page.getByText('Kundenkommentar aus dem Browserprozess.',{exact:true}).waitFor();
   const ticketHash=new URL(page.url()).hash;
   assert.match(ticketHash,/#\/?tickets\/[a-f0-9-]{36}/);
-  await page.getByRole('tab',{name:'Belegfluss',exact:true}).click();
-  await page.getByRole('link',{name:/SVC-/}).last().click();
+  assert.equal(await page.getByRole('tab',{name:'Belegfluss',exact:true}).count(),0,'Ticket ohne Belegflussregister');
+  await page.getByRole('button',{name:'Servicefall öffnen',exact:true}).click();
   await page.getByRole('heading',{name:'Verknüpfte Tickets'}).waitFor();
   await logout();await login('DISPATCHER');
   await page.locator('[id$="--unassignedKpi"]').click();

@@ -105,3 +105,7 @@ Artikelanlage akzeptiert optional `numberPrefix` HW/SW/DL/LI/ER/ZU passend zur A
 - `POST /api/inventory/issues/:id/reverse`: offener Korrekturzustand, Periode, Daten und Grund für eindeutige vollständige Gegenbewegung.
 
 Schreiben benötigt CSRF/Idempotenz; veränderlicher Auftragszustand wird versionsgeprüft und gesperrt. WOT-Abschluss sammelt zusätzlich wirksame Materialausgaben als dritte Istquelle; keine unabhängige manuelle Materialkopie in der SRM. Ticket-Ausführung liefert interne Materialbelegverweise. Materialplanung unterscheidet ursprüngliche/offene Reservierung und Verbrauch und fordert verbrauchte Mengen nicht neu an.
+
+## Vorgangsbezogene PDF-Anlagen
+
+`GET /api/documents/:id/attachments` liefert Quellenstand, erlaubte Dokumentarten und geschützte Metadaten; beim Serviceauftrag zusätzlich berechtigte Folgebelegdateien. `POST .../generate` benötigt Idempotency-Key, Quellversion, DocumentType und Sichtbarkeit. `POST .../upload?filename=...` sendet maximal5MiB `application/pdf` als rohe Bytes mit CSRF und Idempotency-Key. `POST .../:attachmentId/scan` startet einen weiteren protokollierten Scan. `GET .../:attachmentId/download` liefert nach erneuter Quellenprüfung die archivierten Bytes als Anhang; Quarantäne409, fremde Quelle/Datei404. Kunden können nur ausdrücklich veröffentlichte PDFs ihrer Vorgänge lesen; keine Erzeugung/Uploads/Scans. Siehe [Archiv, Dateitypen und Grenzen](attachments.md).

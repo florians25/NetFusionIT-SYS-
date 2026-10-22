@@ -31,3 +31,11 @@ Journalpositionen/gebuchte Inhalte und Audit sind gegen nachträgliches UPDATE/D
 Angebote, Service-/Reparaturvorlagen, Werkstattreparaturen/Retouren, Inventur/Umlagerung, Lieferantenrechnungen/Abnahmen, Fakturakandidaten/Rechnungen, offene Posten/Zahlungsausgleich, sichere Anhänge, DATEV-Läufe und Integrations-Inbox sind Ausbau. Vorhandene Outbox/Vertragsbasis bedeutet keine vollständige Versand-/Vertragslösung. Jede Erweiterung benötigt eigene Tenant-/Scope-/Audit-/Korrekturregeln und Migrationstests.
 
 Warenausgangspositionen projizieren physischen Bestand, offenen Reservierungsanteil, verbrauchte Menge und gleitenden Wert atomar. Die letzte Menge nimmt den Restwert mit. Rücknahmen vergleichen vollständige gruppierte Material-/Journalpositionen mit dem Ursprung. SRM-Positionen besitzen genau eine Zeit-, Pauschalen- oder Materialquelle und bleiben unveränderlich; Einfügen prüft Aufgabe, Ticket, Auftragsposition und tatsächliche Menge/Kosten.
+
+## Migration 012 · PDF-Archiv
+
+`document_attachments` bindet unveränderliche Bytes, DO-Nummer, Typ, Quellversion/-snapshot/-hash, Templateversion, Sichtbarkeit und Ursprung an den zentralen Geschäftsbeleg. Bytes bis5MiB, SHA-256-Constraint und eindeutiger Quellstand verhindern unbeabsichtigtes Duplizieren. `attachment_scans` protokolliert jeden Prüfversuch append-only; fehlender oder negativer Scan bleibt gesperrt. Beide Tabellen haben erzwungene Tenant-RLS und nur SELECT/INSERT-Laufzeitrechte. Lösch-/Update-Trigger schützen historische Dateien und Scanprotokolle.
+
+Migration012 registriert außerdem ältere Geschäftspartner ohne zentralen Belegeintrag unter ihrer bestehenden Nummer. Ein expliziter technischer Audit unterscheidet dies von einer historischen fachlichen Erstellerzuordnung. Neue Entwicklungsstämme werden direkt registriert.
+
+Migrationen001–012 sind nach Anwendung in der Entwicklungsdatenbank unveränderlich; weitere Schemaänderungen erfolgen ausschließlich in neuen Migrationen. Readiness und echte Anmeldung wurden mit zwölf angewandten Migrationen geprüft.

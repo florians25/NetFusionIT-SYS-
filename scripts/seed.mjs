@@ -23,6 +23,7 @@ export async function seed(connectionString) {
       if(role==='TECHNICIAN') await db.query("INSERT INTO technicians(id,tenant_id,user_id,organization_id,name,skills) VALUES($1,$2,$3,$4,$5,ARRAY['IT-Support','Netzwerk'])",[randomUUID(),tenant,id,org,name]);
       accounts.push({tenant:'netfusion',email,password,role,id});
     }
+    await db.query("INSERT INTO documents(id,tenant_id,organization_id,number,kind,created_by) SELECT id,tenant_id,organization_id,number,'BUSINESS_PARTNER',$2 FROM business_partners WHERE tenant_id=$1",[tenant,accounts.find(a=>a.role==='ADMIN').id]);
     await db.query('COMMIT');
     return accounts;
   } catch(e){await db.query('ROLLBACK'); throw e;} finally{await db.end();}

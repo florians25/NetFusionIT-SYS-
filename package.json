@@ -1,6 +1,6 @@
 {
   "name": "netfusion-service-erp",
-  "version": "0.9.0-preview.1",
+  "version": "0.10.0-preview.1",
   "private": true,
   "description": "Eigenständiges Enterprise Service ERP mit echtem OpenUI5 und PostgreSQL",
   "engines": {
@@ -13,13 +13,13 @@
     "dev": "node scripts/dev.mjs",
     "db:migrate": "node scripts/migrate.mjs",
     "bootstrap": "node scripts/bootstrap.mjs",
-    "test": "node --test --test-concurrency=1 tests/ui-policy.test.mjs tests/calendar.test.mjs tests/pricing.test.mjs tests/integration.test.mjs tests/workflow.test.mjs tests/operations.test.mjs tests/commerce.test.mjs tests/work.test.mjs tests/finance.test.mjs tests/procurement.test.mjs tests/inventory.test.mjs tests/material-planning.test.mjs tests/number-series.test.mjs tests/service-deliveries.test.mjs",
+    "test": "node --test --test-concurrency=1 tests/ui-policy.test.mjs tests/calendar.test.mjs tests/pricing.test.mjs tests/integration.test.mjs tests/workflow.test.mjs tests/operations.test.mjs tests/commerce.test.mjs tests/work.test.mjs tests/finance.test.mjs tests/procurement.test.mjs tests/inventory.test.mjs tests/material-planning.test.mjs tests/number-series.test.mjs tests/service-deliveries.test.mjs tests/attachments.test.mjs tests/attachment-scanner.test.mjs tests/business-pdf.test.mjs",
     "test:browser": "node tests/browser.mjs",
     "check": "npm run build && npm test",
     "build:api": "tsc -p tsconfig.json",
     "build:ui": "ui5 build --all --clean-dest --dest ui5-dist --include-task generateVersionInfo",
     "build:ui:app": "ui5 build --dest ui5-dist --include-task generateVersionInfo",
-    "test:browser:all": "node tests/browser.mjs && node tests/workflow-browser.mjs && node tests/operations-browser.mjs && node tests/commerce-browser.mjs && node tests/work-browser.mjs && node tests/finance-browser.mjs && node tests/procurement-browser.mjs && node tests/inventory-browser.mjs && node tests/material-planning-browser.mjs && node tests/number-series-browser.mjs && node tests/service-deliveries-browser.mjs"
+    "test:browser:all": "node tests/browser.mjs && node tests/workflow-browser.mjs && node tests/operations-browser.mjs && node tests/commerce-browser.mjs && node tests/work-browser.mjs && node tests/finance-browser.mjs && node tests/procurement-browser.mjs && node tests/inventory-browser.mjs && node tests/material-planning-browser.mjs && node tests/number-series-browser.mjs && node tests/service-deliveries-browser.mjs && node tests/attachments-browser.mjs"
   },
   "dependencies": {
     "@js-temporal/polyfill": "0.5.1",
@@ -32,6 +32,7 @@
     "express-rate-limit": "8.7.1",
     "express-session": "1.18.2",
     "helmet": "8.1.0",
+    "pdfkit": "0.20.2",
     "pg": "8.16.3",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.2",
@@ -42,6 +43,7 @@
     "@types/express": "5.0.3",
     "@types/express-session": "1.18.2",
     "@types/node": "24.10.1",
+    "@types/pdfkit": "0.17.7",
     "@types/pg": "8.15.6",
     "@ui5/cli": "4.0.71",
     "embedded-postgres": "18.4.0-beta.17",

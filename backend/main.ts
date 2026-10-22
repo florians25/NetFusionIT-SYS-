@@ -9,6 +9,8 @@ import { rateLimit } from 'express-rate-limit';
 import { randomUUID } from 'node:crypto';
 import path from 'node:path';
 import { Db } from './core';
+import {Attachments} from './attachments';
+import {AttachmentsController} from './attachments.controller';
 import { AuthService,SessionGuard,AuthRequest } from './auth';
 import { Service } from './service';
 import { Admin } from './admin';
@@ -37,7 +39,7 @@ import { Sla } from './sla';
 import { Operations } from './operations';
 import { Dispatch } from './dispatch';
 import { OperationsController } from './operations.controller';
-@Module({controllers:[ServiceDeliveriesController,NumberSeriesController,MaterialPlanningController,InventoryController,ProcurementController,FinanceController,WorkController,CommerceController,HealthController,AuthController,ApiController,ODataController,WorkflowController,OperationsController],providers:[ServiceDeliveries,NumberSeries,MaterialPlanning,Inventory,Procurement,Finance,Work,Commerce,Db,AuthService,SessionGuard,Service,Admin,OData,Workflow,Collaboration,Sla,Operations,Dispatch]})
+@Module({controllers:[AttachmentsController,ServiceDeliveriesController,NumberSeriesController,MaterialPlanningController,InventoryController,ProcurementController,FinanceController,WorkController,CommerceController,HealthController,AuthController,ApiController,ODataController,WorkflowController,OperationsController],providers:[Attachments,ServiceDeliveries,NumberSeries,MaterialPlanning,Inventory,Procurement,Finance,Work,Commerce,Db,AuthService,SessionGuard,Service,Admin,OData,Workflow,Collaboration,Sla,Operations,Dispatch]})
 class AppModule{}
 @Catch()
 class SafeErrors implements ExceptionFilter {
@@ -64,6 +66,7 @@ async function main(){
   if(process.env.ERP_TRUST_PROXY==='1')server.set('trust proxy',1);
   app.use((req:any,res:any,next:any)=>{req.correlationId=randomUUID();res.set('X-Correlation-ID',req.correlationId);next();});
   app.use(helmet({contentSecurityPolicy:{directives:{defaultSrc:["'self'"],scriptSrc:["'self'"],styleSrc:["'self'","'unsafe-inline'"],imgSrc:["'self'",'data:','blob:'],fontSrc:["'self'",'data:'],connectSrc:["'self'"],objectSrc:["'none'"],frameAncestors:["'none'"],upgradeInsecureRequests:prod?[]:null}},crossOriginEmbedderPolicy:false}));
+  app.use('/api/documents/:id/attachments/upload',express.raw({type:'application/pdf',limit:'5mb'}));
   app.use('/api',express.json({limit:'32kb'}));
   const limited=(req:any,res:any)=>res.status(429).json({error:{code:'429',message:'Zu viele Anfragen. Bitte später erneut versuchen.',correlationId:req.correlationId}});
   app.use('/api',rateLimit({windowMs:60000,limit:300,standardHeaders:'draft-8',legacyHeaders:false,handler:limited}));
