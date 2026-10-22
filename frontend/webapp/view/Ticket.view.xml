@@ -1,6 +1,6 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form" controllerName="netfusion.erp.controller.Ticket">
   <Page showHeader="false" class="sapUiResponsiveContentPadding"><VBox>
-    <Breadcrumbs currentLocationText="{view&gt;/ticket/number}"><Link text="Mein Arbeitsplatz" press=".onHome"/><Link text="Tickets" press=".onTickets"/></Breadcrumbs>
+    <Breadcrumbs currentLocationText="{view&gt;/ticket/number}"><Link text="App-Zentrale" press=".onHome"/><Link text="Tickets" press=".onTickets"/></Breadcrumbs>
     <ObjectHeader title="{view&gt;/ticket/title}" intro="{view&gt;/ticket/number}" responsive="true">
       <statuses><ObjectStatus text="{path:'view&gt;/ticket/status',formatter:'.formatter.status'}" state="{path:'view&gt;/ticket/status',formatter:'.formatter.statusState'}"/><ObjectStatus text="{path:'view&gt;/ticket/priority',formatter:'.formatter.priority'}" state="{path:'view&gt;/ticket/priority',formatter:'.formatter.priorityState'}"/></statuses>
       <attributes><ObjectAttribute title="Kunde" text="{view&gt;/ticket/partnerName}"/><ObjectAttribute title="Verantwortlich" text="{view&gt;/ticket/technicianName}"/><ObjectAttribute title="Anfrageart" text="{path:'view&gt;/ticket/type',formatter:'.formatter.type'}"/><ObjectAttribute title="Eingang" text="{path:'view&gt;/ticket/createdAt',formatter:'.formatter.date'}"/><ObjectAttribute title="Servicefall" text="{view&gt;/ticket/caseNumber}" active="true" press=".onCase"/></attributes>

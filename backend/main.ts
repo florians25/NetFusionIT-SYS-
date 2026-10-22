@@ -14,6 +14,8 @@ import { Service } from './service';
 import { Admin } from './admin';
 import { OData } from './odata';
 import { HealthController,AuthController,ApiController,ODataController } from './controllers';
+import { Commerce } from './commerce';
+import { CommerceController } from './commerce.controller';
 import { Workflow } from './workflow';
 import { Collaboration } from './collaboration';
 import { WorkflowController } from './workflow.controller';
@@ -21,7 +23,7 @@ import { Sla } from './sla';
 import { Operations } from './operations';
 import { Dispatch } from './dispatch';
 import { OperationsController } from './operations.controller';
-@Module({controllers:[HealthController,AuthController,ApiController,ODataController,WorkflowController,OperationsController],providers:[Db,AuthService,SessionGuard,Service,Admin,OData,Workflow,Collaboration,Sla,Operations,Dispatch]})
+@Module({controllers:[CommerceController,HealthController,AuthController,ApiController,ODataController,WorkflowController,OperationsController],providers:[Commerce,Db,AuthService,SessionGuard,Service,Admin,OData,Workflow,Collaboration,Sla,Operations,Dispatch]})
 class AppModule{}
 @Catch()
 class SafeErrors implements ExceptionFilter {

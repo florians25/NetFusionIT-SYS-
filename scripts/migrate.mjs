@@ -36,6 +36,7 @@ export async function migrate(connectionString) {
       await client.query(`GRANT SELECT,INSERT,UPDATE ON approval_definitions,approval_instances,notification_outbox TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT ON partner_contacts,partner_addresses,ticket_comments,ticket_links,approval_decisions TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT,UPDATE ON service_calendars,sla_policies,service_contracts,technical_objects,case_objects,ticket_sla,technician_absences,field_visits,visit_technicians TO "${role}"`);
+      await client.query(`GRANT SELECT,INSERT,UPDATE ON currencies,products,price_conditions,service_orders,service_order_items TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT ON sla_events TO "${role}"`);
     }
   } finally { await client.end(); }

@@ -1,10 +1,10 @@
 # NetFusion · Enterprise Service ERP
 
-Eigenständiger modularer Monolith mit echtem **OpenUI5**, **NestJS/TypeScript** und **PostgreSQL**. Die Oberfläche verwendet ausschließlich **OpenUI5-Standardcontrols**, das Standardtheme und Standard-Abstandsklassen. Keine eigenen UI-Controls, Renderer, CSS-Dateien oder SVG-Logos. Preview 0.2: **Kundenformular → Ticket + Servicefall → Belegfluss → Technikerbearbeitung**, Kundenfreigabe, SLA, Servicebasis und Einsatzplanung.
+Eigenständiger modularer Monolith mit echtem **OpenUI5**, **NestJS/TypeScript** und **PostgreSQL**. Die Oberfläche verwendet ausschließlich **OpenUI5-Standardcontrols**, das Standardtheme und Standard-Abstandsklassen. Keine eigenen UI-Controls, Renderer, CSS-Dateien oder SVG-Logos. Preview 0.3: **Kundenformular → Ticket + Servicefall → Belegfluss → Technikerbearbeitung**, Kundenfreigabe, SLA, Servicebasis, Einsatzplanung sowie Artikel-/Auftragsfreigabe mit Preisfindung.
 
 Kein SAP-Backend nötig. Eigene Marke; Screenshots dienen als Fiori-/Prozessreferenz. Noch keine Produktivfreigabe. Einkauf, Lager, Faktura, Finanzbuchhaltung und erweiterte Workflow-/Vertragsfunktionen sind geplante Module, keine fertigen Funktionen.
 
-Nach Anmeldung öffnet sich das **Service-Cockpit**: klickbare Kennzahlenkarten, Arbeitsvorräte für neue/unzugewiesene/kritische/laufende Tickets, Such-/Prioritäts-/Typfilter, Prioritätsverteilung und direkte Technikerzuweisung. Alle Werte stammen aus autorisierten Datenbankabfragen. Die separate App-Übersicht enthält nur App-Kacheln.
+Nach Anmeldung öffnet sich die **App-Zentrale** mit rollenabhängigen App-Kacheln. Die Shell zeigt nur Schnellzugriffe der aktiven Anwendung. Das separat aufgerufene **Service-Cockpit** bietet: klickbare Kennzahlenkarten, Arbeitsvorräte für neue/unzugewiesene/kritische/laufende Tickets, Such-/Prioritäts-/Typfilter, Prioritätsverteilung und direkte Technikerzuweisung. Alle Werte stammen aus autorisierten Datenbankabfragen. Die App-Zentrale enthält nur App-Kacheln. Objektseiten verwenden native OpenUI5-Belegköpfe und fachliche Register, Positionsaktionen stehen an der Tabelle.
 
 ## Lokal entwickeln
 
@@ -46,6 +46,7 @@ In dieser Cloud wurde Compose nicht live getestet, da kein Docker-Daemon zugäng
 
 ## Dokumentation
 
+- [Preview 0.3: Serviceauftrag und Preisfindung](docs/previews/v0.3.0-preview.1/README.md) und [Versionsnotizen](docs/releases/v0.3.0-preview.1.md)
 - [Preview 0.2 mit Screenshots](docs/previews/v0.2.0-preview.1/README.md) und [Versionsnotizen](docs/releases/v0.2.0-preview.1.md)
 - [Zusätzlicher Fachbacklog mit Originalanhängen](docs/backlog.md)
 - [Architektur und Modulgrenzen](docs/architecture.md)

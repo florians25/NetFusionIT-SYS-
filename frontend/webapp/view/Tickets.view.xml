@@ -1,6 +1,6 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core" controllerName="netfusion.erp.controller.Tickets">
   <Page showHeader="false" class="sapUiResponsiveContentPadding"><VBox>
-    <Breadcrumbs currentLocationText="Tickets"><Link text="Mein Arbeitsplatz" press=".onHome"/></Breadcrumbs>
+    <Breadcrumbs currentLocationText="Tickets"><Link text="App-Zentrale" press=".onHome"/></Breadcrumbs>
     <HBox justifyContent="SpaceBetween" alignItems="Center" wrap="Wrap" class="sapUiMediumMarginTop sapUiMediumMarginBottom"><VBox><Text text="SERVICE DESK" /><Title text="Tickets" titleStyle="H2"/><Text text="Serviceanfragen zentral bearbeiten und verfolgen." class="sapUiTinyMarginTop"/></VBox><Button text="Ticket anlegen" icon="sap-icon://add" type="Emphasized" press=".onNew" visible="{state&gt;/access/create}"/></HBox>
     <VBox class="sapUiContentPadding">
       <HBox wrap="Wrap" alignItems="End" class="sapUiSmallMarginBottom">

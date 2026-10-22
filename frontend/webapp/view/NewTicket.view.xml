@@ -1,6 +1,6 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form" controllerName="netfusion.erp.controller.NewTicket">
   <Page showHeader="false" class="sapUiResponsiveContentPadding" showFooter="true"><content><VBox>
-    <Breadcrumbs currentLocationText="Ticket anlegen"><Link text="Mein Arbeitsplatz" press=".onHome"/><Link text="Tickets" press=".onTickets"/></Breadcrumbs>
+    <Breadcrumbs currentLocationText="Ticket anlegen"><Link text="App-Zentrale" press=".onHome"/><Link text="Tickets" press=".onTickets"/></Breadcrumbs>
     <VBox class="sapUiMediumMarginTop sapUiMediumMarginBottom"><Text text="NEUE SERVICEANFRAGE" /><Title text="Wie können wir helfen?" titleStyle="H2"/><Text text="Beschreiben Sie Ihr Anliegen. Ticket und Servicefall werden gemeinsam angelegt." class="sapUiTinyMarginTop"/></VBox>
     <MessageStrip text="{view&gt;/error}" type="Error" showIcon="true" visible="{= !!${view&gt;/error} }" class="sapUiSmallMarginBottom"/>
     <Panel headerText="Allgemeine Informationen" class="sapUiNoMargin">

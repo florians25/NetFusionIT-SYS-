@@ -5,7 +5,7 @@
     "type": "application",
     "title": "NetFusion Service Workspace",
     "applicationVersion": {
-      "version": "0.2.0"
+      "version": "0.3.0"
     },
     "dataSources": {
       "service": {
@@ -66,7 +66,7 @@
       },
       "routes": [
         {
-          "pattern": "",
+          "pattern": "service-cockpit",
           "name": "cockpit",
           "target": "TicketDashboard"
         },
@@ -149,6 +149,26 @@
           "name": "serviceSetup",
           "target": "ServiceSetup",
           "pattern": "service-setup"
+        },
+        {
+          "name": "catalog",
+          "target": "Catalog",
+          "pattern": "catalog"
+        },
+        {
+          "name": "pricing",
+          "target": "Pricing",
+          "pattern": "pricing"
+        },
+        {
+          "name": "orders",
+          "target": "Orders",
+          "pattern": "service-orders"
+        },
+        {
+          "name": "order",
+          "target": "Order",
+          "pattern": "service-orders/{id}"
         }
       ],
       "targets": {
@@ -202,6 +222,18 @@
         },
         "ServiceSetup": {
           "viewName": "ServiceSetup"
+        },
+        "Catalog": {
+          "viewName": "Catalog"
+        },
+        "Pricing": {
+          "viewName": "Pricing"
+        },
+        "Orders": {
+          "viewName": "Orders"
+        },
+        "Order": {
+          "viewName": "Order"
         }
       }
     }

@@ -33,3 +33,14 @@ Service `/odata/`, `$metadata` in EDMX V4. EntitySets Tickets, ServiceCases, Bus
 Dies ist ein lesender OData-V4-Teilumfang, kein vollständiger OData-Server: kein `$batch`, `$expand`, `$apply`, Delta oder OData-Schreiben. Das UI5-V4-Modell verwendet `$direct`; Kommandos laufen über REST. Unsupported Requests erhalten explizite Fehler. Metadaten und UI5-Abfragen werden durch Integration und Browser überprüft.
 
 `GET /api/dashboard` liefert `newCount`, `unassigned`, `critical` (HIGH/CRITICAL und noch technisch ungelöst), `inProgress`, `open`, `total`, `waiting`, `last24h`, `cases`, `distribution[]` und `updatedAt`. `distribution` enthält Anzahl/Prozent pro Priorität auf Basis offener Tickets, gerundet auf ganze Prozent. Keine SLA-Aussage. Arbeitsvorräte werden separat über `/odata/Tickets` mit entsprechenden Status-/Prioritätsfiltern geladen; jeder Leseweg wendet denselben Benutzer-/Kunden-/Organisationsumfang an. DateTimeOffset-Metadaten besitzen Millisekundenpräzision (`Precision=3`).
+
+## Auftragskern ab Preview 0.3
+
+- `/api/catalog/currencies`: konfigurierte Währungen lesen; Administration legt Code/Präzision einmalig an.
+- `/api/catalog/products`: rollenbezogener Artikel-/Servicekatalog; Anlage als Entwurf, PATCH nur vor Freigabe.
+- `/api/workflow/submit/:id`: prüft jetzt zusätzlich die belegspezifische Schreibberechtigung für Kunden, Artikel oder Serviceauftrag.
+- `/api/pricing/conditions`: Konfiguration von Preisen/Steuern; Steuer erfordert Finance-Berechtigung, sonstige Preise Vertrieb. Deaktivieren mit erwarteter Version, keine rückwirkende Preisänderung.
+- `/api/service/orders`, `/:id`, `/:id/items`: Fall-/Kundenbezug, nur genehmigte Artikel, explizite Konditionen, Preis-Snapshot und separate Auftragsfreigabe. Kundenprojektion entfernt interne Kostenzuordnung und Preisprotokoll.
+- `/api/service/order-contexts`: zur Auftragsanlage berechtigte Benutzer erhalten zulässige Servicefälle mit Kunden-/Organisationsbezug.
+
+POST/PATCH erfordern CSRF und Idempotency-Key; bestehende Versions-/Tenant-/Org-Grenzen gelten. Kein Lager-/Faktura-/FI-Seiteneffekt im Auftragsentwurf.

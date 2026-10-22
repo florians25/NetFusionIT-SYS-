@@ -1,6 +1,6 @@
 # Fachlicher Backlog
 
-Stand: 22.10.2026. Der vollständige [Masterprompt](master-prompt.md) bleibt der Grundauftrag. Die folgenden Ergänzungen wurden zusätzlich vom Nutzer beauftragt. Sie sind Anforderungen, keine Behauptung bereits implementierter Funktionen. Oberflächen bestehen ausschließlich aus Standardcontrols von **OpenUI5**. SAP-Dokumentation dient als fachliche Referenz; SAP-Backend-Dienste oder SAPUI5-exklusive Controls werden dadurch nicht vorausgesetzt.
+Stand: 22.10.2026. Der vollständige [Masterprompt](master-prompt.md) bleibt der Grundauftrag. Die folgenden Ergänzungen wurden zusätzlich vom Nutzer beauftragt. Sie sind Anforderungen, keine Behauptung bereits implementierter Funktionen. Oberflächen bestehen ausschließlich aus Standardcontrols von **OpenUI5**. [Verbindliche Navigations-/Maskenvorgaben](requirements/navigation.md): App-Zentrale als Einstieg, ausschließlich anwendungsbezogene Schnellzugriffe und native Belegobjektseiten. SAP-Dokumentation dient als fachliche Referenz; SAP-Backend-Dienste oder SAPUI5-exklusive Controls werden dadurch nicht vorausgesetzt.
 
 ## SERVICE-01 · Serviceangebote
 
@@ -20,7 +20,7 @@ Abnahme: Standard-/Festpreisregeln, Teilannahme und mehrfach parallel ausgelöst
 
 ## SERVICE-02 · Serviceaufträge und Servicerückmeldungen
 
-Status: offen · Umsetzung Masterprompt-Phase 4–8.
+Status: Auftragsanlage, Positionen, Preisfindung und Freigabe implementiert; Ausführung, Rückmeldung und kaufmännische Integration offen · Masterprompt-Phase 4–8.
 Quelle: [vollständiger Nutzeranhang](requirements/serviceauftraege.md); alle darin enthaltenen Details gelten zusätzlich zur Kurzfassung.
 
 - Liste/Suche/Filter, Anzeigen/Anlegen/Bearbeiten; Servicegruppen, Positionen und hierarchische Servicepakete für Service, Material und Ausgaben.

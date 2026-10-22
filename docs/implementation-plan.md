@@ -18,13 +18,13 @@
 
 Workflow-Engine wird vor ersten genehmigungspflichtigen Stammdaten/Belegen eingeführt; Finance-Kern muss vor finaler Rechnungsbuchung existieren, auch wenn die UI-Phasen anders nummeriert sind. Architekturphasen sind keine Ausrede für inkonsistente Vorabbuchungen.
 
-## Aktueller Stand · Preview 0.2
+## Aktueller Stand · Preview 0.3
 
 Der [vollständige Originalauftrag](master-prompt.md) und der [zusätzliche Fachbacklog mit Quellen](backlog.md) sind versioniert. Der Nutzer hat fortlaufende Entwicklung, regelmäßige GitHub-Pushes und Preview-Versionen mit Screenshots beauftragt. Keine erneute Bestätigung pro Phase nötig.
 
-Umgesetzt: technisches Fundament und erster Serviceprozess, differenzierte Rollen, Kundenfreigabe mit Snapshot/Vier-Augen-Prinzip/Rückfrage, Kontakte/Adressen, öffentliche Kommentare/interne Notizen, Servicekalender, SLA-Policies und Ticket-Snapshots, Basisverträge, technische Objekte und Einsatzplanung mit Arbeitszeit-/Qualifikations-/Abwesenheits-/Kollisionsprüfung. Standard-OpenUI5-Oberflächen einschließlich separatem Ticket-Cockpit, Freigabearbeitsplatz, Servicebasis und PlanningCalendar.
+Umgesetzt: technisches Fundament und erster Serviceprozess, differenzierte Rollen, Kundenfreigabe mit Snapshot/Vier-Augen-Prinzip/Rückfrage, Kontakte/Adressen, öffentliche Kommentare/interne Notizen, Servicekalender, SLA-Policies und Ticket-Snapshots, Basisverträge, technische Objekte und Einsatzplanung mit Arbeitszeit-/Qualifikations-/Abwesenheits-/Kollisionsprüfung. Zusätzlich Artikel-/Servicekatalog, Währungen/Konditionen, exakte Preisfindung mit Snapshot, Serviceaufträge/Positionen und Artikel-/Auftragsfreigabe. App-Zentrale als Einstieg und ausschließlich anwendungsbezogene Schnellzugriffe. Native OpenUI5-Objektseiten einschließlich separatem Ticket-Cockpit, Freigabearbeitsplatz, Servicebasis und PlanningCalendar.
 
-Nachweise und genaue Grenzen stehen in den [Versionsnotizen](releases/v0.2.0-preview.1.md); echte Desktop-/Mobilbilder in der [Preview](previews/v0.2.0-preview.1/README.md). 41 automatisierte Prüfungen verwenden echte isolierte PostgreSQL-Datenbanken und reproduzierbare Kalenderfälle. Nummern, Belege und Audit rollen bei Fehlern atomar zurück. Rollenänderungen greifen im nächsten Request; API-Neustart erhält Sitzung und Belege. Die Entwicklungsdatenbank enthält keine künstlichen Tickets.
+Nachweise und genaue Grenzen stehen in den [Versionsnotizen](releases/v0.3.0-preview.1.md); echte Desktop-/Mobilbilder in der [Preview](previews/v0.3.0-preview.1/README.md). 54 automatisierte Prüfungen verwenden echte isolierte PostgreSQL-Datenbanken und reproduzierbare Kalenderfälle. Nummern, Belege und Audit rollen bei Fehlern atomar zurück. Rollenänderungen greifen im nächsten Request; API-Neustart erhält Sitzung und Belege. Die Entwicklungsdatenbank enthält keine künstlichen Tickets.
 
 Offen bleiben insbesondere sichere Uploads, vollständige Stammdatenänderungsfreigaben, Delegation/Betragsgrenzen, weitergehende Disposition und die kaufmännischen Folgephasen. Die zusätzlichen SERVICE-01 bis SERVICE-05 sind Anforderungen mit Abnahmekriterien, keine fertiggestellten Funktionen. Der nächste vertikale Prozess führt vom Serviceauftrag über freigegebene Leistungen und Material zu Faktura und ausgeglichener Buchung. Keine Finanzbuchungen ohne explizit konfigurierte fachliche Regeln.
 

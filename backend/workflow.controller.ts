@@ -11,7 +11,7 @@ export class WorkflowController {
  @Get('workflow/definitions')@Permission('workflow.read')definitions(@Req() r:AuthRequest){return this.workflow.definitions(r.user);}
  @Post('workflow/definitions')@Permission('workflow.configure')configure(@Req() r:AuthRequest,@Body() b:unknown){csrf(r);return this.workflow.configure(r.user,b,r.get('Idempotency-Key'),r.correlationId);}
  @Get('workflow/inbox')@Permission('workflow.read')inbox(@Req() r:AuthRequest){return this.workflow.inbox(r.user);}
- @Post('workflow/submit/:id')@Permission('partner.write')submit(@Req() r:AuthRequest,@Param('id') id:string,@Body() b:unknown){csrf(r);return this.workflow.submit(r.user,id,b,r.get('Idempotency-Key'),r.correlationId);}
+ @Post('workflow/submit/:id')@Permission('workflow.read')submit(@Req() r:AuthRequest,@Param('id') id:string,@Body() b:unknown){csrf(r);return this.workflow.submit(r.user,id,b,r.get('Idempotency-Key'),r.correlationId);}
  @Get('workflow/instances/:id/decisions')@Permission('workflow.read')decisions(@Req() r:AuthRequest,@Param('id') id:string){return this.workflow.decisions(r.user,id);}
  @Post('workflow/instances/:id/decide')@Permission('workflow.read')decide(@Req() r:AuthRequest,@Param('id') id:string,@Body() b:unknown){csrf(r);return this.workflow.decide(r.user,id,b,r.get('Idempotency-Key'),r.correlationId);}
  @Get('tickets/:id/comments')@Permission('service.read')comments(@Req() r:AuthRequest,@Param('id') id:string){return this.collaboration.comments(r.user,id);}

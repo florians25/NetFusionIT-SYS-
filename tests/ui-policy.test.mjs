@@ -6,7 +6,7 @@ async function files(dir){const result=[];for(const entry of await readdir(dir,{
 test('Oberfläche verwendet nur OpenUI5-Standardcontrols und Standardklassen',async()=>{
   const source=await files('frontend/webapp');
   assert.ok(!source.some(f=>/\.(css|svg)$/.test(f)),'Kein eigenes CSS oder SVG.');
-  const allowed=new Set(['sap.m','sap.f','sap.f.cards','sap.ui.layout','sap.ui.layout.form','sap.ui.core','sap.ui.core.mvc','sap.ui.unified']);
+  const allowed=new Set(['sap.m','sap.f','sap.f.cards','sap.ui.layout','sap.ui.layout.form','sap.ui.core','sap.ui.core.mvc','sap.ui.unified','sap.uxap']);
   for(const file of source){
     const text=await readFile(file,'utf8');
     if(file.endsWith('.xml')){

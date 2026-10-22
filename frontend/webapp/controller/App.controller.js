@@ -1,7 +1,18 @@
 sap.ui.define(["netfusion/erp/controller/Base.controller","sap/m/ActionSheet","sap/m/Button","sap/m/MessageBox"],function(Base,ActionSheet,Button,MessageBox){
   "use strict";
   return Base.extend("netfusion.erp.controller.App",{
-    onInit:function(){this.getOwnerComponent().getRouter().attachRouteMatched(function(e){var name=e.getParameter("name"),key=["ticket","newTicket","cases","case"].includes(name)?"tickets":name;this.getOwnerComponent().getModel("state").setProperty("/navKey",key);}.bind(this));},
+    onInit:function(){this.getOwnerComponent().getRouter().attachRouteMatched(this.onRoute,this);},
+    onRoute:function(e){
+      var name=e.getParameter("name"),group,title,tabs=[],selected=name;
+      if(["cockpit","tickets","newTicket","ticket","cases","case"].includes(name)){
+        group="service";title="Service Desk";tabs=[{key:"cockpit",text:"Service-Cockpit"},{key:"tickets",text:"Tickets"},{key:"cases",text:"Servicefälle"}];selected=["ticket","newTicket"].includes(name)?"tickets":name==="case"?"cases":name;
+      }else if(["dispatch","planning"].includes(name)){
+        group="dispatch";title="Disposition & Einsätze";if(this.state("/access/assign"))tabs.push({key:"dispatch",text:"Ticketzuweisung"});tabs.push({key:"planning",text:"Einsatzplanung"});
+      }else{
+        group=name;title={home:"App-Zentrale",login:"Anmeldung",serviceMaster:"Technische Objekte & Serviceverträge",serviceSetup:"Servicekonfiguration",orders:"Serviceaufträge",order:"Serviceaufträge",catalog:"Artikel & Servicekatalog",pricing:"Preisfindung",partners:"Geschäftspartner",partner:"Geschäftspartner",workflow:"Genehmigungen",admin:"Administration",roadmap:"Ausbauplan"}[name]||"App-Zentrale";
+      }
+      this.getOwnerComponent().getModel("state").setProperty("/navigation",{group:group,title:title,tabs:tabs,selectedKey:selected,active:!["home","login"].includes(name)});
+    },
     onNav:function(e){this.route(e.getParameter("key"));},
     onProfile:function(e){
       if(!this.profile){this.profile=new ActionSheet({placement:"Bottom",buttons:[new Button({text:"Abmelden",icon:"sap-icon://log",press:this.onLogout.bind(this)})]});this.getView().addDependent(this.profile);}

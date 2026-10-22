@@ -16,10 +16,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller","sap/m/MessageBox","sap/ui/model/jso
       if(!response.ok){if(response.status===401)this.getOwnerComponent().endSession();throw new Error((data.error&&data.error.message||"Anfrage fehlgeschlagen.")+(data.error&&data.error.correlationId?"\nReferenz: "+data.error.correlationId:""));}
       return data;
     },
-    run:async function(fn){this.getView().setBusy(true);try{return await fn.call(this);}catch(e){MessageBox.error(e.message);}finally{this.getView().setBusy(false);}},
+    run:async function(fn){this.getView().setBusyIndicatorDelay(0);this.getView().setBusy(true);try{return await fn.call(this);}catch(e){MessageBox.error(e.message);}finally{this.getView().setBusy(false);}},
     onHome:function(){this.route("home");},onCockpit:function(){this.route("cockpit");},onTickets:function(){this.route("tickets");},onCases:function(){this.route("cases");},onDispatch:function(){this.route("dispatch");},onPartners:function(){this.route("partners");},onAdmin:function(){this.route("admin");},onWorkflow:function(){this.route("workflow");},onRoadmap:function(){this.route("roadmap");},onNew:function(){this.route("newTicket");},
-    onPlanning:function(){this.route("planning");},onServiceMaster:function(){this.route("serviceMaster");},onServiceSetup:function(){this.route("serviceSetup");},
-    onDocument:function(kind,id){var route={TICKET:"ticket",SERVICE_CASE:"case",BUSINESS_PARTNER:"partner",TECHNICAL_OBJECT:"serviceMaster",SERVICE_CONTRACT:"serviceMaster",FIELD_VISIT:"planning"}[kind];if(route)this.route(route,{id:id});},
+    onOrders:function(){this.route("orders");},onCatalog:function(){this.route("catalog");},onPricing:function(){this.route("pricing");},onPlanning:function(){this.route("planning");},onServiceMaster:function(){this.route("serviceMaster");},onServiceSetup:function(){this.route("serviceSetup");},
+    onDocument:function(kind,id){var route={SERVICE_ORDER:"order",MATERIAL:"catalog",TICKET:"ticket",SERVICE_CASE:"case",BUSINESS_PARTNER:"partner",TECHNICAL_OBJECT:"serviceMaster",SERVICE_CONTRACT:"serviceMaster",FIELD_VISIT:"planning"}[kind];if(route)this.route(route,{id:id});},
     onTicketPress:function(e){var item=e.getParameter("listItem")||e.getSource(),ctx=item.getBindingContext()||item.getBindingContext("view");if(ctx)this.route("ticket",{id:ctx.getProperty("id")});}
   });
 });

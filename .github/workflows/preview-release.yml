@@ -41,6 +41,9 @@ jobs:
           test-results/planning-mobile.png
           test-results/service-master.png
           test-results/workflow-inbox.png
+          test-results/workspace-desktop.png
+          test-results/service-order.png
+          test-results/order-pricing.png
       - name: Preserve browser diagnostics
         if: failure()
         uses: actions/upload-artifact@v4

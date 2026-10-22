@@ -12,5 +12,7 @@ export function visibleDocuments(u:Principal){
  if(can(u.role,'partner.read'))clauses.push(`(d.kind='BUSINESS_PARTNER' AND d.id IN(SELECT p.id FROM business_partners p WHERE p.tenant_id=$1${u.role==='CUSTOMER'?' AND p.id=$3':''}))`);
  if(can(u.role,'asset.read'))clauses.push(`(d.kind='TECHNICAL_OBJECT' AND d.id IN(SELECT a.id FROM technical_objects a WHERE a.tenant_id=$1 AND ${partnerCondition('a')}))`);
  if(can(u.role,'contract.read'))clauses.push(`(d.kind='SERVICE_CONTRACT' AND d.id IN(SELECT c.id FROM service_contracts c WHERE c.tenant_id=$1 AND ${partnerCondition('c')}))`);
+ if(can(u.role,'inventory.read'))clauses.push(`d.kind='MATERIAL'`);
+ if(can(u.role,'order.read'))clauses.push(`(d.kind='SERVICE_ORDER' AND d.id IN(SELECT o.id FROM service_orders o WHERE o.tenant_id=$1 AND o.case_id IN(SELECT id FROM (${cases.sql}) visible_cases)))`);
  return {sql:`SELECT d.id FROM documents d WHERE d.tenant_id=$1 AND d.organization_id=ANY($2::uuid[]) AND (${clauses.join(' OR ')||'FALSE'})`,values};
 }

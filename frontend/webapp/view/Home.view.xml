@@ -2,7 +2,7 @@
   <Page showHeader="false" class="sapUiResponsiveContentPadding">
     <VBox>
       <HBox justifyContent="SpaceBetween" alignItems="Start" wrap="Wrap" class="sapUiMediumMarginTop sapUiMediumMarginBottom">
-        <VBox><Text text="MEIN ARBEITSPLATZ" /><Title text="{view&gt;/greeting}" titleStyle="H2" class="sapUiTinyMarginTop"/><Text text="Ihr Servicegeschäft auf einen Blick." class="sapUiTinyMarginTop"/></VBox>
+        <VBox><Text text="ANWENDUNGEN" /><Title id="appCenterTitle" text="App-Zentrale" titleStyle="H2" class="sapUiTinyMarginTop"/><Text text="{view&gt;/greeting}" class="sapUiTinyMarginTop"/><Text text="Ihr Servicegeschäft auf einen Blick." class="sapUiTinyMarginTop"/></VBox>
         <VBox alignItems="End"><Text text="{view&gt;/date}" class="sapUiTinyMarginBottom"/><ObjectStatus text="{path:'state&gt;/user/role',formatter:'.formatter.role'}" icon="sap-icon://employee" state="Information"/></VBox>
       </HBox>
       <HBox class="sapUiSmallMarginTop sapUiSmallMarginBottom" justifyContent="SpaceBetween" alignItems="Center" wrap="Wrap">
@@ -24,6 +24,12 @@
         <GenericTile header="Objekte &amp; Verträge" subheader="Installierte Basis und Serviceumfang" press=".onServiceMaster" visible="{= ${state&gt;/access/assetRead} || ${state&gt;/access/contractRead} }" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Kundenbezogene Servicebasis"><content><ImageContent src="sap-icon://it-system"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Servicekalender &amp; SLA" subheader="Geschäftszeiten und Fristen" press=".onServiceSetup" visible="{state&gt;/access/serviceConfig}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Servicekonfiguration"><content><ImageContent src="sap-icon://time-entry-request"/></content></TileContent></tileContent></GenericTile>
       </FlexBox>
+      <Title text="Aufträge &amp; Katalog" titleStyle="H3" class="sapUiMediumMarginTop sapUiSmallMarginBottom" visible="{= ${state&gt;/access/orders} || ${state&gt;/access/inventory} }"/>
+      <FlexBox wrap="Wrap" class="sapUiSmallMarginBottom">
+        <GenericTile header="Serviceaufträge" subheader="Positionen und Freigaben" press=".onOrders" visible="{state&gt;/access/orders}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Auftragsbestand"><content><ImageContent src="sap-icon://sales-order"/></content></TileContent></tileContent></GenericTile>
+        <GenericTile header="Artikel &amp; Servicekatalog" subheader="Artikelstamm und Freigabe" press=".onCatalog" visible="{state&gt;/access/inventory}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Leistungen und Material"><content><ImageContent src="sap-icon://product"/></content></TileContent></tileContent></GenericTile>
+        <GenericTile header="Preisfindung" subheader="Konditionen und Gültigkeit" press=".onPricing" visible="{state&gt;/access/pricing}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Preise, Rabatte und Steuern"><content><ImageContent src="sap-icon://sales-document"/></content></TileContent></tileContent></GenericTile>
+      </FlexBox>
       <Title text="Stammdaten &amp; Organisation" titleStyle="H3" class="sapUiMediumMarginTop sapUiSmallMarginBottom" visible="{state&gt;/access/internal}"/>
       <FlexBox wrap="Wrap" class="sapUiSmallMarginBottom" visible="{state&gt;/access/internal}">
         <GenericTile header="Kundenstamm" subheader="Geschäftspartner" press=".onPartners" visible="{state&gt;/access/partners}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Kunden und Kontaktdaten"><content><ImageContent src="sap-icon://business-card"/></content></TileContent></tileContent></GenericTile>
@@ -32,7 +38,7 @@
         <GenericTile header="Organisation" subheader="Serviceorganisationen" press=".onAdmin" visible="{state&gt;/access/admin}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Organisationsstruktur"><content><ImageContent src="sap-icon://org-chart"/></content></TileContent></tileContent></GenericTile>
       </FlexBox>
       <HBox class="sapUiMediumMarginTop sapUiSmallMarginBottom" alignItems="Start"><core:Icon src="sap-icon://information"/><VBox class="sapUiSmallMarginBegin"><Text text="Schritt für Schritt zum integrierten Service-ERP" class="sapUiTinyMarginBottom"/><Text text="Ticketbearbeitung, Kundenfreigaben, Servicebasis und Einsatzplanung stehen bereit. Die weiteren Prozesse sind im Ausbauplan erfasst." class="sapUiTinyMarginTop"/><Link text="Ausbauplan ansehen" press=".onRoadmap" class="sapUiTinyMarginTop"/></VBox></HBox>
-      <HBox justifyContent="SpaceBetween" class="sapUiMediumMarginTop" wrap="Wrap"><Text text="NETFUSION · ENTERPRISE SERVICE ERP"/><Text text="OpenUI5 · Preview 0.2"/></HBox>
+      <HBox justifyContent="SpaceBetween" class="sapUiMediumMarginTop" wrap="Wrap"><Text text="NETFUSION · ENTERPRISE SERVICE ERP"/><Text text="OpenUI5 · Preview 0.3"/></HBox>
     </VBox>
   </Page>
 </mvc:View>

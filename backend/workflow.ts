@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { Db,Principal,parse,uuid,audit,idempotent } from './core';
 import { ROLES,requirePermission } from './permissions';
 import { checkOrg,document,notify,version } from './business';
-export const approvalSubjects:Record<string,{table:string,pending:string,approved:string,rejected:string}>={BUSINESS_PARTNER:{table:'business_partners',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED'}};
+export const approvalSubjects:Record<string,{table:string,pending:string,approved:string,rejected:string,permission:string}>={BUSINESS_PARTNER:{table:'business_partners',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'partner.write'},MATERIAL:{table:'products',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'material.write'},SERVICE_ORDER:{table:'service_orders',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'order.write'}};
 @Injectable()
 export class Workflow {
  constructor(private db:Db){}
@@ -26,10 +26,12 @@ export class Workflow {
  async submitWithin(db:PoolClient,u:Principal,id:string,expected:number,correlation:string){
   const doc=await document(db,u,id,true),subject=approvalSubjects[doc.kind];
   if(!subject)throw new ConflictException('Dieser Belegtyp unterstützt noch keinen Freigabeprozess.');
+  requirePermission(u.role,subject.permission);
   const r=await db.query(`SELECT * FROM ${subject.table} WHERE tenant_id=$1 AND id=$2 FOR UPDATE`,[u.tenantId,id]);
   if(!r.rowCount)throw new NotFoundException('Fachbeleg nicht gefunden.');
   version(r.rows[0].version,expected);
   if(!['DRAFT','REJECTED'].includes(r.rows[0].status))throw new ConflictException('Nur Entwurf oder abgelehnter Beleg kann eingereicht werden.');
+  if(doc.kind==='SERVICE_ORDER'&&!(await db.query('SELECT 1 FROM service_order_items WHERE tenant_id=$1 AND order_id=$2',[u.tenantId,id])).rowCount)throw new ConflictException('Serviceauftrag benötigt mindestens eine Position.');
   const definition=(await db.query('SELECT * FROM approval_definitions WHERE tenant_id=$1 AND organization_id=$2 AND subject_kind=$3 AND active',[u.tenantId,doc.organization_id,doc.kind])).rows[0];
   if(!definition)throw new ConflictException('Zuerst eine fachlich bestätigte Freigabedefinition für diesen Belegtyp und diese Organisation konfigurieren.');
   for(const step of definition.steps){
@@ -75,6 +77,10 @@ export class Workflow {
     if(input.decision==='APPROVE'){nextStep++;status=nextStep>=i.steps_snapshot.length?'APPROVED':'PENDING';}
     if(input.decision==='REJECT')status='REJECTED';
     if(input.decision==='REQUEST_INFORMATION')status='INFORMATION_REQUIRED';
+   }
+   if(doc.kind==='SERVICE_ORDER'&&status==='APPROVED'){
+    if(!(await db.query("SELECT 1 FROM service_orders o JOIN business_partners p ON p.tenant_id=o.tenant_id AND p.id=o.partner_id WHERE o.tenant_id=$1 AND o.id=$2 AND p.status='ACTIVE'",[u.tenantId,i.document_id])).rowCount)throw new ConflictException('Kunde ist nicht mehr aktiv; Auftrag kann nicht freigegeben werden.');
+    if((await db.query("SELECT 1 FROM service_order_items i JOIN products p ON p.tenant_id=i.tenant_id AND p.id=i.product_id WHERE i.tenant_id=$1 AND i.order_id=$2 AND p.status<>'ACTIVE'",[u.tenantId,i.document_id])).rowCount)throw new ConflictException('Ein Auftragsartikel ist nicht mehr freigegeben.');
    }
    await db.query('INSERT INTO approval_decisions(id,tenant_id,instance_id,step,actor_id,decision,comment) VALUES($1,$2,$3,$4,$5,$6,$7)',[randomUUID(),u.tenantId,id,i.current_step,u.id,input.decision,input.comment]);
    await db.query('UPDATE approval_instances SET status=$3,current_step=$4,version=version+1 WHERE tenant_id=$1 AND id=$2',[u.tenantId,id,status,nextStep]);

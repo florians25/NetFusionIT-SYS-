@@ -10,7 +10,7 @@ try{
  const partner=(await api('/api/partners',{method:'POST',body:{name:'Browser Freigabekunde',email:'workflow-browser@example.test',organizationId:org}})).data;
  browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
  page=await browser.newPage({viewport:{width:1440,height:1080}});page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});page.on('response',r=>{if(r.status()>=400)errors.push(r.status()+' '+new URL(r.url()).pathname);});
- async function login(role){const a=h.accounts.find(a=>a.role===role);await page.goto(h.base+'/#login');await page.getByRole('textbox',{name:'E-Mail-Adresse',exact:true}).fill(a.email);await page.getByRole('textbox',{name:'Passwort',exact:true}).fill(a.password);await page.getByRole('button',{name:'Anmelden',exact:true}).click();await page.getByRole('heading',{name:'Service-Cockpit',exact:true}).waitFor();}
+ async function login(role){const a=h.accounts.find(a=>a.role===role);await page.goto(h.base+'/#login');await page.getByRole('textbox',{name:'E-Mail-Adresse',exact:true}).fill(a.email);await page.getByRole('textbox',{name:'Passwort',exact:true}).fill(a.password);await page.getByRole('button',{name:'Anmelden',exact:true}).click();await page.locator('[id$="--appCenterTitle"]').waitFor();}
  await login('ADMIN');await page.goto(h.base+'/#workflow');
  await page.getByRole('button',{name:'Definition konfigurieren',exact:true}).click();
  let dialog=page.getByRole('dialog');await dialog.getByRole('textbox',{name:'Bezeichnung',exact:true}).fill('Kundenstammdatenprüfung');
