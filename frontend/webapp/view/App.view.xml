@@ -7,10 +7,11 @@
     <IconTabHeader selectedKey="{state&gt;/navKey}" select=".onNav" visible="{= !!${state&gt;/user} }"  mode="Inline" backgroundDesign="Solid">
       <items>
         <IconTabFilter text="Mein Arbeitsplatz" key="home"/>
-        <IconTabFilter text="Service-Cockpit" key="cockpit"/>
-        <IconTabFilter text="Tickets" key="tickets"/>
+        <IconTabFilter text="Service-Cockpit" key="cockpit" visible="{state&gt;/access/service}"/>
+        <IconTabFilter text="Tickets" key="tickets" visible="{state&gt;/access/service}"/>
         <IconTabFilter text="Dispatching" key="dispatch" visible="{state&gt;/access/assign}"/>
         <IconTabFilter text="Kunden" key="partners" visible="{state&gt;/access/partners}"/>
+        <IconTabFilter text="Genehmigungen" key="workflow" visible="{state&gt;/access/workflow}"/>
         <IconTabFilter text="Administration" key="admin" visible="{state&gt;/access/admin}"/>
         <IconTabFilter text="Ausbauplan" key="roadmap"/>
       </items>

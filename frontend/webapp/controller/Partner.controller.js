@@ -1,0 +1,6 @@
+sap.ui.define(["netfusion/erp/controller/Base.controller","sap/m/MessageToast"],function(Base,Toast){"use strict";return Base.extend("netfusion.erp.controller.Partner",{
+ onInit:function(){this.model({partner:{contacts:[],addresses:[]}});this.getOwnerComponent().getRouter().getRoute("partner").attachPatternMatched(function(e){this.id=e.getParameter("arguments").id;this.load();},this);},
+ load:async function(){if(!await this.guard("partners"))return;this.run(async function(){var p=await this.api("/api/partners/"+this.id);this.vm().setData({partner:p,editable:this.state("/access/partnerWrite")&&["DRAFT","REJECTED"].includes(p.status)});});},
+ onSubmit:function(){this.run(async function(){var p=this.vm().getProperty("/partner");await this.api("/api/workflow/submit/"+p.id,{method:"POST",body:{version:p.version},key:crypto.randomUUID()});Toast.show("Zur Freigabe eingereicht");this.load();});},
+ onSave:function(){this.run(async function(){var p=this.vm().getProperty("/partner");await this.api("/api/partners/"+p.id,{method:"PATCH",body:{version:p.version,name:p.name,email:p.email,legalForm:p.legalForm,vatId:p.vatId,currency:p.currency,roles:p.roles,contacts:[],addresses:[]},key:crypto.randomUUID()});Toast.show("Stammdaten gespeichert");this.load();});}
+});});

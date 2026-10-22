@@ -16,7 +16,7 @@ export class Service {
     parse(uuid,id);
     return this.db.as(u,async db=>{
       const ticket=await this.ticket(db,u,id);
-      const events=await db.query('SELECT a.id,a.action,a.details,a.created_at AS "createdAt",u.name AS "actorName" FROM audit_events a JOIN users u ON u.tenant_id=a.tenant_id AND u.id=a.actor_id WHERE a.tenant_id=$1 AND a.document_id=$2 ORDER BY a.created_at,a.id',[u.tenantId,id]);
+      const events=await db.query("SELECT a.id,a.action,a.details,a.created_at AS \"createdAt\",u.name AS \"actorName\" FROM audit_events a JOIN users u ON u.tenant_id=a.tenant_id AND u.id=a.actor_id WHERE a.tenant_id=$1 AND a.document_id=$2 AND ($3::boolean OR NOT(a.action='COMMENT_ADDED' AND a.details->>'visibility'='INTERNAL')) ORDER BY a.created_at,a.id",[u.tenantId,id,u.role!=='CUSTOMER']);
       return {...ticket,allowedTransitions:allowedTransitions(u.role,ticket.status),events:events.rows};
     });
   }
@@ -48,7 +48,7 @@ export class Service {
       const current=await this.ticket(db,u,id);
       if(current.version!==input.version)throw new ConflictException('Ticket wurde geändert. Bitte neu laden.');
       if(['CANCELLED','CLOSED','TECHNICALLY_RESOLVED','COMMERCIALLY_CLOSED'].includes(current.status))throw new ConflictException('Dieser Status erlaubt keine Zuweisung.');
-      const tech=await db.query('SELECT tech.id FROM technicians tech JOIN users u ON u.tenant_id=tech.tenant_id AND u.id=tech.user_id WHERE tech.tenant_id=$1 AND tech.id=$2 AND tech.organization_id=$3 AND tech.active AND u.active AND u.role=\'TECHNICIAN\' AND EXISTS(SELECT 1 FROM user_organizations uo WHERE uo.tenant_id=u.tenant_id AND uo.user_id=u.id AND uo.organization_id=tech.organization_id)',[u.tenantId,input.technicianId,ticket.organizationId]);
+      const tech=await db.query('SELECT tech.id FROM technicians tech JOIN users u ON u.tenant_id=tech.tenant_id AND u.id=tech.user_id WHERE tech.tenant_id=$1 AND tech.id=$2 AND tech.organization_id=$3 AND tech.active AND u.active AND u.role IN (\'TECHNICIAN\',\'FIELD_TECHNICIAN\') AND EXISTS(SELECT 1 FROM user_organizations uo WHERE uo.tenant_id=u.tenant_id AND uo.user_id=u.id AND uo.organization_id=tech.organization_id)',[u.tenantId,input.technicianId,ticket.organizationId]);
       if(!tech.rowCount)throw new NotFoundException('Aktiver Techniker dieser Organisation nicht gefunden.');
       await db.query('UPDATE dispatch_assignments SET active=false WHERE tenant_id=$1 AND ticket_id=$2 AND active',[u.tenantId,id]);
       await db.query('INSERT INTO dispatch_assignments(id,tenant_id,ticket_id,technician_id,assigned_by) VALUES($1,$2,$3,$4,$5)',[randomUUID(),u.tenantId,id,input.technicianId,u.id]);
@@ -99,7 +99,7 @@ export class Service {
     return this.db.as(u,async db=>(await db.query('SELECT id,number,name,email,status,organization_id AS "organizationId" FROM business_partners WHERE tenant_id=$1 AND organization_id=ANY($2::uuid[]) AND ($3::uuid IS NULL OR id=$3) ORDER BY name',[u.tenantId,u.orgIds,u.role==='CUSTOMER'?u.partnerId:null])).rows);
   }
   async technicians(u:Principal){
-    return this.db.as(u,async db=>(await db.query("SELECT t.id,t.name,t.skills,t.organization_id AS \"organizationId\",(SELECT count(*)::int FROM dispatch_assignments a WHERE a.tenant_id=t.tenant_id AND a.technician_id=t.id AND a.active AND EXISTS(SELECT 1 FROM tickets tk WHERE tk.id=a.ticket_id AND tk.tenant_id=a.tenant_id AND tk.status NOT IN ('CLOSED','CANCELLED','COMMERCIALLY_CLOSED','TECHNICALLY_RESOLVED'))) AS \"assignedCount\" FROM technicians t JOIN users u ON u.tenant_id=t.tenant_id AND u.id=t.user_id WHERE t.tenant_id=$1 AND t.organization_id=ANY($2::uuid[]) AND t.active AND u.active AND u.role='TECHNICIAN' ORDER BY t.name",[u.tenantId,u.orgIds])).rows);
+    return this.db.as(u,async db=>(await db.query("SELECT t.id,t.name,t.skills,t.organization_id AS \"organizationId\",(SELECT count(*)::int FROM dispatch_assignments a WHERE a.tenant_id=t.tenant_id AND a.technician_id=t.id AND a.active AND EXISTS(SELECT 1 FROM tickets tk WHERE tk.id=a.ticket_id AND tk.tenant_id=a.tenant_id AND tk.status NOT IN ('CLOSED','CANCELLED','COMMERCIALLY_CLOSED','TECHNICALLY_RESOLVED'))) AS \"assignedCount\" FROM technicians t JOIN users u ON u.tenant_id=t.tenant_id AND u.id=t.user_id WHERE t.tenant_id=$1 AND t.organization_id=ANY($2::uuid[]) AND t.active AND u.active AND u.role IN ('TECHNICIAN','FIELD_TECHNICIAN') ORDER BY t.name",[u.tenantId,u.orgIds])).rows);
   }
   async dashboard(u:Principal){
     return this.db.as(u,async db=>{

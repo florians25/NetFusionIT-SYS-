@@ -1,6 +1,6 @@
 sap.ui.define(["netfusion/erp/controller/Base.controller","sap/m/Dialog","sap/m/Input","sap/m/Label","sap/m/VBox","sap/m/Button","sap/m/Select","sap/ui/core/Item","sap/m/CheckBox","sap/m/MessageToast"],function(Base,Dialog,Input,Label,VBox,Button,Select,Item,CheckBox,Toast){
   "use strict";
-  var roleItems=function(){return ["ADMIN","DISPATCHER","SUPPORT","TECHNICIAN","CUSTOMER"].map(function(r){return new Item({key:r,text:{ADMIN:"Administration",DISPATCHER:"Disposition",SUPPORT:"IT-Support",TECHNICIAN:"Techniker",CUSTOMER:"Kundenbenutzer"}[r]});});};
+  var roleItems=function(){return ["ADMIN","SERVICE_MANAGER","DISPATCHER","SUPPORT","TECHNICIAN","FIELD_TECHNICIAN","MASTER_DATA","BUYER","PURCHASING_MANAGER","WAREHOUSE","SALES","BILLING","ACCOUNTANT","CONTROLLER","EXECUTIVE","CUSTOMER"].map(function(r){return new Item({key:r,text:{ADMIN:"Administration",DISPATCHER:"Disposition",SUPPORT:"IT-Support",TECHNICIAN:"Techniker",CUSTOMER:"Kundenbenutzer"}[r]||r});});};
   return Base.extend("netfusion.erp.controller.Admin",{
     onInit:function(){this.model({users:[],organizations:[]});this.getOwnerComponent().getRouter().getRoute("admin").attachPatternMatched(this.load,this);},
     load:async function(){if(!await this.guard("admin"))return;this.run(async function(){this.vm().setData({users:await this.api("/api/admin/users"),organizations:await this.api("/api/admin/organization")});});},

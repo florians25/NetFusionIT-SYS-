@@ -13,7 +13,7 @@
     "dev": "node scripts/dev.mjs",
     "db:migrate": "node scripts/migrate.mjs",
     "bootstrap": "node scripts/bootstrap.mjs",
-    "test": "node --test --test-concurrency=1 tests/ui-policy.test.mjs tests/integration.test.mjs",
+    "test": "node --test --test-concurrency=1 tests/ui-policy.test.mjs tests/integration.test.mjs tests/workflow.test.mjs",
     "test:browser": "node tests/browser.mjs",
     "check": "npm run build && npm test",
     "build:api": "tsc -p tsconfig.json",

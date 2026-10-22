@@ -9,8 +9,8 @@
         <HBox alignItems="Center"><core:Icon src="sap-icon://building" class="sapUiTinyMarginEnd"/><Text text="{state&gt;/user/tenantName}"/><Text text="· Service" class="sapUiTinyMarginBegin"/></HBox>
         <Button icon="sap-icon://refresh" text="Aktualisieren" type="Transparent" press=".onRefresh"/>
       </HBox>
-      <Title text="Service" titleStyle="H3" class="sapUiMediumMarginTop sapUiSmallMarginBottom"/>
-      <FlexBox wrap="Wrap" class="sapUiSmallMarginBottom">
+      <Title text="Service" visible="{state&gt;/access/service}" titleStyle="H3" class="sapUiMediumMarginTop sapUiSmallMarginBottom"/>
+      <FlexBox wrap="Wrap" class="sapUiSmallMarginBottom" visible="{state&gt;/access/service}">
         <GenericTile header="Service-Cockpit" subheader="Ticket-Eingang und Arbeitsvorrat" press=".onCockpit" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Neue Tickets"><content><NumericContent value="{view&gt;/dashboard/newCount}" icon="sap-icon://overview-chart" valueColor="Neutral" withMargin="false"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Tickets bearbeiten" subheader="Service Desk" press=".onTickets" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Offene Tickets"><content><NumericContent value="{view&gt;/dashboard/open}" icon="sap-icon://customer-and-contacts" valueColor="Neutral" withMargin="false"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Ticket anlegen" subheader="{= ${state&gt;/access/customer} ? 'Kundenportal' : 'Neue Serviceanfrage' }" press=".onNew" visible="{state&gt;/access/create}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Anfrage erfassen"><content><ImageContent src="sap-icon://add-document"/></content></TileContent></tileContent></GenericTile>
@@ -21,6 +21,7 @@
       <Title text="Stammdaten &amp; Organisation" titleStyle="H3" class="sapUiMediumMarginTop sapUiSmallMarginBottom" visible="{state&gt;/access/internal}"/>
       <FlexBox wrap="Wrap" class="sapUiSmallMarginBottom" visible="{state&gt;/access/internal}">
         <GenericTile header="Kundenstamm" subheader="Geschäftspartner" press=".onPartners" visible="{state&gt;/access/partners}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Kunden und Kontaktdaten"><content><ImageContent src="sap-icon://business-card"/></content></TileContent></tileContent></GenericTile>
+        <GenericTile header="Genehmigungen" subheader="Freigaben und Rückfragen" press=".onWorkflow" visible="{state&gt;/access/workflow}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Freigabehistorie"><content><ImageContent src="sap-icon://approvals"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Benutzer &amp; Rollen" subheader="Zugänge und Berechtigungen" press=".onAdmin" visible="{state&gt;/access/admin}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Administration"><content><ImageContent src="sap-icon://key-user-settings"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Organisation" subheader="Serviceorganisationen" press=".onAdmin" visible="{state&gt;/access/admin}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Organisationsstruktur"><content><ImageContent src="sap-icon://org-chart"/></content></TileContent></tileContent></GenericTile>
       </FlexBox>

@@ -7,6 +7,7 @@ import { Service } from './service';
 import { Admin } from './admin';
 import { OData,metadata,entityFields } from './odata';
 import { Db,parse,audit } from './core';
+import { Permission } from './permissions';
 @Controller('health')
 export class HealthController {
   constructor(private db:Db){}
@@ -35,17 +36,17 @@ export class AuthController {
     res.clearCookie('nf.sid',{path:'/'});return {ok:true};
   }
 }
-@Controller('api')@UseGuards(SessionGuard)
+@Controller('api')@UseGuards(SessionGuard)@Permission('service.read')
 export class ApiController {
   constructor(private service:Service,private admin:Admin){}
   @Get('dashboard')dashboard(@Req() r:AuthRequest){return this.service.dashboard(r.user);}
-  @Get('partners')@Roles('ADMIN','DISPATCHER','SUPPORT','CUSTOMER')partners(@Req() r:AuthRequest){return this.service.partners(r.user);}
-  @Post('partners')@Roles('ADMIN')partner(@Req() r:AuthRequest,@Body() b:unknown){csrf(r);return this.admin.createPartner(r.user,b,r.correlationId);}
-  @Get('technicians')@Roles('ADMIN','DISPATCHER','SUPPORT')technicians(@Req() r:AuthRequest){return this.service.technicians(r.user);}
-  @Post('tickets')@Roles('ADMIN','DISPATCHER','SUPPORT','CUSTOMER')create(@Req() r:AuthRequest,@Body() b:unknown){csrf(r);return this.service.create(r.user,b,r.get('Idempotency-Key'),r.correlationId);}
+  @Get('partners')@Permission('partner.read')partners(@Req() r:AuthRequest){return this.service.partners(r.user);}
+  @Post('partners')@Permission('partner.write')partner(@Req() r:AuthRequest,@Body() b:unknown){csrf(r);return this.admin.createPartner(r.user,b,r.correlationId);}
+  @Get('technicians')@Permission('service.manage')technicians(@Req() r:AuthRequest){return this.service.technicians(r.user);}
+  @Post('tickets')@Permission('service.create')create(@Req() r:AuthRequest,@Body() b:unknown){csrf(r);return this.service.create(r.user,b,r.get('Idempotency-Key'),r.correlationId);}
   @Get('tickets/:id')detail(@Req() r:AuthRequest,@Param('id') id:string){return this.service.detail(r.user,id);}
-  @Post('tickets/:id/assign')@Roles('ADMIN','DISPATCHER')assign(@Req() r:AuthRequest,@Param('id') id:string,@Body() b:unknown){csrf(r);return this.service.assign(r.user,id,b,r.get('Idempotency-Key'),r.correlationId);}
-  @Post('tickets/:id/status')@Roles('ADMIN','DISPATCHER','SUPPORT','TECHNICIAN')status(@Req() r:AuthRequest,@Param('id') id:string,@Body() b:unknown){csrf(r);return this.service.status(r.user,id,b,r.get('Idempotency-Key'),r.correlationId);}
+  @Post('tickets/:id/assign')@Permission('service.assign')assign(@Req() r:AuthRequest,@Param('id') id:string,@Body() b:unknown){csrf(r);return this.service.assign(r.user,id,b,r.get('Idempotency-Key'),r.correlationId);}
+  @Post('tickets/:id/status')@Roles('ADMIN','SERVICE_MANAGER','DISPATCHER','SUPPORT','TECHNICIAN','FIELD_TECHNICIAN')status(@Req() r:AuthRequest,@Param('id') id:string,@Body() b:unknown){csrf(r);return this.service.status(r.user,id,b,r.get('Idempotency-Key'),r.correlationId);}
   @Get('cases/:id')serviceCase(@Req() r:AuthRequest,@Param('id') id:string){return this.service.serviceCase(r.user,id);}
   @Get('documents/:id/flow')flow(@Req() r:AuthRequest,@Param('id') id:string){return this.service.flow(r.user,id);}
   @Get('admin/organization')@Roles('ADMIN')org(@Req() r:AuthRequest){return this.admin.organization(r.user);}

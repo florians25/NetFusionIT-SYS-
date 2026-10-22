@@ -33,6 +33,8 @@ export async function migrate(connectionString) {
       await client.query(`GRANT SELECT,INSERT,UPDATE ON tenants,users,user_organizations,organizations,business_partners,technicians,number_ranges,documents,service_cases,tickets,dispatch_assignments,document_relations,idempotency_keys TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT ON audit_events TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT,UPDATE,DELETE ON sessions TO "${role}"`);
+      await client.query(`GRANT SELECT,INSERT,UPDATE ON approval_definitions,approval_instances,notification_outbox TO "${role}"`);
+      await client.query(`GRANT SELECT,INSERT ON partner_contacts,partner_addresses,ticket_comments,ticket_links,approval_decisions TO "${role}"`);
     }
   } finally { await client.end(); }
 }

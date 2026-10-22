@@ -34,6 +34,10 @@ try{
   await page.getByRole('dialog').getByText(/wurden gespeichert/).waitFor();
   await page.getByRole('button',{name:'OK',exact:true}).click();
   await page.getByRole('heading',{name:'VPN-Verbindung am Standort Berlin unterbrochen',exact:true}).waitFor();
+  await page.getByRole('tab',{name:'Kommunikation',exact:true}).click();
+  await page.getByRole('textbox',{name:'Kommentar zum Ticket verfassen'}).fill('Kundenkommentar aus dem Browserprozess.');
+  await page.getByRole('button',{name:'Kommentar senden',exact:true}).click();
+  await page.getByText('Kundenkommentar aus dem Browserprozess.',{exact:true}).waitFor();
   const ticketHash=new URL(page.url()).hash;
   assert.match(ticketHash,/#\/?tickets\/[a-f0-9-]{36}/);
   await page.getByRole('tab',{name:'Belegfluss',exact:true}).click();

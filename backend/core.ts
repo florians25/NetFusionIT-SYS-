@@ -3,8 +3,9 @@ import { Pool, PoolClient } from 'pg';
 import { createHash, randomUUID } from 'node:crypto';
 import { z } from 'zod';
 
-export type Role='ADMIN'|'DISPATCHER'|'SUPPORT'|'TECHNICIAN'|'CUSTOMER';
-export interface Principal { id:string; tenantId:string; tenantName:string; tenantSlug:string; name:string; email:string; role:Role; partnerId:string|null; orgIds:string[]; }
+import { Role } from './permissions';
+export type { Role } from './permissions';
+export interface Principal { id:string; tenantId:string; tenantName:string; tenantSlug:string; name:string; email:string; role:Role; partnerId:string|null; orgIds:string[]; permissions?:string[]; }
 export const uuid=z.uuid();
 export function parse<T>(schema:z.ZodType<T>,value:unknown):T {
   const result=schema.safeParse(value);
@@ -27,7 +28,7 @@ export const transitions:Record<string,string[]>={
 export function allowedTransitions(role:Role,status:string) {
   if(role==='CUSTOMER') return [];
   return (transitions[status]||[]).filter(s=>{
-    if(['COMMERCIALLY_CLOSED','CLOSED','CANCELLED'].includes(s)) return ['ADMIN','DISPATCHER'].includes(role);
+    if(['COMMERCIALLY_CLOSED','CLOSED','CANCELLED'].includes(s)) return ['ADMIN','SERVICE_MANAGER','DISPATCHER'].includes(role);
     return true;
   });
 }
@@ -74,7 +75,7 @@ export function ticketQuery(u:Principal){
   const values:unknown[]=[u.tenantId,u.orgIds];
   let condition='d.tenant_id=$1 AND d.organization_id=ANY($2::uuid[])';
   if(u.role==='CUSTOMER'){values.push(u.partnerId);condition+=` AND t.partner_id=$${values.length}`;}
-  if(u.role==='TECHNICIAN'){values.push(u.id);condition+=` AND EXISTS(SELECT 1 FROM dispatch_assignments a JOIN technicians tech ON tech.tenant_id=a.tenant_id AND tech.id=a.technician_id WHERE a.tenant_id=t.tenant_id AND a.ticket_id=t.id AND a.active AND tech.user_id=$${values.length})`;}
+  if(['TECHNICIAN','FIELD_TECHNICIAN'].includes(u.role)){values.push(u.id);condition+=` AND EXISTS(SELECT 1 FROM dispatch_assignments a JOIN technicians tech ON tech.tenant_id=a.tenant_id AND tech.id=a.technician_id WHERE a.tenant_id=t.tenant_id AND a.ticket_id=t.id AND a.active AND tech.user_id=$${values.length})`;}
   const sql=`SELECT t.id,d.number,t.title,t.description,t.type,t.priority,t.status,t.version,t.source,
     t.correlation_id AS "correlationId",t.case_id AS "caseId",cd.number AS "caseNumber",
     p.id AS "partnerId",p.name AS "partnerName",p.email AS "partnerEmail",d.organization_id AS "organizationId",

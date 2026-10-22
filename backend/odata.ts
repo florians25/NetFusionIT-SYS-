@@ -1,5 +1,6 @@
 import { Injectable, BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { Db,Principal,ticketQuery,caseQuery,uuid,parse } from './core';
+import { requirePermission } from './permissions';
 type Fields=Record<string,string>;
 export const entityFields:Record<string,Fields>={
   Tickets:{id:'Guid',number:'String',title:'String',description:'String',type:'String',priority:'String',status:'String',version:'Int32',source:'String',correlationId:'Guid',caseId:'Guid',caseNumber:'String',partnerId:'Guid',partnerName:'String',partnerEmail:'String',organizationId:'Guid',createdAt:'DateTimeOffset',updatedAt:'DateTimeOffset',technicianId:'Guid',technicianName:'String'},
@@ -55,6 +56,7 @@ export class OData {
     const match=/^(Tickets|ServiceCases|BusinessPartners|Technicians)(?:\(([a-fA-F0-9-]{36})\))?$/.exec(path);
     if(!match)throw new NotFoundException('OData-Ressource nicht verfügbar.');
     const [,set,id]=match,fields=entityFields[set];
+    requirePermission(u.role,set==='BusinessPartners'?'partner.read':'service.read');
     for(const key of Object.keys(query))if(!['$top','$skip','$select','$orderby','$filter','$count'].includes(key)||typeof query[key]!=='string')bad();
     if(set==='Technicians'&&u.role==='CUSTOMER')throw new ForbiddenException('Keine Berechtigung.');
     if(set==='BusinessPartners'&&u.role==='TECHNICIAN')throw new ForbiddenException('Keine Berechtigung.');
@@ -62,7 +64,7 @@ export class OData {
     if(set==='Tickets')base=ticketQuery(u);
     else if(set==='ServiceCases')base=caseQuery(u);
     else if(set==='BusinessPartners')base={sql:'SELECT id,number,name,email,status,organization_id AS "organizationId" FROM business_partners WHERE tenant_id=$1 AND organization_id=ANY($2::uuid[])'+(u.role==='CUSTOMER'?' AND id=$3':''),values:u.role==='CUSTOMER'?[u.tenantId,u.orgIds,u.partnerId]:[u.tenantId,u.orgIds]};
-    else base={sql:"SELECT t.id,t.name,t.organization_id AS \"organizationId\" FROM technicians t JOIN users u ON u.tenant_id=t.tenant_id AND u.id=t.user_id WHERE t.tenant_id=$1 AND t.organization_id=ANY($2::uuid[]) AND t.active AND u.active AND u.role='TECHNICIAN'",values:[u.tenantId,u.orgIds]};
+    else base={sql:"SELECT t.id,t.name,t.organization_id AS \"organizationId\" FROM technicians t JOIN users u ON u.tenant_id=t.tenant_id AND u.id=t.user_id WHERE t.tenant_id=$1 AND t.organization_id=ANY($2::uuid[]) AND t.active AND u.active AND u.role IN ('TECHNICIAN','FIELD_TECHNICIAN')",values:[u.tenantId,u.orgIds]};
     const values:unknown[]=[...base.values];
     let where='TRUE';
     if(id){parse(uuid,id);values.push(id);where=`id=$${values.length}`;}

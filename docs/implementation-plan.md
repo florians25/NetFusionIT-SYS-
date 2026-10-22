@@ -36,3 +36,11 @@ Nachweise am 22.10.2026:
 Noch keine Produktivfreigabe. Zielhosting: Ubuntu mit Docker laut Nutzer; kein Zugriff und noch kein Deployment-/Ressourcennachweis. Der OData-Service ist der dokumentierte lesende V4-Teilumfang, keine vollständige OData-Implementierung. Kundenfreigabe, SLA/Kalender, Material, Einkauf, Rechnungen, FI, MFA und alle weiteren Phasen bleiben offen. Offene Fachentscheidungen sind in `domain-model.md` und den Modulkapiteln genannt.
 
 Nach dieser Lieferung erst den ersten Prozess abnehmen, dann Phase 2b/3 vertiefen. Keine parallele Scheinimplementierung aller Fachmodule.
+
+## Fortlaufende Umsetzung des vollständigen Masterprompts
+
+Der Originalauftrag ist vollständig in `docs/master-prompt.md` versioniert. Der Nutzer hat die fortlaufende Entwicklung aller Phasen und regelmäßige GitHub-Pushes ausdrücklich beauftragt. Keine erneute Bestätigung pro Phase erforderlich. GitHub-Grundstand: `d149c62` auf `main`, Remote-SHA überprüft.
+
+Nächster Zwischenstand: Migration 002, differenzierte Aktionsrechte für 16 Fachrollen, mehrstufige organisationsbezogene Kundenfreigabe mit Definitionssnapshot, Vier-Augen-Prinzip, Rückfrage/Antwort, Versionsschutz, Historie und persistenten internen Benachrichtigungen. Neue Kunden starten als Entwurf; ohne ausdrücklich konfigurierte Freigabedefinition erfolgt keine Aktivierung. Kontakte/Adressen und Stammdatenänderungen im Entwurf sind persistent. Öffentliche Kundenkommentare und interne Notizen sind getrennt; interne Notizen werden auch aus der Kundenhistorie ausgeblendet. Native OpenUI5-Objektseiten und Freigabearbeitsplatz sind vorhanden.
+
+27 PostgreSQL/API-/UI-Vorgabenprüfungen bestehen. Der bestehende Browserprozess wurde um echte Kundenkommentare ergänzt. Der separate Freigabe-Browserprozess konfiguriert eine Definition, reicht einen Kunden ein und lässt ihn von einem zweiten Benutzer freigeben. Freigabegrenzen nach Betrag, Delegationen, aktive Stammdatenänderungsanträge, Upload-/Virenscan und externe Benachrichtigung sind weiterhin eigene offene Anforderungen und werden nicht als fertig ausgegeben.

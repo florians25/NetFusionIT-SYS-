@@ -1,0 +1,23 @@
+name: ERP validation
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      UI5_DATA_DIR: ${{ runner.temp }}/ui5-cache
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --include=dev --no-fund
+      - run: npm run build
+      - run: npm test
+      - run: npm audit --omit=dev

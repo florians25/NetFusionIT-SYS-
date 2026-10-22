@@ -3,7 +3,8 @@ import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { Db,Principal,parse,uuid,nextNumber,audit } from './core';
 import { hashPassword } from './auth';
-const role=z.enum(['ADMIN','DISPATCHER','SUPPORT','TECHNICIAN','CUSTOMER']);
+import { ROLES } from './permissions';
+const role=z.enum(ROLES);
 @Injectable()
 export class Admin {
   constructor(private db:Db){}
@@ -15,9 +16,10 @@ export class Admin {
     if(!u.orgIds.includes(input.organizationId))throw new ForbiddenException('Organisation nicht berechtigt.');
     return this.db.as(u,async db=>{
       const id=randomUUID(),number=await nextNumber(db,u.tenantId,'BP');
-      await db.query('INSERT INTO business_partners(id,tenant_id,organization_id,number,name,email) VALUES($1,$2,$3,$4,$5,$6)',[id,u.tenantId,input.organizationId,number,input.name,input.email]);
-      await audit(db,u,correlation,'PARTNER_CREATED',null,{partnerId:id,number});
-      return {id,number,name:input.name,email:input.email};
+      await db.query("INSERT INTO business_partners(id,tenant_id,organization_id,number,name,email,status) VALUES($1,$2,$3,$4,$5,$6,'DRAFT')",[id,u.tenantId,input.organizationId,number,input.name,input.email]);
+      await db.query("INSERT INTO documents(id,tenant_id,organization_id,number,kind,created_by) VALUES($1,$2,$3,$4,'BUSINESS_PARTNER',$5)",[id,u.tenantId,input.organizationId,number,u.id]);
+      await audit(db,u,correlation,'PARTNER_CREATED',id,{partnerId:id,number});
+      return {id,number,name:input.name,email:input.email,status:'DRAFT',version:1};
     });
   }
   async users(u:Principal){
@@ -34,7 +36,7 @@ export class Admin {
       const id=randomUUID();
       await db.query('INSERT INTO users(id,tenant_id,name,email,password_hash,role,partner_id) VALUES($1,$2,$3,$4,$5,$6,$7)',[id,u.tenantId,input.name,input.email,hash,input.role,input.partnerId||null]);
       await db.query('INSERT INTO user_organizations VALUES($1,$2,$3)',[u.tenantId,id,input.organizationId]);
-      if(input.role==='TECHNICIAN')await db.query('INSERT INTO technicians(id,tenant_id,user_id,organization_id,name) VALUES($1,$2,$3,$4,$5)',[randomUUID(),u.tenantId,id,input.organizationId,input.name]);
+      if(['TECHNICIAN','FIELD_TECHNICIAN'].includes(input.role))await db.query('INSERT INTO technicians(id,tenant_id,user_id,organization_id,name) VALUES($1,$2,$3,$4,$5)',[randomUUID(),u.tenantId,id,input.organizationId,input.name]);
       await audit(db,u,correlation,'USER_CREATED',null,{userId:id,role:input.role});
       return {id,name:input.name,email:input.email,role:input.role,active:true};
     });
@@ -55,7 +57,7 @@ export class Admin {
       }
       if((prior.role==='CUSTOMER')!==(input.role==='CUSTOMER'))throw new ConflictException('Interne und Kundenkonten dürfen nicht ineinander umgewandelt werden. Neues Konto anlegen.');
       await db.query('UPDATE users SET role=$3,active=$4 WHERE tenant_id=$1 AND id=$2',[u.tenantId,id,input.role,input.active]);
-      if(input.role==='TECHNICIAN')await db.query('INSERT INTO technicians(id,tenant_id,user_id,organization_id,name,active) SELECT $1,u.tenant_id,u.id,o.organization_id,u.name,$4 FROM users u JOIN user_organizations o ON o.tenant_id=u.tenant_id AND o.user_id=u.id WHERE u.tenant_id=$2 AND u.id=$3 ORDER BY o.organization_id LIMIT 1 ON CONFLICT(tenant_id,user_id) DO UPDATE SET active=excluded.active',[randomUUID(),u.tenantId,id,input.active]);
+      if(['TECHNICIAN','FIELD_TECHNICIAN'].includes(input.role))await db.query('INSERT INTO technicians(id,tenant_id,user_id,organization_id,name,active) SELECT $1,u.tenant_id,u.id,o.organization_id,u.name,$4 FROM users u JOIN user_organizations o ON o.tenant_id=u.tenant_id AND o.user_id=u.id WHERE u.tenant_id=$2 AND u.id=$3 ORDER BY o.organization_id LIMIT 1 ON CONFLICT(tenant_id,user_id) DO UPDATE SET active=excluded.active',[randomUUID(),u.tenantId,id,input.active]);
       else await db.query('UPDATE technicians SET active=false WHERE tenant_id=$1 AND user_id=$2',[u.tenantId,id]);
       await audit(db,u,correlation,'USER_ACCESS_CHANGED',null,{userId:id,from:{role:prior.role,active:prior.active},to:input});
       return {id,...input};

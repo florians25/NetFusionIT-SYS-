@@ -123,6 +123,16 @@
           "pattern": "roadmap",
           "name": "roadmap",
           "target": "Roadmap"
+        },
+        {
+          "pattern": "partners/{id}",
+          "name": "partner",
+          "target": "Partner"
+        },
+        {
+          "pattern": "workflow",
+          "name": "workflow",
+          "target": "Workflow"
         }
       ],
       "targets": {
@@ -161,6 +171,12 @@
         },
         "TicketDashboard": {
           "viewName": "TicketDashboard"
+        },
+        "Partner": {
+          "viewName": "Partner"
+        },
+        "Workflow": {
+          "viewName": "Workflow"
         }
       }
     }

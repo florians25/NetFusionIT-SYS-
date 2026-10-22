@@ -17,7 +17,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller","sap/m/MessageBox","sap/ui/model/jso
       return data;
     },
     run:async function(fn){this.getView().setBusy(true);try{return await fn.call(this);}catch(e){MessageBox.error(e.message);}finally{this.getView().setBusy(false);}},
-    onHome:function(){this.route("home");},onCockpit:function(){this.route("cockpit");},onTickets:function(){this.route("tickets");},onCases:function(){this.route("cases");},onDispatch:function(){this.route("dispatch");},onPartners:function(){this.route("partners");},onAdmin:function(){this.route("admin");},onRoadmap:function(){this.route("roadmap");},onNew:function(){this.route("newTicket");},
+    onHome:function(){this.route("home");},onCockpit:function(){this.route("cockpit");},onTickets:function(){this.route("tickets");},onCases:function(){this.route("cases");},onDispatch:function(){this.route("dispatch");},onPartners:function(){this.route("partners");},onAdmin:function(){this.route("admin");},onWorkflow:function(){this.route("workflow");},onRoadmap:function(){this.route("roadmap");},onNew:function(){this.route("newTicket");},
     onTicketPress:function(e){var item=e.getParameter("listItem")||e.getSource(),ctx=item.getBindingContext()||item.getBindingContext("view");if(ctx)this.route("ticket",{id:ctx.getProperty("id")});}
   });
 });

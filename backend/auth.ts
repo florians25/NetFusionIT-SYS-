@@ -4,6 +4,7 @@ import { Request } from 'express';
 import { randomBytes, scrypt as rawScrypt, timingSafeEqual } from 'node:crypto';
 import { promisify } from 'node:util';
 import { Db, Principal, Role } from './core';
+import { requirePermission,grants,can } from './permissions';
 declare module 'express-session' { interface SessionData { userId?:string; csrf?:string; authenticatedAt?:number; } }
 export interface AuthRequest extends Request { user:Principal; correlationId:string; }
 const scrypt=promisify(rawScrypt);
@@ -23,7 +24,7 @@ export class AuthService {
   constructor(private db:Db){}
   async resolve(id:string):Promise<Principal|null>{
     const r=await this.db.pool.query(`SELECT u.id,u.tenant_id AS "tenantId",t.name AS "tenantName",t.slug AS "tenantSlug",u.name,u.email,u.role,u.partner_id AS "partnerId",coalesce(array_agg(o.organization_id) FILTER(WHERE o.organization_id IS NOT NULL),'{}') AS "orgIds" FROM users u JOIN tenants t ON t.id=u.tenant_id LEFT JOIN user_organizations o ON o.tenant_id=u.tenant_id AND o.user_id=u.id WHERE u.id=$1 AND u.active GROUP BY u.id,t.id`,[id]);
-    return r.rows[0]||null;
+    return r.rows[0]?{...r.rows[0],permissions:Object.keys(grants).filter(permission=>can(r.rows[0].role,permission))}:null;
   }
   async login(tenant:string,email:string,password:string){
     const r=await this.db.pool.query('SELECT u.id,u.password_hash FROM users u JOIN tenants t ON t.id=u.tenant_id WHERE t.slug=$1 AND u.email=$2 AND u.active',[tenant,email.toLowerCase()]);
@@ -45,6 +46,8 @@ export class SessionGuard implements CanActivate {
     if(!user){req.session.destroy(()=>{});throw new UnauthorizedException('Zugang nicht aktiv.');}
     const roles=this.reflector.getAllAndOverride<Role[]>('roles',[ctx.getHandler(),ctx.getClass()]);
     if(roles&&!roles.includes(user.role))throw new ForbiddenException('Keine Berechtigung für diese Aktion.');
+    const permission=this.reflector.getAllAndOverride<string>('permission',[ctx.getHandler(),ctx.getClass()]);
+    if(permission)requirePermission(user.role,permission);
     if(!user.orgIds.length)throw new ForbiddenException('Keine Organisationszuordnung.');
     req.user=user;return true;
   }

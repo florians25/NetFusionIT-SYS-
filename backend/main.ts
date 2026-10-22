@@ -14,7 +14,10 @@ import { Service } from './service';
 import { Admin } from './admin';
 import { OData } from './odata';
 import { HealthController,AuthController,ApiController,ODataController } from './controllers';
-@Module({controllers:[HealthController,AuthController,ApiController,ODataController],providers:[Db,AuthService,SessionGuard,Service,Admin,OData]})
+import { Workflow } from './workflow';
+import { Collaboration } from './collaboration';
+import { WorkflowController } from './workflow.controller';
+@Module({controllers:[HealthController,AuthController,ApiController,ODataController,WorkflowController],providers:[Db,AuthService,SessionGuard,Service,Admin,OData,Workflow,Collaboration]})
 class AppModule{}
 @Catch()
 class SafeErrors implements ExceptionFilter {

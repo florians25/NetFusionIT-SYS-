@@ -1,6 +1,6 @@
 # Status und Genehmigungen
 
-Implementiert ist die zentrale Ticket-Zustandsmaschine einschließlich Rollen-/Versionsprüfung und Audit. Diese ist keine fertiggestellte universelle Genehmigungs-Engine.
+Implementiert sind die zentrale Ticket-Zustandsmaschine sowie die erste wiederverwendbare Genehmigungs-Engine für Kundenstammdaten: mehrere Rollenstufen, organisationsbezogene versionierte Definitionen, Snapshot pro Instanz, Vier-Augen-Prinzip, Rückfragen mit Einreicherantwort, Ablehnung, versionierte Entscheidungen, Audit und interne Benachrichtigungen. Definitionen sind nicht vorausgefüllt; fachlich verantwortliche Administratoren konfigurieren die Stufen. Der aktuelle Belegadapter aktiviert freigegebene Kunden. Die Engine ist erweiterbar, jedoch noch keine vollständige Umsetzung aller Betrags-/Vertretungs-/Eskalationsregeln.
 
 Die geplante Genehmigungs-Engine verwaltet unveränderliche Definitionsversionen mit Anwendungsfall, Organisation/Buchungskreis, Bedingungen, Betrags-/Währungsgrenzen, Reihenfolge, Freigeberrolle, Vier-Augen-Regel, Vertretung und Eskalation. Instanzen speichern die verwendete Definition und Eingabewerte; Regeländerungen verändern keine laufende Genehmigung stillschweigend.
 
