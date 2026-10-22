@@ -78,6 +78,16 @@ jobs:
           test-results/number-series-maintenance.png
           test-results/order-worklist-rich.png
           test-results/catalog-worklist-rich.png
+          test-results/goods-receipt-quantity-entry.png
+          test-results/service-delivery-quantity-entry.png
+          test-results/service-delivery-partial.png
+          test-results/service-delivery-reversal.png
+          test-results/service-delivery-posted.png
+          test-results/service-delivery-mobile.png
+          test-results/ticket-material-issues.png
+          test-results/service-report-material-actuals.png
+          test-results/service-report-material-customer.png
+          test-results/order-material-delivered.png
       - name: Preserve browser diagnostics
         if: failure()
         uses: actions/upload-artifact@v4

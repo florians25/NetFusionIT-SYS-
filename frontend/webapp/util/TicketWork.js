@@ -15,6 +15,7 @@ sap.ui.define(["netfusion/erp/util/FormDialog","sap/ui/core/Item"],function(form
   onCancelTask:function(e){var t=e.getSource().getBindingContext("view").getObject();form(this,"Work Order Task verwerfen",[{key:"reason",label:"Begründung",type:"textarea",required:true}],async function(data,key){data.version=t.version;await this.api("/api/tickets/"+this.id+"/tasks/"+t.id+"/cancel",{method:"POST",key:key,body:data});});},
   onCompleteTask:function(e){var t=e.getSource().getBindingContext("view").getObject();form(this,"Aufgabe abschließen und SRM erzeugen",[{key:"diagnosis",label:"Diagnose",type:"textarea",required:true},{key:"workDone",label:"Durchgeführte Arbeiten",type:"textarea",required:true},{key:"outcome",label:"Ergebnis",type:"textarea",required:true},{key:"isFinal",label:"Rückmeldungsart",type:"boolean",options:[{key:"false",text:"Teilrückmeldung"},{key:"true",text:"Endrückmeldung"}]}],async function(data,key){data.version=t.version;var result=await this.api("/api/tickets/"+this.id+"/tasks/"+t.id+"/complete",{method:"POST",key:key,body:data});this.route("report",{id:result.srm.id});});},
   onWorkReport:function(e){this.route("report",{id:e.getSource().getBindingContext("view").getProperty("reportId")});},
+  onMaterialIssue:function(e){this.route('goodsIssue',{id:e.getSource().getBindingContext('view').getProperty('id')});},
   onWorkOrder:function(e){this.route("order",{id:e.getSource().getBindingContext("view").getProperty("orderId")});}
  };
 });

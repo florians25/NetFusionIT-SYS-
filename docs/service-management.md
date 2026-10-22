@@ -21,3 +21,7 @@ Servicekalender rechnen Geschäftszeit in der konfigurierten IANA-Zeitzone, eins
 Erste Reaktion, Pause/Fortsetzung, technische Lösung und Storno werden historisiert. Der Hintergrundlauf prüft Fristüberschreitungen minütlich und erzeugt je Fristtyp genau ein append-only Ereignis; auch spät erfüllte Fristen bleiben als Verletzung erkennbar. Wiedereröffnung eines bereits gelösten SLA-Tickets erfordert eine noch offene fachliche Folgeregel und liefert aktuell 409, statt die ursprüngliche Leistungshistorie zu überschreiben.
 
 Basisverträge enthalten Art, Laufzeit, Kundenbezug, Umfang und optionale SLA-Policy. Technische Objekte enthalten Hersteller/Modell/Seriennummer, Standort, Garantie-/Installationsdatum, Hierarchie und Vertragsbezug. Seriennummern sind mandantenweit eindeutig. Erweiterte Vertragsfindung, periodische Faktura und In-House Repair: siehe `backlog.md`.
+
+## Materialausführung ab Preview 0.9
+
+[Tatsächliche Auslieferung und Materialverbrauch](material-deliveries.md) werden vom Serviceauftrag auf die vorhandene technische Ticketaufgabe gebucht. Das Ticket zeigt die Ausgaben und ihre Herkunft; der WOT-Abschluss erzeugt die SRM aus tatsächlichen Zeiten/Pauschalen und Materialbelegen mit derselben Ticket-Korrelation. Rücknahme, Berichtskorrektur und ursprüngliche Finanzkontierung bleiben nachvollziehbar. Weitergehende Korrektur nach Freigabe/Faktura ist noch offen.

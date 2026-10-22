@@ -21,3 +21,9 @@ Automatische Bedarfserkennung aus genehmigten Artikelpositionen, Bestand6/Bedarf
 WE prüft Konfiguration, Lagerort, Periode, Toleranz, kumulierte Teilmengen, Serien-/Chargenpflicht, Nullpreis und exakte Bewertung. WE4+2 zu Bestellung6 sowie WE4 zu weiterer Bestellung4 ergibt Bestand10/Wert480/Durchschnitt48. Storno verwendet Originalwerte/-konten und verhindert doppelte Gegenbewegung, Fremdreservierungsbruch und isoliertes Quellen-FI-Storno. Direkte Projektionsänderung und nachträglicher Materialbeleginhalt sind gesperrt.
 
 Zwei zusätzliche echte Chromium-Prozesse prüfen Lagerkonfiguration/WE/FI/Storno und den auftragsbezogenen Lager-/Fehlmengenprozess mit Nichtlager-/Fremdleistungspositionen. Desktop- und Android-Mobile-Darstellung, native Overflow-Navigation, Konsolen-/HTTP-Fehler und horizontaler Überlauf werden geprüft. Screenshots entstehen erst nach abgeschlossener Datenladung und Standardnavigation.
+
+## Tatsächlicher Verbrauch und SRM · Preview 0.9
+
+Teilausgabe2/Wert96, Originalrücknahme, Vollausgabe10/Wert480 auf Nullbestand/-wert; keine neue BANF für Verbrauch. Konkurrierende Ausgabe, gleiche Idempotenzantwort, fehlende Regeln/Aufgaben und Rollen-/Kundengrenzen sind geprüft. Rücknahme nach geänderter Kontierung verwendet Originalkonten. Gleichzeitig laufender SRM-Entwurfsabbruch und Rücknahme dürfen nicht blockieren oder doppelt buchen; neue Nachweise erhalten korrekte tatsächliche Quellen.
+
+SQL-Negativprüfung verhindert direkte falsche Bewertung, Änderung von Istpositionen, Anhängen an freigegebene SRM und private Projektionsänderung. Zusätzlicher Währungsfall USD-Verkaufsauftrag/EUR-Einkauf/-Istkosten prüft den Materialkosten-Snapshot. Der elfte Browserablauf führt durch Ticketzeit, Mengen-Dialog, Ausgabe, Gegenbewegung, Materialnavigation, SRM, Kundenbestätigung, Servicefreigabe und Abschluss einschließlich Smartphone.

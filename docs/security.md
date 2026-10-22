@@ -19,3 +19,9 @@ Verschlüsselte externe Backups mit Rotation und getrennten Schlüsseln, WAL/PIT
 ## Lagerprojektionen und Quellenbuchung ab Preview 0.7
 
 Die Laufzeitrolle kann Bestands- und Bewertungsprojektionen nur lesen. Materialbelegtrigger mit festem Suchpfad wenden die unveränderliche Bewegung an. Reservierungsprüfung validiert den transaktionslokalen Mandantenkontext vor ihrer privilegierten Sperre und schützt gegen Überreservierung. Datenbankconstraints verhindern negative Bestände, doppelte aktive Seriennummern, unversiegelte/unvollständige Materialbelege und positive Bewegungen ohne passendes gebuchtes Quellenjournal. Ein Storno ist nur einmal möglich; Originalkonten bleiben auch nach Konfigurationsänderung maßgeblich. Warehouse-Berechtigung erlaubt den fachlich validierten Quellenprozess, keine frei wählbaren FI-Buchungen.
+
+## Verbrauch und SRM-Istquellen ab Preview 0.9
+
+Verbrauch wird aus einer tatsächlichen Reservierung abgeleitet; Kundenwerte für Kosten werden nicht übernommen. Die Datenbank prüft den gesperrten gleitenden Wert, nichtnegative Mengen, verbleibende Reservierung, vollständige Rücknahme und Originalkonten/-werte. Positive Bewegungen benötigen korrespondierende gebuchte Quellenjournale in offener Periode. Alle privaten Projektionen bleiben Runtime-read-only.
+
+SRM-Positionen sind append-only und benötigen exakt passende tatsächliche Zeit-/Pauschalen-/Materialquellen. Einfügen in freigegebene Nachweise, Änderung alter Istpositionen und doppelte aktive Materialrückmeldung sind gesperrt. Ticket → Task → Auftrag ist die gemeinsame Sperrreihenfolge für Auslieferung, Rückmeldung und deren Korrektur; gleichzeitiger Entwurfsabbruch/Rücknahme ist geprüft. Keine Quersynchronisation freier Auftragszeiten.

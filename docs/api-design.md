@@ -95,3 +95,13 @@ Alle schreibenden Kommandos verlangen CSRF/Idempotenz; Versionen werden dort ver
 `GET /api/admin/number-series` liefert alle 66 festen Bereiche mit nächster Nummer, Belegung, Rest, Aktivstatus und Version. `PATCH /api/admin/number-series/:prefix` benötigt Administration, CSRF/Idempotenz, erwartete Version, `active`, optionalen `nextValue` und Grund. Nur Vorwärtssetzung innerhalb des festen Bereichs; keine frei zugängliche Nummernreservierung ohne Fachbeleg. Neue Fachbelege beziehen ihre Nummern automatisch in derselben Transaktion.
 
 Artikelanlage akzeptiert optional `numberPrefix` HW/SW/DL/LI/ER/ZU passend zur Artikelart; SKU bleibt unabhängig. Benutzer-/Kontakt-/Zeiterfassungsprojektionen enthalten ihre neuen Nummern. Auftragslisten enthalten exakte Positionssummen als Dezimalstrings, Positionsanzahl, Fall-/Organisationsbezug und Materialstatus innerhalb derselben autorisierten Sicht. Arbeitslistensuche und Statusfilter verwenden native UI5-Filter; serverseitige Berechtigung wird dadurch nicht erweitert.
+
+## Auslieferung/Verbrauch ab Preview 0.9
+
+- `GET /api/service/orders/:id/delivery-context`: offene berechtigte Aufgaben, Perioden und verbleibende konkrete Reservierungen mit Serien-/Chargen-/Lagerbezug.
+- `POST /api/service/orders/:id/deliveries`: Auftragsversion, Task, Periode, Daten/Text und `items[{reservationId,quantity}]`; tatsächliche Teil-/Vollausgabe mit WA/LS, Bewertung und Quellen-FI. Keine freie Kostenangabe.
+- `GET /api/service/orders/:id/deliveries`: zugehörige Materialbelege/Rücknahmen.
+- `GET /api/inventory/issues/:id`: autorisierter Istbeleg mit Ticket/WOT-Korrelation, ursprünglicher Auftragsposition, Bewertung, Journal und aktueller Rücknehmbarkeit.
+- `POST /api/inventory/issues/:id/reverse`: offener Korrekturzustand, Periode, Daten und Grund für eindeutige vollständige Gegenbewegung.
+
+Schreiben benötigt CSRF/Idempotenz; veränderlicher Auftragszustand wird versionsgeprüft und gesperrt. WOT-Abschluss sammelt zusätzlich wirksame Materialausgaben als dritte Istquelle; keine unabhängige manuelle Materialkopie in der SRM. Ticket-Ausführung liefert interne Materialbelegverweise. Materialplanung unterscheidet ursprüngliche/offene Reservierung und Verbrauch und fordert verbrauchte Mengen nicht neu an.

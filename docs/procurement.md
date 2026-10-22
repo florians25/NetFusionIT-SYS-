@@ -1,6 +1,6 @@
 # Auftragsbezogene Beschaffung
 
-Stand Preview 0.7. Verbindlich gilt die [Nutzerpräzisierung](requirements/ticket-execution.md): Einstieg und kaufmännische Referenz sind Serviceauftrag und freigegebene Position. Das Ticket bleibt technischer Arbeitsbeleg. Kostenpflichtige Beschaffung kann nicht frei aus einem Ticket angelegt werden.
+Stand Preview 0.9. Verbindlich gilt die [Nutzerpräzisierung](requirements/ticket-execution.md): Einstieg und kaufmännische Referenz sind Serviceauftrag und freigegebene Position. Das Ticket bleibt technischer Arbeitsbeleg. Kostenpflichtige Beschaffung kann nicht frei aus einem Ticket angelegt werden.
 
 ## Implementierter Prozess
 
@@ -18,8 +18,8 @@ Vier-Augen-Freigabe schließt sowohl Belegersteller als auch Einreicher aus, auc
 
 Die Auftragsposition zeigt freie/reservierte Mengen, neue Fehlmenge, BANF, freigegebene Bestellung, Netto-WE und eigenen Versorgungsstatus. Aktive Reservierungen und noch nicht erhaltene Beschaffungsmengen decken den Bedarf; eingegangene und anschließend bewusst freigegebene Teile werden nicht als dauerhaft verfügbar vorgetäuscht. Ein weiterer Auftrag kann keine fremde Reservierung nutzen. Automatische Bedarfe werden bei Auftragsfreigabe aus der Artikelart abgeleitet; ein Bedarfstermin kann vor der ersten BANF vervollständigt werden.
 
-Freigegebene Lagerbestellungen können mit offener Periode und expliziter Lager-/Bewertungskonfiguration teilweise vereinnahmt werden. Toleranzen werden gegen kumulierte Nettoeingänge geprüft. Eingang reserviert die benötigte Menge für den Ursprung und erzeugt atomar Bestand, Wert, FI, Belegfluss und Audit. Bestellstatus PART_RECEIVED/FULLY_RECEIVED beschreibt tatsächlichen Eingang; BANF PARTIALLY_ORDERED/FULLY_ORDERED beschreibt freigegebene Bestellmengen. Ein Eingangsstorno nimmt den Ursprung über Material- und FI-Gegenbeleg zurück. Details unter [Materialwirtschaft](material-management.md).
+Freigegebene Lagerbestellungen können mit offener Periode und expliziter Lager-/Bewertungskonfiguration teilweise vereinnahmt werden. Toleranzen werden gegen kumulierte Nettoeingänge geprüft. Eingang reserviert die benötigte Menge für den Ursprung und erzeugt atomar Bestand, Wert, FI, Belegfluss und Audit. Bestellstatus PARTIALLY_RECEIVED/FULLY_RECEIVED beschreibt tatsächlichen Eingang; BANF PARTIALLY_ORDERED/FULLY_ORDERED beschreibt freigegebene Bestellmengen. Ein Eingangsstorno nimmt den Ursprung über Material- und FI-Gegenbeleg zurück. Details unter [Materialwirtschaft](material-management.md).
 
 ## Noch offene Folgeprozesse
 
-Tatsächlicher Materialverbrauch, Nichtlager-/Fremdleistungsabnahme, Lieferantenrechnung, Drei-Wege-Abgleich, Lieferantenversand und nachträgliche Bestelländerungen sind noch offen. Bestellfreigabe allein erzeugt weder Bestand noch FI. Es gibt noch keinen Preis-/Mengenabweichungsworkflow für Eingangsrechnungen.
+[Auftragsbezogene Auslieferung/Verbrauch, Gegenbewegung und WOT/SRM-Übergabe](material-deliveries.md) sind vorhanden. Nichtlager-/Fremdleistungsabnahme, Lieferantenrechnung, Drei-Wege-Abgleich, Lieferantenversand und nachträgliche Bestelländerungen sind noch offen. Bestellfreigabe allein erzeugt weder Bestand noch FI. Es gibt noch keinen Preis-/Mengenabweichungsworkflow für Eingangsrechnungen.

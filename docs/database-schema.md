@@ -1,6 +1,6 @@
-# Datenbankmodell · Preview 0.8
+# Datenbankmodell · Preview 0.9
 
-Die ausführbare Wahrheit sind die prüfsummengesicherten Migrationen `backend/migrations/001_*` bis `010_*`. Bereits angewendete Dateien werden nicht verändert; Ausbau erfolgt über Folgemigrationen. Readiness prüft Dateinamen, SHA-256 und erwartete Tabellen. UUID-Schlüssel werden serverseitig erzeugt; zusammengesetzte Tenant-Fremdschlüssel verhindern mandantenübergreifende Herkunftsbezüge. Restriktives Löschen für Geschäftsbelege.
+Die ausführbare Wahrheit sind die prüfsummengesicherten Migrationen `backend/migrations/001_*` bis `011_*`. Bereits angewendete Dateien werden nicht verändert; Ausbau erfolgt über Folgemigrationen. Readiness prüft Dateinamen, SHA-256 und erwartete Tabellen. UUID-Schlüssel werden serverseitig erzeugt; zusammengesetzte Tenant-Fremdschlüssel verhindern mandantenübergreifende Herkunftsbezüge. Restriktives Löschen für Geschäftsbelege.
 
 | Migration | Physisch implementierter Umfang |
 |---|---|
@@ -14,6 +14,7 @@ Die ausführbare Wahrheit sind die prüfsummengesicherten Migrationen `backend/m
 | 008 valued_goods_receipts | material_inventory_settings, plants, storage_locations, goods_receipts, goods_receipt_items, stock_balances, inventory_valuations |
 | 009 automatic_material_planning | stock_reservations; automatische Bedarfskennzeichnung, Bedarfstermin und separater Positions-/Kopf-Versorgungsstatus |
 | 010 business_number_series | business_number_series; feste inklusive Bereiche, monotone versionierte Zuteilung/Sperre; neue Mitarbeiter-, Ansprechpartner- und Zeitnummern |
+| 011 service_order_deliveries | goods_issues, goods_issue_items; fortgeführter Reservierungsverbrauch, historisches Bestandskonto, dritte SRM-Istquelle und deren Unveränderlichkeits-/Quellenprüfung |
 
 ## Integrität und Laufzeitrolle
 
@@ -27,4 +28,6 @@ Journalpositionen/gebuchte Inhalte und Audit sind gegen nachträgliches UPDATE/D
 
 ## Noch keine implementierten Tabellen
 
-Angebote, Service-/Reparaturvorlagen, Werkstattreparaturen/Retouren, tatsächliche Warenentnahmen, Inventur/Umlagerung, Lieferantenrechnungen/Abnahmen, Fakturakandidaten/Rechnungen, offene Posten/Zahlungsausgleich, sichere Anhänge, DATEV-Läufe und Integrations-Inbox sind Ausbau. Vorhandene Outbox/Vertragsbasis bedeutet keine vollständige Versand-/Vertragslösung. Jede Erweiterung benötigt eigene Tenant-/Scope-/Audit-/Korrekturregeln und Migrationstests.
+Angebote, Service-/Reparaturvorlagen, Werkstattreparaturen/Retouren, Inventur/Umlagerung, Lieferantenrechnungen/Abnahmen, Fakturakandidaten/Rechnungen, offene Posten/Zahlungsausgleich, sichere Anhänge, DATEV-Läufe und Integrations-Inbox sind Ausbau. Vorhandene Outbox/Vertragsbasis bedeutet keine vollständige Versand-/Vertragslösung. Jede Erweiterung benötigt eigene Tenant-/Scope-/Audit-/Korrekturregeln und Migrationstests.
+
+Warenausgangspositionen projizieren physischen Bestand, offenen Reservierungsanteil, verbrauchte Menge und gleitenden Wert atomar. Die letzte Menge nimmt den Restwert mit. Rücknahmen vergleichen vollständige gruppierte Material-/Journalpositionen mit dem Ursprung. SRM-Positionen besitzen genau eine Zeit-, Pauschalen- oder Materialquelle und bleiben unveränderlich; Einfügen prüft Aufgabe, Ticket, Auftragsposition und tatsächliche Menge/Kosten.

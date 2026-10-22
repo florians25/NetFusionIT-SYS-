@@ -1,4 +1,4 @@
-# Materialwirtschaft · Preview 0.7
+# Materialwirtschaft · Preview 0.9
 
 Die [verbindliche Nutzerpräzisierung](requirements/material-fulfillment.md) führt den Prozess vom Serviceauftrag aus. Freigegebene Lager-, Nichtlager- und Fremdleistungspositionen erzeugen automatisch ihren Bedarf. Arbeitszeit, Fahrt und Pauschalen erzeugen keinen Ersatzteilbedarf. Herkunft, Mengen, Termin und Kontierung bleiben an der genehmigten Position; ein automatischer Bedarf kann nicht unabhängig vom Auftrag gelöscht werden.
 
@@ -6,7 +6,7 @@ Die [verbindliche Nutzerpräzisierung](requirements/material-fulfillment.md) fü
 
 Bestände sind nach Tenant, Buchungskreis, Artikel, Werk/Lagerort, Charge und Seriennummer aufgeteilt. Werke und zentrale, Werkstatt- oder mobile Lagerorte werden im Lagerarbeitsplatz konfiguriert. Lagerführung verlangt ausdrücklich gleitende Durchschnittsbewertung sowie Serien-/Chargenpflicht. Nach der ersten Bewegung bleibt diese Einstellung geschützt. Negative Bestände und gleichzeitig mehrfach aktive gleiche Seriennummern werden auch von der Datenbank verhindert.
 
-Freier Bestand = physischer Bestand minus aktive Reservierungen aller Aufträge. „Lager nutzen“ reserviert verfügbare Mengen für die konkrete Auftragsposition. „Teile bestellen“ reserviert ebenfalls zunächst vorhandene Teile und erzeugt nur für die verbleibende, noch nicht durch Beschaffung gedeckte Menge eine BANF. Die BANF wird atomar in die konfigurierte unabhängige Freigabe eingereicht. Fehlende Regeln/Freigeber rollen das gesamte Kommando zurück. Wiederholung, parallele Planung und unveränderte Idempotenzschlüssel erzeugen keine Doppelbindung. Reservierungsfreigabe erfordert Version und Begründung.
+Freier Bestand = physischer Bestand minus noch offene aktive Reservierungen aller Aufträge. Ursprüngliche Reservierung, offener Anteil und tatsächlich ausgelieferter Anteil bleiben getrennt. „Lager nutzen“ reserviert verfügbare Mengen für die konkrete Auftragsposition. „Teile bestellen“ reserviert ebenfalls zunächst vorhandene Teile und erzeugt nur für die verbleibende, noch nicht durch Beschaffung gedeckte Menge eine BANF. Die BANF wird atomar in die konfigurierte unabhängige Freigabe eingereicht. Fehlende Regeln/Freigeber rollen das gesamte Kommando zurück. Wiederholung, parallele Planung und unveränderte Idempotenzschlüssel erzeugen keine Doppelbindung. Reservierungsfreigabe erfordert Version und Begründung.
 
 Die native OpenUI5-Auftragsobjektseite zeigt Bedarf, freien Bestand, Reservierung, physische Fehlmenge, neu anzufordernde Menge, BANF, freigegebene Bestellung und Netto-Wareneingang. Positionsstatus und daraus abgeleiteter Versorgungsstatus am Kopf sind vom Ausführungs- und Fakturastatus getrennt. Nichtlagerteile/Fremdleistungen zeigen ihren direkten Beschaffungsweg; fehlender Lagerbestand wird ausdrücklich gemeldet. Der Lagerarbeitsplatz zeigt physisch/reserviert/frei je Lagerort und Bewertung je Buchungskreis/Artikel.
 
@@ -20,6 +20,10 @@ Die Kontierungsregel STOCK_RECEIPT benötigt ein Bestandskonto (ASSET) und WE/RE
 
 Ein Wareneingangsstorno ist eine eindeutige vollständige Gegenbewegung mit Originalbezug, Grund und offener Periode. Menge und ursprünglicher Wert werden zurückgenommen; die FI-Gegenbuchung verwendet die ursprünglichen Konten auch nach einer Regeländerung. Eigene durch diesen Eingang angelegte Reservierungen werden freigegeben. Fremdreservierungen oder fehlender Bestand verhindern die Rücknahme. Der automatische FI-Beleg kann nicht separat vom Materialprozess storniert werden.
 
+## Auslieferung und Verbrauch
+
+Ausgabe vom Serviceauftrag auf eine offene technische Ticketaufgabe reduziert Bestand und offenen Reservierungsanteil und führt die Verbrauchsmenge fort. WA und LS erhalten eigene Geschäftsnummern. Gleitender Wertabgang und Quellen-FI (Aufwand Soll / Bestand Haben) sind atomar; letzter Abgang übernimmt den exakten Restwert. Gegenbewegung verwendet Originalmenge, -wert und -konten. Unzulässige Mischungen historischer Bestandskonten sind gesperrt. Verbrauch zählt zur Bedarfsdeckung und erzeugt keine weitere BANF.
+
 ## Ausstehender Umfang
 
-Reservierung ist noch kein tatsächlicher Verbrauch. Warenentnahme/Verbrauch mit WOT-/SRM- und Kostenübergabe, Rückgabe nach Verbrauch, Anfangsbestand, Umlagerung, Inventur, Einheitenumrechnung und historische ATP/MRP-Terminplanung sind noch offen. Nichtlager-/Fremdleistungsbestellungen besitzen noch keine Leistungsabnahme. Lieferantenrechnung/Drei-Wege-Abgleich und Faktura sind ebenfalls offen. Es gibt keine direkte Bestandskorrektur als Ersatz für diese Prozesse.
+Reservierung ist vom tatsächlichen Verbrauch getrennt. [Auslieferung, Rücknahme, gleitende Verbrauchsbewertung und WOT-/SRM-Übergabe](material-deliveries.md) sind ab 0.9 implementiert. Korrekturen nach freigegebener/fakturierter SRM, Anfangsbestand, Umlagerung, Inventur, Einheitenumrechnung und historische ATP/MRP-Terminplanung sind noch offen. Nichtlager-/Fremdleistungsbestellungen besitzen noch keine Leistungsabnahme. Lieferantenrechnung/Drei-Wege-Abgleich und Faktura sind ebenfalls offen. Es gibt keine direkte Bestandskorrektur als Ersatz für diese Prozesse.

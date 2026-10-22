@@ -18,6 +18,8 @@ import { Commerce } from './commerce';
 import { CommerceController } from './commerce.controller';
 import { Work } from './work';
 import { WorkController } from './work.controller';
+import {ServiceDeliveries} from './service-deliveries';
+import {ServiceDeliveriesController} from './service-deliveries.controller';
 import {NumberSeries} from './number-series';
 import {NumberSeriesController} from './number-series.controller';
 import { MaterialPlanning } from './material-planning';
@@ -35,7 +37,7 @@ import { Sla } from './sla';
 import { Operations } from './operations';
 import { Dispatch } from './dispatch';
 import { OperationsController } from './operations.controller';
-@Module({controllers:[NumberSeriesController,MaterialPlanningController,InventoryController,ProcurementController,FinanceController,WorkController,CommerceController,HealthController,AuthController,ApiController,ODataController,WorkflowController,OperationsController],providers:[NumberSeries,MaterialPlanning,Inventory,Procurement,Finance,Work,Commerce,Db,AuthService,SessionGuard,Service,Admin,OData,Workflow,Collaboration,Sla,Operations,Dispatch]})
+@Module({controllers:[ServiceDeliveriesController,NumberSeriesController,MaterialPlanningController,InventoryController,ProcurementController,FinanceController,WorkController,CommerceController,HealthController,AuthController,ApiController,ODataController,WorkflowController,OperationsController],providers:[ServiceDeliveries,NumberSeries,MaterialPlanning,Inventory,Procurement,Finance,Work,Commerce,Db,AuthService,SessionGuard,Service,Admin,OData,Workflow,Collaboration,Sla,Operations,Dispatch]})
 class AppModule{}
 @Catch()
 class SafeErrors implements ExceptionFilter {

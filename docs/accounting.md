@@ -1,6 +1,6 @@
 # Finanzbuchhaltung · implementierter Kern
 
-Stand Preview 0.7. Buchungskreise, explizite Hauswährung, Konten, offene/geschlossene Perioden, Journalentwürfe, unabhängige Journalfreigabe, endgültige Buchung, Gegenbelegstorno und Summen/Salden sind implementiert. Jede Journalposition enthält Konto, Soll/Haben, exakten positiven Decimal-Betrag, Positionstext und optionale Kostenstelle. Pro Journal gilt Soll = Haben. Aktive Konten, passende Währung und offene Periode werden vor Freigabe und Buchung erneut geprüft. Keine vom System erfundenen Konten oder Steuersätze.
+Stand Preview 0.9. Buchungskreise, explizite Hauswährung, Konten, offene/geschlossene Perioden, Journalentwürfe, unabhängige Journalfreigabe, endgültige Buchung, Gegenbelegstorno und Summen/Salden sind implementiert. Jede Journalposition enthält Konto, Soll/Haben, exakten positiven Decimal-Betrag, Positionstext und optionale Kostenstelle. Pro Journal gilt Soll = Haben. Aktive Konten, passende Währung und offene Periode werden vor Freigabe und Buchung erneut geprüft. Keine vom System erfundenen Konten oder Steuersätze.
 
 Gebuchte Journalinhalte und Positionen sind datenbankseitig unveränderlich. Die Buchung hält Hash, Actor und Zeit fest. Korrektur erfolgt durch eindeutig referenzierten Gegenbeleg mit Begründung und eigenem Freigabe-/Buchungsprozess. Summen/Salden lesen tatsächlich gebuchte Einträge einschließlich Gegenbuchungen; Entwürfe zählen nicht. Dezimalrechnung verhindert binäre Geldrundung.
 
@@ -10,6 +10,12 @@ Konfigurierbare Ereignisregeln ordnen Kontenrollen zu. STOCK_RECEIPT benötigt B
 
 Lageristen dürfen über den autorisierten Wareneingang ein solches Quellenjournal auslösen, aber weder freie Journale erfassen noch Kontierungsregeln ändern. Das Journal bleibt mit Serviceauftrag, Bestellung und Materialbeleg verbunden. Sein Storno wird ausschließlich vom Wareneingangsstorno ausgelöst und verwendet die Originalkonten und Originalwerte. Ein isoliertes FI-Storno dieses Quellenjournals ist gesperrt.
 
+## Integrierter Materialverbrauch
+
+STOCK_ISSUE bucht tatsächliche Auslieferungen vom Lager auf den Serviceauftrag: Materialaufwand (EXPENSE) Soll, historisches Bestandskonto (ASSET) Haben. Kostenstelle/-objekt stammen aus der genehmigten Position. Der gesperrte gleitende Durchschnitt bewertet den Abgang; der letzte Abgang nimmt den Restwert mit. PostgreSQL prüft den Wert zusätzlich. Physische Menge, Reservierungs-/Verbrauchsanteil und FI sind atomar; ein wertfreier Bestand erzeugt keine fingierte Geldbuchung.
+
+Rücknahme setzt Originalmenge und Originalwert zurück und verwendet die ursprünglichen Journalpositionen einschließlich Kontierungsmerkmalen. Material- und Journalsignaturen müssen dem Ursprung vollständig entsprechen. Eine Änderung der aktuellen Regel ändert keinen historischen Gegenbeleg. Bei positivem Restwert dürfen unterschiedliche Bestandskonten nicht vermischt werden. Istkosten bleiben in Hauswährung auch bei abweichender Verkaufswährung; eine automatische FX-/Profitabilitätsrechnung ist damit nicht behauptet.
+
 ## Noch nicht implementiert
 
-Debitoren-/Kreditorenrechnungen, Steuerbuchung aus Rechnung, OP, Zahlung/Ausgleich, Teil-/Überzahlung, vollständige Kostenrechnung, Materialverbrauchsbuchung, Kontoblatt, Bilanz/GuV/BWA, DATEV und E-Rechnungen sind offen. Konfigurierbare Kontenrollen allein belegen keine fertigen Rechnungs-/Steuerprozesse. Ein technischer Hash ersetzt kein geeignetes Archiv. Kontenrahmen, Steuerregeln, Währungen, Rundung und Exporte benötigen fachliche Abnahme vor Produktivbetrieb.
+Debitoren-/Kreditorenrechnungen, Steuerbuchung aus Rechnung, OP, Zahlung/Ausgleich, Teil-/Überzahlung, vollständige Kostenrechnung, Kontoblatt, Bilanz/GuV/BWA, DATEV und E-Rechnungen sind offen. Konfigurierbare Kontenrollen allein belegen keine fertigen Rechnungs-/Steuerprozesse. Ein technischer Hash ersetzt kein geeignetes Archiv. Kontenrahmen, Steuerregeln, Währungen, Rundung und Exporte benötigen fachliche Abnahme vor Produktivbetrieb.

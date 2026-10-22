@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { Db,Principal,parse,uuid,audit,idempotent } from './core';
 import { ROLES,requirePermission } from './permissions';
 import { checkOrg,document,notify,version } from './business';
-import { submitReport,decideReport } from './work';
+import { submitReport,decideReport,lockReportSubject } from './work';
 import { procurementSubject,lockProcurementSubject,validateProcurementApproval,refreshRequisition } from './procurement';
 export const approvalSubjects:Record<string,{table:string,pending:string,approved:string,rejected:string,permission:string}>={BUSINESS_PARTNER:{table:'business_partners',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'partner.write'},MATERIAL:{table:'products',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'material.write'},SERVICE_ORDER:{table:'service_orders',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'order.write'},REQUISITION:{table:'purchase_requisitions',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'requisition.write'},PURCHASE_ORDER:{table:'purchase_orders',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'procurement.write'},ACCOUNTING:{table:'journals',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'finance.write'},SERVICE_REPORT:{table:'service_reports',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'order.execute'}};
 @Injectable()
@@ -30,7 +30,7 @@ export class Workflow {
   }));
  }
  async submitWithin(db:PoolClient,u:Principal,id:string,expected:number,correlation:string){
-  await lockProcurementSubject(db,u,id);
+  await lockProcurementSubject(db,u,id);await lockReportSubject(db,u,id);
   const doc=await document(db,u,id,true),subject=approvalSubjects[doc.kind];
   if(!subject)throw new ConflictException('Dieser Belegtyp unterstützt noch keinen Freigabeprozess.');
   requirePermission(u.role,subject.permission);
@@ -73,7 +73,7 @@ export class Workflow {
   return this.db.as(u,db=>idempotent(db,u,'APPROVAL_DECIDE:'+id,key,input,async()=>{
    const i=(await db.query('SELECT * FROM approval_instances WHERE tenant_id=$1 AND id=$2 AND organization_id=ANY($3::uuid[]) FOR UPDATE',[u.tenantId,id,u.orgIds])).rows[0];
    if(!i)throw new NotFoundException('Genehmigung nicht gefunden.');version(i.version,input.version);
-   await lockProcurementSubject(db,u,i.document_id);
+   await lockProcurementSubject(db,u,i.document_id);await lockReportSubject(db,u,i.document_id);
    const doc=await document(db,u,i.document_id,true),subject=approvalSubjects[doc.kind];
    if(!subject)throw new ConflictException('Freigabe-Belegtyp fehlt.');
    const s=(await db.query(`SELECT version FROM ${subject.table} WHERE tenant_id=$1 AND id=$2 FOR UPDATE`,[u.tenantId,i.document_id])).rows[0];version(s.version,i.subject_version);

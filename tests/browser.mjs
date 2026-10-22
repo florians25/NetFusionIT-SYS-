@@ -1,3 +1,4 @@
+import {selectTicketTab} from './helpers/ui5-navigation.mjs';
 import { chromium } from 'playwright-core';
 import { mkdir } from 'node:fs/promises';
 import assert from 'node:assert/strict';
@@ -58,7 +59,7 @@ try{
   await page.locator('[id$="--queueHeader"]').getByRole('tab',{name:/^Alle/}).click();
   await page.locator('[id$="--worklist"]').getByText('VPN-Verbindung am Standort Berlin unterbrochen',{exact:true}).click();
   await page.getByText('Jonas Weber',{exact:true}).last().waitFor();
-  await page.getByRole('tab',{name:'Historie',exact:true}).click();
+  await selectTicketTab(page,'Historie');
   await page.getByText('Techniker zugewiesen',{exact:true}).last().waitFor();
   await logout();await login('TECHNICIAN');
   await go(ticketHash.slice(1));

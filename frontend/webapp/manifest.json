@@ -204,6 +204,11 @@
           "name": "goodsReceipt",
           "target": "goodsReceipt",
           "pattern": "inventory/receipts/{id}"
+        },
+        {
+          "name": "goodsIssue",
+          "target": "goodsIssue",
+          "pattern": "inventory/issues/{id}"
         }
       ],
       "targets": {
@@ -294,6 +299,11 @@
           "viewName": "GoodsReceipt",
           "viewType": "XML",
           "viewId": "goodsReceipt"
+        },
+        "goodsIssue": {
+          "viewName": "GoodsIssue",
+          "viewType": "XML",
+          "viewId": "goodsIssue"
         }
       }
     }
