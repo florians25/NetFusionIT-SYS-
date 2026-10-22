@@ -46,7 +46,8 @@ In dieser Cloud wurde Compose nicht live getestet, da kein Docker-Daemon zugäng
 
 ## Dokumentation
 
-- [Preview 0.10: Anlagenlisten und dichtere Fachmasken](docs/previews/v0.10.0-preview.1/README.md) und [Versionsnotizen](docs/releases/v0.10.0-preview.1.md)
+- [Preview 0.10.2: klassische Schwarz-Weiß-Geschäftsformulare](docs/previews/v0.10.0-preview.2/README.md) und [Versionsnotizen](docs/releases/v0.10.0-preview.2.md)
+- [Preview 0.10.1: Anlagenlisten und dichtere Fachmasken](docs/previews/v0.10.0-preview.1/README.md) und [Versionsnotizen](docs/releases/v0.10.0-preview.1.md)
 - [Preview 0.9: Auslieferung und korrelierte Material-SRM](docs/previews/v0.9.0-preview.1/README.md)
 - [PDF-Archiv, Quarantäne und ClamAV-Overlay](docs/attachments.md)
 - [Preview 0.5: Buchungskern und Finanzbelege](docs/previews/v0.5.0-preview.1/README.md) und [Versionsnotizen](docs/releases/v0.5.0-preview.1.md)

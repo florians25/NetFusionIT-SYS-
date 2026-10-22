@@ -37,3 +37,7 @@ Der zwölfte Chromium-Ablauf öffnet echte native Anlagen-Dialoge, erzeugt/archi
 Preview0.10 verwendet den offiziellen OpenUI5-Patchstand1.152.1. Der Smartphone-Test öffnet ausdrücklich das native Header-Überlaufmenü und daraus die Anlagenliste; dadurch wird die in1.153.0 beobachtete Positionierungsregression erkannt. Keine manipulierten Frameworkdateien oder Ersatzcontrols. Sämtliche Browserketten werden beim Versionswechsel erneut ausgeführt.
 
 Der DIN-Briefbogentest liest tatsächliche PDF-Textrahmen aus und prüft die Grenzen der Fensteranschrift, Informationsblock, Betreff, Beträge und einseitigen Fuß. Überlange Anschriften werden explizit abgewiesen. Mehrseitentests prüfen den Tabellenkopf und die tatsächliche Seitennummer auf jeder Positionsseite. Die Ticket-Browserkette verlangt ausdrücklich kein Belegflussregister und navigiert direkt zum Servicefall.
+
+Preview0.10.0-preview.2 prüft die monochrome Formularausgabe zusätzlich durch tatsächliches Rastern und identische RGB-Kanäle jedes Pixels. Belegkopf rechts, DIN-Fensteranschrift, gespeicherte Artikelnummern und Preis je Basiseinheit werden verwendet; sechs Dokumentarten werden für die isolierte Preview als echte heruntergeladene PDFs ausgegeben. Die Archivtests prüfen Vorlagenstand3.
+
+Die abschließende Formular-Sichtprüfung sichert vollständige Wörter in schmalen Überschriften (z.B. Seriennummer), vierstellige Positionen ohne abgespaltene Endziffer und lesbare deutsche MEZ/MESZ-Zeitstempel ab. Keine Titel-/Spaltenänderung erzeugt neue fachliche Mengen oder Werte.
