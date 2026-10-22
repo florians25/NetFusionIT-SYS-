@@ -19,6 +19,12 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci --include=dev --no-fund
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - run: sudo apt-get update && sudo apt-get install -y poppler-utils
+      - run: npm run einvoice:setup
       - run: npm run build
       - run: npm test
       - run: npm run test:browser:all

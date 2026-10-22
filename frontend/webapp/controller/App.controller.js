@@ -6,6 +6,8 @@ sap.ui.define(["netfusion/erp/controller/Base.controller","sap/m/ActionSheet","s
       var name=e.getParameter("name"),group,title,tabs=[],selected=name;
       if(["cockpit","tickets","newTicket","ticket","cases","case"].includes(name)){
         group="service";title="Service Desk";tabs=[{key:"cockpit",text:"Service-Cockpit"},{key:"tickets",text:"Tickets"},{key:"cases",text:"Servicefälle"}];selected=["ticket","newTicket"].includes(name)?"tickets":name==="case"?"cases":name;
+      }else if(["billing","billingSource","billingRequest","invoice"].includes(name)){
+        group="billing";title="Faktura";if(this.state("/access/billingInternal"))tabs=[{key:"billing",text:"Fakturavorrat"}];selected="billing";
       }else if(["dispatch","planning"].includes(name)){
         group="dispatch";title="Disposition & Einsätze";if(this.state("/access/assign"))tabs.push({key:"dispatch",text:"Ticketzuweisung"});tabs.push({key:"planning",text:"Einsatzplanung"});
       }else{

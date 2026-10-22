@@ -6,7 +6,7 @@ import { configuration,databaseUrls,startDatabase,root } from './local.mjs';
 import { migrate } from './migrate.mjs';
 import { seed } from './seed.mjs';
 export async function harness(port=3101){
-  const config=await configuration();let ownedDatabase=null,server=null,admin=null,closed=false;
+  const config=await configuration();let ownedDatabase=null,server=null,admin=null,closed=false,logs='';
   const cluster=new pg.Client({connectionString:databaseUrls(config,'postgres').admin,connectionTimeoutMillis:1000});
   try{await cluster.connect();}catch{ownedDatabase=await startDatabase(config);}finally{await cluster.end().catch(()=>{});}
   const control=new pg.Client({connectionString:databaseUrls(config,'postgres').admin}),name='erp_spec_'+randomBytes(5).toString('hex'),urls=databaseUrls(config,name);
@@ -14,7 +14,7 @@ export async function harness(port=3101){
   async function close(){if(closed)return;closed=true;try{await stop();await admin?.end();await control.query(`DROP DATABASE IF EXISTS ${name} WITH (FORCE)`);}finally{await control.end().catch(()=>{});if(ownedDatabase)await ownedDatabase.stop();}}
   async function start(){
     server=spawn(process.execPath,['dist/main.js'],{cwd:root,env:{...process.env,NODE_ENV:'test',DATABASE_URL:urls.app,ERP_SESSION_SECRET:config.sessionSecret,PORT:String(port),ERP_HOST:'127.0.0.1'},stdio:['ignore','pipe','pipe']});
-    let logs='';server.stdout.on('data',b=>{logs+=b;});server.stderr.on('data',b=>{logs+=b;});
+    logs='';server.stdout.on('data',b=>{logs+=b;});server.stderr.on('data',b=>{logs+=b;});
     for(let i=0;i<100;i++){
       if(server.exitCode!==null)throw new Error('Testserver-Start fehlgeschlagen: '+logs);
       try{const r=await fetch(`http://127.0.0.1:${port}/health/ready`);if(r.ok)return;}catch{}
@@ -24,7 +24,7 @@ export async function harness(port=3101){
   }
   try{
     await control.connect();await control.query(`CREATE DATABASE ${name}`);await migrate(urls.admin);const accounts=await seed(urls.admin);admin=new pg.Client({connectionString:urls.admin});await admin.connect();await start();
-    return {base:`http://127.0.0.1:${port}`,accounts,admin,urls,restart:async()=>{await stop();await start();},close};
+    return {base:`http://127.0.0.1:${port}`,accounts,admin,urls,logs:()=>logs,restart:async()=>{await stop();await start();},close};
   }catch(e){await close().catch(()=>{});throw e;}
 }
 export async function client(base,account){

@@ -13,3 +13,9 @@ Tests verwenden pro Lauf eine neue separate DB im selben lokalen Cluster und tes
 Vor Rollout: Tests, Build, Migrationsprüfung auf wiederhergestellter Stagingkopie, Backup, Expand/Contract-Kompatibilität, Healthcheck und Smoke-Test. Bei Fehlern API-Version zurückrollen; destructive DB-Rollbacks nur per geprüftem Restore-Plan. Die mitgelieferte Compose-Datei ist Ausgangspunkt und wird ohne verfügbaren Docker-Daemon nicht als live geprüft bezeichnet.
 
 Der Nutzer hat Ubuntu mit Docker als Zielhosting bestätigt. Konkrete Ressourcen, Domain/DNS, externe Datensicherung und Serverhärtung sind dort noch zu prüfen; Cloud-Tests ersetzen diese Prüfung nicht. Keine Produktivveröffentlichung durch diese Aufgabe.
+
+### E-Rechnung ab Preview0.11
+
+Java21 und die fest gepinnte offizielle Mustang-CLI2.26.0 sind für die PDF/A-/CII-Ausgabe erforderlich: `npm run einvoice:setup` lädt und prüft das Werkzeug unter `.local/tools`. Produktionspfad ist über `ERP_EINVOICE_VALIDATOR_JAR` festlegbar und muss denselben SHA-256-Stand enthalten. Das Dockerfile kopiert eine Java21-JRE aus dem offiziellen Temurin-Image sowie das im Build verifizierte Werkzeug; die Images sind auf dem Zielserver tatsächlich zu bauen und zu testen. RAM für maximal512MiB Java-Heap zusätzlich zu Node/DB einplanen; lokale Prozessbegrenzung ersetzt keine clusterweite Queue. Keine Ausgabe bei fehlendem/falschem Validator; Rechnung bleibt gebucht, Ausgabe FAILED/PENDING und gezielt wiederholbar.
+
+Vor rechtlich relevantem Versand [Compliance-Freigaben](compliance-gap-analysis.md) einschließlich Register-/Vertretungsdaten, Steuerfällen, Aufbewahrung, Wiederherstellung und Unternehmensprofil abschließen. Technische EN16931-Validierung ist keine allgemeine Rechts-/GoBD-Zertifizierung. Für Eingangsrechnungen gelten die offenen [AP-Arbeitspakete](requirements/incoming-invoices-barcodes.md).

@@ -18,8 +18,13 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci --include=dev --no-fund
-      - run: npm run build
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
       - run: sudo apt-get update && sudo apt-get install -y poppler-utils
+      - run: npm run einvoice:setup
+      - run: npm run build
       - run: npm test
       - run: npm run test:browser:all
       - run: npm audit --omit=dev
@@ -103,6 +108,14 @@ jobs:
           test-results/business-delivery-note.pdf
           test-results/business-service-report.pdf
           test-results/business-record.pdf
+          test-results/billing-due-list.png
+          test-results/billing-invoice.png
+          test-results/billing-invoice-mobile.png
+          test-results/crm-contact-functions.png
+          test-results/crm-financial-roles.png
+          test-results/zugferd-invoice.pdf
+          test-results/factur-x.xml
+          test-results/zugferd-validation.xml
       - name: Preserve browser diagnostics
         if: failure()
         uses: actions/upload-artifact@v4

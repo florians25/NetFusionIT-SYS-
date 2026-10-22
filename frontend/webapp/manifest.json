@@ -5,7 +5,7 @@
     "type": "application",
     "title": "NetFusion Service Workspace",
     "applicationVersion": {
-      "version": "0.10.0-preview.2"
+      "version": "0.11.0-preview.1"
     },
     "dataSources": {
       "service": {
@@ -209,6 +209,26 @@
           "name": "goodsIssue",
           "target": "goodsIssue",
           "pattern": "inventory/issues/{id}"
+        },
+        {
+          "name": "billing",
+          "target": "Billing",
+          "pattern": "billing"
+        },
+        {
+          "name": "billingSource",
+          "target": "BillingSource",
+          "pattern": "billing/orders/{id}/sources"
+        },
+        {
+          "name": "billingRequest",
+          "target": "BillingRequest",
+          "pattern": "billing/requests/{id}"
+        },
+        {
+          "name": "invoice",
+          "target": "Invoice",
+          "pattern": "billing/invoices/{id}"
         }
       ],
       "targets": {
@@ -304,6 +324,18 @@
           "viewName": "GoodsIssue",
           "viewType": "XML",
           "viewId": "goodsIssue"
+        },
+        "Billing": {
+          "viewName": "Billing"
+        },
+        "BillingSource": {
+          "viewName": "BillingSource"
+        },
+        "BillingRequest": {
+          "viewName": "BillingRequest"
+        },
+        "Invoice": {
+          "viewName": "Invoice"
         }
       }
     }

@@ -31,6 +31,7 @@ sap.ui.define(["netfusion/erp/controller/Base.controller","netfusion/erp/util/Fo
   onGoodsReceipt:function(e){this.route("goodsReceipt",{id:e.getSource().getBindingContext("view").getProperty("id")});},
   onProcurement:function(e){this.route('procurement',{id:e.getSource().getBindingContext('view').getProperty('id')});},
   onComplete:function(){this.run(async function(){await this.api("/api/service/orders/"+this.id+"/complete",{method:"POST",key:crypto.randomUUID(),body:{version:this.vm().getProperty("/order/version")}});this.load();});},
+  onBillingRequest:function(){this.route("billingSource",{id:this.id});},
   onBillingReady:function(){this.run(async function(){await this.api("/api/service/orders/"+this.id+"/billing-ready",{method:"POST",key:crypto.randomUUID(),body:{version:this.vm().getProperty("/order/version")}});this.load();});},
   onSource:function(e){var d=e.getSource().getBindingContext("view").getObject();this.onDocument(d.sourceKind,d.sourceId);},onTarget:function(e){var d=e.getSource().getBindingContext("view").getObject();this.onDocument(d.targetKind,d.targetId);}
  });

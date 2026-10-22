@@ -1,17 +1,18 @@
 # NetFusion · Enterprise Service ERP
 
-Eigenständiger modularer Monolith mit echtem **OpenUI5**, **NestJS/TypeScript** und **PostgreSQL**. Die Oberfläche verwendet ausschließlich **OpenUI5-Standardcontrols**, das Standardtheme und Standard-Abstandsklassen. Keine eigenen UI-Controls, Renderer, CSS-Dateien oder SVG-Logos. Preview 0.10: **Kundenformular → Ticket + Servicefall → Technikerbearbeitung**, Kundenfreigabe, SLA, Servicebasis, Einsatzplanung sowie Artikel-/Auftragsfreigabe mit Preisfindung, Zeiten, geprüfte Leistungsnachweise und technischen Abschluss. Buchungskern mit Konten, Perioden, freigegebenen Journalen, Storno und Summen/Salden. Automatische Materialbedarfe aus freigegebenen Artikelpositionen, Lagerverfügbarkeit und Reservierungen; „Teile bestellen“ fordert nur die Fehlmenge per BANF mit Freigabe an. Teilbestellungen, bewertete Teilwareneingänge und Gegenbewegungen mit atomaren Finanzbuchungen. Tatsächliche Materialauslieferung/Teilauslieferung zum Serviceauftrag mit WA/LS-Nummern, Gegenbewegung, Kostenbuchung und automatischer Materialübernahme in die WOT-SRM. 66 verwaltbare Geschäftsnummernkreise; dichtere native Facharbeitsplätze mit Filtern, Belegwerten, Kontext und Status. Kleine PDF-Anlagenlisten mit unveränderlichem Archiv, tatsächlichen Geschäfts-PDFs im DIN-5008-Form-B-Brieflayout mit SAP-orientierter Beleggliederung, geschützten Downloads und Upload-Quarantäne.
+Eigenständiger modularer Monolith mit echtem **OpenUI5**, **NestJS/TypeScript** und **PostgreSQL**. Die Oberfläche verwendet ausschließlich **OpenUI5-Standardcontrols**, das Standardtheme und Standard-Abstandsklassen. Keine eigenen UI-Controls, Renderer, CSS-Dateien oder SVG-Logos. Preview 0.11: **Kundenformular → Ticket + Servicefall → Technikerbearbeitung**, Kundenfreigabe, SLA, Servicebasis, Einsatzplanung sowie Artikel-/Auftragsfreigabe mit Preisfindung, Zeiten, geprüfte Leistungsnachweise und technischen Abschluss. Buchungskern mit Konten, Perioden, freigegebenen Journalen, Storno und Summen/Salden. Automatische Materialbedarfe aus freigegebenen Artikelpositionen, Lagerverfügbarkeit und Reservierungen; „Teile bestellen“ fordert nur die Fehlmenge per BANF mit Freigabe an. Teilbestellungen, bewertete Teilwareneingänge und Gegenbewegungen mit atomaren Finanzbuchungen. Tatsächliche Materialauslieferung/Teilauslieferung zum Serviceauftrag mit WA/LS-Nummern, Gegenbewegung, Kostenbuchung und automatischer Materialübernahme in die WOT-SRM. 66 verwaltbare Geschäftsnummernkreise; dichtere native Facharbeitsplätze mit Filtern, Belegwerten, Kontext und Status. Kleine PDF-Anlagenlisten mit unveränderlichem Archiv, tatsächlichen Geschäfts-PDFs im DIN-5008-Form-B-Brieflayout mit SAP-orientierter Beleggliederung, geschützten Downloads und Upload-Quarantäne. Eigenständige Fakturaanforderung → unabhängige Freigabe → Fakturavorrat → Teil-/Endrechnung mit FI/Forderung, tatsächlichem Leistungszeitraum und validiertem ZUGFeRD (PDF/A-3/CII). Schwarze Code128-Belegnummern in der gemeinsamen Formularbasis; Ansprechpartnerfunktionen und freigegebene Finanzrollen je Buchungskreis.
 
-Kein SAP-Backend nötig. Eigene Marke; Screenshots dienen als Fiori-/Prozessreferenz. Noch keine Produktivfreigabe. Beschaffung und Finanzbuchhaltung besitzen geprüfte Teilprozesse. Physische Lagerplätze/Labels/Scanner, Umlagerung/Inventur, Faktura, offene Posten und erweiterte Workflow-/Vertragsfunktionen bleiben offen; der gesamte Masterprompt ist noch nicht umgesetzt.
+Kein SAP-Backend nötig. Eigene Marke; Screenshots dienen als Fiori-/Prozessreferenz. Noch keine Produktivfreigabe. Beschaffung und Finanzbuchhaltung besitzen geprüfte Teilprozesse. Physische Lagerplätze/Labels/Scanner, Umlagerung/Inventur, erweiterte Faktura/Steuerfälle, Rechnungskorrektur, Zahlung/Ausgleich, Eingangsrechnungen und erweiterte Workflow-/Vertragsfunktionen bleiben offen; der gesamte Masterprompt ist noch nicht umgesetzt.
 
 Nach Anmeldung öffnet sich die **App-Zentrale** mit rollenabhängigen App-Kacheln. Die Shell zeigt nur Schnellzugriffe der aktiven Anwendung. Das separat aufgerufene **Service-Cockpit** bietet: klickbare Kennzahlenkarten, Arbeitsvorräte für neue/unzugewiesene/kritische/laufende Tickets, Such-/Prioritäts-/Typfilter, Prioritätsverteilung und direkte Technikerzuweisung. Alle Werte stammen aus autorisierten Datenbankabfragen. Die App-Zentrale enthält nur App-Kacheln. Objektseiten verwenden native OpenUI5-Belegköpfe und fachliche Register, Positionsaktionen stehen an der Tabelle.
 
 ## Lokal entwickeln
 
-Voraussetzung: Linux x64 oder eine vom PostgreSQL-Paket unterstützte Plattform, Node.js **24 LTS**, npm. Für Browsertests Chromium (`CHROMIUM_PATH` bei abweichendem Pfad).
+Voraussetzung: Linux x64 oder eine vom PostgreSQL-Paket unterstützte Plattform, Node.js **24 LTS**, npm und Java **21** für die E-Rechnungsausgabe. PDF-Prüfungen benötigen `poppler-utils`. Für Browsertests Chromium (`CHROMIUM_PATH` bei abweichendem Pfad).
 
 ```sh
 npm ci
+npm run einvoice:setup
 npm run build
 npm run dev:setup
 npm run dev
@@ -46,6 +47,8 @@ In dieser Cloud wurde Compose nicht live getestet, da kein Docker-Daemon zugäng
 
 ## Dokumentation
 
+- [Preview 0.11.1: Fakturaanforderung, Teilrechnung, ZUGFeRD und Code128](docs/previews/v0.11.0-preview.1/README.md), [Versionsnotizen](docs/releases/v0.11.0-preview.1.md)
+- [Rechtliche Compliance-Matrix und priorisierte Ergänzungen](docs/compliance-gap-analysis.md), [Eingangsrechnungen und Barcodes](docs/requirements/incoming-invoices-barcodes.md)
 - [Preview 0.10.2: klassische Schwarz-Weiß-Geschäftsformulare](docs/previews/v0.10.0-preview.2/README.md) und [Versionsnotizen](docs/releases/v0.10.0-preview.2.md)
 - [Preview 0.10.1: Anlagenlisten und dichtere Fachmasken](docs/previews/v0.10.0-preview.1/README.md) und [Versionsnotizen](docs/releases/v0.10.0-preview.1.md)
 - [Preview 0.9: Auslieferung und korrelierte Material-SRM](docs/previews/v0.9.0-preview.1/README.md)

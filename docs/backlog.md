@@ -6,7 +6,7 @@ Stand: 22.10.2026. Der vollständige [Masterprompt](master-prompt.md) bleibt der
 
 ## Umfang und aktueller Lieferstand
 
-Der Masterprompt umfasst alle darin genannten Module; diese Ergänzungsliste ist keine vollständige Liste bereits gelieferter Funktionen. Ein Grundstamm, eine Tabellenmaske oder ein reservierter Nummernkreis erledigt keinen End-to-End-Prozess. Die jüngste [detaillierte SD-/Faktura-/CRM-Aufteilung](requirements/sales-billing-crm.md) enthält17 Sales-Order-Abläufe,10 Faktura- und10 CRM-Arbeitspakete mit Abnahmekriterien. Der eigene AU-Kundenauftrag und die neuen Faktura-/CRM-Erweiterungen sind zunächst offen; der vorhandene SA bleibt ein eigener Vorgang.
+Der Masterprompt umfasst alle darin genannten Module; diese Ergänzungsliste ist keine vollständige Liste bereits gelieferter Funktionen. Ein Grundstamm, eine Tabellenmaske oder ein reservierter Nummernkreis erledigt keinen End-to-End-Prozess. Die jüngste [detaillierte SD-/Faktura-/CRM-Aufteilung](requirements/sales-billing-crm.md) enthält 17 Sales-Order-Abläufe, 10 Faktura- und 10 CRM-Arbeitspakete mit Abnahmekriterien. Der eigene AU-Kundenauftrag bleibt offen. Preview0.11 liefert einen ersten Teil von Faktura und CRM, weitere Arbeitspakete bleiben offen; der vorhandene SA bleibt ein eigener Vorgang.
 
 ## SERVICE-01 · Serviceangebote
 
@@ -28,7 +28,7 @@ Abnahme: Standard-/Festpreisregeln, Teilannahme und mehrfach parallel ausgelöst
 
 ## SERVICE-02 · Serviceaufträge und Servicerückmeldungen
 
-Status: Auftragsanlage, Positionen, Preisfindung, Freigabe, Ticketaufgaben, Arbeits-/Fahrzeiten/Pauschalen, Timer, automatische SRM beim Aufgabenabschluss mit Ticket-Korrelation, Teil-/Endrückmeldungen, Kundenbestätigung und technischer Abschluss implementiert; auftragsbezogener Materialbedarf, BANF und Teilbestellungen mit Lieferanten-/Beschaffungsfreigabe implementiert; automatischer Artikelbedarf, Fehlmengen-BANF, Lagerreservierung, bewerteter Teil-Wareneingang/Storno und Quellen-FI implementiert; tatsächliche Auslieferung/Materialverbrauch/Rücknahme mit Quellen-FI und automatischer WOT/SRM-Übergabe implementiert; weitere Positionstypen, Faktura und vollständige FI/CO-Integration offen · Masterprompt-Phase 4–8.
+Status: Auftragsanlage, Positionen, Preisfindung, Freigabe, Ticketaufgaben, Arbeits-/Fahrzeiten/Pauschalen, Timer, automatische SRM beim Aufgabenabschluss mit Ticket-Korrelation, Teil-/Endrückmeldungen, Kundenbestätigung und technischer Abschluss implementiert; auftragsbezogener Materialbedarf, BANF und Teilbestellungen mit Lieferanten-/Beschaffungsfreigabe implementiert; automatischer Artikelbedarf, Fehlmengen-BANF, Lagerreservierung, bewerteter Teil-Wareneingang/Storno und Quellen-FI implementiert; tatsächliche Auslieferung/Materialverbrauch/Rücknahme mit Quellen-FI und automatischer WOT/SRM-Übergabe implementiert; weitere Positionstypen, erweiterte Faktura-/Steuerfälle und vollständige FI/CO-Integration offen · Masterprompt-Phase 4–8.
 Quelle: [vollständiger Nutzeranhang](requirements/serviceauftraege.md); alle darin enthaltenen Details gelten zusätzlich zur Kurzfassung.
 
 - Liste/Suche/Filter, Anzeigen/Anlegen/Bearbeiten; Servicegruppen, Positionen und hierarchische Servicepakete für Service, Material und Ausgaben.
@@ -132,3 +132,8 @@ Nutzerergänzung22.10.2026: [Originalauftrag](requirements/compliance-user-promp
 Die rechtliche Prüfung ergänzt bestehende Anforderungen um notwendige Kontroll-/Nachweislücken. Rechtsgrundlagen/Übergangsfristen sind wegen blockierter amtlicher Quellen **zum gewünschten Stichtag nicht abschließend verifiziert**. Keine GoBD-Zertifizierung oder Produktivfreigabe. Eingangsrechnungen brauchen unveränderte Originale, UBL/CII-/Hybridannahme, externe Lieferantennummer plus interne EG-ID, Dublettenprüfung, Teilmengen-Drei-Wege-Abgleich, Abweichungs-/Zahlungssperren, unabhängige Freigabe, WE/RE-/Vorsteuer-/Kreditorenbuchung, OP und nachvollziehbare Korrektur. Sie sind weiterhin offen.
 
 Code128 mit tatsächlicher Belegnummer wird in der gemeinsamen schwarzen Formularbasis umgesetzt; alte Archivbytes bleiben erhalten. Fremde Eingangsoriginale werden dafür nicht verändert. Barcode ist Nutzerkomfort, keine allgemeine gesetzliche Pflicht; physische Lagerlabels/Scanner bleiben eigener Umfang.
+
+
+### Technischer Teilstand Preview0.11
+
+Fakturaanforderung mit tatsächlichen SRM-Quellen, unabhängiger Freigabe, Fakturavorrat, Teil-/Endrechnung eines SA, Inland-DE-Normalumsatzsteuer, gleichem zweistelligem Währungscode, FI/Forderung und echter validierter ZUGFeRD-Ausgabe sind umgesetzt. Native OpenUI5-Seiten führen durch diese Schritte; Quellmengen, genehmigte Nettowerte und historische Snapshots sind geschützt. Ansprechpartnerfunktionen/Gültigkeit, mehrere Adressarten sowie separat freizugebende Debitoren-/Kreditorenrollen und Bankprofile je Buchungskreis sind Teilbasis. Sie erledigen weder den gesamten SD-/BILL-/CRM-Backlog noch Eingangsrechnungen. Code128 ist in der gemeinsamen Formularbasis (Vorlagenstand4) einschließlich neuer Rechnungen integriert. [Umfang und Grenzen](billing.md), [Preview-Nachweise](previews/v0.11.0-preview.1/README.md). Rechtliche Abnahme und Produktionsbetrieb bleiben getrennt.

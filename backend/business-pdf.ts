@@ -1,5 +1,6 @@
 import PDFDocument from 'pdfkit';
 import path from 'node:path';
+import bwipjs from 'bwip-js';
 export interface BusinessPdf {
  title:string;number:string;sourceNumber:string;status:string;date:string;
  issuer:{name:string;street?:string;postalCode?:string;city?:string;country?:string;vatId?:string};
@@ -8,11 +9,18 @@ export interface BusinessPdf {
  totals?:[string,string][];paragraphs?:[string,string][];notice?:string;
 }
 // DIN 5008 Form B: dimensions in mm, then converted to PDF points.
-export const BUSINESS_PDF_TEMPLATE_VERSION=3;
+export const BUSINESS_PDF_TEMPLATE_VERSION=4;
 export class BusinessPdfLayoutError extends Error {}
-export async function renderBusinessPdf(data:BusinessPdf,archiveNumber:string):Promise<Buffer>{
+export async function renderBusinessPdf(data:BusinessPdf,archiveNumber:string,options:{pdfa?:boolean}={}):Promise<Buffer>{
+ // BWIPP generates the Code 128 checksum and automatic code-set switches.
+ // Keep vector bars for clean monochrome printing; no external image/URL is used.
+ if(!/^[A-Za-z0-9][A-Za-z0-9._\/-]{0,47}$/.test(data.number))throw new BusinessPdfLayoutError('Belegnummer ist für den Belegbarcode nicht zulässig.');
+ const symbol=bwipjs.raw({bcid:'code128',text:data.number})[0];
+ if(!('sbs' in symbol))throw new BusinessPdfLayoutError('Code-128-Ausgabe konnte nicht erzeugt werden.');
+ const modules=symbol.sbs.reduce((sum,n)=>sum+n,0),barcodeModule=Math.min(.85,80*72/25.4/(modules+20));
+ if(barcodeModule<.55)throw new BusinessPdfLayoutError('Belegnummer überschreitet die druckbare Barcodebreite.');
  const mm=(v:number)=>v*72/25.4,left=mm(25),width=mm(165),bottom=mm(264),ink='#000000',rule='#000000';
- const doc=new PDFDocument({size:'A4',margins:{top:mm(15),left,right:mm(20),bottom:mm(29)},bufferPages:true,info:{Title:data.title+' '+data.number,Author:data.issuer.name,Subject:data.sourceNumber,Creator:'NetFusion ERP / PDFKit',Keywords:archiveNumber}});
+ const doc=new PDFDocument({size:'A4',...(options.pdfa?{subset:'PDF/A-3b',pdfVersion:'1.7' as const}:{}),margins:{top:mm(15),left,right:mm(20),bottom:mm(29)},bufferPages:true,info:{Title:data.title+' '+data.number,Author:data.issuer.name,Subject:data.sourceNumber,Creator:'NetFusion ERP / PDFKit',Keywords:archiveNumber}});
  const normal=path.resolve(__dirname,'../assets/fonts/DejaVuSans.ttf'),bold=path.resolve(__dirname,'../assets/fonts/DejaVuSans-Bold.ttf');
  doc.registerFont('Business',normal);doc.registerFont('BusinessBold',bold);doc.font('Business');
  const chunks:Buffer[]=[];const result=new Promise<Buffer>((resolve,reject)=>{doc.on('data',c=>chunks.push(c));doc.on('end',()=>resolve(Buffer.concat(chunks)));doc.on('error',reject);});
@@ -77,7 +85,13 @@ export async function renderBusinessPdf(data:BusinessPdf,archiveNumber:string):P
  for(const [title,value] of data.paragraphs||[]){page(36);line(title,left,y,width,10,true);y+=20;for(const v of lines(value,width,10)){page(14);line(v,left,y,width,10);y+=14;}y+=12;}
  const pages=doc.bufferedPageRange();for(let i=pages.start;i<pages.start+pages.count;i++){
   doc.switchToPage(i);const margin=doc.page.margins.bottom;doc.page.margins.bottom=0;
-  const top=mm(276),footerAddress=address(data.issuer).flatMap(v=>lines(v,mm(65),6.5));if(footerAddress.length>6)throw new BusinessPdfLayoutError('Firmenanschrift überschreitet die Formularfußzeile.');drawLines(footerAddress,left,top,mm(65),6.5,false,'left',8);
+  // Reserve 10 narrow modules of white quiet zone on either side. The footer
+  // is outside the address window and the last printable table line.
+  const barcodeWidth=(modules+20)*barcodeModule,barcodeX=mm(190)-barcodeWidth,barcodeY=mm(268);
+  let barX=barcodeX+10*barcodeModule;
+  doc.fillColor(ink);symbol.sbs.forEach((n,index)=>{if(index%2===0)doc.rect(barX,barcodeY,n*barcodeModule,mm(6)).fill(ink);barX+=n*barcodeModule;});
+  line(data.number,barcodeX,barcodeY+mm(6.5),barcodeWidth,6.5,false,'right');
+  const top=mm(279),footerAddress=address(data.issuer).flatMap(v=>lines(v,mm(65),6.5));if(footerAddress.length>6)throw new BusinessPdfLayoutError('Firmenanschrift überschreitet die Formularfußzeile.');drawLines(footerAddress,left,top,mm(65),6.5,false,'left',8);
   const middle=[['Archiv',archiveNumber],['Vorlagenstand',String(BUSINESS_PDF_TEMPLATE_VERSION)],...(version?[['Vorgangsversion',version[1]]]:[])];middle.forEach(([k,v],j)=>line(k+': '+v,mm(96),top+j*9,mm(57),6.5));
   if(data.issuer.vatId){line('USt-IdNr.',mm(157),top,mm(33),6.5);line(data.issuer.vatId,mm(157),top+9,mm(33),7);}
   line(`Seite ${i+1} / ${pages.count}`,mm(157),mm(290),mm(33),7,false,'right');
