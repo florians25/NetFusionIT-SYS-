@@ -18,6 +18,10 @@ import { Commerce } from './commerce';
 import { CommerceController } from './commerce.controller';
 import { Work } from './work';
 import { WorkController } from './work.controller';
+import { MaterialPlanning } from './material-planning';
+import { MaterialPlanningController } from './material-planning.controller';
+import { Inventory } from './inventory';
+import { InventoryController } from './inventory.controller';
 import { Procurement } from './procurement';
 import { ProcurementController } from './procurement.controller';
 import { Finance } from './finance';
@@ -29,7 +33,7 @@ import { Sla } from './sla';
 import { Operations } from './operations';
 import { Dispatch } from './dispatch';
 import { OperationsController } from './operations.controller';
-@Module({controllers:[ProcurementController,FinanceController,WorkController,CommerceController,HealthController,AuthController,ApiController,ODataController,WorkflowController,OperationsController],providers:[Procurement,Finance,Work,Commerce,Db,AuthService,SessionGuard,Service,Admin,OData,Workflow,Collaboration,Sla,Operations,Dispatch]})
+@Module({controllers:[MaterialPlanningController,InventoryController,ProcurementController,FinanceController,WorkController,CommerceController,HealthController,AuthController,ApiController,ODataController,WorkflowController,OperationsController],providers:[MaterialPlanning,Inventory,Procurement,Finance,Work,Commerce,Db,AuthService,SessionGuard,Service,Admin,OData,Workflow,Collaboration,Sla,Operations,Dispatch]})
 class AppModule{}
 @Catch()
 class SafeErrors implements ExceptionFilter {

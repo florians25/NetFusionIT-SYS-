@@ -22,7 +22,7 @@ Abnahme: Standard-/Festpreisregeln, Teilannahme und mehrfach parallel ausgelöst
 
 ## SERVICE-02 · Serviceaufträge und Servicerückmeldungen
 
-Status: Auftragsanlage, Positionen, Preisfindung, Freigabe, Ticketaufgaben, Arbeits-/Fahrzeiten/Pauschalen, Timer, automatische SRM beim Aufgabenabschluss mit Ticket-Korrelation, Teil-/Endrückmeldungen, Kundenbestätigung und technischer Abschluss implementiert; auftragsbezogener Materialbedarf, BANF und Teilbestellungen mit Lieferanten-/Beschaffungsfreigabe implementiert; erweiterte Positionstypen, Wareneingang/Bestand/Verbrauch, Faktura und FI/CO-Integration offen · Masterprompt-Phase 4–8.
+Status: Auftragsanlage, Positionen, Preisfindung, Freigabe, Ticketaufgaben, Arbeits-/Fahrzeiten/Pauschalen, Timer, automatische SRM beim Aufgabenabschluss mit Ticket-Korrelation, Teil-/Endrückmeldungen, Kundenbestätigung und technischer Abschluss implementiert; auftragsbezogener Materialbedarf, BANF und Teilbestellungen mit Lieferanten-/Beschaffungsfreigabe implementiert; automatischer Artikelbedarf, Fehlmengen-BANF, Lagerreservierung, bewerteter Teil-Wareneingang/Storno und Quellen-FI implementiert; tatsächlicher Materialverbrauch, weitere Positionstypen, Faktura und vollständige FI/CO-Integration offen · Masterprompt-Phase 4–8.
 Quelle: [vollständiger Nutzeranhang](requirements/serviceauftraege.md); alle darin enthaltenen Details gelten zusätzlich zur Kurzfassung.
 
 - Liste/Suche/Filter, Anzeigen/Anlegen/Bearbeiten; Servicegruppen, Positionen und hierarchische Servicepakete für Service, Material und Ausgaben.
@@ -96,3 +96,7 @@ Abnahme: Remote-SHA/Tag, bestandene Build-/Funktionstests, datierte Versionsnoti
 ## PROC-01 · Kaufmännische Führung am Serviceauftrag
 
 Nutzerpräzisierung vom 22.10.2026: Beschaffung und alle kostenpflichtigen Folgeprozesse werden vom Serviceauftrag aus angestoßen. BANF/Bestellung/externe Leistung/Wareneingang, Kontierung, Preisfindung und Abrechnung erhalten zwingenden Auftrags-/Positionsbezug. Das Ticket bleibt technischer Arbeitsbeleg und erzeugt keine ungebundenen kostenpflichtigen Beschaffungsbelege. Siehe [verbindliche Prozessvorgabe](requirements/ticket-execution.md).
+
+## MATERIAL-01 · Automatische Versorgung und Lagerverwaltung
+
+Status Preview 0.7: automatische Lager-/Nichtlager-/Fremdleistungsbedarfe, freie/reservierte Bestände, Fehlmengenhinweis, „Lager nutzen“/„Teile bestellen“ mit automatischer BANF-Einreichung, Positions-/Kopf-Versorgungsstatus, Werke/Lagerorte, Serien-/Chargenpflicht, bewerteter Teil-WE und Gegenbelegstorno mit atomarer FI integriert. Tatsächlicher Verbrauch mit WOT/SRM, Inventur, Umlagerung und Nichtlager-/Fremdleistungsabnahme bleiben offen. [Verbindliche Präzisierung und Recherchegrenze](requirements/material-fulfillment.md).

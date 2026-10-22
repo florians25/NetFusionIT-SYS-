@@ -1,11 +1,15 @@
-# Doppelte Finanzbuchhaltung (geplant)
+# Finanzbuchhaltung · implementierter Kern
 
-Operative Belege sind keine Journale. Finance verwaltet Kontenplan, Geschäftsjahr/Periode, Kontierung, Steuerkennzeichen, Journal, offene Posten, Zahlungen und Ausgleich. Konfigurierbarer, fachlich abgestimmter Kontenplan, beispielsweise SKR03/SKR04-orientiert. Journalposition: Konto, Soll/Haben, Decimal-Betrag, Währung, Steuer, Kostenstelle und Referenz. Pro Beleg/Währung Soll = Haben; keine negativen oder gleichzeitig Soll/Haben-Werte. Nur offene Perioden, aktive Konten und gültige Kontierungsregeln.
+Stand Preview 0.7. Buchungskreise, explizite Hauswährung, Konten, offene/geschlossene Perioden, Journalentwürfe, unabhängige Journalfreigabe, endgültige Buchung, Gegenbelegstorno und Summen/Salden sind implementiert. Jede Journalposition enthält Konto, Soll/Haben, exakten positiven Decimal-Betrag, Positionstext und optionale Kostenstelle. Pro Journal gilt Soll = Haben. Aktive Konten, passende Währung und offene Periode werden vor Freigabe und Buchung erneut geprüft. Keine vom System erfundenen Konten oder Steuersätze.
 
-Ausgangsrechnung: Forderung im Soll, Erlös und Umsatzsteuer im Haben. Zahlungseingang: Bank im Soll, Forderung im Haben. Gutschrift/Storno verwendet referenzierte Gegenbuchung; keine nachträgliche Änderung gebuchter Journale. Technischer Hash/Audit allein ersetzt kein geeignetes Archiv.
+Gebuchte Journalinhalte und Positionen sind datenbankseitig unveränderlich. Die Buchung hält Hash, Actor und Zeit fest. Korrektur erfolgt durch eindeutig referenzierten Gegenbeleg mit Begründung und eigenem Freigabe-/Buchungsprozess. Summen/Salden lesen tatsächlich gebuchte Einträge einschließlich Gegenbuchungen; Entwürfe zählen nicht. Dezimalrechnung verhindert binäre Geldrundung.
 
-OP-Ausgleich ist eine eigene Zuordnung zwischen Zahlung und Forderung, mit Teil-/Überzahlung und Währung. Konkurrenzsperre schützt offenen Betrag. Kreditoren integrieren Bestell-/Wareneingangsbezug und Rechnungseingangsprüfung. Zahlungsdateien benötigen separate Sicherheits-/Freigabekontrollen.
+## Integrierter Wareneingang
 
-Berichte: Kontoblatt, Summen/Salden, OP, Debitoren/Kreditoren, USt, Kostenstellen, Bilanz-/GuV-Entwurf und BWA auf echten Journalen. DATEV-Export besitzt eindeutigen Lauf, Kontenmapping, Belegreferenzen, Format-/Summenvalidierung und Abstimmbericht.
+Konfigurierbare Ereignisregeln ordnen Kontenrollen zu. STOCK_RECEIPT benötigt Bestand (ASSET) und WE/RE-Verrechnung (LIABILITY). Der freigegebene Einkaufspreis bewertet den tatsächlichen Eingang: Bestand Soll, WE/RE Haben. Materialbewegung, private Bewertung und automatisch gebuchtes Journal sind atomar; fehlende Regeln/Periode verhindern auch den Wareneingang. Explizite Nullpreislieferungen erzeugen keine fingierten Journalbeträge.
 
-Vor Umsetzung erforderlich: Unternehmens-/Steuerland, Umsatzsteuerverfahren, Kontenrahmen, Periodensteuerung, Rundung, Währungsregeln, Zahlungszuordnung und Korrekturpolicy. Steuerberater muss Buchungsregeln und Exporte fachlich abnehmen. Die erste Lieferung besitzt keine Finanzbuchhaltung und keine entsprechende Compliance-Zusage.
+Lageristen dürfen über den autorisierten Wareneingang ein solches Quellenjournal auslösen, aber weder freie Journale erfassen noch Kontierungsregeln ändern. Das Journal bleibt mit Serviceauftrag, Bestellung und Materialbeleg verbunden. Sein Storno wird ausschließlich vom Wareneingangsstorno ausgelöst und verwendet die Originalkonten und Originalwerte. Ein isoliertes FI-Storno dieses Quellenjournals ist gesperrt.
+
+## Noch nicht implementiert
+
+Debitoren-/Kreditorenrechnungen, Steuerbuchung aus Rechnung, OP, Zahlung/Ausgleich, Teil-/Überzahlung, vollständige Kostenrechnung, Materialverbrauchsbuchung, Kontoblatt, Bilanz/GuV/BWA, DATEV und E-Rechnungen sind offen. Konfigurierbare Kontenrollen allein belegen keine fertigen Rechnungs-/Steuerprozesse. Ein technischer Hash ersetzt kein geeignetes Archiv. Kontenrahmen, Steuerregeln, Währungen, Rundung und Exporte benötigen fachliche Abnahme vor Produktivbetrieb.

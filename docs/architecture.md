@@ -4,7 +4,7 @@ Stand: 22.10.2026. Eigenständige Software, kein SAP-Backend und keine SAP-Marke
 
 ## Lieferumfang und Abgrenzung
 
-Der aktuelle Stand umfasst Ticket-/Fallbearbeitung, Kunden-/Artikel-/Auftragsfreigabe, Servicebasis/SLA/Einsatzplanung und Auftragsausführung. Das Ticket ist der zentrale Arbeitsbeleg: Arbeits-/Fahrzeit und Pauschalen gehören zu Work Order Tasks; deren Abschluss erzeugt eine SRM im Serviceauftrag mit unveränderter Ticket-Korrelations-ID. Danach folgen Kundenbestätigung, Servicefreigabe, technischer Abschluss und Fakturabereitschaft. Der konkrete Umfang und alle offenen Module stehen in [Implementierungsplan](implementation-plan.md) und [Versionsnotizen](releases/v0.5.0-preview.1.md). Der Buchungskern unterstützt manuelle Journale mit Freigabe, Buchung, Gegenbelegstorno und Salden. Noch keine Rechnungs-/Lagerintegration, keine Produktivfreigabe oder Compliance-Zusage.
+Der aktuelle Stand umfasst Ticket-/Fallbearbeitung, Kunden-/Artikel-/Auftragsfreigabe, Servicebasis/SLA/Einsatzplanung und Auftragsausführung. Das Ticket ist der zentrale Arbeitsbeleg: Arbeits-/Fahrzeit und Pauschalen gehören zu Work Order Tasks; deren Abschluss erzeugt eine SRM im Serviceauftrag mit unveränderter Ticket-Korrelations-ID. Danach folgen Kundenbestätigung, Servicefreigabe, technischer Abschluss und Fakturabereitschaft. Der konkrete Umfang und alle offenen Module stehen in [Implementierungsplan](implementation-plan.md) und [Versionsnotizen](releases/v0.7.0-preview.1.md). Der Buchungskern unterstützt manuelle Journale mit Freigabe, Buchung, Gegenbelegstorno und Salden. Auftragsbezogene Beschaffung, Lagerreservierung und bewerteter Wareneingang mit atomarer Quellen-FI sind integriert. Materialverbrauch, Rechnungsintegration und vollständiges FI/CO bleiben offen; keine Produktivfreigabe oder Compliance-Zusage.
 
 ## System
 
@@ -68,7 +68,7 @@ Lesen und Schreiben verwenden dieselben serverseitigen Tenant-/Org-/Kundenfilter
 
 | Prüfpunkt | Entscheidung / Nachweis |
 |---|---|
-| OpenUI5 | lokale npm-Ressourcen; XML Views; kompatible Komponenten im Browser prüfen |
+| OpenUI5 | lokal gebaute offizielle Frameworkressourcen; XML Views; kompatible Komponenten im Browser prüfen |
 | OData | V4-Metadaten + EntitySets; Filter/Sortierung/Paging; lesender unterstützter Teilumfang dokumentiert |
 | Transaktionen | PostgreSQL statt In-Memory-/JSON-DB; Konkurrenz-/Rollbacktests |
 | Deployment | Linux + Compose + Caddy; lokale Entwicklung mit echtem eingebettetem PostgreSQL |

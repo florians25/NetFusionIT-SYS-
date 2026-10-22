@@ -74,3 +74,18 @@ Die Readiness-Probe liefert nur dann 200, wenn die Migrationsprüfsummen exakt z
 `GET /api/service/orders/:id/procurement` liefert Bedarfe, BANF, Bestellungen und offene Materialpositionen. `POST .../material-requirements`, `.../requisitions` und `.../purchase-orders` erstellen ausschließlich auftrags-/positionsbezogene Belege. Mengenbindungen sind mit Auftragszeilensperre vor konkurrierenden Mehrfachanforderungen geschützt. Einkaufspreis und Auftragsverkaufspreis sind getrennt.
 
 `GET /api/procurement/documents/:id` liefert Kopf, Ursprungsauftrag, Positionen, Kontierung, noch ungebundene Mengen beziehungsweise Bestellwert. `POST .../:id/cancel` verwirft zulässige Entwürfe/abgelehnte Belege mit Version und Grund. Freigabe läuft über die gemeinsame Workflow-API mit belegspezifischer Berechtigung und erneutem Mengen-/Lieferanten-/Auftragscheck. Ersteller und Einreicher sind bei Vier-Augen beide ausgeschlossen. Keine WE-/Lager-/FI-Seiteneffekte aus Bestellfreigabe.
+
+## Materialversorgung und bewertetes Lager ab Preview 0.7
+
+- `GET /api/service/orders/:id/material-planning`: automatische Artikelbedarfe, freie/reservierte Mengen, physische Fehlmenge, neu anzufordernde Menge, BANF/Bestell-/WE-Mengen, Positions-/Kopf-Versorgungsstatus und Reservierungen. Keine Kundenprojektion.
+- `POST /api/service/orders/:id/material-planning`: erwartete Auftragsversion, `action` USE_STOCK oder REQUEST_PARTS sowie `items[{itemId,requiredOn,locationId}]`. Reserviert zuerst tatsächlichen freien Bestand; REQUEST_PARTS erzeugt nur ungedeckte Fehlmengen-BANF und reicht sie atomar in den konfigurierten Workflow ein. Antwort enthält Reservierungen, Fehlmengen, ggf. BANF IN_REVIEW und Freigabeinstanz. Kein Bestellerfolg bei fehlender Workflowkonfiguration.
+- `POST /api/service/orders/:id/reservations/:reservation/release`: Version/Grund, Auftragsumfang und Status werden erneut geprüft.
+- `GET /api/inventory/companies`, `GET /api/inventory/companies/:id`: erlaubte Buchungskreise, Lagerorte, Lagerführung, physisch/reserviert/frei, aggregierte Bewertung/Durchschnitt und sichtbare Bewegungen.
+- `POST /api/inventory/companies/:id/plants`, `.../locations`: native Lagerkonfiguration mit explizitem Buchungskreis.
+- `POST /api/inventory/materials/:id/settings`: explizite Bewertungs-/Trackingkonfiguration, geschützt nach erster Bewegung.
+- `GET /api/procurement/documents/:id/receiving-context`: freigegebene Lagerpositionen, Rest-/Toleranzmengen, offene Perioden und Lagerorte.
+- `POST /api/procurement/documents/:id/receipts`: Bestellversion, Periode, Buchungs-/Belegdatum, Lieferschein und Positionen mit Menge/Lagerort/Charge/Seriennummer. Materialbeleg, Bewertung, Ursprungsreservierung, Quellen-FI und Audit sind atomar.
+- `GET /api/inventory/receipts/:id`: autorisierter Materialbeleg mit Ursprung und Journalreferenz.
+- `POST /api/inventory/receipts/:id/reverse`: Periode, Datum und Grund für eindeutige Gegenbewegung mit Originalwert/-konten.
+
+Alle schreibenden Kommandos verlangen CSRF/Idempotenz; Versionen werden dort verlangt, wo veränderlicher Vorzustand besteht. Sichtbarkeit folgt dem Auftrag. Eine Materialreservierung erzeugt keine SRM und noch keinen tatsächlichen Verbrauch.

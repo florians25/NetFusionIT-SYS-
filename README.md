@@ -1,8 +1,8 @@
 # NetFusion · Enterprise Service ERP
 
-Eigenständiger modularer Monolith mit echtem **OpenUI5**, **NestJS/TypeScript** und **PostgreSQL**. Die Oberfläche verwendet ausschließlich **OpenUI5-Standardcontrols**, das Standardtheme und Standard-Abstandsklassen. Keine eigenen UI-Controls, Renderer, CSS-Dateien oder SVG-Logos. Preview 0.6: **Kundenformular → Ticket + Servicefall → Belegfluss → Technikerbearbeitung**, Kundenfreigabe, SLA, Servicebasis, Einsatzplanung sowie Artikel-/Auftragsfreigabe mit Preisfindung, Zeiten, geprüfte Leistungsnachweise und technischen Abschluss. Buchungskern mit Konten, Perioden, freigegebenen Journalen, Storno und Summen/Salden. Auftragsbezogene Bedarfe, BANF und Teilbestellungen mit Lieferanten- und Beschaffungsfreigabe.
+Eigenständiger modularer Monolith mit echtem **OpenUI5**, **NestJS/TypeScript** und **PostgreSQL**. Die Oberfläche verwendet ausschließlich **OpenUI5-Standardcontrols**, das Standardtheme und Standard-Abstandsklassen. Keine eigenen UI-Controls, Renderer, CSS-Dateien oder SVG-Logos. Preview 0.7: **Kundenformular → Ticket + Servicefall → Belegfluss → Technikerbearbeitung**, Kundenfreigabe, SLA, Servicebasis, Einsatzplanung sowie Artikel-/Auftragsfreigabe mit Preisfindung, Zeiten, geprüfte Leistungsnachweise und technischen Abschluss. Buchungskern mit Konten, Perioden, freigegebenen Journalen, Storno und Summen/Salden. Automatische Materialbedarfe aus freigegebenen Artikelpositionen, Lagerverfügbarkeit und Reservierungen; „Teile bestellen“ fordert nur die Fehlmenge per BANF mit Freigabe an. Teilbestellungen, bewertete Teilwareneingänge und Gegenbewegungen mit atomaren Finanzbuchungen.
 
-Kein SAP-Backend nötig. Eigene Marke; Screenshots dienen als Fiori-/Prozessreferenz. Noch keine Produktivfreigabe. Beschaffung und Finanzbuchhaltung besitzen geprüfte Teilprozesse. Wareneingang, Lager, Faktura, offene Posten und erweiterte Workflow-/Vertragsfunktionen bleiben offen; der gesamte Masterprompt ist noch nicht umgesetzt.
+Kein SAP-Backend nötig. Eigene Marke; Screenshots dienen als Fiori-/Prozessreferenz. Noch keine Produktivfreigabe. Beschaffung und Finanzbuchhaltung besitzen geprüfte Teilprozesse. Materialverbrauch, Umlagerung/Inventur, Faktura, offene Posten und erweiterte Workflow-/Vertragsfunktionen bleiben offen; der gesamte Masterprompt ist noch nicht umgesetzt.
 
 Nach Anmeldung öffnet sich die **App-Zentrale** mit rollenabhängigen App-Kacheln. Die Shell zeigt nur Schnellzugriffe der aktiven Anwendung. Das separat aufgerufene **Service-Cockpit** bietet: klickbare Kennzahlenkarten, Arbeitsvorräte für neue/unzugewiesene/kritische/laufende Tickets, Such-/Prioritäts-/Typfilter, Prioritätsverteilung und direkte Technikerzuweisung. Alle Werte stammen aus autorisierten Datenbankabfragen. Die App-Zentrale enthält nur App-Kacheln. Objektseiten verwenden native OpenUI5-Belegköpfe und fachliche Register, Positionsaktionen stehen an der Tabelle.
 
@@ -46,7 +46,7 @@ In dieser Cloud wurde Compose nicht live getestet, da kein Docker-Daemon zugäng
 
 ## Dokumentation
 
-- [Preview 0.6: Buchungskern und Finanzbelege](docs/previews/v0.5.0-preview.1/README.md) und [Versionsnotizen](docs/releases/v0.5.0-preview.1.md)
+- [Preview 0.7: Buchungskern und Finanzbelege](docs/previews/v0.5.0-preview.1/README.md) und [Versionsnotizen](docs/releases/v0.5.0-preview.1.md)
 - [Preview 0.4: Ticketzeiten, WOT und SRM](docs/previews/v0.4.0-preview.1/README.md) und [Versionsnotizen](docs/releases/v0.4.0-preview.1.md)
 - [Preview 0.3: Serviceauftrag und Preisfindung](docs/previews/v0.3.0-preview.1/README.md) und [Versionsnotizen](docs/releases/v0.3.0-preview.1.md)
 - [Preview 0.2 mit Screenshots](docs/previews/v0.2.0-preview.1/README.md) und [Versionsnotizen](docs/releases/v0.2.0-preview.1.md)

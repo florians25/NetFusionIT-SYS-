@@ -18,8 +18,9 @@ function period(start:string,end:string,pause:number){
  return {start:new Date(a).toISOString(),end:new Date(b).toISOString(),duration,quantity:new Decimal(duration).div(3600).toFixed(6)};
 }
 export async function scopedOrder(db:PoolClient,u:Principal,id:string,lock=false){
+ if(lock)await document(db,u,id,true);
  const c=caseQuery(u);c.values.push(id);
- const o=(await db.query(`SELECT o.*,d.organization_id,d.number FROM service_orders o JOIN documents d ON d.tenant_id=o.tenant_id AND d.id=o.id WHERE o.tenant_id=$1 AND d.organization_id=ANY($2::uuid[]) AND o.case_id IN(SELECT id FROM (${c.sql}) q) AND o.id=$${c.values.length}${lock?' FOR UPDATE OF o,d':''}`,c.values)).rows[0];
+ const o=(await db.query(`SELECT o.*,d.organization_id,d.number FROM service_orders o JOIN documents d ON d.tenant_id=o.tenant_id AND d.id=o.id WHERE o.tenant_id=$1 AND d.organization_id=ANY($2::uuid[]) AND o.case_id IN(SELECT id FROM (${c.sql}) q) AND o.id=$${c.values.length}${lock?' FOR UPDATE OF o':''}`,c.values)).rows[0];
  if(!o)throw new NotFoundException('Serviceauftrag nicht gefunden.');return o;
 }
 async function scopedTicket(db:PoolClient,u:Principal,id:string,lock=false){

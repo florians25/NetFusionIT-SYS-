@@ -5,7 +5,7 @@
     "type": "application",
     "title": "NetFusion Service Workspace",
     "applicationVersion": {
-      "version": "0.6.0"
+      "version": "0.7.0"
     },
     "dataSources": {
       "service": {
@@ -194,6 +194,16 @@
           "name": "procurement",
           "target": "Procurement",
           "pattern": "procurement/{id}"
+        },
+        {
+          "name": "inventory",
+          "target": "inventory",
+          "pattern": "inventory"
+        },
+        {
+          "name": "goodsReceipt",
+          "target": "goodsReceipt",
+          "pattern": "inventory/receipts/{id}"
         }
       ],
       "targets": {
@@ -274,6 +284,16 @@
         },
         "Procurement": {
           "viewName": "Procurement"
+        },
+        "inventory": {
+          "viewName": "Inventory",
+          "viewType": "XML",
+          "viewId": "inventory"
+        },
+        "goodsReceipt": {
+          "viewName": "GoodsReceipt",
+          "viewType": "XML",
+          "viewId": "goodsReceipt"
         }
       }
     }

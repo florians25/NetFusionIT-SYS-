@@ -16,7 +16,7 @@ export async function serviceFixture(h){
  async function makeOrder(kind='PAID',billingRule='TIME_MATERIAL',extras=[]){
   const o=ok(await admin('/api/service/orders',cmd({caseId:ticket.caseId,sourceTicketId:null,contractId:null,title:'Netzwerkservice Berlin',kind,currency:'EUR',pricingDate:'2026-10-22'})));
   const item=ok(await admin('/api/service/orders/'+o.id+'/items',cmd({version:1,productId:product.id,description:'Netzwerkdiagnose und sichere Konfiguration',quantity:'2',billingRule,costCenter:'SERVICE-BERLIN',costObject:ticket.caseNumber})));
-  let version=2;const extraItems=[];for(const e of extras){const r=ok(await admin('/api/service/orders/'+o.id+'/items',cmd({version,productId:e.productId,description:e.description||'Weitere Serviceleistung',quantity:e.quantity||'1',billingRule:e.billingRule||'TIME_MATERIAL',costCenter:'SERVICE-BERLIN',costObject:ticket.caseNumber})));version=r.version;extraItems.push(r);}ok(await approve(o.id,version));return {...o,item,extraItems};
+  let version=2;const extraItems=[];for(const e of extras){const r=ok(await admin('/api/service/orders/'+o.id+'/items',cmd({version,productId:e.productId,description:e.description||'Weitere Serviceleistung',quantity:e.quantity||'1',requiredOn:e.requiredOn||'2026-10-30',billingRule:e.billingRule||'TIME_MATERIAL',costCenter:'SERVICE-BERLIN',costObject:ticket.caseNumber})));version=r.version;extraItems.push(r);}ok(await approve(o.id,version));return {...o,item,extraItems};
  }
  return {admin,support,customer,tech,org,product,ticket,makeOrder,approve};
 }

@@ -61,6 +61,19 @@ jobs:
           test-results/procurement-flow.png
           test-results/order-procurement.png
           test-results/purchase-order-mobile.png
+          test-results/material-availability.png
+          test-results/material-stock-reserved.png
+          test-results/material-shortage-requested.png
+          test-results/material-arrived-reserved.png
+          test-results/material-supply-mobile.png
+          test-results/order-positions-expanded.png
+          test-results/order-business-context.png
+          test-results/warehouse-locations.png
+          test-results/inventory-valuation.png
+          test-results/goods-receipt-posted.png
+          test-results/goods-receipt-reversal.png
+          test-results/goods-receipt-journal.png
+          test-results/goods-receipt-mobile.png
       - name: Preserve browser diagnostics
         if: failure()
         uses: actions/upload-artifact@v4

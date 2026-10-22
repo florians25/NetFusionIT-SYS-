@@ -1,3 +1,4 @@
+import { ensureOrderRequirements,refreshMaterialStatus } from './material-state';
 import { Injectable,ConflictException,ForbiddenException,NotFoundException } from '@nestjs/common';
 import { PoolClient } from 'pg';
 import { randomUUID } from 'node:crypto';
@@ -6,7 +7,7 @@ import { Db,Principal,parse,uuid,audit,idempotent } from './core';
 import { ROLES,requirePermission } from './permissions';
 import { checkOrg,document,notify,version } from './business';
 import { submitReport,decideReport } from './work';
-import { lockProcurementSubject,validateProcurementApproval,refreshRequisition } from './procurement';
+import { procurementSubject,lockProcurementSubject,validateProcurementApproval,refreshRequisition } from './procurement';
 export const approvalSubjects:Record<string,{table:string,pending:string,approved:string,rejected:string,permission:string}>={BUSINESS_PARTNER:{table:'business_partners',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'partner.write'},MATERIAL:{table:'products',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'material.write'},SERVICE_ORDER:{table:'service_orders',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'order.write'},REQUISITION:{table:'purchase_requisitions',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'requisition.write'},PURCHASE_ORDER:{table:'purchase_orders',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'procurement.write'},ACCOUNTING:{table:'journals',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'finance.write'},SERVICE_REPORT:{table:'service_reports',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'order.execute'}};
 @Injectable()
 export class Workflow {
@@ -96,7 +97,9 @@ export class Workflow {
    await db.query('INSERT INTO approval_decisions(id,tenant_id,instance_id,step,actor_id,decision,comment) VALUES($1,$2,$3,$4,$5,$6,$7)',[randomUUID(),u.tenantId,id,i.current_step,u.id,input.decision,input.comment]);
    await db.query('UPDATE approval_instances SET status=$3,current_step=$4,version=version+1 WHERE tenant_id=$1 AND id=$2',[u.tenantId,id,status,nextStep]);
    if(['APPROVED','REJECTED'].includes(status))await db.query(`UPDATE ${subject.table} SET status=$3,version=version+1 WHERE tenant_id=$1 AND id=$2`,[u.tenantId,i.document_id,status==='APPROVED'?subject.approved:subject.rejected]);
+   if(doc.kind==='SERVICE_ORDER'&&status==='APPROVED'){await ensureOrderRequirements(db,u,i.document_id,correlation);await refreshMaterialStatus(db,u,i.document_id,correlation);}
    if(doc.kind==='PURCHASE_ORDER'&&status==='APPROVED'){const p=(await db.query('SELECT requisition_id FROM purchase_orders WHERE tenant_id=$1 AND id=$2',[u.tenantId,i.document_id])).rows[0];await refreshRequisition(db,u,p.requisition_id);}
+   if(['REQUISITION','PURCHASE_ORDER'].includes(doc.kind)&&['APPROVED','REJECTED'].includes(status)){const p=await procurementSubject(db,u,i.document_id,doc.kind);await refreshMaterialStatus(db,u,p.order_id,correlation);}
    await audit(db,u,correlation,'APPROVAL_'+input.decision,i.document_id,{instanceId:id,step:i.current_step,comment:input.comment,status});
    await notify(db,u,[i.submitted_by],'APPROVAL_'+status,i.document_id,{instanceId:id});
    return {id,status,version:i.version+1,currentStep:nextStep};

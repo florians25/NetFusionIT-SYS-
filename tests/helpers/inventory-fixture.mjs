@@ -1,0 +1,18 @@
+import {randomUUID} from 'node:crypto';
+import {client} from '../../scripts/test-harness.mjs';
+import {cmd,ok} from './service-fixture.mjs';
+import {procurementFixture} from './procurement-fixture.mjs';
+export async function inventoryFixture(h){
+ const f=await procurementFixture(h),u={name:'Lager Berlin',email:'warehouse@example.test',password:randomUUID(),role:'WAREHOUSE',organizationId:f.org};ok(await f.admin('/api/admin/users',{method:'POST',body:u}));h.accounts.push({tenant:'netfusion',...u});const warehouse=await client(h.base,{tenant:'netfusion',...u});
+ const supplier=ok(await f.admin('/api/procurement/suppliers',cmd({organizationId:f.org,name:'Netzwerk Ersatzteilhandel GmbH',email:'supplier@example.test',street:'Lieferantenstraße 2',postalCode:'20095',city:'Hamburg',country:'DE',vatId:'',paymentTermsDays:30})));ok(await f.approve(supplier.id,1));
+ const period=ok(await f.admin('/api/finance/companies/'+f.company.id+'/periods',cmd({year:2026,period:10,dateFrom:'2026-10-01',dateTo:'2026-10-31'}))),inventory=ok(await f.admin('/api/finance/companies/'+f.company.id+'/accounts',cmd({code:'1000',name:'Materialbestand',kind:'ASSET'}))),grir=ok(await f.admin('/api/finance/companies/'+f.company.id+'/accounts',cmd({code:'1900',name:'Wareneingang Rechnungseingang',kind:'LIABILITY'})));
+ const plant=ok(await warehouse('/api/inventory/companies/'+f.company.id+'/plants',cmd({code:'BER',name:'Werk Berlin'}))),location=ok(await warehouse('/api/inventory/companies/'+f.company.id+'/locations',cmd({plantId:plant.id,code:'0001',name:'Zentrallager Berlin',kind:'CENTRAL'})));
+ const auto=ok(await f.tech('/api/service/orders/'+f.order.id+'/procurement'),200);const need=ok(await f.tech('/api/procurement/documents/'+auto.requirements[0].id),200);
+ let banf=ok(await f.tech('/api/service/orders/'+f.order.id+'/requisitions',cmd({title:'BANF zur Netzwerkreparatur',items:[{requirementItemId:need.items[0].id,quantity:'10',estimatedUnitPrice:'40'}]})));await approve(f.tech,banf.id,1);banf=ok(await f.buyer('/api/procurement/documents/'+banf.id),200);
+ async function approve(author,id,version){const s=ok(await author('/api/workflow/submit/'+id,cmd({version})));return ok(await f.manager('/api/workflow/instances/'+s.id+'/decide',cmd({version:1,decision:'APPROVE',comment:'Beschaffungsbeleg vor Wareneingang geprüft.'})));}
+ const pos=[];for(const [quantity,unitPrice] of [['6','40'],['4','60']]){const po=ok(await f.buyer('/api/service/orders/'+f.order.id+'/purchase-orders',cmd({requisitionId:banf.id,supplierId:supplier.id,title:'Netzwerk-Ersatzteile Berlin',items:[{requisitionItemId:banf.items[0].id,quantity,unitPrice,deliveryDate:'2026-10-30',overdeliveryPercent:'0'}]})));await approve(f.buyer,po.id,1);pos.push(ok(await f.buyer('/api/procurement/documents/'+po.id),200));}
+ async function configure(){return f.admin('/api/inventory/materials/'+f.product.id+'/settings',cmd({version:0,serialRequired:false,batchRequired:false,valuationMethod:'MOVING_AVERAGE'}));}
+ async function rules(){return f.admin('/api/finance/companies/'+f.company.id+'/rules',cmd({event:'STOCK_RECEIPT',version:0,accounts:{inventory:inventory.id,grir:grir.id}}));}
+ async function body(po,quantity){const c=ok(await warehouse('/api/procurement/documents/'+po.id+'/receiving-context'),200);return {periodId:period.id,postingDate:'2026-10-22',documentDate:'2026-10-22',version:c.version,deliveryNote:'LS-BER-2026-001',items:[{purchaseOrderItemId:po.items[0].id,locationId:location.id,quantity,batch:'',serial:''}]};}
+ return {...f,warehouse,supplier,period,inventory,grir,plant,location,need,banf,pos,configure,rules,body};
+}
