@@ -18,7 +18,7 @@
 
 Workflow-Engine wird vor ersten genehmigungspflichtigen Stammdaten/Belegen eingeführt; Finance-Kern muss vor finaler Rechnungsbuchung existieren, auch wenn die UI-Phasen anders nummeriert sind. Architekturphasen sind keine Ausrede für inkonsistente Vorabbuchungen.
 
-## Aktueller Stand · Preview 0.10
+## Aktueller Stand · Preview 0.11
 
 Der [vollständige Originalauftrag](master-prompt.md) und der [zusätzliche Fachbacklog mit Quellen](backlog.md) sind versioniert. Der Nutzer hat fortlaufende Entwicklung, regelmäßige GitHub-Pushes und Preview-Versionen mit Screenshots beauftragt. Keine erneute Bestätigung pro Phase nötig.
 
@@ -28,10 +28,13 @@ Nachweise und genaue Grenzen stehen in den [Versionsnotizen](releases/v0.10.0-pr
 
 Offen bleiben insbesondere die Betriebsabnahme des echten Virenscanners, vollständige Stammdatenänderungsfreigaben, Delegation/Betragsgrenzen, weitergehende Disposition und die kaufmännischen Folgephasen. Die zusätzlichen SERVICE-01 bis SERVICE-05 sind Anforderungen mit Abnahmekriterien, keine fertiggestellten Funktionen. Der nächste vertikale Prozess führt von freigegebenen Leistungen über Materialbedarf, Beschaffung und Verbrauch zu Faktura und ausgeglichener Buchung. Keine Finanzbuchungen ohne explizit konfigurierte fachliche Regeln.
 
-Ubuntu mit Docker ist laut Nutzer vorhanden. Kein Zugriff auf den Zielserver, kein Live-Docker-/HTTPS-/Restoretest, keine Produktivfreigabe. OData bleibt der dokumentierte lesende V4-Teilumfang. Wiederverwendbares Cloud-Setup ist gespeichert; neue Aufgaben müssen Installation und Prozessstart anhand des gespeicherten Start-Skills ausführen.
+Ubuntu mit Docker ist laut Nutzer vorhanden. Kein Zugriff auf den Zielserver, lokaler Docker-Smoke-Test ab0.11, weiterhin kein Zielserver-/HTTPS-/Restoretest, keine Produktivfreigabe. OData bleibt der dokumentierte lesende V4-Teilumfang. Wiederverwendbares Cloud-Setup ist gespeichert; neue Aufgaben müssen Installation und Prozessstart anhand des gespeicherten Start-Skills ausführen.
 
 Die jüngsten Anforderungen für PDF-Anlagenlisten, physische Regal-/Lagerplatzstruktur mit Labels/Scans und auftragsbezogene Auslieferung mit Storno sind in requirements/warehouse-delivery-attachments.md verbindlich erfasst. Die Auslieferungs-/Verbrauchskette ist in 0.9 geprüft. PDF-Anlagenlisten mit unveränderlichem Archiv, Geschäfts-PDFs und Upload-Quarantäne sind in0.10 implementiert. Physische Lagerplätze/Labels/Scans sowie weitergehende Korrektur-/Fakturaprozesse bleiben in Umsetzung.
 
 Preview0.10 erweitert Genehmigungen, Disposition, Planung und Geschäftspartner mit tatsächlichem Kontext und Zählern; Ticketerstellung zeigt ausgewählte Objekt-/Vertragsdetails. PDF-Archiv mit Quellen-/Kunden-/Technikerschutz und kleine native Dialoge an allen bestehenden Geschäftsbelegarten. Weitere Grenzen unter attachments.md.
 
 Preview0.10.0-preview.2 stellt alle sechs bisherigen Geschäfts-PDF-Arten nach dem zusätzlichen Nutzermuster auf eine gemeinsame klassische Schwarz-Weiß-Formularbasis um. Belegkopf rechts, Fenster-/Lieferanschrift links, Artikelnummer aus freigegebenem Snapshot, Preiseinheit, Tabellenlinien und Firmenfuß; keine Schemaänderung. Nachweise in releases/v0.10.0-preview.2.md und previews/v0.10.0-preview.2/.
+
+
+Preview0.11 ergänzt die eigenständige Fakturaanforderung mit Freigabe/Vorrat, Teil-/Endrechnung zu einem SA, tatsächliche Leistung und Ticketreferenzen aus SRM, FI/Forderung und validiertes ZUGFeRD. Deutsche Datumsanzeigen und kompakte Leistungszeiträume, Code128-Vorlagenstand4, CRM-Funktionen/Adressen und freizugebende Finanzrollen/Bankprofile sind Teilbasis. Migration014 schützt die Ticketreferenzen;001–013 bleiben unverändert. Weiterhin offen: zusätzliche Steuerfälle, eigener AU, Rechnungskorrektur/Zahlung, vollständige Eingangsrechnungsprüfung und übrige Modulprozesse. Compliance-Ergänzungen und die zwölf AP-Arbeitspakete sind in backlog.md verknüpft. Kein Abschluss des gesamten Masterbacklogs.

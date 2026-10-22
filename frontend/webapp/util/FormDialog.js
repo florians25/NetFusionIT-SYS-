@@ -6,7 +6,7 @@ sap.ui.define(["sap/m/Dialog","sap/m/Input","sap/m/TextArea","sap/m/DatePicker",
    if(f.type==="select")c=new Select({width:"100%",selectedKey:f.value||f.options[0]&&f.options[0].key||"",items:f.options.map(function(o){return new Item({key:o.key,text:o.text});})});
    else if(f.type==="multiselect")c=new MultiComboBox({width:"100%",selectedKeys:f.value||[],items:f.options.map(function(o){return new Item({key:o.key,text:o.text});})});
    else if(f.type==="datetime")c=new DateTimePicker({width:"100%",displayFormat:"dd.MM.yyyy HH:mm:ss",dateValue:f.value?new Date(f.value):null});
-   else if(f.type==="date")c=new DatePicker({width:"100%",valueFormat:"yyyy-MM-dd",displayFormat:"medium",value:f.value||""});
+   else if(f.type==="date")c=new DatePicker({width:"100%",valueFormat:"yyyy-MM-dd",displayFormat:"dd.MM.yyyy",value:f.value||""});
    else if(f.type==="textarea")c=new TextArea({width:"100%",rows:4,value:f.value||""});
    else if(f.type==="boolean")c=new Select({width:"100%",selectedKey:f.value?"true":"false",items:(f.options||[{key:"true",text:"Ja"},{key:"false",text:"Nein"}]).map(function(o){return new Item({key:o.key,text:o.text});})});
    else c=new Input({width:"100%",value:f.value===undefined?"":String(f.value),type:f.type==="integer"?"Number":"Text",placeholder:f.placeholder||"",maxLength:f.maxLength||2000});

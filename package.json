@@ -20,7 +20,8 @@
     "build:ui": "ui5 build --all --clean-dest --dest ui5-dist --include-task generateVersionInfo",
     "build:ui:app": "ui5 build --dest ui5-dist --include-task generateVersionInfo",
     "test:browser:all": "node tests/browser.mjs && node tests/workflow-browser.mjs && node tests/operations-browser.mjs && node tests/commerce-browser.mjs && node tests/work-browser.mjs && node tests/finance-browser.mjs && node tests/procurement-browser.mjs && node tests/inventory-browser.mjs && node tests/material-planning-browser.mjs && node tests/number-series-browser.mjs && node tests/service-deliveries-browser.mjs && node tests/attachments-browser.mjs && node tests/billing-browser.mjs",
-    "einvoice:setup": "node scripts/ensure-einvoice-tools.mjs"
+    "einvoice:setup": "node scripts/ensure-einvoice-tools.mjs",
+    "test:docker": "node scripts/docker-smoke.mjs"
   },
   "dependencies": {
     "@js-temporal/polyfill": "0.5.1",

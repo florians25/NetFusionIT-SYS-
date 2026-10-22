@@ -1,0 +1,14 @@
+{
+  "imageId": "sha256:8617dda1b92a62d7279a27f56a65c68e62dda94705dbff7e9774d43f0e067c4f",
+  "time": "2026-10-22T17:23:05.687Z",
+  "image": "netfusion-erp:0.11.0-preview.1",
+  "readiness": 200,
+  "authenticatedRole": "ADMIN",
+  "emptyBillingWorklist": true,
+  "uiStatus": 200,
+  "validator": "Mustang-CLI 2.26.0",
+  "pdfBytes": 37570,
+  "xmlBytes": 4891,
+  "readOnlyRuntime": true,
+  "buildCertificateAbsent": true
+}
