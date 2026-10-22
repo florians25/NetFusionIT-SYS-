@@ -1,0 +1,15 @@
+{
+  "tests": 255,
+  "pass": 255,
+  "fail": 0,
+  "durationMs": 202220.294942,
+  "command": "npm test",
+  "finalUiPolicy": "node --test tests/ui-policy.test.mjs",
+  "uiPolicyPassed": true,
+  "browserCommands": [
+    "node tests/sales-orders-browser.mjs",
+    "node tests/service-deliveries-browser.mjs"
+  ],
+  "finalAuMobileVisualChecked": true,
+  "imageId": "sha256:594d6ecc2c1804c3aa9141ac54aaea17fff247cfe00e2176d79497740ad7ab31"
+}

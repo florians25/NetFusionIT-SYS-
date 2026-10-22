@@ -10,6 +10,8 @@ import { randomUUID } from 'node:crypto';
 import path from 'node:path';
 import { Db } from './core';
 import {InventoryCounts} from './inventory-counts';
+import {SalesOrders} from './sales-orders';
+import {SalesOrdersController} from './sales-orders.controller';
 import {InventoryCountsController} from './inventory-counts.controller';
 import {Warehouse} from './warehouse';
 import {WarehouseController} from './warehouse.controller';
@@ -52,7 +54,7 @@ import { Sla } from './sla';
 import { Operations } from './operations';
 import { Dispatch } from './dispatch';
 import { OperationsController } from './operations.controller';
-@Module({controllers:[InventoryCountsController,WarehouseController,SupplierReversalsController,IncomingInvoicesController,BillingController,PartnerFinanceController,AttachmentsController,ServiceDeliveriesController,NumberSeriesController,MaterialPlanningController,InventoryController,ProcurementController,FinanceController,WorkController,CommerceController,HealthController,AuthController,ApiController,ODataController,WorkflowController,OperationsController],providers:[InventoryCounts,Warehouse,SupplierReversals,SupplierPosting,IncomingInvoiceMatching,IncomingInvoices,Billing,PartnerFinance,Attachments,ServiceDeliveries,NumberSeries,MaterialPlanning,Inventory,Procurement,Finance,Work,Commerce,Db,AuthService,SessionGuard,Service,Admin,OData,Workflow,Collaboration,Sla,Operations,Dispatch]})
+@Module({controllers:[SalesOrdersController,InventoryCountsController,WarehouseController,SupplierReversalsController,IncomingInvoicesController,BillingController,PartnerFinanceController,AttachmentsController,ServiceDeliveriesController,NumberSeriesController,MaterialPlanningController,InventoryController,ProcurementController,FinanceController,WorkController,CommerceController,HealthController,AuthController,ApiController,ODataController,WorkflowController,OperationsController],providers:[SalesOrders,InventoryCounts,Warehouse,SupplierReversals,SupplierPosting,IncomingInvoiceMatching,IncomingInvoices,Billing,PartnerFinance,Attachments,ServiceDeliveries,NumberSeries,MaterialPlanning,Inventory,Procurement,Finance,Work,Commerce,Db,AuthService,SessionGuard,Service,Admin,OData,Workflow,Collaboration,Sla,Operations,Dispatch]})
 class AppModule{}
 @Catch()
 class SafeErrors implements ExceptionFilter {

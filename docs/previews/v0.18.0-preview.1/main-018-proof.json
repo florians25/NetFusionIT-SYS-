@@ -1,0 +1,16 @@
+{
+  "migrationCount": 22,
+  "lastMigration": "022_sales_orders.sql",
+  "lastChecksum": "6dd493d924074276595d0ea8d91c4a9ee782b5967f0ad4d9649697b46d66cbc3",
+  "readiness": 200,
+  "authentication": 200,
+  "role": "ADMIN",
+  "salesConfiguration": 200,
+  "counts": {
+    "companies": 0,
+    "sales_orders": 0,
+    "issues": 0,
+    "invoices": 0,
+    "counts": 0
+  }
+}

@@ -9,7 +9,7 @@ export interface BusinessPdf {
  totals?:[string,string][];paragraphs?:[string,string][];notice?:string;
 }
 // DIN 5008 Form B: dimensions in mm, then converted to PDF points.
-export const BUSINESS_PDF_TEMPLATE_VERSION=4;
+export const BUSINESS_PDF_TEMPLATE_VERSION=5;
 export class BusinessPdfLayoutError extends Error {}
 export async function renderBusinessPdf(data:BusinessPdf,archiveNumber:string,options:{pdfa?:boolean}={}):Promise<Buffer>{
  // BWIPP generates the Code 128 checksum and automatic code-set switches.
@@ -56,10 +56,11 @@ export async function renderBusinessPdf(data:BusinessPdf,archiveNumber:string,op
  line('Seite',mm(180),primaryY,mm(10),7);pageFields.push({page:0,y:primaryY+11});
  const delivery=data.fields.find(([k])=>k==='Lieferanschrift'),version=data.fields.find(([k])=>k==='Vorgangsversion');
  const remaining=data.fields.filter(([k])=>!['Organisation','Vorgangsversion','Lieferanschrift'].includes(k));
- const header=remaining.filter(([k,v])=>!['Betreff','Bestelltext','Auslieferungstext','Ticket-Korrelation','Korrelations-ID'].includes(k)&&v.length<70&&!v.includes('\n')).slice(0,6);
+ const reference=(k:string)=>/Bestellung|auftrag|referenz|nummer|Nummer|Referenz/.test(k);
+ const header=remaining.filter(([k,v])=>{if(['Betreff','Bestelltext','Auslieferungstext','Ticket-Korrelation','Korrelations-ID'].includes(k)||v.length>=70||v.includes('\n'))return false;font(7.5);return !reference(k)||doc.widthOfString(dateValue(v))<=mm(38);}).slice(0,6);
  if(data.sourceNumber!==data.number)header.push(['Ursprungsbeleg',data.sourceNumber]);header.push(['Belegstand',data.status]);
  let infoY=primaryY+31;
- for(let i=0;i<header.length;i+=2){const pair=header.slice(i,i+2).map(([k,v])=>({k,values:lines(dateValue(v),mm(38),9)})),height=Math.max(...pair.map(p=>p.values.length))*12+16;pair.forEach((p,j)=>{const x=infoX+j*mm(42);line(p.k,x,infoY,mm(38),7);drawLines(p.values,x,infoY+10,mm(38),9,false,'left',12);});infoY+=height;}
+ for(let i=0;i<header.length;i+=2){const pair=header.slice(i,i+2).map(([k,v])=>{font(9);const size=reference(k)&&doc.widthOfString(dateValue(v))>mm(38)?7.5:9;return {k,size,values:lines(dateValue(v),mm(38),size)};}),height=Math.max(...pair.map(p=>p.values.length))*12+16;pair.forEach((p,j)=>{const x=infoX+j*mm(42);line(p.k,x,infoY,mm(38),7);drawLines(p.values,x,infoY+10,mm(38),p.size,false,'left',12);});infoY+=height;}
  let leftEnd=mm(90);
  if(delivery){const values=lines(delivery[1],mm(80),10);leftEnd=mm(96)+12+values.length*12;line('Lieferanschrift',left,mm(96),mm(80),7,true);drawLines(values,left,mm(96)+12,mm(80),10,false,'left',12);}
  y=Math.max(mm(delivery?123:104),infoY+14,leftEnd+18);
@@ -81,7 +82,11 @@ export async function renderBusinessPdf(data:BusinessPdf,archiveNumber:string,op
    while(offset<count){let capacity=Math.floor((bottom-y-pad*2-6)/pitch);if(capacity<1){continuation();draw(header,headerHeight,true);capacity=Math.floor((bottom-y-pad*2-6)/pitch);}const take=Math.min(capacity,count-offset);draw(wrapped.map(c=>c.slice(offset,offset+take)),take*pitch+pad*2);offset+=take;}
   }y+=14;
  }
- for(let i=0;i<(data.totals||[]).length;i++){const [label,value]=data.totals![i],last=i===data.totals!.length-1,w=width*.65,x=left+width-w;const labels=lines(label,w*.52,9,last),values=lines(value,w*.45,10,last),h=Math.max(labels.length,values.length)*13+12;page(h);if(last)stroke(x,y-3,w,ink);drawLines(labels,x,y,w*.52,9,last);drawLines(values,x+w*.55,y,w*.45,10,last,'right',13);y+=h;}
+ const totalRows=(data.totals||[]).map(([label,value],i)=>{const last=i===data.totals!.length-1,w=width*.65,x=left+width-w,labels=lines(label,w*.52,9,last),values=lines(value,w*.45,10,last);return {last,w,x,labels,values,h:Math.max(labels.length,values.length)*13+12};}),totalHeight=totalRows.reduce((sum,r)=>sum+r.h,0);
+ // Keep ordinary net/tax/gross blocks together. Oversized exceptional totals
+ // still use the regular page guard and never overwrite the footer.
+ if(totalHeight<=bottom-mm(38))page(totalHeight);
+ for(const r of totalRows){page(r.h);if(r.last)stroke(r.x,y-3,r.w,ink);drawLines(r.labels,r.x,y,r.w*.52,9,r.last);drawLines(r.values,r.x+r.w*.55,y,r.w*.45,10,r.last,'right',13);y+=r.h;}
  for(const [title,value] of data.paragraphs||[]){page(36);line(title,left,y,width,10,true);y+=20;for(const v of lines(value,width,10)){page(14);line(v,left,y,width,10);y+=14;}y+=12;}
  const pages=doc.bufferedPageRange();for(let i=pages.start;i<pages.start+pages.count;i++){
   doc.switchToPage(i);const margin=doc.page.margins.bottom;doc.page.margins.bottom=0;

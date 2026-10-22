@@ -12,6 +12,7 @@ export function visibleDocuments(u:Principal){
  if(can(u.role,'partner.read'))clauses.push(`(d.kind='BUSINESS_PARTNER' AND d.id IN(SELECT p.id FROM business_partners p WHERE p.tenant_id=$1${u.role==='CUSTOMER'?' AND p.id=$3':''}))`);
  if(can(u.role,'asset.read'))clauses.push(`(d.kind='TECHNICAL_OBJECT' AND d.id IN(SELECT a.id FROM technical_objects a WHERE a.tenant_id=$1 AND ${partnerCondition('a')}))`);
  if(can(u.role,'contract.read'))clauses.push(`(d.kind='SERVICE_CONTRACT' AND d.id IN(SELECT c.id FROM service_contracts c WHERE c.tenant_id=$1 AND ${partnerCondition('c')}))`);
+ if(can(u.role,'sales.read'))clauses.push(`(d.kind='SALES_ORDER' AND d.id IN(SELECT so.id FROM sales_orders so WHERE so.tenant_id=$1${u.role==='CUSTOMER'?" AND so.partner_id=$3 AND so.status='RELEASED'":''}))`);
  if(can(u.role,'inventory.read'))clauses.push(`d.kind IN ('MATERIAL','STOCK_TRANSFER','INVENTORY_COUNT')`);
  if(can(u.role,'service.read')&&u.role!=='CUSTOMER')clauses.push(`(d.kind='WORK_ORDER_TASK' AND d.id IN(SELECT w.id FROM work_order_tasks w WHERE w.tenant_id=$1 AND w.ticket_id IN(SELECT id FROM (${tickets.sql}) visible_tickets)))`);
  if(can(u.role,'order.read'))clauses.push(`(d.kind='SERVICE_ORDER' AND d.id IN(SELECT o.id FROM service_orders o WHERE o.tenant_id=$1 AND o.case_id IN(SELECT id FROM (${cases.sql}) visible_cases)))`);

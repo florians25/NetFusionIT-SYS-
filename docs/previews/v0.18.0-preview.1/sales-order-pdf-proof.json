@@ -1,0 +1,16 @@
+{
+  "downloadedFromBrowser": true,
+  "templateVersion": 5,
+  "pages": 1,
+  "referenceUnbroken": true,
+  "totalsTogether": true,
+  "headerTextBeforePositions": true,
+  "dpi": 150,
+  "decoded": [
+    {
+      "page": 1,
+      "code": "AB-43000000",
+      "format": "CODE_128"
+    }
+  ]
+}

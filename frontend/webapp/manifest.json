@@ -5,7 +5,7 @@
     "type": "application",
     "title": "NetFusion Service Workspace",
     "applicationVersion": {
-      "version": "0.17.0-preview.1"
+      "version": "0.18.0-preview.1"
     },
     "dataSources": {
       "service": {
@@ -264,6 +264,21 @@
           "name": "inventoryCount",
           "target": "InventoryCount",
           "pattern": "inventory-counts/{id}"
+        },
+        {
+          "name": "salesOrders",
+          "target": "SalesOrders",
+          "pattern": "sales/orders"
+        },
+        {
+          "name": "salesOrder",
+          "target": "SalesOrder",
+          "pattern": "sales/orders/{id}"
+        },
+        {
+          "name": "salesSetup",
+          "target": "SalesSetup",
+          "pattern": "sales/configuration"
         }
       ],
       "targets": {
@@ -392,6 +407,15 @@
         },
         "InventoryCount": {
           "viewName": "InventoryCount"
+        },
+        "SalesOrders": {
+          "viewName": "SalesOrders"
+        },
+        "SalesOrder": {
+          "viewName": "SalesOrder"
+        },
+        "SalesSetup": {
+          "viewName": "SalesSetup"
         }
       }
     }
