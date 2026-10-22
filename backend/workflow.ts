@@ -6,7 +6,7 @@ import { Db,Principal,parse,uuid,audit,idempotent } from './core';
 import { ROLES,requirePermission } from './permissions';
 import { checkOrg,document,notify,version } from './business';
 import { submitReport,decideReport } from './work';
-export const approvalSubjects:Record<string,{table:string,pending:string,approved:string,rejected:string,permission:string}>={BUSINESS_PARTNER:{table:'business_partners',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'partner.write'},MATERIAL:{table:'products',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'material.write'},SERVICE_ORDER:{table:'service_orders',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'order.write'},SERVICE_REPORT:{table:'service_reports',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'order.execute'}};
+export const approvalSubjects:Record<string,{table:string,pending:string,approved:string,rejected:string,permission:string}>={BUSINESS_PARTNER:{table:'business_partners',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'partner.write'},MATERIAL:{table:'products',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'material.write'},SERVICE_ORDER:{table:'service_orders',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'order.write'},ACCOUNTING:{table:'journals',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'finance.write'},SERVICE_REPORT:{table:'service_reports',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'order.execute'}};
 @Injectable()
 export class Workflow {
  constructor(private db:Db){}
@@ -16,6 +16,7 @@ export class Workflow {
   const input=parse(z.object({name:z.string().trim().min(3).max(100),organizationId:uuid,subjectKind:z.enum(Object.keys(approvalSubjects) as [string,...string[]]),fourEyes:z.boolean(),steps:z.array(z.object({name:z.string().trim().min(2).max(80),roles:z.array(z.enum(ROLES)).min(1).max(16).refine(r=>!r.includes('CUSTOMER'),'Kunden sind keine internen Freigeber')}).strict()).min(1).max(10)}).strict(),raw);
   checkOrg(u,input.organizationId);
   if(input.subjectKind==='SERVICE_REPORT'&&(!input.fourEyes||input.steps.some(s=>s.roles.some(r=>!['ADMIN','SERVICE_MANAGER'].includes(r)))))throw new ConflictException('Leistungsnachweise benötigen Vier-Augen-Prüfung durch Serviceleitung oder Administration.');
+  if(input.subjectKind==='ACCOUNTING'&&(!input.fourEyes||input.steps.some(s=>s.roles.some(r=>!['ADMIN','ACCOUNTANT'].includes(r)))))throw new ConflictException('Finanzbelege benötigen Vier-Augen-Prüfung durch Buchhaltung oder Administration.');
   return this.db.as(u,db=>idempotent(db,u,'WORKFLOW_CONFIGURE',key,input,async()=>{
    await db.query('SELECT pg_advisory_xact_lock(hashtextextended($1,0))',[`WORKFLOW:${u.tenantId}:${input.organizationId}:${input.subjectKind}`]);
    const prior=await db.query('UPDATE approval_definitions SET active=false WHERE tenant_id=$1 AND organization_id=$2 AND subject_kind=$3 AND active RETURNING version',[u.tenantId,input.organizationId,input.subjectKind]);

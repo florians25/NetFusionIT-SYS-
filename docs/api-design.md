@@ -58,3 +58,11 @@ Verbindlich: [Ticket → Work Order Task → SRM](requirements/ticket-execution.
 `GET /api/service/orders/:id/execution` liefert übernommene Ticketleistungen und SRM; dort wird keine separate Zeitkopie erfasst. `GET /api/service/reports/:id` zeigt die SRM mit Ticket-/Aufgaben-/Auftragsbezug und Korrelation. Einreichen erfolgt über den bestehenden Workflow; `POST .../confirm` bestätigt als angemeldeter Kunde, `POST .../cancel` verwirft einen eigenen Entwurf und öffnet die Aufgabe erneut. Kundenbestätigung ist getrennt vom eingefrorenen fachlichen Versionsstand auditierbar und höchstens einmal möglich.
 
 `POST /api/service/orders/:id/complete` prüft den vollständigen technischen Abschluss; `POST .../billing-ready` stellt einen technisch abgeschlossenen Auftrag mit fakturierbaren Positionen bereit. Aktuelle Version, CSRF und Idempotency-Key sind erforderlich. Keine Rechnung oder Finanzbuchung wird durch diese Kommandos vorgetäuscht.
+
+## Buchungskern ab Preview 0.5
+
+`GET/POST /api/finance/companies` verwaltet explizite Buchungskreise. Unter `companies/:id` stehen `context`, `accounts`, `periods`, `periods/:period/status`, `rules`, `journals` und `trial-balance` zur Verfügung. Kontierungsregeln benötigen einen vollständigen Satz passender Kontenrollen und die aktuelle Konfigurationsversion. Periodenänderungen benötigen Version und Begründung.
+
+`POST /api/finance/journals` legt einen ausgeglichenen Entwurf an. Finanzbelege nutzen den konfigurierten Vier-Augen-Workflow mit ausschließlich Buchhaltungs-/Administrationsrollen. `GET journals/:id` liefert Kopf, Positionen und exakt berechnete Soll-/Haben-Summen. `POST journals/:id/post` prüft Freigabe, Version, Konten, Präzision und offene Periode erneut, vergibt die endgültige Nummer und schreibt den Beleg unveränderlich fest. `POST journals/:id/reverse` erzeugt einen eigenen genehmigungspflichtigen Gegenbeleg, keine Überschreibung des Originals. Entwürfe beeinflussen die Salden nicht.
+
+Die Readiness-Probe liefert nur dann 200, wenn die Migrationsprüfsummen exakt zum laufenden Quellstand passen und alle Migrationstabellen existieren. Keine Daten oder Prüfsummen werden öffentlich ausgegeben.

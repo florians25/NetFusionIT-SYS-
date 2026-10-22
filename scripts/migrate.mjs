@@ -30,6 +30,7 @@ export async function migrate(connectionString) {
     if (!/^[a-z_][a-z0-9_]*$/.test(role)) throw new Error('Ungültige Laufzeitrolle');
     if ((await client.query('SELECT 1 FROM pg_roles WHERE rolname=$1',[role])).rowCount) {
       await client.query(`GRANT USAGE ON SCHEMA public TO "${role}"`);
+      await client.query(`GRANT SELECT ON schema_migrations TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT,UPDATE ON tenants,users,user_organizations,organizations,business_partners,technicians,number_ranges,documents,service_cases,tickets,dispatch_assignments,document_relations,idempotency_keys TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT ON audit_events TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT,UPDATE,DELETE ON sessions TO "${role}"`);
@@ -40,6 +41,8 @@ export async function migrate(connectionString) {
       await client.query(`GRANT SELECT,INSERT,UPDATE ON service_reports,time_entries,work_order_tasks,ticket_charges TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT,UPDATE,DELETE ON work_timers TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT ON service_report_lines TO "${role}"`);
+      await client.query(`GRANT SELECT,INSERT,UPDATE ON company_codes,gl_accounts,fiscal_periods,journals,accounting_rules TO "${role}"`);
+      await client.query(`GRANT SELECT,INSERT ON journal_entries TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT ON sla_events TO "${role}"`);
     }
   } finally { await client.end(); }

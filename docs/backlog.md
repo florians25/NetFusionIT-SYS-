@@ -18,7 +18,7 @@ Quelle: [vollständiger Nutzeranhang](requirements/serviceangebote.md).
 
 Abnahme: Standard-/Festpreisregeln, Teilannahme und mehrfach parallel ausgelöste Auftragserstellung testen; Angebot → Auftrag bleibt einschließlich Vertrags-/Preis-/SLA-Snapshot nachvollziehbar. Kunden sehen ausschließlich eigene Angebote. Nicht konfigurierte Kredit-/Versanddienste melden einen offenen Konfigurationsbedarf statt Erfolg zu simulieren.
 
-[Verbindliche Ticket-/WOT-/SRM-Präzisierung](requirements/ticket-execution.md).
+[Verbindliche Ticket-/WOT-/SRM- und Beschaffungspräzisierung](requirements/ticket-execution.md).
 
 ## SERVICE-02 · Serviceaufträge und Servicerückmeldungen
 
@@ -92,3 +92,7 @@ Status: beauftragt, laufend.
 - GitHub-Release-Veröffentlichung/API-Zugriff ist zusätzlich zum Git-Push erforderlich. Bei fehlendem API-Zugriff bleiben Git-Tag, Quellarchiv und Versionsnotizen als prüfbarer Preview-Stand verfügbar.
 
 Abnahme: Remote-SHA/Tag, bestandene Build-/Funktionstests, datierte Versionsnotizen und Screenshots desselben Quellstands.
+
+## PROC-01 · Kaufmännische Führung am Serviceauftrag
+
+Nutzerpräzisierung vom 22.10.2026: Beschaffung und alle kostenpflichtigen Folgeprozesse werden vom Serviceauftrag aus angestoßen. BANF/Bestellung/externe Leistung/Wareneingang, Kontierung, Preisfindung und Abrechnung erhalten zwingenden Auftrags-/Positionsbezug. Das Ticket bleibt technischer Arbeitsbeleg und erzeugt keine ungebundenen kostenpflichtigen Beschaffungsbelege. Siehe [verbindliche Prozessvorgabe](requirements/ticket-execution.md).

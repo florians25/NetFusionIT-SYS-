@@ -8,11 +8,12 @@ import { Admin } from './admin';
 import { OData,metadata,entityFields } from './odata';
 import { Db,parse,audit } from './core';
 import { Permission } from './permissions';
+import { schemaReady } from './schema';
 @Controller('health')
 export class HealthController {
   constructor(private db:Db){}
   @Get('live')live(){return {status:'ok'};}
-  @Get('ready')async ready(){try{const r=await this.db.pool.query("SELECT to_regclass('public.tickets') IS NOT NULL AND to_regclass('public.sessions') IS NOT NULL AS ready");if(!r.rows[0].ready)throw new Error();return {status:'ready',database:'postgresql'};}catch{throw new ServiceUnavailableException('Datenbank oder Schema nicht bereit.');}}
+  @Get('ready')async ready(){try{if(!await schemaReady(this.db.pool))throw new Error();return {status:'ready',database:'postgresql'};}catch{throw new ServiceUnavailableException('Datenbank oder Schema nicht bereit.');}}
 }
 @Controller('api/auth')
 export class AuthController {

@@ -4,7 +4,7 @@ Stand: 22.10.2026. Eigenständige Software, kein SAP-Backend und keine SAP-Marke
 
 ## Lieferumfang und Abgrenzung
 
-Der aktuelle Stand umfasst Ticket-/Fallbearbeitung, Kunden-/Artikel-/Auftragsfreigabe, Servicebasis/SLA/Einsatzplanung und Auftragsausführung. Das Ticket ist der zentrale Arbeitsbeleg: Arbeits-/Fahrzeit und Pauschalen gehören zu Work Order Tasks; deren Abschluss erzeugt eine SRM im Serviceauftrag mit unveränderter Ticket-Korrelations-ID. Danach folgen Kundenbestätigung, Servicefreigabe, technischer Abschluss und Fakturabereitschaft. Der konkrete Umfang und alle offenen Module stehen in [Implementierungsplan](implementation-plan.md) und [Versionsnotizen](releases/v0.4.0-preview.1.md). Noch keine Rechnungs-, Lager- oder Finanzbuchungen, keine Produktivfreigabe oder Compliance-Zusage.
+Der aktuelle Stand umfasst Ticket-/Fallbearbeitung, Kunden-/Artikel-/Auftragsfreigabe, Servicebasis/SLA/Einsatzplanung und Auftragsausführung. Das Ticket ist der zentrale Arbeitsbeleg: Arbeits-/Fahrzeit und Pauschalen gehören zu Work Order Tasks; deren Abschluss erzeugt eine SRM im Serviceauftrag mit unveränderter Ticket-Korrelations-ID. Danach folgen Kundenbestätigung, Servicefreigabe, technischer Abschluss und Fakturabereitschaft. Der konkrete Umfang und alle offenen Module stehen in [Implementierungsplan](implementation-plan.md) und [Versionsnotizen](releases/v0.5.0-preview.1.md). Der Buchungskern unterstützt manuelle Journale mit Freigabe, Buchung, Gegenbelegstorno und Salden. Noch keine Rechnungs-/Lagerintegration, keine Produktivfreigabe oder Compliance-Zusage.
 
 ## System
 
