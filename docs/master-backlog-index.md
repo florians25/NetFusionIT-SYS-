@@ -1,0 +1,43 @@
+# Masterbacklog: vollständige Modulabdeckung und offene Prozesslücken
+
+Stand22.10.2026, geprüfte Basis Preview0.10.0-preview.2. Die [Originalspezifikation](master-prompt.md) gilt vollständig; [Zusatzanforderungen](backlog.md) und [37 SD-/Faktura-/CRM-Arbeitspakete](requirements/sales-billing-crm.md) ergänzen sie. „Teilbasis“ bedeutet ausdrücklich keinen abgeschlossenen SAP-Ersatz. Jeder offene Ablauf benötigt Datenmodell, API, Rechte, Status/Mengen/Werte, native OpenUI5-Maske und aussagekräftige Prozessprüfung.
+
+| Modul / Bereich | Vorhandene Teilbasis | Weiterer verbindlicher Umfang |
+| --- | --- | --- |
+| Identity/Security | Sitzungen, CSRF, Rollen, Tenant/Org/Kunde/eigener Techniker, RLS | MFA/OIDC, feinere Berechtigungsobjekte, SoD, Sitzungs-/Angriffsüberwachung, zentrale Policies |
+| Organisation | Tenant, Serviceorganisation, Buchungskreis, Werk/Lagerort | Vertriebs-/Einkaufsorganisation, Vertriebsweg/Sparte, Gruppen, Geschäftsbereich, Profitcenter, konfigurierbare Zuordnung |
+| App-Zentrale/Oberflächen | Rollenabhängige Kacheln, aktive Anwendung, native Controls | Alle Fachmasken mit tatsächlicher Detailtiefe, Varianten/Massenaktionen, Barrierefreiheit und reale mobile Geräteabnahme |
+| Geschäftspartner/CRM | Kunden/Lieferanten, Rollenbasis, Kontakte/Adressen, Stammdatenfreigabe | Mehrfachrollen, Debitor/Kreditor je Buchungskreis, Ansprechpartnerfunktionen, Partnerfindung, Änderungen/Dubletten, Aktivitäten, Leads/Chancen |
+| Kundenportal | Anmeldung, Ticketerfassung, Kommentare, eigene Daten, SRM-Bestätigung | Geschützte externe Anlagenannahme, Termin-/Angebotsannahme, Rechnungen/OP, eigene Stammdatenänderung, sichere öffentliche Intake-/E-Mail-Kanäle |
+| ITSM/Ticket | Arten, Zuweisung/Status, Aufgaben, Zeiten/Timer, SLA, Kommentar/Notiz | Impact/Urgency, detaillierte Klassifikation, Kontakte/Standorte, Beobachter, Vorlagen/Checklisten, Wiedervorlage, Merge, Problem/Known Error/Wissen/Change |
+| Servicefall | Eigenständiger Fall, Tickets, Kontext und Belegfluss | Mehrere Objekte/Standorte, Kostenschätzung, Garantie-/Vertragsentscheidung, vollständige operative und kaufmännische Übersichten |
+| Disposition/Field Service | Kalender, Teams/Qualifikationen, Abwesenheit/Kollision, Einsätze | Kapazität, Bereitschaft, Tour/Fahrtzeiten, automatische Empfehlung, mehrere Termine, Checklisten, Fotos/Unterschrift, Wiederholung |
+| SLA | Kalender/Feiertage/Zeitzone, Reaktion/Lösung, Pausen/Snapshots | Wiederherstellung/Vor-Ort/Verfügbarkeit, mehrstufige Eskalation, automatisierte Benachrichtigung und Vertragskontingente |
+| Installierte Basis | Objekte, Komponenten-/Kunden-/Vertragsbezug, Serieninformationen | Vollständige Servicehistorie, Eigentum/Garantie, Mehrfachobjektfälle, standortübergreifende Strukturen und sichere Übernahme |
+| Serviceverträge | Basisvertrag, Status/Gültigkeit, SLA | Positionsfindung, Deckung/Kontingente, Preise/Anpassungen, Abrechnung/Verlängerung, Vorlagen/Import/Kreditprüfung |
+| Serviceangebote | Noch offen | Standard/Festpreis, Pakete, Versionen, selektive Annahme/Änderungsangebot, Kundenfreigabe, Ausgabe und korrelierte Auftragserzeugung |
+| Serviceaufträge/WOT/SRM | Freigabe, Katalogpreise, technische Ausführung, korrelierte Istquellen und SRM | Servicegruppen/Pakete, zusätzliche Positionstypen, Änderungsfreigabe, Festpreispläne, Teil-/Korrekturrückmeldung, erweiterte Kontierung/Intercompany |
+| Sales Order AU | Noch offen, SA ist eigener Beleg | SD-01–17: vollständiger Kopf/Position/Partner/Konditionen/Termine/Sperren/Freigaben/Absage/Versand/Faktura/Belegfluss nach Nutzermasken |
+| Artikel/Produkte | Arten, Freigabe, Preise, Einheiten, Serie/Charge | Hersteller-/Lieferantenbeziehungen, Ersatzartikel, Mindest-/Meldebestand, Disposition, Bewertungsarten, Lizenz-/Laufzeitregeln und Änderungsfreigabe |
+| Pricing | Konditionsfindung/Priorität/Staffel/Gültigkeit/Dezimalwerte/Snapshot | Erweiterte Schemata/Partner-/Projektpreise, Steuerkategorien, Konditionspflege/Versionen, Freigabe, statistische Werte und fakturasichere Rundung |
+| Bedarf/BANF | Automatischer Artikelbedarf, Lager zuerst, Fehlmenge, unabhängige Freigabe | Alternativartikel, Direktlieferung, Umplanung, Wunschlieferant, Sammelbedarf, vollständige Bearbeiter-/Freigabe-/Änderungsprozesse |
+| Einkauf | Lieferant, Teilbestellung aus BANF, Mengenbindung, Freigabe/PDF | Lieferantenanfrage/Angebotsvergleich, freie auftragsgebundene Bestellung, Kopf-/Positionsdetails, Bestätigung/Einteilungen, Änderung, Storno, Versand/Status |
+| Wareneingang | Tatsächliche Teilmengen, Bewertung, Serie/Charge, Storno und FI | Anlieferung/Prüfung/Sperrbestand, Nichtlager-/Fremdleistungsabnahme, Retouren, Mehr-/Mindermengen und vollständige Lieferantenbelegzuordnung |
+| Physisches Lager | Werk/Lagerort, Bestands-/Reservierungs-/Bewertungsbuch | Regal/Fach/Platzbestand, Einlagerung, Labels/Scanner, Kommissionierung, Umlagerung, mobile Lager, Inventur/Differenzen und Gegenbewegungen |
+| Auslieferung/Retoure | Teil-Ausgabe an SA, WA/LS, Bewertung, Originalgegenbewegung, SRM | Versand/Packstücke/Tracking, Retouren-/Eigentumsfälle, Wiederaufbereitung, gutgeschriebene/fakturierte Rückgabe und ungeplante Materialrückgabe |
+| Werkstattreparatur | Noch offen | RMA/Retoure, Reparaturobjekte, Vorprüfung, Diagnose, Angebot, Annahme, Reparatur/Fremdbeschaffung, Rückmeldung, Faktura/Rücksendung |
+| Faktura | Fakturabereitschaft, geschützte PDF-Grundlage | BILL-01–10: Anforderung → Freigabe → Vorrat → Teil-/Sammel-/periodische Rechnung → FI/OP; Leistungserbringung, valides ZUGFeRD/XRechnung, Storno/Korrektur |
+| Eingangsrechnungen | EG-Nummernkreis, Anlagen-/FI-Grundlage | [AP-01–12](requirements/incoming-invoices-barcodes.md): Originalannahme/Validierung, Kreditor, Dubletten, Drei-Wege-/Teil-WE-Abgleich, Abweichungen, Freigabe, Vorsteuer/WE-RE/OP, Korrektur/Zahlung |
+| Recht/Compliance | Einzelne technische Rollen-/Journal-/Archivkontrollen | [LEG-00–10](compliance-gap-analysis.md): Rechtsstand/Scope, Fristen/Holds, Pflichtangaben/Steuerfälle, E-Rechnung, Prüfexport, Verfahren/Restore, DSGVO/Löschung/TOM/Arbeitszeit |
+| Finance | Konten/Perioden, Vier-Augen-Journal, unveränderliche Buchung, Storno, Salden | Debitor/Kreditor/OP, Steuerschlüssel, Eingangsrechnung/Drei-Wege-Abgleich, Zahlung/Skonto/Mahnung, Bank, Abschluss/Bilanz/GuV und Abstimmung |
+| Controlling | Kostenstelle/-träger an Positionen und Istquellen | Stammdaten/Plan/Ist, Auftragskalkulation, Deckungsbeitrag, interne Verrechnung, Profitcenter/Projekt/PSP und Abrechnung |
+| Projekte/Leistungsnachweise | Ticket-WOT und tatsächliche SRM | Projektstruktur/-aufgaben, Budgets, Meilensteine, Kapazität, projektbezogene Preise/Zeiten/Faktura und vollständige Tätigkeitsnachweise |
+| Workflow | Definition/Snapshot/Vier-Augen/Stufen/Rückfrage/Audit | Betragsgrenzen, Bedingungen, Delegation/Vertretung/Eskalation, kritische Stammdaten-/Rechnungsänderungen und Massengenehmigung |
+| Dokumente/Ausgabe | Kleine PDF-Modale, Archive/Hash/Version, Schwarz-Weiß-Formulare, Quarantäne | Weitere Belegarten/Positionsanlagen, echtes AV im Betrieb, Vorlagenstamm, E-Mail/Druck/Outbox, Aufbewahrung/Löschung und E-Rechnungsvalidierung |
+| Reporting | Tatsächliche Cockpit-/Fachzähler und Salden | Service-/SLA-/Material-/Umsatz-/OP-/Kostenberichte, erlaubte Exporte, zeitbezogene Abgrenzung, Drill-down und Rollenfilter |
+| Integration/Migration | Lesender OData-Teilumfang, REST-Kommandos/Migrationen | Vollständige API-Verträge, Imports/Mapping/externe Schlüssel, Webhooks/Outbox/Retry, Mail, Buchhaltungs-/Bank-/E-Rechnungskanäle |
+| Administration/Betrieb | Benutzer, Nummernkreise, Workflows, Docker-/Caddy-Vorbereitung | Einstellungen/Steuer/Formular-/Organisationsstämme, echte Zielserverabnahme, Backup/Restore, Monitoring/Alarmierung, Last/Security/Recovery, Rollout/Updates |
+
+## Gemeinsame Abnahmeschranke
+
+Freigabe-/Quellen-/Mengen-/Preisstände dürfen durch parallele Requests, Wiederholung, direkte Tabellenänderung oder einen Benutzerwechsel nicht umgangen werden. Historische Belege behalten ihren Stand. Gegenbewegung, Mengenrest, Finanzbuchung und Folgebelegreferenz müssen zusammenpassen. Eine Schaltfläche, ein nummerierter Datensatz oder eine formal vorhandene Datei ist noch kein abgenommener Geschäftsprozess. Nachweise und Grenzen gehören zu jedem getesteten Preview-Tag.

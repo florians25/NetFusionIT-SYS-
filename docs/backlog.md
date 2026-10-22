@@ -2,6 +2,8 @@
 
 Stand: 22.10.2026. Der vollständige [Masterprompt](master-prompt.md) bleibt der Grundauftrag. Die folgenden Ergänzungen wurden zusätzlich vom Nutzer beauftragt. Sie sind Anforderungen, keine Behauptung bereits implementierter Funktionen. Oberflächen bestehen ausschließlich aus Standardcontrols von **OpenUI5**. [Verbindliche Navigations-/Maskenvorgaben](requirements/navigation.md): App-Zentrale als Einstieg, ausschließlich anwendungsbezogene Schnellzugriffe und native Belegobjektseiten. SAP-Dokumentation dient als fachliche Referenz; SAP-Backend-Dienste oder SAPUI5-exklusive Controls werden dadurch nicht vorausgesetzt.
 
+[Vollständiger Modulindex mit vorhandener Teilbasis und offenen Prozesslücken](master-backlog-index.md).
+
 ## Umfang und aktueller Lieferstand
 
 Der Masterprompt umfasst alle darin genannten Module; diese Ergänzungsliste ist keine vollständige Liste bereits gelieferter Funktionen. Ein Grundstamm, eine Tabellenmaske oder ein reservierter Nummernkreis erledigt keinen End-to-End-Prozess. Die jüngste [detaillierte SD-/Faktura-/CRM-Aufteilung](requirements/sales-billing-crm.md) enthält17 Sales-Order-Abläufe,10 Faktura- und10 CRM-Arbeitspakete mit Abnahmekriterien. Der eigene AU-Kundenauftrag und die neuen Faktura-/CRM-Erweiterungen sind zunächst offen; der vorhandene SA bleibt ein eigener Vorgang.
@@ -122,3 +124,11 @@ Zusätzliche SAP-Muster für vollständige Kundenauftrags- und Einkaufsprozesse 
 ## SD / BILL / CRM · Vertiefter Ausbau nach Nutzermustern
 
 Verbindliche zusätzliche [Prozess- und Maskenanforderungen](requirements/sales-billing-crm.md). Fakturapositionen werden ausdrücklich als eigenständige Fakturaanforderungen freigegeben; nur deren freigegebene offene Mengen gelangen in den Fakturavorrat. Leistungserbringungsdatum/-zeitraum, ZUGFeRD mit tatsächlichem Validierungsnachweis und ein CRM-/Geschäftspartnerstamm mit Ansprechpartnerrollen sowie getrennten Debitoren-/Kreditorendaten je Buchungskreis sind beauftragt. Der geplante Umfang reicht deutlich über die bisherigen Grundmasken hinaus.
+
+## LEG-00–10 / AP-01–12 / DOC-BAR-01 · Recht, Eingangsrechnungen und Belegbarcodes
+
+Nutzerergänzung22.10.2026: [Originalauftrag](requirements/compliance-user-prompt.md), [Compliance-Matrix, Risiken, Prioritäten und offene Rechtsfragen](compliance-gap-analysis.md), [zwölf konkrete Eingangsrechnungsabläufe und Barcode-Abnahme](requirements/incoming-invoices-barcodes.md).
+
+Die rechtliche Prüfung ergänzt bestehende Anforderungen um notwendige Kontroll-/Nachweislücken. Rechtsgrundlagen/Übergangsfristen sind wegen blockierter amtlicher Quellen **zum gewünschten Stichtag nicht abschließend verifiziert**. Keine GoBD-Zertifizierung oder Produktivfreigabe. Eingangsrechnungen brauchen unveränderte Originale, UBL/CII-/Hybridannahme, externe Lieferantennummer plus interne EG-ID, Dublettenprüfung, Teilmengen-Drei-Wege-Abgleich, Abweichungs-/Zahlungssperren, unabhängige Freigabe, WE/RE-/Vorsteuer-/Kreditorenbuchung, OP und nachvollziehbare Korrektur. Sie sind weiterhin offen.
+
+Code128 mit tatsächlicher Belegnummer wird in der gemeinsamen schwarzen Formularbasis umgesetzt; alte Archivbytes bleiben erhalten. Fremde Eingangsoriginale werden dafür nicht verändert. Barcode ist Nutzerkomfort, keine allgemeine gesetzliche Pflicht; physische Lagerlabels/Scanner bleiben eigener Umfang.
