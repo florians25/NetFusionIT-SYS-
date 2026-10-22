@@ -1,0 +1,20 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.f" controllerName="netfusion.erp.controller.App" displayBlock="true" height="100%">
+  <VBox height="100%" >
+    <f:ShellBar title="NetFusion" secondTitle="Service Workspace" showMenuButton="false" visible="{= !!${state&gt;/user} }">
+      <f:profile><Avatar initials="{path:'state&gt;/user/name',formatter:'.formatter.initials'}" tooltip="{state&gt;/user/name}" press=".onProfile" displaySize="XS"/></f:profile>
+      <f:additionalContent><ObjectStatus text="Entwicklungsstand 0.1" visible="{device&gt;/system/desktop}"/></f:additionalContent>
+    </f:ShellBar>
+    <IconTabHeader selectedKey="{state&gt;/navKey}" select=".onNav" visible="{= !!${state&gt;/user} }"  mode="Inline" backgroundDesign="Solid">
+      <items>
+        <IconTabFilter text="Mein Arbeitsplatz" key="home"/>
+        <IconTabFilter text="Service-Cockpit" key="cockpit"/>
+        <IconTabFilter text="Tickets" key="tickets"/>
+        <IconTabFilter text="Dispatching" key="dispatch" visible="{state&gt;/access/assign}"/>
+        <IconTabFilter text="Kunden" key="partners" visible="{state&gt;/access/partners}"/>
+        <IconTabFilter text="Administration" key="admin" visible="{state&gt;/access/admin}"/>
+        <IconTabFilter text="Ausbauplan" key="roadmap"/>
+      </items>
+    </IconTabHeader>
+    <App id="innerApp" ><layoutData><FlexItemData growFactor="1" baseSize="0%"/></layoutData></App>
+  </VBox>
+</mvc:View>

@@ -1,0 +1,168 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "netfusion.erp",
+    "type": "application",
+    "title": "NetFusion Service Workspace",
+    "applicationVersion": {
+      "version": "0.1.0"
+    },
+    "dataSources": {
+      "service": {
+        "uri": "/odata/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "dependencies": {
+      "minUI5Version": "1.153.0",
+      "libs": {
+        "sap.ui.core": {},
+        "sap.m": {},
+        "sap.f": {},
+        "sap.ui.layout": {},
+        "sap.ui.table": {},
+        "sap.uxap": {}
+      }
+    },
+    "rootView": {
+      "viewName": "netfusion.erp.view.App",
+      "type": "XML",
+      "id": "root",
+      "async": true
+    },
+    "models": {
+      "": {
+        "dataSource": "service",
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": false,
+          "groupId": "$direct"
+        }
+      }
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "viewPath": "netfusion.erp.view",
+        "controlId": "innerApp",
+        "controlAggregation": "pages",
+        "async": true
+      },
+      "routes": [
+        {
+          "pattern": "",
+          "name": "cockpit",
+          "target": "TicketDashboard"
+        },
+        {
+          "pattern": "apps",
+          "name": "home",
+          "target": "Home"
+        },
+        {
+          "pattern": "login",
+          "name": "login",
+          "target": "Login"
+        },
+        {
+          "pattern": "tickets",
+          "name": "tickets",
+          "target": "Tickets"
+        },
+        {
+          "pattern": "tickets/new",
+          "name": "newTicket",
+          "target": "NewTicket"
+        },
+        {
+          "pattern": "tickets/{id}",
+          "name": "ticket",
+          "target": "Ticket"
+        },
+        {
+          "pattern": "cases",
+          "name": "cases",
+          "target": "Cases"
+        },
+        {
+          "pattern": "cases/{id}",
+          "name": "case",
+          "target": "Case"
+        },
+        {
+          "pattern": "dispatch",
+          "name": "dispatch",
+          "target": "Dispatch"
+        },
+        {
+          "pattern": "partners",
+          "name": "partners",
+          "target": "Partners"
+        },
+        {
+          "pattern": "admin",
+          "name": "admin",
+          "target": "Admin"
+        },
+        {
+          "pattern": "roadmap",
+          "name": "roadmap",
+          "target": "Roadmap"
+        }
+      ],
+      "targets": {
+        "Home": {
+          "viewName": "Home"
+        },
+        "Login": {
+          "viewName": "Login"
+        },
+        "Tickets": {
+          "viewName": "Tickets"
+        },
+        "NewTicket": {
+          "viewName": "NewTicket"
+        },
+        "Ticket": {
+          "viewName": "Ticket"
+        },
+        "Cases": {
+          "viewName": "Cases"
+        },
+        "Case": {
+          "viewName": "Case"
+        },
+        "Dispatch": {
+          "viewName": "Dispatch"
+        },
+        "Partners": {
+          "viewName": "Partners"
+        },
+        "Admin": {
+          "viewName": "Admin"
+        },
+        "Roadmap": {
+          "viewName": "Roadmap"
+        },
+        "TicketDashboard": {
+          "viewName": "TicketDashboard"
+        }
+      }
+    }
+  }
+}

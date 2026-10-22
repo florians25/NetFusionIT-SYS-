@@ -1,0 +1,19 @@
+specVersion: "4.0"
+metadata:
+  name: netfusion.erp
+type: application
+resources:
+  configuration:
+    paths:
+      webapp: frontend/webapp
+framework:
+  name: OpenUI5
+  version: "1.153.0"
+  libraries:
+    - name: sap.ui.core
+    - name: sap.m
+    - name: sap.f
+    - name: sap.ui.layout
+    - name: sap.ui.table
+    - name: sap.uxap
+    - name: themelib_sap_horizon

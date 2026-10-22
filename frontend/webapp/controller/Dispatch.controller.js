@@ -1,0 +1,4 @@
+sap.ui.define(["netfusion/erp/controller/Base.controller","sap/ui/model/Filter","sap/ui/model/FilterOperator"],function(Base,Filter,Op){"use strict";return Base.extend("netfusion.erp.controller.Dispatch",{
+  onInit:function(){this.model({technicians:[],dashboard:{}});this.getOwnerComponent().getRouter().getRoute("dispatch").attachPatternMatched(this.load,this);},
+  load:async function(){if(!await this.guard("assign"))return;this.run(async function(){this.vm().setProperty("/technicians",await this.api("/api/technicians"));this.vm().setProperty("/dashboard",await this.api("/api/dashboard"));var b=this.byId("dispatchTable").getBinding("items");b.filter(new Filter({filters:[new Filter("technicianId",Op.EQ,null),new Filter("status",Op.NE,"CANCELLED"),new Filter("status",Op.NE,"CLOSED"),new Filter("status",Op.NE,"TECHNICALLY_RESOLVED"),new Filter("status",Op.NE,"COMMERCIALLY_CLOSED")],and:true}));b.refresh();});}
+});});

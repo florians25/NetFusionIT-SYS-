@@ -1,0 +1,21 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:form="sap.ui.layout.form" controllerName="netfusion.erp.controller.Login">
+  <Page title="NetFusion · Service Workspace">
+    <l:Grid defaultSpan="XL4 L6 M8 S12" position="Center" class="sapUiLargeMarginTop">
+      <Panel headerText="Anmeldung">
+        <VBox class="sapUiContentPadding">
+          <Title text="Willkommen zurück" titleStyle="H2"/>
+          <Text text="Melden Sie sich an Ihrem Arbeitsplatz an." class="sapUiSmallMarginTop sapUiSmallMarginBottom"/>
+          <MessageStrip text="{view&gt;/error}" type="Error" showIcon="true" visible="{= !!${view&gt;/error} }" class="sapUiSmallMarginBottom"/>
+          <form:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="12" labelSpanL="12" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" columnsXL="1" columnsL="1" columnsM="1">
+            <Label text="Mandant" labelFor="tenant"/><Input id="tenant" value="{view&gt;/tenant}" maxLength="48"/>
+            <Label text="E-Mail-Adresse" labelFor="email"/><Input id="email" value="{view&gt;/email}" type="Email"/>
+            <Label text="Passwort" labelFor="password"/><Input id="password" value="{view&gt;/password}" type="Password" submit=".onLogin"/>
+          </form:SimpleForm>
+          <Button text="Anmelden" type="Emphasized" press=".onLogin" width="100%" class="sapUiSmallMarginTop"/>
+          <ObjectStatus text="Version 0.1 · Entwicklungsumgebung" state="Information" class="sapUiMediumMarginTop"/>
+          <Text text="Zugangsdaten werden durch Ihre Administration vergeben." class="sapUiSmallMarginTop"/>
+        </VBox>
+      </Panel>
+    </l:Grid>
+  </Page>
+</mvc:View>

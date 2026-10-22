@@ -1,0 +1,17 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form" controllerName="netfusion.erp.controller.NewTicket">
+  <Page showHeader="false" class="sapUiResponsiveContentPadding" showFooter="true"><content><VBox>
+    <Breadcrumbs currentLocationText="Ticket anlegen"><Link text="Mein Arbeitsplatz" press=".onHome"/><Link text="Tickets" press=".onTickets"/></Breadcrumbs>
+    <VBox class="sapUiMediumMarginTop sapUiMediumMarginBottom"><Text text="NEUE SERVICEANFRAGE" /><Title text="Wie können wir helfen?" titleStyle="H2"/><Text text="Beschreiben Sie Ihr Anliegen. Ticket und Servicefall werden gemeinsam angelegt." class="sapUiTinyMarginTop"/></VBox>
+    <MessageStrip text="{view&gt;/error}" type="Error" showIcon="true" visible="{= !!${view&gt;/error} }" class="sapUiSmallMarginBottom"/>
+    <Panel headerText="Allgemeine Informationen" class="sapUiNoMargin">
+      <form:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" columnsL="1" columnsM="1">
+        <Label text="Kunde" required="true" labelFor="partner"/><Select id="partner" selectedKey="{view&gt;/partnerId}" items="{view&gt;/partners}" width="100%" enabled="{= !${state&gt;/access/customer} }"><core:Item key="{view&gt;id}" text="{view&gt;name}"/></Select>
+        <Label text="Betreff" required="true" labelFor="title"/><Input id="title" value="{view&gt;/title}" placeholder="z. B. VPN-Verbindung am Standort nicht möglich" maxLength="160"/>
+        <Label text="Anfrageart" labelFor="type"/><Select id="type" selectedKey="{view&gt;/type}" width="100%"><core:Item key="INCIDENT" text="Störung"/><core:Item key="SERVICE_REQUEST" text="Serviceanfrage"/><core:Item key="PROBLEM" text="Problem"/><core:Item key="CHANGE" text="Änderung"/><core:Item key="MAINTENANCE" text="Wartung"/><core:Item key="REPAIR" text="Reparatur"/><core:Item key="INSTALLATION" text="Installation"/><core:Item key="COMPLAINT" text="Reklamation"/><core:Item key="WARRANTY" text="Garantie"/><core:Item key="INTERNAL" text="Interner IT-Auftrag"/></Select>
+        <Label text="Priorität" labelFor="priority"/><Select id="priority" selectedKey="{view&gt;/priority}" width="100%"><core:Item key="LOW" text="Niedrig · geringe Auswirkung"/><core:Item key="MEDIUM" text="Normal · reguläre Anfrage"/><core:Item key="HIGH" text="Hoch · Arbeit eingeschränkt"/><core:Item key="CRITICAL" text="Kritisch · Betrieb unterbrochen"/></Select>
+        <Label text="Beschreibung" required="true" labelFor="description"/><TextArea id="description" value="{view&gt;/description}" rows="7" maxLength="10000" showExceededText="true" width="100%" placeholder="Was ist passiert? Seit wann besteht das Problem? Welche Systeme sind betroffen?"/>
+      </form:SimpleForm>
+    </Panel>
+    <MessageStrip text="Ihre Anfrage wird Ihrem Kundenkonto zugeordnet. Sie erhalten nach dem Speichern eine eindeutige Ticketnummer und Korrelations-ID." type="Information" showIcon="true" class="sapUiMediumMarginTop"/>
+  </VBox></content><footer><OverflowToolbar><ToolbarSpacer/><Button text="Abbrechen" press=".onCancel"/><Button text="Ticket speichern" type="Emphasized" icon="sap-icon://save" press=".onSave"/></OverflowToolbar></footer></Page>
+</mvc:View>

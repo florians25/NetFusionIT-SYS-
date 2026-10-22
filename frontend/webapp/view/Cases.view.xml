@@ -1,0 +1,8 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="netfusion.erp.controller.Cases"><Page showHeader="false" class="sapUiResponsiveContentPadding"><VBox>
+  <Breadcrumbs currentLocationText="Servicefälle"><Link text="Mein Arbeitsplatz" press=".onHome"/></Breadcrumbs>
+  <VBox class="sapUiMediumMarginTop sapUiMediumMarginBottom"><Text text="SERVICE MANAGEMENT" /><Title text="Servicefälle" titleStyle="H2"/><Text text="Der fachliche Zusammenhang hinter Ihren Tickets." class="sapUiTinyMarginTop"/></VBox>
+  <Table id="casesTable" items="{path:'/ServiceCases',parameters:{$count:true,$orderby:'createdAt desc'}}" growing="true" growingThreshold="20" itemPress=".onCasePress" noDataText="Servicefälle entstehen automatisch bei der Ticketanlage." >
+    <columns><Column><Text text="Servicefall"/></Column><Column minScreenWidth="Tablet" demandPopin="true"><Text text="Kunde"/></Column><Column><Text text="Operativer Status"/></Column><Column minScreenWidth="Tablet" demandPopin="true"><Text text="Angelegt"/></Column></columns>
+    <items><ColumnListItem type="Navigation"><cells><ObjectIdentifier title="{title}" text="{number}"/><Text text="{partnerName}"/><ObjectStatus text="{path:'status',formatter:'.formatter.status'}" state="Information"/><Text text="{path:'createdAt',targetType:'any',formatter:'.formatter.date'}"/></cells></ColumnListItem></items>
+  </Table>
+</VBox></Page></mvc:View>

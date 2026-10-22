@@ -1,0 +1,10 @@
+node_modules/
+dist/
+ui5-dist/
+.local/
+.env
+.env.*
+!.env.example
+test-results/
+coverage/
+*.log

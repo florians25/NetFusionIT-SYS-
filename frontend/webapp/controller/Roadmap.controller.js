@@ -1,0 +1,1 @@
+sap.ui.define(["netfusion/erp/controller/Base.controller"],function(Base){"use strict";return Base.extend("netfusion.erp.controller.Roadmap",{onInit:function(){this.getOwnerComponent().getRouter().getRoute("roadmap").attachPatternMatched(function(){this.guard();},this);}});});
