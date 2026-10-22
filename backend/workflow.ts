@@ -1,3 +1,4 @@
+import {lockSupplierReversal,validateSupplierReversal,supplierReversalReviewer,approveSupplierReversal} from './supplier-reversals';
 import {lockSupplierPosting,validateSupplierPosting,supplierReviewer,approveSupplierTax} from './supplier-posting';
 import {lockBillingSubject,validateBillingRequest} from './billing';
 import {validateFinancialMaster} from './partner-finance';
@@ -11,7 +12,7 @@ import { ROLES,requirePermission } from './permissions';
 import { checkOrg,document,notify,version } from './business';
 import { submitReport,decideReport,lockReportSubject } from './work';
 import { procurementSubject,lockProcurementSubject,validateProcurementApproval,refreshRequisition } from './procurement';
-export const approvalSubjects:Record<string,{table:string,pending:string,approved:string,rejected:string,permission:string}>={SUPPLIER_INVOICE:{table:'supplier_invoices',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'ap.post'},BILLING_REQUEST:{table:'billing_requests',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'billing.release'},PARTNER_ACCOUNT:{table:'partner_company_accounts',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'partner.account.write'},COMPANY_BILLING_PROFILE:{table:'company_billing_profiles',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'partner.account.write'},BUSINESS_PARTNER:{table:'business_partners',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'partner.write'},MATERIAL:{table:'products',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'material.write'},SERVICE_ORDER:{table:'service_orders',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'order.write'},REQUISITION:{table:'purchase_requisitions',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'requisition.write'},PURCHASE_ORDER:{table:'purchase_orders',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'procurement.write'},ACCOUNTING:{table:'journals',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'finance.write'},SERVICE_REPORT:{table:'service_reports',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'order.execute'}};
+export const approvalSubjects:Record<string,{table:string,pending:string,approved:string,rejected:string,permission:string}>={SUPPLIER_INVOICE_REVERSAL:{table:'supplier_invoice_reversals',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'ap.post'},SUPPLIER_INVOICE:{table:'supplier_invoices',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'ap.post'},BILLING_REQUEST:{table:'billing_requests',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'billing.release'},PARTNER_ACCOUNT:{table:'partner_company_accounts',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'partner.account.write'},COMPANY_BILLING_PROFILE:{table:'company_billing_profiles',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'partner.account.write'},BUSINESS_PARTNER:{table:'business_partners',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'partner.write'},MATERIAL:{table:'products',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'material.write'},SERVICE_ORDER:{table:'service_orders',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'order.write'},REQUISITION:{table:'purchase_requisitions',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'requisition.write'},PURCHASE_ORDER:{table:'purchase_orders',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'procurement.write'},ACCOUNTING:{table:'journals',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'finance.write'},SERVICE_REPORT:{table:'service_reports',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'order.execute'}};
 @Injectable()
 export class Workflow {
  constructor(private db:Db){}
@@ -22,7 +23,7 @@ export class Workflow {
   checkOrg(u,input.organizationId);
   if(input.subjectKind==='SERVICE_REPORT'&&(!input.fourEyes||input.steps.some(s=>s.roles.some(r=>!['ADMIN','SERVICE_MANAGER'].includes(r)))))throw new ConflictException('Leistungsnachweise benötigen Vier-Augen-Prüfung durch Serviceleitung oder Administration.');
   if(['BILLING_REQUEST','PARTNER_ACCOUNT','COMPANY_BILLING_PROFILE'].includes(input.subjectKind)&&(!input.fourEyes||input.steps.some(s=>s.roles.some(r=>!(input.subjectKind==='BILLING_REQUEST'?['ADMIN','SERVICE_MANAGER','ACCOUNTANT']:['ADMIN','ACCOUNTANT']).includes(r)))))throw new ConflictException('Faktura-/Finanzstammfreigabe benötigt unabhängige berechtigte Prüfung.');
-  if(['ACCOUNTING','SUPPLIER_INVOICE'].includes(input.subjectKind)&&(!input.fourEyes||input.steps.some(s=>s.roles.some(r=>!['ADMIN','ACCOUNTANT'].includes(r)))))throw new ConflictException('Finanzbelege benötigen Vier-Augen-Prüfung durch Buchhaltung oder Administration.');
+  if(['ACCOUNTING','SUPPLIER_INVOICE','SUPPLIER_INVOICE_REVERSAL'].includes(input.subjectKind)&&(!input.fourEyes||input.steps.some(s=>s.roles.some(r=>!['ADMIN','ACCOUNTANT'].includes(r)))))throw new ConflictException('Finanzbelege benötigen Vier-Augen-Prüfung durch Buchhaltung oder Administration.');
   if(['REQUISITION','PURCHASE_ORDER'].includes(input.subjectKind)&&(!input.fourEyes||input.steps.some(s=>s.roles.some(r=>!(input.subjectKind==='REQUISITION'?['ADMIN','SERVICE_MANAGER','PURCHASING_MANAGER']:['ADMIN','PURCHASING_MANAGER']).includes(r)))))throw new ConflictException('Beschaffungsfreigaben benötigen Vier-Augen-Prüfung durch Service-/Einkaufsleitung oder Administration.');
   return this.db.as(u,db=>idempotent(db,u,'WORKFLOW_CONFIGURE',key,input,async()=>{
    await db.query('SELECT pg_advisory_xact_lock(hashtextextended($1,0))',[`WORKFLOW:${u.tenantId}:${input.organizationId}:${input.subjectKind}`]);
@@ -34,7 +35,7 @@ export class Workflow {
   }));
  }
  async submitWithin(db:PoolClient,u:Principal,id:string,expected:number,correlation:string){
-  await lockSupplierPosting(db,u,id);await lockBillingSubject(db,u,id);await lockProcurementSubject(db,u,id);await lockReportSubject(db,u,id);
+  await lockSupplierReversal(db,u,id);await lockSupplierPosting(db,u,id);await lockBillingSubject(db,u,id);await lockProcurementSubject(db,u,id);await lockReportSubject(db,u,id);
   const doc=await document(db,u,id,true),subject=approvalSubjects[doc.kind];
   if(!subject)throw new ConflictException('Dieser Belegtyp unterstützt noch keinen Freigabeprozess.');
   requirePermission(u.role,subject.permission);
@@ -45,6 +46,7 @@ export class Workflow {
   if(doc.kind==='SERVICE_ORDER'&&!(await db.query('SELECT 1 FROM service_order_items WHERE tenant_id=$1 AND order_id=$2',[u.tenantId,id])).rowCount)throw new ConflictException('Serviceauftrag benötigt mindestens eine Position.');
   if(['REQUISITION','PURCHASE_ORDER'].includes(doc.kind))await validateProcurementApproval(db,u,id,doc.kind);
   if(doc.kind==='SUPPLIER_INVOICE')await validateSupplierPosting(db,u,id);
+  if(doc.kind==='SUPPLIER_INVOICE_REVERSAL')await validateSupplierReversal(db,u,id);
   if(doc.kind==='BILLING_REQUEST')await validateBillingRequest(db,u,id);
   if(['PARTNER_ACCOUNT','COMPANY_BILLING_PROFILE'].includes(doc.kind))await validateFinancialMaster(db,u,id,doc.kind);
   if(doc.kind==='SERVICE_REPORT')await submitReport(db,u,r.rows[0]);
@@ -65,7 +67,7 @@ export class Workflow {
   return this.db.as(u,db=>idempotent(db,u,'APPROVAL_SUBMIT:'+id,key,input,()=>this.submitWithin(db,u,id,input.version,correlation)));
  }
  async inbox(u:Principal){
-  return this.db.as(u,async db=>(await db.query(`SELECT i.id,i.document_id AS "documentId",d.number,d.kind,i.status,i.current_step AS "currentStep",i.steps_snapshot AS steps,i.submitted_by AS "submittedBy",usr.name AS "submittedByName",i.version,i.created_at AS "createdAt",i.four_eyes AS "fourEyes",d.created_by AS "createdBy",(SELECT prepared_by FROM supplier_invoices si WHERE si.tenant_id=d.tenant_id AND si.id=d.id) AS "preparedBy",(SELECT matched_by FROM supplier_invoices si WHERE si.tenant_id=d.tenant_id AND si.id=d.id) AS "matchedBy" FROM approval_instances i JOIN documents d ON d.tenant_id=i.tenant_id AND d.id=i.document_id JOIN users usr ON usr.tenant_id=i.tenant_id AND usr.id=i.submitted_by WHERE i.tenant_id=$1 AND i.organization_id=ANY($2::uuid[]) AND (i.submitted_by=$3 OR (i.steps_snapshot->i.current_step->'roles') ? $4 OR $4='ADMIN' OR EXISTS(SELECT 1 FROM approval_decisions ad WHERE ad.tenant_id=i.tenant_id AND ad.instance_id=i.id AND ad.actor_id=$3)) ORDER BY i.created_at DESC LIMIT 100`,[u.tenantId,u.orgIds,u.id,u.role])).rows);
+  return this.db.as(u,async db=>(await db.query(`SELECT i.id,i.document_id AS "documentId",d.number,d.kind,i.status,i.current_step AS "currentStep",i.steps_snapshot AS steps,i.submitted_by AS "submittedBy",usr.name AS "submittedByName",i.version,i.created_at AS "createdAt",i.four_eyes AS "fourEyes",d.created_by AS "createdBy",coalesce((SELECT prepared_by FROM supplier_invoices si WHERE si.tenant_id=d.tenant_id AND si.id=d.id),(SELECT prepared_by FROM supplier_invoice_reversals sr WHERE sr.tenant_id=d.tenant_id AND sr.id=d.id)) AS "preparedBy",(SELECT matched_by FROM supplier_invoices si WHERE si.tenant_id=d.tenant_id AND si.id=d.id) AS "matchedBy" FROM approval_instances i JOIN documents d ON d.tenant_id=i.tenant_id AND d.id=i.document_id JOIN users usr ON usr.tenant_id=i.tenant_id AND usr.id=i.submitted_by WHERE i.tenant_id=$1 AND i.organization_id=ANY($2::uuid[]) AND (i.submitted_by=$3 OR (i.steps_snapshot->i.current_step->'roles') ? $4 OR $4='ADMIN' OR EXISTS(SELECT 1 FROM approval_decisions ad WHERE ad.tenant_id=i.tenant_id AND ad.instance_id=i.id AND ad.actor_id=$3)) ORDER BY i.created_at DESC LIMIT 100`,[u.tenantId,u.orgIds,u.id,u.role])).rows);
  }
  async decisions(u:Principal,id:string){
   parse(uuid,id);return this.db.as(u,async db=>{
@@ -80,11 +82,12 @@ export class Workflow {
   return this.db.as(u,db=>idempotent(db,u,'APPROVAL_DECIDE:'+id,key,input,async()=>{
    const i=(await db.query('SELECT * FROM approval_instances WHERE tenant_id=$1 AND id=$2 AND organization_id=ANY($3::uuid[]) FOR UPDATE',[u.tenantId,id,u.orgIds])).rows[0];
    if(!i)throw new NotFoundException('Genehmigung nicht gefunden.');version(i.version,input.version);
-   await lockSupplierPosting(db,u,i.document_id);await lockBillingSubject(db,u,i.document_id);await lockProcurementSubject(db,u,i.document_id);await lockReportSubject(db,u,i.document_id);
+   await lockSupplierReversal(db,u,i.document_id);await lockSupplierPosting(db,u,i.document_id);await lockBillingSubject(db,u,i.document_id);await lockProcurementSubject(db,u,i.document_id);await lockReportSubject(db,u,i.document_id);
    const doc=await document(db,u,i.document_id,true),subject=approvalSubjects[doc.kind];
    if(!subject)throw new ConflictException('Freigabe-Belegtyp fehlt.');
    if(input.inputTaxChecked!==undefined&&doc.kind!=='SUPPLIER_INVOICE')throw new ConflictException('Vorsteuerbestätigung gehört ausschließlich zur Eingangsrechnungsfreigabe.');
    if(doc.kind==='SUPPLIER_INVOICE'&&input.decision!=='RESUBMIT')await supplierReviewer(db,u,i.document_id);
+   if(doc.kind==='SUPPLIER_INVOICE_REVERSAL'&&input.decision!=='RESUBMIT')await supplierReversalReviewer(db,u,i.document_id);
    const s=(await db.query(`SELECT version FROM ${subject.table} WHERE tenant_id=$1 AND id=$2 FOR UPDATE`,[u.tenantId,i.document_id])).rows[0];version(s.version,i.subject_version);
    let status=i.status,nextStep=i.current_step;
    if(input.decision==='RESUBMIT'){
@@ -105,8 +108,9 @@ export class Workflow {
    if(doc.kind==='BILLING_REQUEST'&&status==='APPROVED')await validateBillingRequest(db,u,i.document_id);
    if(['PARTNER_ACCOUNT','COMPANY_BILLING_PROFILE'].includes(doc.kind)&&status==='APPROVED')await validateFinancialMaster(db,u,i.document_id,doc.kind);
    if(doc.kind==='SUPPLIER_INVOICE'&&status==='APPROVED')await approveSupplierTax(db,u,i.document_id,input.inputTaxChecked,input.comment);
+   if(doc.kind==='SUPPLIER_INVOICE_REVERSAL'&&status==='APPROVED')await approveSupplierReversal(db,u,i.document_id,input.comment);
    if(doc.kind==='SERVICE_REPORT'&&input.decision!=='RESUBMIT')await decideReport(db,u,i.document_id,status);
-   const decisionContext=doc.kind==='SUPPLIER_INVOICE'&&status==='APPROVED'?{inputTaxChecked:true,role:u.role,preparedHash:(await db.query("SELECT encode(sha256(convert_to(prepared_snapshot::text,'UTF8')),'hex') AS hash FROM supplier_invoices WHERE tenant_id=$1 AND id=$2",[u.tenantId,i.document_id])).rows[0].hash}:{};
+   const decisionContext=['SUPPLIER_INVOICE','SUPPLIER_INVOICE_REVERSAL'].includes(doc.kind)&&status==='APPROVED'?{...(doc.kind==='SUPPLIER_INVOICE'?{inputTaxChecked:true}:{}),role:u.role,preparedHash:(await db.query(`SELECT encode(sha256(convert_to(prepared_snapshot::text,'UTF8')),'hex') AS hash FROM ${subject.table} WHERE tenant_id=$1 AND id=$2`,[u.tenantId,i.document_id])).rows[0].hash}:{};
    await db.query('INSERT INTO approval_decisions(id,tenant_id,instance_id,step,actor_id,decision,comment,context) VALUES($1,$2,$3,$4,$5,$6,$7,$8)',[randomUUID(),u.tenantId,id,i.current_step,u.id,input.decision,input.comment,JSON.stringify(decisionContext)]);
    await db.query('UPDATE approval_instances SET status=$3,current_step=$4,version=version+1 WHERE tenant_id=$1 AND id=$2',[u.tenantId,id,status,nextStep]);
    if(['APPROVED','REJECTED'].includes(status))await db.query(`UPDATE ${subject.table} SET status=$3,version=version+1 WHERE tenant_id=$1 AND id=$2`,[u.tenantId,i.document_id,status==='APPROVED'?subject.approved:subject.rejected]);

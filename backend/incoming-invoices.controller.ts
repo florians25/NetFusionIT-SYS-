@@ -5,9 +5,11 @@ import {Permission} from './permissions';
 import {IncomingInvoices} from './incoming-invoices';
 import {IncomingInvoiceMatching} from './incoming-invoice-matching';
 import {SupplierPosting} from './supplier-posting';
+import {SupplierReversals} from './supplier-reversals';
 @Controller('api/incoming-invoices')@UseGuards(SessionGuard)@Permission('ap.read')
 export class IncomingInvoicesController{
- constructor(private incoming:IncomingInvoices,private matching:IncomingInvoiceMatching,private posting:SupplierPosting){}
+ constructor(private incoming:IncomingInvoices,private matching:IncomingInvoiceMatching,private posting:SupplierPosting,private reversals:SupplierReversals){}
+ @Post(':id/reversal')reversal(@Req() r:AuthRequest,@Param('id') id:string,@Body() body:unknown){csrf(r);return this.reversals.create(r.user!,id,body,r.headers['idempotency-key'],r.correlationId!);}
  @Get('context')context(@Req() r:AuthRequest){return this.incoming.context(r.user);}
  @Get()list(@Req() r:AuthRequest){return this.incoming.list(r.user);}
  @Get(':id/financial')financial(@Req() r:AuthRequest,@Param('id') id:string){return this.posting.context(r.user,id);}

@@ -1,0 +1,14 @@
+sap.ui.define(['netfusion/erp/controller/Base.controller','netfusion/erp/util/FormDialog'],function(Base,form){
+ 'use strict';
+ return Base.extend('netfusion.erp.controller.SupplierReversal',{
+  onInit:function(){this.model({lines:[],decisions:[]});this.getOwnerComponent().getRouter().getRoute('supplierReversal').attachPatternMatched(function(e){this.id=e.getParameter('arguments').id;this.load();},this);},
+  load:async function(){if(!await this.guard('apRead'))return;return this.run(async function(){this.vm().setData(await this.api('/api/supplier-invoice-reversals/'+this.id));});},
+  onPrepare:function(){var d=this.vm().getData(),periods=d.periods.filter(function(p){return p.status==='OPEN';});if(!periods.length)return this.run(function(){throw new Error('Keine offene Stornoperiode vorhanden.');});form(this,'Storno-Prüfstand vorbereiten',[{key:'periodId',label:'Buchungsperiode',type:'select',value:d.periodId,options:periods.map(function(p){return {key:p.id,text:p.year+' / '+p.period+' · '+this.formatter.servicePeriod(p.dateFrom,p.dateTo)};},this)},{key:'postingDate',label:'Buchungsdatum',type:'date',value:d.postingDate,required:true},{key:'documentDate',label:'Stornobelegdatum',type:'date',value:d.documentDate,required:true},{key:'reason',label:'Grund der vollständigen Gegenbuchung',type:'textarea',value:d.reason,required:true}],function(data,key){data.version=d.version;return this.api('/api/supplier-invoice-reversals/'+this.id+'/prepare',{method:'POST',key:key,body:data});});},
+  onSubmit:function(){this.run(async function(){await this.api('/api/workflow/submit/'+this.id,{method:'POST',key:crypto.randomUUID(),body:{version:this.vm().getProperty('/version')}});await this.load();});},
+  onPost:function(){this.run(async function(){await this.api('/api/supplier-invoice-reversals/'+this.id+'/post',{method:'POST',key:crypto.randomUUID(),body:{version:this.vm().getProperty('/version')}});await this.load();});},
+  onWithdraw:function(){var d=this.vm().getData();form(this,'Stornofreigabe zurückziehen',[{key:'reason',label:'Begründung der Rücknahme',type:'textarea',required:true}],function(data,key){data.version=d.version;return this.api('/api/supplier-invoice-reversals/'+this.id+'/withdraw',{method:'POST',key:key,body:data});});},
+  onInvoice:function(){this.route('incomingInvoice',{id:this.vm().getProperty('/invoiceId')});},
+  onOriginalJournal:function(){this.route('journal',{id:this.vm().getProperty('/sourceJournal/id')});},
+  onCounterJournal:function(){this.route('journal',{id:this.vm().getProperty('/journal/id')});}
+ });
+});

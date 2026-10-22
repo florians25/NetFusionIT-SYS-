@@ -5,7 +5,7 @@
     "type": "application",
     "title": "NetFusion Service Workspace",
     "applicationVersion": {
-      "version": "0.13.0-preview.1"
+      "version": "0.14.0-preview.1"
     },
     "dataSources": {
       "service": {
@@ -239,6 +239,11 @@
           "name": "incomingInvoice",
           "target": "IncomingInvoice",
           "pattern": "incoming-invoices/{id}"
+        },
+        {
+          "pattern": "supplier-invoice-reversals/{id}",
+          "name": "supplierReversal",
+          "target": "SupplierReversal"
         }
       ],
       "targets": {
@@ -352,6 +357,9 @@
         },
         "IncomingInvoice": {
           "viewName": "IncomingInvoice"
+        },
+        "SupplierReversal": {
+          "viewName": "SupplierReversal"
         }
       }
     }
