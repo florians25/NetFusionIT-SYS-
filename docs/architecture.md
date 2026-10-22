@@ -4,7 +4,7 @@ Stand: 22.10.2026. Eigenständige Software, kein SAP-Backend und keine SAP-Marke
 
 ## Lieferumfang und Abgrenzung
 
-Diese erste Lieferung implementiert Phase 1 und die erste vertikale Funktion: authentifiziertes Kundenformular → Ticket mit Korrelations-ID → separater Servicefall → OpenUI5-Liste/Objektseite → Technikerzuweisung. Architektur und Folgemodule werden beschrieben, jedoch nicht als implementiert ausgegeben. Insbesondere gibt es noch keine abrechenbaren Leistungen, Rechnungen, Lager- oder Finanzbuchungen. Keine Produktivfreigabe oder Compliance-Zusage.
+Der aktuelle Stand umfasst Ticket-/Fallbearbeitung, Kunden-/Artikel-/Auftragsfreigabe, Servicebasis/SLA/Einsatzplanung und Auftragsausführung. Das Ticket ist der zentrale Arbeitsbeleg: Arbeits-/Fahrzeit und Pauschalen gehören zu Work Order Tasks; deren Abschluss erzeugt eine SRM im Serviceauftrag mit unveränderter Ticket-Korrelations-ID. Danach folgen Kundenbestätigung, Servicefreigabe, technischer Abschluss und Fakturabereitschaft. Der konkrete Umfang und alle offenen Module stehen in [Implementierungsplan](implementation-plan.md) und [Versionsnotizen](releases/v0.4.0-preview.1.md). Noch keine Rechnungs-, Lager- oder Finanzbuchungen, keine Produktivfreigabe oder Compliance-Zusage.
 
 ## System
 
@@ -32,7 +32,7 @@ Node.js 24 LTS, NestJS, PostgreSQL, parametrisierter `pg`-Datenzugriff mit expli
 
 Der Browser benutzt ein echtes `sap.ui.model.odata.v4.ODataModel` für Listen, ein JSONModel für Session/Formulare und REST-Kommandos für Zustandsänderungen. OpenUI5 benötigt keinen proprietären SAPUI5-Server. Bibliotheken: `sap.ui.core`, `sap.m`, `sap.f`, `sap.ui.layout`, `sap.ui.table`, `sap.uxap`. Kein `sap.ushell`/`sap.suite.ui.commons` als Voraussetzung. Der Belegfluss verwendet ausschließlich `sap.m.Table` und `sap.m.Link`. Ein grafischer ProcessFlow aus proprietären Bibliotheken wird nicht nachgebaut.
 
-Das Startziel nach Anmeldung ist ein eigenständiges Service-Cockpit aus `sap.f.DynamicPage`, `sap.f.Card`, `sap.f.cards.NumericHeader`, `sap.m.IconTabHeader`, `sap.m.Table` und `sap.m.ProgressIndicator`. Die App-Übersicht unter `#/apps` bleibt eine Kachelübersicht ohne angehängte Ticketliste. KPI-Klicks filtern den tatsächlichen Arbeitsvorrat; Zuweisung ist direkt in der Ticketzeile möglich. Neue, unzugewiesene, hoch priorisierte und in Bearbeitung befindliche Tickets sowie die Prioritätsverteilung werden aus autorisierten PostgreSQL-Daten ermittelt. Keine SLA-/Auslastungskennzahlen ohne implementierte Datengrundlage.
+Das Startziel nach Anmeldung ist die App-Zentrale. Das separat aufrufbare Service-Cockpit besteht aus `sap.f.DynamicPage`, `sap.f.Card`, `sap.f.cards.NumericHeader`, `sap.m.IconTabHeader`, `sap.m.Table` und `sap.m.ProgressIndicator`. Die App-Zentrale unter `#/apps` enthält Anwendungskacheln. Obere Schnellzugriffe zeigen nur Masken der aktiven Anwendung, keine globale Modulleiste. KPI-Klicks filtern den tatsächlichen Arbeitsvorrat; Zuweisung ist direkt in der Ticketzeile möglich. Neue, unzugewiesene, hoch priorisierte und in Bearbeitung befindliche Tickets sowie die Prioritätsverteilung werden aus autorisierten PostgreSQL-Daten ermittelt. Keine SLA-/Auslastungskennzahlen ohne implementierte Datengrundlage.
 
 ## Modulverantwortung
 

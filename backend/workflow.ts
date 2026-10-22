@@ -5,7 +5,8 @@ import { z } from 'zod';
 import { Db,Principal,parse,uuid,audit,idempotent } from './core';
 import { ROLES,requirePermission } from './permissions';
 import { checkOrg,document,notify,version } from './business';
-export const approvalSubjects:Record<string,{table:string,pending:string,approved:string,rejected:string,permission:string}>={BUSINESS_PARTNER:{table:'business_partners',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'partner.write'},MATERIAL:{table:'products',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'material.write'},SERVICE_ORDER:{table:'service_orders',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'order.write'}};
+import { submitReport,decideReport } from './work';
+export const approvalSubjects:Record<string,{table:string,pending:string,approved:string,rejected:string,permission:string}>={BUSINESS_PARTNER:{table:'business_partners',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'partner.write'},MATERIAL:{table:'products',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'material.write'},SERVICE_ORDER:{table:'service_orders',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'order.write'},SERVICE_REPORT:{table:'service_reports',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'order.execute'}};
 @Injectable()
 export class Workflow {
  constructor(private db:Db){}
@@ -14,6 +15,7 @@ export class Workflow {
   requirePermission(u.role,'workflow.configure');
   const input=parse(z.object({name:z.string().trim().min(3).max(100),organizationId:uuid,subjectKind:z.enum(Object.keys(approvalSubjects) as [string,...string[]]),fourEyes:z.boolean(),steps:z.array(z.object({name:z.string().trim().min(2).max(80),roles:z.array(z.enum(ROLES)).min(1).max(16).refine(r=>!r.includes('CUSTOMER'),'Kunden sind keine internen Freigeber')}).strict()).min(1).max(10)}).strict(),raw);
   checkOrg(u,input.organizationId);
+  if(input.subjectKind==='SERVICE_REPORT'&&(!input.fourEyes||input.steps.some(s=>s.roles.some(r=>!['ADMIN','SERVICE_MANAGER'].includes(r)))))throw new ConflictException('Leistungsnachweise benötigen Vier-Augen-Prüfung durch Serviceleitung oder Administration.');
   return this.db.as(u,db=>idempotent(db,u,'WORKFLOW_CONFIGURE',key,input,async()=>{
    await db.query('SELECT pg_advisory_xact_lock(hashtextextended($1,0))',[`WORKFLOW:${u.tenantId}:${input.organizationId}:${input.subjectKind}`]);
    const prior=await db.query('UPDATE approval_definitions SET active=false WHERE tenant_id=$1 AND organization_id=$2 AND subject_kind=$3 AND active RETURNING version',[u.tenantId,input.organizationId,input.subjectKind]);
@@ -32,6 +34,7 @@ export class Workflow {
   version(r.rows[0].version,expected);
   if(!['DRAFT','REJECTED'].includes(r.rows[0].status))throw new ConflictException('Nur Entwurf oder abgelehnter Beleg kann eingereicht werden.');
   if(doc.kind==='SERVICE_ORDER'&&!(await db.query('SELECT 1 FROM service_order_items WHERE tenant_id=$1 AND order_id=$2',[u.tenantId,id])).rowCount)throw new ConflictException('Serviceauftrag benötigt mindestens eine Position.');
+  if(doc.kind==='SERVICE_REPORT')await submitReport(db,u,r.rows[0]);
   const definition=(await db.query('SELECT * FROM approval_definitions WHERE tenant_id=$1 AND organization_id=$2 AND subject_kind=$3 AND active',[u.tenantId,doc.organization_id,doc.kind])).rows[0];
   if(!definition)throw new ConflictException('Zuerst eine fachlich bestätigte Freigabedefinition für diesen Belegtyp und diese Organisation konfigurieren.');
   for(const step of definition.steps){
@@ -82,6 +85,7 @@ export class Workflow {
     if(!(await db.query("SELECT 1 FROM service_orders o JOIN business_partners p ON p.tenant_id=o.tenant_id AND p.id=o.partner_id WHERE o.tenant_id=$1 AND o.id=$2 AND p.status='ACTIVE'",[u.tenantId,i.document_id])).rowCount)throw new ConflictException('Kunde ist nicht mehr aktiv; Auftrag kann nicht freigegeben werden.');
     if((await db.query("SELECT 1 FROM service_order_items i JOIN products p ON p.tenant_id=i.tenant_id AND p.id=i.product_id WHERE i.tenant_id=$1 AND i.order_id=$2 AND p.status<>'ACTIVE'",[u.tenantId,i.document_id])).rowCount)throw new ConflictException('Ein Auftragsartikel ist nicht mehr freigegeben.');
    }
+   if(doc.kind==='SERVICE_REPORT'&&input.decision!=='RESUBMIT')await decideReport(db,u,i.document_id,status);
    await db.query('INSERT INTO approval_decisions(id,tenant_id,instance_id,step,actor_id,decision,comment) VALUES($1,$2,$3,$4,$5,$6,$7)',[randomUUID(),u.tenantId,id,i.current_step,u.id,input.decision,input.comment]);
    await db.query('UPDATE approval_instances SET status=$3,current_step=$4,version=version+1 WHERE tenant_id=$1 AND id=$2',[u.tenantId,id,status,nextStep]);
    if(['APPROVED','REJECTED'].includes(status))await db.query(`UPDATE ${subject.table} SET status=$3,version=version+1 WHERE tenant_id=$1 AND id=$2`,[u.tenantId,i.document_id,status==='APPROVED'?subject.approved:subject.rejected]);

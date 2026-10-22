@@ -19,7 +19,7 @@ export class Service {
     parse(uuid,id);
     return this.db.as(u,async db=>{
       const ticket=await this.ticket(db,u,id);
-      const events=await db.query("SELECT a.id,a.action,a.details,a.created_at AS \"createdAt\",u.name AS \"actorName\" FROM audit_events a JOIN users u ON u.tenant_id=a.tenant_id AND u.id=a.actor_id WHERE a.tenant_id=$1 AND a.document_id=$2 AND ($3::boolean OR NOT(a.action='COMMENT_ADDED' AND a.details->>'visibility'='INTERNAL')) ORDER BY a.created_at,a.id",[u.tenantId,id,u.role!=='CUSTOMER']);
+      const events=await db.query("SELECT a.id,a.action,a.details,a.created_at AS \"createdAt\",u.name AS \"actorName\" FROM audit_events a JOIN users u ON u.tenant_id=a.tenant_id AND u.id=a.actor_id WHERE a.tenant_id=$1 AND a.document_id=$2 AND ($3::boolean OR (NOT(a.action='COMMENT_ADDED' AND a.details->>'visibility'='INTERNAL') AND a.action !~ '^(TIME_|TIMER_|TICKET_CHARGE_|TICKET_WORK_|WORK_ORDER_TASK_)')) ORDER BY a.created_at,a.id",[u.tenantId,id,u.role!=='CUSTOMER']);
       return {...ticket,allowedTransitions:allowedTransitions(u.role,ticket.status),events:events.rows};
     });
   }

@@ -44,3 +44,17 @@ Dies ist ein lesender OData-V4-Teilumfang, kein vollständiger OData-Server: kei
 - `/api/service/order-contexts`: zur Auftragsanlage berechtigte Benutzer erhalten zulässige Servicefälle mit Kunden-/Organisationsbezug.
 
 POST/PATCH erfordern CSRF und Idempotency-Key; bestehende Versions-/Tenant-/Org-Grenzen gelten. Kein Lager-/Faktura-/FI-Seiteneffekt im Auftragsentwurf.
+
+## Ticket-Ausführung ab Preview 0.4
+
+Verbindlich: [Ticket → Work Order Task → SRM](requirements/ticket-execution.md). `GET /api/tickets/:id/execution` liefert Aufgaben, eigene/zugängliche Arbeits-/Fahrzeiten, Pauschalen und passende Aufträge. Kunden erhalten keine internen Ausführungsdaten. `POST .../tasks` legt eine eigene Aufgabe an, optional bereits mit Auftragsziel. Zeiten sind vor Auftragsanlage möglich.
+
+`POST /api/tickets/:id/times` erfasst manuelle Arbeits-/Fahrzeit. `POST .../timer` startet den Ticket-Timer; `POST .../timer/{pause|resume|stop|discard}` verlangt dessen Version. Timer und manuelle Zeit gehören einer Aufgabe. `POST .../charges` erfasst katalogbasierte Fahrt-/Servicepauschalen, Kilometer-/Ausgabenleistungen. Keine frei eingeschleusten Verkaufspreise.
+
+`POST .../{times|charges}/:entry/allocate` übergibt eine erfasste Leistung an Auftrag und Position mit Versionsschutz. Auftrag muss freigegeben und demselben Fall, Kunden und derselben Organisation zugeordnet sein. Arbeits-/Fahrzeit und Pauschalen werden gegen Einheit, Artikel und Abrechnungsregel geprüft. Ursprünglicher Ticket-/Aufgabenbezug bleibt erhalten. `POST .../{times|charges}/:entry/void` verwirft eine eigene, noch nicht eingereichte Erfassung mit Begründung.
+
+`POST .../tasks/:task/order` ordnet das Auftragsziel zu, `POST .../tasks/:task/complete` schließt eine Aufgabe ab und erzeugt atomar eine SRM mit allen tatsächlichen Leistungen der Aufgabe. Korrelation wird aus dem Ticket übernommen, nicht aus der Anfrage. Idempotente und parallele Aufrufe erzeugen keine doppelte aktive SRM. `POST .../tasks/:task/cancel` erlaubt begründetes Verwerfen einer eigenen Aufgabe ohne aktive Leistungen.
+
+`GET /api/service/orders/:id/execution` liefert übernommene Ticketleistungen und SRM; dort wird keine separate Zeitkopie erfasst. `GET /api/service/reports/:id` zeigt die SRM mit Ticket-/Aufgaben-/Auftragsbezug und Korrelation. Einreichen erfolgt über den bestehenden Workflow; `POST .../confirm` bestätigt als angemeldeter Kunde, `POST .../cancel` verwirft einen eigenen Entwurf und öffnet die Aufgabe erneut. Kundenbestätigung ist getrennt vom eingefrorenen fachlichen Versionsstand auditierbar und höchstens einmal möglich.
+
+`POST /api/service/orders/:id/complete` prüft den vollständigen technischen Abschluss; `POST .../billing-ready` stellt einen technisch abgeschlossenen Auftrag mit fakturierbaren Positionen bereit. Aktuelle Version, CSRF und Idempotency-Key sind erforderlich. Keine Rechnung oder Finanzbuchung wird durch diese Kommandos vorgetäuscht.

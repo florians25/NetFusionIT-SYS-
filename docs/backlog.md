@@ -18,9 +18,11 @@ Quelle: [vollständiger Nutzeranhang](requirements/serviceangebote.md).
 
 Abnahme: Standard-/Festpreisregeln, Teilannahme und mehrfach parallel ausgelöste Auftragserstellung testen; Angebot → Auftrag bleibt einschließlich Vertrags-/Preis-/SLA-Snapshot nachvollziehbar. Kunden sehen ausschließlich eigene Angebote. Nicht konfigurierte Kredit-/Versanddienste melden einen offenen Konfigurationsbedarf statt Erfolg zu simulieren.
 
+[Verbindliche Ticket-/WOT-/SRM-Präzisierung](requirements/ticket-execution.md).
+
 ## SERVICE-02 · Serviceaufträge und Servicerückmeldungen
 
-Status: Auftragsanlage, Positionen, Preisfindung und Freigabe implementiert; Ausführung, Rückmeldung und kaufmännische Integration offen · Masterprompt-Phase 4–8.
+Status: Auftragsanlage, Positionen, Preisfindung, Freigabe, Ticketaufgaben, Arbeits-/Fahrzeiten/Pauschalen, Timer, automatische SRM beim Aufgabenabschluss mit Ticket-Korrelation, Teil-/Endrückmeldungen, Kundenbestätigung und technischer Abschluss implementiert; erweiterte Positionstypen, Beschaffung, Faktura und FI/CO-Integration offen · Masterprompt-Phase 4–8.
 Quelle: [vollständiger Nutzeranhang](requirements/serviceauftraege.md); alle darin enthaltenen Details gelten zusätzlich zur Kurzfassung.
 
 - Liste/Suche/Filter, Anzeigen/Anlegen/Bearbeiten; Servicegruppen, Positionen und hierarchische Servicepakete für Service, Material und Ausgaben.

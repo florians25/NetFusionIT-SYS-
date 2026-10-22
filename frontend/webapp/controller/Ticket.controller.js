@@ -1,8 +1,8 @@
-sap.ui.define(["netfusion/erp/controller/Base.controller","sap/m/Dialog","sap/m/Select","sap/ui/core/Item","sap/m/Button","sap/m/MessageToast","sap/ui/model/json/JSONModel"],function(Base,Dialog,Select,Item,Button,Toast,JSONModel){
+sap.ui.define(["netfusion/erp/controller/Base.controller","sap/m/Dialog","sap/m/Select","sap/ui/core/Item","sap/m/Button","sap/m/MessageToast","sap/ui/model/json/JSONModel","netfusion/erp/util/TicketWork"],function(Base,Dialog,Select,Item,Button,Toast,JSONModel,TicketWork){
   "use strict";
-  return Base.extend("netfusion.erp.controller.Ticket",{
+  return Base.extend("netfusion.erp.controller.Ticket",Object.assign({},TicketWork,{
     onInit:function(){this.model({ticket:{events:[],allowedTransitions:[]},flow:[],transitions:[]});this.getOwnerComponent().getRouter().getRoute("ticket").attachPatternMatched(function(e){this.id=e.getParameter("arguments").id;this.load();},this);},
-    load:async function(){if(!await this.guard())return;this.run(async function(){var t=await this.api("/api/tickets/"+this.id),flow=await this.api("/api/documents/"+this.id+"/flow");this.vm().setData({ticket:t,flow:flow,slaDetail:await this.api("/api/tickets/"+this.id+"/sla"),transitions:this.formatter.transitionItems(t.allowedTransitions),nextStatus:t.allowedTransitions[0]||"",comments:await this.api("/api/tickets/"+this.id+"/comments"),commentBody:"",commentVisibility:"PUBLIC"});});},
+    load:async function(){if(!await this.guard())return;this.run(async function(){var t=await this.api("/api/tickets/"+this.id),flow=await this.api("/api/documents/"+this.id+"/flow");var execution=this.state("/access/internal")?await this.api("/api/tickets/"+this.id+"/execution"):{tasks:[],times:[],charges:[],orders:[]},userId=this.state("/user/id");execution.tasks.forEach(function(w){w.canEdit=w.workerId===userId&&["OPEN","IN_PROGRESS"].includes(w.status);});execution.times.concat(execution.charges).forEach(function(w){w.canEdit=w.workerId===userId&&w.status==="RECORDED"&&!w.reportId;w.canAllocate=w.canEdit&&!w.orderId;});this.vm().setData({execution:execution,ownTimer:!!execution.timer&&execution.timer.ticketId===this.id,workProducts:this.state("/access/inventory")?await this.api("/api/catalog/products"):[],ticket:t,flow:flow,slaDetail:await this.api("/api/tickets/"+this.id+"/sla"),transitions:this.formatter.transitionItems(t.allowedTransitions),nextStatus:t.allowedTransitions[0]||"",comments:await this.api("/api/tickets/"+this.id+"/comments"),commentBody:"",commentVisibility:"PUBLIC"});});},
     onComment:function(){this.run(async function(){var body={body:this.vm().getProperty("/commentBody"),visibility:this.vm().getProperty("/commentVisibility")},signature=JSON.stringify(body);if(this.commentSignature!==signature){this.commentSignature=signature;this.commentKey=crypto.randomUUID();}await this.api("/api/tickets/"+this.id+"/comments",{method:"POST",body:body,key:this.commentKey});this.commentSignature=null;this.load();});},
     onCase:function(){this.route("case",{id:this.vm().getProperty("/ticket/caseId")});},
     onFlowSource:function(e){var d=e.getSource().getBindingContext("view").getObject();this.onDocument(d.sourceKind,d.sourceId);},
@@ -15,5 +15,5 @@ sap.ui.define(["netfusion/erp/controller/Base.controller","sap/m/Dialog","sap/m/
       dialog.addStyleClass("sapUiContentPadding");this.getView().addDependent(dialog);dialog.open();
     });},
     onStatus:function(){this.run(async function(){var t=this.vm().getProperty("/ticket"),next=this.vm().getProperty("/nextStatus");await this.api("/api/tickets/"+this.id+"/status",{method:"POST",body:{status:next,version:t.version},key:crypto.randomUUID()});Toast.show("Status aktualisiert");this.load();});}
-  });
+  }));
 });

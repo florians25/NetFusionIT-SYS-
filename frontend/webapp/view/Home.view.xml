@@ -37,8 +37,8 @@
         <GenericTile header="Benutzer &amp; Rollen" subheader="Zugänge und Berechtigungen" press=".onAdmin" visible="{state&gt;/access/admin}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Administration"><content><ImageContent src="sap-icon://key-user-settings"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Organisation" subheader="Serviceorganisationen" press=".onAdmin" visible="{state&gt;/access/admin}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Organisationsstruktur"><content><ImageContent src="sap-icon://org-chart"/></content></TileContent></tileContent></GenericTile>
       </FlexBox>
-      <HBox class="sapUiMediumMarginTop sapUiSmallMarginBottom" alignItems="Start"><core:Icon src="sap-icon://information"/><VBox class="sapUiSmallMarginBegin"><Text text="Schritt für Schritt zum integrierten Service-ERP" class="sapUiTinyMarginBottom"/><Text text="Ticketbearbeitung, Kundenfreigaben, Servicebasis und Einsatzplanung stehen bereit. Die weiteren Prozesse sind im Ausbauplan erfasst." class="sapUiTinyMarginTop"/><Link text="Ausbauplan ansehen" press=".onRoadmap" class="sapUiTinyMarginTop"/></VBox></HBox>
-      <HBox justifyContent="SpaceBetween" class="sapUiMediumMarginTop" wrap="Wrap"><Text text="NETFUSION · ENTERPRISE SERVICE ERP"/><Text text="OpenUI5 · Preview 0.3"/></HBox>
+
+      <HBox justifyContent="SpaceBetween" class="sapUiMediumMarginTop" wrap="Wrap"><Text text="NETFUSION · ENTERPRISE SERVICE ERP"/><Text text="OpenUI5 · Preview 0.4"/></HBox>
     </VBox>
   </Page>
 </mvc:View>

@@ -23,6 +23,7 @@ export const grants:Record<string,readonly Role[]>={
  'order.read':[...service,'SALES','BILLING','ACCOUNTANT','CONTROLLER','EXECUTIVE'],
  'order.write':['ADMIN','SERVICE_MANAGER','SUPPORT','SALES'],
  'order.execute':['ADMIN','SERVICE_MANAGER','DISPATCHER','SUPPORT','TECHNICIAN','FIELD_TECHNICIAN'],
+ 'work.approve':['ADMIN','SERVICE_MANAGER'],
  'billing.read':['ADMIN','BILLING','ACCOUNTANT','CONTROLLER','EXECUTIVE','CUSTOMER'],
  'billing.write':['ADMIN','BILLING'], 'finance.read':['ADMIN','ACCOUNTANT','CONTROLLER','EXECUTIVE'],
  'finance.write':['ADMIN','ACCOUNTANT'], 'reporting.read':['ADMIN','CONTROLLER','EXECUTIVE'],
