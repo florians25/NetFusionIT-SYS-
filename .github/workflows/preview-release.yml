@@ -74,6 +74,10 @@ jobs:
           test-results/goods-receipt-reversal.png
           test-results/goods-receipt-journal.png
           test-results/goods-receipt-mobile.png
+          test-results/number-series-desktop.png
+          test-results/number-series-maintenance.png
+          test-results/order-worklist-rich.png
+          test-results/catalog-worklist-rich.png
       - name: Preserve browser diagnostics
         if: failure()
         uses: actions/upload-artifact@v4

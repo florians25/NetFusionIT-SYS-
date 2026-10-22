@@ -4,6 +4,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { z } from 'zod';
 
 import { Role } from './permissions';
+import {businessNumber} from './number-allocation';
 export type { Role } from './permissions';
 export interface Principal { id:string; tenantId:string; tenantName:string; tenantSlug:string; name:string; email:string; role:Role; partnerId:string|null; orgIds:string[]; permissions?:string[]; }
 export const uuid=z.uuid();
@@ -51,6 +52,7 @@ export class Db {
   async onApplicationShutdown(){await this.pool.end();}
 }
 export async function nextNumber(db:PoolClient,tenant:string,kind:string){
+  const allocated=await businessNumber(db,tenant,kind);if(allocated)return allocated;
   const year=new Date().getUTCFullYear();
   const r=await db.query('INSERT INTO number_ranges(tenant_id,kind,year,current_value) VALUES($1,$2,$3,1) ON CONFLICT(tenant_id,kind,year) DO UPDATE SET current_value=number_ranges.current_value+1 RETURNING current_value',[tenant,kind,year]);
   return `${kind}-${year}-${String(r.rows[0].current_value).padStart(6,'0')}`;

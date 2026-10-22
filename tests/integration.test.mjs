@@ -55,7 +55,7 @@ test('Validierung lehnt ungültige, zu kurze und zusätzliche Werte ab',async()=
 });
 test('Kundenformular speichert Ticket, eigenen Fall, Relation und Audit atomar',async()=>{
   const r=await customer('/api/tickets',command(payload));assert.equal(r.status,201,JSON.stringify(r.data));ticket=r.data;
-  assert.match(ticket.number,/^TCK-\d{4}-\d{6}$/);assert.match(ticket.correlationId,/^[a-f0-9-]{36}$/);assert.notEqual(ticket.id,ticket.caseId);
+  assert.match(ticket.number,/^TI-60\d{6}$/);assert.match(ticket.correlationId,/^[a-f0-9-]{36}$/);assert.notEqual(ticket.id,ticket.caseId);
   const d=await customer('/api/tickets/'+ticket.id);assert.equal(d.status,200);assert.equal(d.data.source,'CUSTOMER_PORTAL');assert.equal(d.data.events.length,1);
   const c=await customer('/api/cases/'+ticket.caseId);assert.equal(c.data.tickets[0].id,ticket.id);
   const flow=await customer('/api/documents/'+ticket.id+'/flow');assert.equal(flow.data[0].targetId,ticket.caseId);

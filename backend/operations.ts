@@ -44,7 +44,7 @@ export class Operations {
   return this.db.as(u,db=>idempotent(db,u,'CONTRACT_CREATE',key,input,async()=>{
    await this.activePartner(db,u,input.partnerId,input.organizationId);
    if(input.slaPolicyId&&!(await db.query('SELECT 1 FROM sla_policies WHERE tenant_id=$1 AND id=$2 AND organization_id=$3 AND active',[u.tenantId,input.slaPolicyId,input.organizationId])).rowCount)throw new NotFoundException('Aktive SLA-Policy fehlt.');
-   const doc=await createDocument(db,u,'SERVICE_CONTRACT','CTR',input.organizationId);
+   const doc=await createDocument(db,u,'SERVICE_CONTRACT',input.kind==='MANAGED'?'MV':input.kind==='MAINTENANCE'?'WV':'KV',input.organizationId);
    await db.query('INSERT INTO service_contracts(id,tenant_id,partner_id,name,kind,valid_from,valid_to,sla_policy_id,scope) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)',[doc.id,u.tenantId,input.partnerId,input.name,input.kind,input.validFrom,input.validTo,input.slaPolicyId,input.scope]);
    await audit(db,u,correlation,'CONTRACT_CREATED',doc.id,input);return {...doc,status:'DRAFT',version:1};
   }));

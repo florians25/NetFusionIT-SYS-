@@ -88,7 +88,7 @@ try{
   await page.getByText('Browser-Testkunde GmbH',{exact:true}).waitFor();
   await page.getByRole('button',{name:'App-Zentrale',exact:true}).click();
   await page.getByRole('button',{name:/Benutzer & Rollen/}).click();
-  await page.getByRole('heading',{name:'Benutzer & Organisation'}).waitFor();
+  await page.getByRole('heading',{name:'Benutzer, Organisation & Nummernkreise'}).waitFor();
   await page.getByRole('button',{name:'App-Zentrale',exact:true}).click();
   await page.getByRole('button',{name:/Service-Cockpit/}).click();
   await page.getByRole('heading',{name:'Service-Cockpit',exact:true}).waitFor();

@@ -23,7 +23,7 @@ export class Admin {
     });
   }
   async users(u:Principal){
-    return this.db.as(u,async db=>(await db.query('SELECT u.id,u.email,u.name,u.role,u.active,u.partner_id AS "partnerId" FROM users u WHERE u.tenant_id=$1 AND EXISTS(SELECT 1 FROM user_organizations o WHERE o.tenant_id=u.tenant_id AND o.user_id=u.id AND o.organization_id=ANY($2::uuid[])) ORDER BY u.name',[u.tenantId,u.orgIds])).rows);
+    return this.db.as(u,async db=>(await db.query('SELECT u.id,u.employee_number AS "employeeNumber",u.email,u.name,u.role,u.active,u.partner_id AS "partnerId" FROM users u WHERE u.tenant_id=$1 AND EXISTS(SELECT 1 FROM user_organizations o WHERE o.tenant_id=u.tenant_id AND o.user_id=u.id AND o.organization_id=ANY($2::uuid[])) ORDER BY u.name',[u.tenantId,u.orgIds])).rows);
   }
   async createUser(u:Principal,raw:unknown,correlation:string){
     const input=parse(z.object({name:z.string().trim().min(2).max(100),email:z.email().max(254).transform(s=>s.toLowerCase()),password:z.string().min(14).max(128),role,organizationId:uuid,partnerId:uuid.optional()}).strict(),raw);
@@ -33,12 +33,12 @@ export class Admin {
     const hash=await hashPassword(input.password);
     return this.db.as(u,async db=>{
       if(input.partnerId&&!(await db.query("SELECT 1 FROM business_partners WHERE tenant_id=$1 AND id=$2 AND organization_id=$3 AND status='ACTIVE' AND 'CUSTOMER'=ANY(roles)",[u.tenantId,input.partnerId,input.organizationId])).rowCount)throw new NotFoundException('Aktiver Kunde nicht gefunden.');
-      const id=randomUUID();
-      await db.query('INSERT INTO users(id,tenant_id,name,email,password_hash,role,partner_id) VALUES($1,$2,$3,$4,$5,$6,$7)',[id,u.tenantId,input.name,input.email,hash,input.role,input.partnerId||null]);
+      const id=randomUUID(),employeeNumber=input.role==='CUSTOMER'?null:await nextNumber(db,u.tenantId,'MA');
+      await db.query('INSERT INTO users(id,tenant_id,name,email,password_hash,role,partner_id,employee_number) VALUES($1,$2,$3,$4,$5,$6,$7,$8)',[id,u.tenantId,input.name,input.email,hash,input.role,input.partnerId||null,employeeNumber]);
       await db.query('INSERT INTO user_organizations VALUES($1,$2,$3)',[u.tenantId,id,input.organizationId]);
       if(['TECHNICIAN','FIELD_TECHNICIAN'].includes(input.role))await db.query('INSERT INTO technicians(id,tenant_id,user_id,organization_id,name) VALUES($1,$2,$3,$4,$5)',[randomUUID(),u.tenantId,id,input.organizationId,input.name]);
       await audit(db,u,correlation,'USER_CREATED',null,{userId:id,role:input.role});
-      return {id,name:input.name,email:input.email,role:input.role,active:true};
+      return {id,employeeNumber,name:input.name,email:input.email,role:input.role,active:true};
     });
   }
   async updateUser(u:Principal,id:string,raw:unknown,correlation:string){

@@ -11,3 +11,7 @@ Aktualisiert: 22.10.2026, nach den SAP-Musterbildern und der Navigationskorrektu
 - Das Service-Cockpit bleibt eine eigenständige Anwendung mit echten Ticket-Kennzahlen und Arbeitsvorräten.
 
 Die Vorgaben gelten auch für folgende Module und Preview-Versionen. Zusätzliche Anwendungen dürfen die globale Shell nicht wieder mit Tabs füllen.
+
+## Informationsdichte aller Fachmasken
+
+Nutzerpräzisierung vom 22.10.2026: Alle Fachseiten sollen die Informationsdichte und Gestaltung der Materialbedarfe erhalten. Native Belegköpfe und Anwendungsarbeitsplätze mit realen Geschäfts-/Organisationsbezügen, Status, Mengen/Werten, Herkunft/Folgebelegen, Filtern und Positionsaktionen ausbauen. Keine reinen Dekorationskennzahlen und keine leeren Platzhalterbereiche. Kleine PDF-Anlagenliste im nativen Modal nach der zusätzlichen [Lager-/Auslieferungs-/Anlagenvorgabe](warehouse-delivery-attachments.md). Auf Mobilgeräten kompakter Kopf, native Pop-ins und Abschnittsnavigation; Details bleiben erreichbar. Ausschließlich OpenUI5-Standardcontrols und Standardklassen.

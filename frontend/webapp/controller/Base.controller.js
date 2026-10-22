@@ -1,11 +1,11 @@
-sap.ui.define(["sap/ui/core/mvc/Controller","sap/m/MessageBox","sap/ui/model/json/JSONModel","netfusion/erp/model/formatter"],function(Controller,MessageBox,JSONModel,formatter){
+sap.ui.define(["sap/ui/core/mvc/Controller","sap/m/MessageBox","sap/ui/model/json/JSONModel","netfusion/erp/model/formatter","sap/ui/model/Filter","sap/ui/model/FilterOperator"],function(Controller,MessageBox,JSONModel,formatter,Filter,Op){
   "use strict";
   return Controller.extend("netfusion.erp.controller.Base",{
     formatter:formatter,
     model:function(data){this.getView().setModel(new JSONModel(data||{}),"view");return this.getView().getModel("view");},
     vm:function(){return this.getView().getModel("view");},
     state:function(path){return this.getOwnerComponent().getModel("state").getProperty(path);},
-    route:function(name,args){this.getOwnerComponent().getRouter().navTo(name,args||{});},
+    route:function(name,args){this.navigationVersion=(this.navigationVersion||0)+1;this.getOwnerComponent().getRouter().navTo(name,args||{});},
     guard:async function(access){await this.getOwnerComponent().ready;if(!this.state("/user")){this.route("login");return false;}if(access&&!this.state("/access/"+access)){this.route("home");return false;}return true;},
     api:async function(path,options){
       options=options||{};var headers={Accept:"application/json"};
@@ -17,6 +17,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller","sap/m/MessageBox","sap/ui/model/jso
       return data;
     },
     run:async function(fn){this.getView().setBusyIndicatorDelay(0);this.getView().setBusy(true);try{return await fn.call(this);}catch(e){MessageBox.error(e.message);}finally{this.getView().setBusy(false);}},
+    summarize:function(rows){return {total:rows.length,draft:rows.filter(function(r){return ['DRAFT','REJECTED'].includes(r.status);}).length,inReview:rows.filter(function(r){return ['IN_REVIEW','PENDING'].includes(r.status);}).length,active:rows.filter(function(r){return r.active===true||r.status==='ACTIVE';}).length,released:rows.filter(function(r){return ['RELEASED','IN_PROGRESS'].includes(r.status);}).length,shortage:rows.filter(function(r){return !!r.materialStatus&&!['NOT_REQUIRED','MATERIAL_READY'].includes(r.materialStatus);}).length};},
+    onWorklistFilter:function(e){var source=e.getSource(),table=this.byId(source.data('targetTable')),filters=this.worklistFilters||(this.worklistFilters={}),key=table.getId(),state=filters[key]||(filters[key]={}),field=source.data('filterField');if(field)state[field]=source.getSelectedKey();else{state.query=e.getParameter('newValue')||e.getParameter('query')||'';state.fields=(source.data('fields')||'title,number').split(',');}var active=[];if(state.query)active.push(new Filter({filters:state.fields.map(function(f){return new Filter(f,Op.Contains,state.query);}),and:false}));Object.keys(state).filter(function(k){return !['query','fields'].includes(k)&&state[k];}).forEach(function(f){active.push(new Filter(f,Op.EQ,state[f]));});table.getBinding('items').filter(active,'Application');},
+    onWorklistUpdate:function(e){if(this.vm())this.vm().setProperty('/filteredCount',e.getParameter('total'));},
     onHome:function(){this.route("home");},onCockpit:function(){this.route("cockpit");},onTickets:function(){this.route("tickets");},onCases:function(){this.route("cases");},onDispatch:function(){this.route("dispatch");},onPartners:function(){this.route("partners");},onAdmin:function(){this.route("admin");},onWorkflow:function(){this.route("workflow");},onRoadmap:function(){this.route("roadmap");},onNew:function(){this.route("newTicket");},
     onInventory:function(){this.route("inventory");},
     onSuppliers:function(){this.route("suppliers");},

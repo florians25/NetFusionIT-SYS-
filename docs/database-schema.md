@@ -1,6 +1,6 @@
-# Datenbankmodell · Preview 0.7
+# Datenbankmodell · Preview 0.8
 
-Die ausführbare Wahrheit sind die prüfsummengesicherten Migrationen `backend/migrations/001_*` bis `009_*`. Bereits angewendete Dateien werden nicht verändert; Ausbau erfolgt über Folgemigrationen. Readiness prüft Dateinamen, SHA-256 und erwartete Tabellen. UUID-Schlüssel werden serverseitig erzeugt; zusammengesetzte Tenant-Fremdschlüssel verhindern mandantenübergreifende Herkunftsbezüge. Restriktives Löschen für Geschäftsbelege.
+Die ausführbare Wahrheit sind die prüfsummengesicherten Migrationen `backend/migrations/001_*` bis `010_*`. Bereits angewendete Dateien werden nicht verändert; Ausbau erfolgt über Folgemigrationen. Readiness prüft Dateinamen, SHA-256 und erwartete Tabellen. UUID-Schlüssel werden serverseitig erzeugt; zusammengesetzte Tenant-Fremdschlüssel verhindern mandantenübergreifende Herkunftsbezüge. Restriktives Löschen für Geschäftsbelege.
 
 | Migration | Physisch implementierter Umfang |
 |---|---|
@@ -13,6 +13,7 @@ Die ausführbare Wahrheit sind die prüfsummengesicherten Migrationen `backend/m
 | 007 order_procurement | supplier_data, order_requirements, order_requirement_items, purchase_requisitions, purchase_requisition_items, purchase_orders, purchase_order_items |
 | 008 valued_goods_receipts | material_inventory_settings, plants, storage_locations, goods_receipts, goods_receipt_items, stock_balances, inventory_valuations |
 | 009 automatic_material_planning | stock_reservations; automatische Bedarfskennzeichnung, Bedarfstermin und separater Positions-/Kopf-Versorgungsstatus |
+| 010 business_number_series | business_number_series; feste inklusive Bereiche, monotone versionierte Zuteilung/Sperre; neue Mitarbeiter-, Ansprechpartner- und Zeitnummern |
 
 ## Integrität und Laufzeitrolle
 

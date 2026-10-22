@@ -100,3 +100,9 @@ Nutzerpräzisierung vom 22.10.2026: Beschaffung und alle kostenpflichtigen Folge
 ## MATERIAL-01 · Automatische Versorgung und Lagerverwaltung
 
 Status Preview 0.7: automatische Lager-/Nichtlager-/Fremdleistungsbedarfe, freie/reservierte Bestände, Fehlmengenhinweis, „Lager nutzen“/„Teile bestellen“ mit automatischer BANF-Einreichung, Positions-/Kopf-Versorgungsstatus, Werke/Lagerorte, Serien-/Chargenpflicht, bewerteter Teil-WE und Gegenbelegstorno mit atomarer FI integriert. Tatsächlicher Verbrauch mit WOT/SRM, Inventur, Umlagerung und Nichtlager-/Fremdleistungsabnahme bleiben offen. [Verbindliche Präzisierung und Recherchegrenze](requirements/material-fulfillment.md).
+
+## WAREHOUSE-02 / DOCUMENT-01 / NUMBER-01 / UI-02
+
+Neue Nutzerpräzisierungen: tatsächliche Teil-Eingangsmengen, auftragsbezogene Auslieferung/Warenausgang mit Storno, physische Lagerplätze mit Einlagerungslabels/Scanner, kleine PDF-Anlagenlisten in allen Vorgängen, 66 fest definierte Nummernkreise und Informationsdichte der Materialbedarfe auf allen Fachseiten. Vollständige [Vorgabe mit Nummernkreistabelle und Abnahmekriterien](requirements/warehouse-delivery-attachments.md); [Maskenvorgaben](requirements/navigation.md). Teil-WE ist ab 0.7 vorhanden; die weiteren Ergänzungen werden fortlaufend implementiert und erst nach Prüfung als geliefert markiert.
+
+NUMBER-01 ist ab 0.8 für alle 66 reservierten Bereiche und die bereits implementierten Fachvorgänge verfügbar. UI-02 wurde für die aktuellen Facharbeitslisten, Servicefall und Administration erweitert; weitere Maskenangleichung bleibt laufend. WAREHOUSE-02/DOCUMENT-01 sind weiterhin in Umsetzung, nicht durch Nummernkreisreservierung erledigt.

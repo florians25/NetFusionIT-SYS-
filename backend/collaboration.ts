@@ -1,7 +1,7 @@
 import { Injectable,ForbiddenException,NotFoundException,ConflictException } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
-import { Db,Principal,parse,uuid,audit,idempotent } from './core';
+import { Db,Principal,parse,uuid,nextNumber,audit,idempotent } from './core';
 import { Service } from './service';
 import { requirePermission } from './permissions';
 import { version } from './business';
@@ -37,7 +37,7 @@ export class Collaboration {
   return this.db.as(u,async db=>{
    const partner=(await db.query('SELECT id,number,name,email,status,version,roles,legal_form AS "legalForm",vat_id AS "vatId",currency,organization_id AS "organizationId" FROM business_partners WHERE tenant_id=$1 AND id=$2 AND organization_id=ANY($3::uuid[]) AND ($4::uuid IS NULL OR id=$4)',[u.tenantId,id,u.orgIds,u.role==='CUSTOMER'?u.partnerId:null])).rows[0];
    if(!partner)throw new NotFoundException('Kunde nicht gefunden.');
-   return {...partner,contacts:(await db.query('SELECT id,name,email,phone,position FROM partner_contacts WHERE tenant_id=$1 AND partner_id=$2 ORDER BY name',[u.tenantId,id])).rows,addresses:(await db.query('SELECT id,kind,street,postal_code AS "postalCode",city,country FROM partner_addresses WHERE tenant_id=$1 AND partner_id=$2 ORDER BY kind',[u.tenantId,id])).rows};
+   return {...partner,contacts:(await db.query('SELECT id,number,name,email,phone,position FROM partner_contacts WHERE tenant_id=$1 AND partner_id=$2 ORDER BY name',[u.tenantId,id])).rows,addresses:(await db.query('SELECT id,kind,street,postal_code AS "postalCode",city,country FROM partner_addresses WHERE tenant_id=$1 AND partner_id=$2 ORDER BY kind',[u.tenantId,id])).rows};
   });
  }
  async partnerUpdate(u:Principal,id:string,raw:unknown,key:unknown,correlation:string){
@@ -52,7 +52,7 @@ export class Collaboration {
    await db.query('UPDATE business_partners SET name=$3,email=$4,legal_form=$5,vat_id=$6,currency=$7,roles=$8,version=version+1 WHERE tenant_id=$1 AND id=$2',[u.tenantId,id,input.name,input.email,input.legalForm,input.vatId,input.currency,input.roles]);
    // Kontakte/Adressen werden versioniert als neue Datensätze ergänzt; bisherige
    // IDs bleiben nachvollziehbar und werden nicht destruktiv überschrieben.
-   for(const c of input.contacts)await db.query('INSERT INTO partner_contacts(id,tenant_id,partner_id,name,email,phone,position) VALUES($1,$2,$3,$4,$5,$6,$7)',[randomUUID(),u.tenantId,id,c.name,c.email,c.phone,c.position]);
+   for(const c of input.contacts)await db.query('INSERT INTO partner_contacts(id,tenant_id,partner_id,name,email,phone,position,number) VALUES($1,$2,$3,$4,$5,$6,$7,$8)',[randomUUID(),u.tenantId,id,c.name,c.email,c.phone,c.position,await nextNumber(db,u.tenantId,'AP')]);
    for(const a of input.addresses)await db.query('INSERT INTO partner_addresses(id,tenant_id,partner_id,kind,street,postal_code,city,country) VALUES($1,$2,$3,$4,$5,$6,$7,$8)',[randomUUID(),u.tenantId,id,a.kind,a.street,a.postalCode,a.city,a.country]);
    await audit(db,u,correlation,'PARTNER_UPDATED',id,{version:input.version+1});return {id,version:input.version+1};
   }));

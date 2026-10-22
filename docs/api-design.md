@@ -89,3 +89,9 @@ Die Readiness-Probe liefert nur dann 200, wenn die Migrationsprüfsummen exakt z
 - `POST /api/inventory/receipts/:id/reverse`: Periode, Datum und Grund für eindeutige Gegenbewegung mit Originalwert/-konten.
 
 Alle schreibenden Kommandos verlangen CSRF/Idempotenz; Versionen werden dort verlangt, wo veränderlicher Vorzustand besteht. Sichtbarkeit folgt dem Auftrag. Eine Materialreservierung erzeugt keine SRM und noch keinen tatsächlichen Verbrauch.
+
+## Geschäftsnummern und Arbeitslisten ab Preview 0.8
+
+`GET /api/admin/number-series` liefert alle 66 festen Bereiche mit nächster Nummer, Belegung, Rest, Aktivstatus und Version. `PATCH /api/admin/number-series/:prefix` benötigt Administration, CSRF/Idempotenz, erwartete Version, `active`, optionalen `nextValue` und Grund. Nur Vorwärtssetzung innerhalb des festen Bereichs; keine frei zugängliche Nummernreservierung ohne Fachbeleg. Neue Fachbelege beziehen ihre Nummern automatisch in derselben Transaktion.
+
+Artikelanlage akzeptiert optional `numberPrefix` HW/SW/DL/LI/ER/ZU passend zur Artikelart; SKU bleibt unabhängig. Benutzer-/Kontakt-/Zeiterfassungsprojektionen enthalten ihre neuen Nummern. Auftragslisten enthalten exakte Positionssummen als Dezimalstrings, Positionsanzahl, Fall-/Organisationsbezug und Materialstatus innerhalb derselben autorisierten Sicht. Arbeitslistensuche und Statusfilter verwenden native UI5-Filter; serverseitige Berechtigung wird dadurch nicht erweitert.
