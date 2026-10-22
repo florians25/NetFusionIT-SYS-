@@ -15,10 +15,18 @@ Die Anwendung ist über die App-Zentrale erreichbar. Native OpenUI5-Arbeitsliste
 
 ## Fachlicher Umfang und offene Schritte
 
+### Gespeicherte Bestell-/Teil-WE-Vorprüfung ab 0.12.0-preview.2
+
+Freigegebene Bestellung desselben Buchungskreises auswählen und jede Originalposition einer tatsächlichen Bestellposition zuordnen. Der Serviceauftrag und der Lieferant ergeben sich aus dieser Bestellung. Versionsschutz, Bearbeiter/Zeitpunkt, Prüfnotiz und Datenbankbedingungen schützen die Referenzen; Originalwerte bleiben unverändert. Abbrechen erhält die Zuordnung und verhindert deren spätere Änderung.
+
+Der nächste Prüflauf aggregiert alle zugeordneten Rechnungspositionen je Bestellposition und vergleicht sie mit dem tatsächlichen, nicht stornierten gebuchten WE. Er zeigt die einzelnen WE/Gegenbewegungen. Weitere Teillieferung oder WE-Storno ändern den Befund beim erneuten Prüfen. Preis- und Einheitenabweichung, unterschiedliche Währung, abweichender Aussteller/Empfänger, Bestellreferenz, fehlendes Leistungsdatum und nicht aktive/freigegebene Kreditorenrolle werden getrennt gemeldet. Ein weiterer offener Eingang mit gleicher normalisierter Nummer desselben zugeordneten Kreditors wird als Dublette gekennzeichnet.
+
+**Die Vorprüfung reserviert oder verrechnet keine WE-Menge.** Ein weiterer Rechnungseingang kann bis zur noch offenen Buchungslogik ebenfalls zugeordnet werden. Verbindliche Verbrauchszuordnung, Abzug bereits gebuchter Teilrechnungen, unabhängige sachliche/steuerliche Freigabe und atomare Buchung folgen gesondert. Ein Befund ohne festgestellte Abweichung ist keine steuerliche Freigabe, kein OP und keine Verbindlichkeit. Kein Entwurfsabgleich verändert Lagerbestand, Bestellung oder Lieferantenbankdaten.
+
 Übernommen werden positive Rechnungen der Art 380 mit normalen positiven Umsatzsteuersätzen, exakten Mengen/Preisen, Steuergruppen und Zahlungsbetrag. Kopf und Positionen enthalten tatsächliche Leistungsdaten, soweit angegeben. sichtbare Daten `TT.MM.JJJJ`; gleicher Beginn/Ende wird einmal angezeigt. Nicht unterstützte Steuerfälle, Gutschriften, Zu-/Abschläge, Anzahlungen, Währungs-/Einheitenumrechnung und nicht exakt darstellbare Preise bleiben gekennzeichneter Klärungsbedarf.
 
 Technische Validität bedeutet weder sachliche Freigabe noch Vorsteuerberechtigung oder eine Verbindlichkeit. Das Rechnungsoriginal überschreibt insbesondere keine freigegebenen Lieferanten-/Bankstammdaten. Gleiche normalisierte externe Belegnummer im Buchungskreis erzeugt einen bewusst breiten Hinweis; eine belastbare Kreditoren-Dublettensperre folgt mit der kaufmännischen Zuordnung/Buchung.
 
-**Noch offen:** Kreditor-/Bestell-/SA-Positionszuordnung, Abgleich mit tatsächlichen Teil-Wareneingängen und bereits verrechneten Mengen, Abweichungen/Toleranzen, unabhängige sachliche/steuerliche Freigabe, atomare WE/RE-/Vorsteuer-/Kreditorenbuchung und OP, Gutschrift/Storno, Zahlungsvorrat und Ausgleich, manuelle Nicht-E-Rechnung, vollständiger Auditexport/Aufbewahrungs- und Löschprozess. Kein leerer Buchungsbutton und keine scheinbare Verbindlichkeit aus einem bloßen XML-Erfolg.
+**Noch offen:** verbindlicher Drei-Wege-Abgleich einschließlich bereits verrechneter Mengen, Abweichungstoleranzen und Ausnahmefreigaben, unabhängige sachliche/steuerliche Freigabe, atomare WE/RE-/Vorsteuer-/Kreditorenbuchung und OP, Gutschrift/Storno, Zahlungsvorrat und Ausgleich, manuelle Nicht-E-Rechnung, vollständiger Auditexport/Aufbewahrungs- und Löschprozess. Kein leerer Buchungsbutton und keine scheinbare Verbindlichkeit aus einem bloßen XML-Erfolg.
 
 Die Arbeitspakete [AP-01–12](requirements/incoming-invoices-barcodes.md) und [LEG-00–10](compliance-gap-analysis.md) bleiben maßgeblich. Es wird keine GoBD-/DIN-/Steuer-/Produktivzertifizierung behauptet. Die vorher dokumentierte Netzwerksperre zu amtlichen Rechtsquellen ist durch diesen technischen Stand nicht aufgehoben.

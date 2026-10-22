@@ -47,6 +47,7 @@ In dieser Cloud wurde Compose nicht live getestet, da kein Docker-Daemon zugäng
 
 ## Dokumentation
 
+- [Preview 0.12.2: Bestell-/SA-Zuordnung und tatsächliche Teil-WE-Vorprüfung](docs/previews/v0.12.0-preview.2/README.md), [Versionsnotizen](docs/releases/v0.12.0-preview.2.md)
 - [Preview 0.12.1: Rechnungseingang, Originalprüfung und EG-Prüfblatt](docs/previews/v0.12.0-preview.1/README.md), [Versionsnotizen](docs/releases/v0.12.0-preview.1.md)
 - [Preview 0.11.1: Fakturaanforderung, Teilrechnung, ZUGFeRD und Code128](docs/previews/v0.11.0-preview.1/README.md), [Versionsnotizen](docs/releases/v0.11.0-preview.1.md)
 - [Rechtliche Compliance-Matrix und priorisierte Ergänzungen](docs/compliance-gap-analysis.md), [Eingangsrechnungen und Barcodes](docs/requirements/incoming-invoices-barcodes.md)

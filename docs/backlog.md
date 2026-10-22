@@ -145,3 +145,5 @@ Fakturaanforderung mit tatsächlichen SRM-Quellen, unabhängiger Freigabe, Faktu
 ### Technischer Teilstand Preview0.12
 
 Originaler Rechnungseingang mit EG, unveränderlichem Original, externer Rechnungsnummer, sicherer CII/UBL-Verarbeitung und tatsächlicher normativer Prüfung, PDF-Quarantäne, Dublettenhinweis, nativer OpenUI5-Arbeitsliste/Detail/Anlagenliste und eigenem Schwarz-Weiß-Prüfblatt mit Barcode. Keine FI/OP aus technischer Validierung. AP-01/02/04/11 teilweise umgesetzt; Drei-Wege-Abgleich, Kreditor, fachliche Freigabe, WE/RE-/Vorsteuerbuchung, Korrektur und Zahlung bleiben offen. [Details und Grenzen](incoming-invoices.md).
+
+Preview0.12.0-preview.2 ergänzt AP-03/05/11 teilweise: gespeicherte Zuordnung an freigegebene SA-Bestellung/Positionen, Aggregation gegen tatsächliche nicht stornierte Teil-WE, Kreditoren-/Parteien-/Preis-/Einheiten-/Währungs-/Dublettenbefunde. Kein Verbrauch gebuchter Rechnungsmenge und keine FI/OP aus der Vorprüfung; finanzielle Freigabe/Buchung bleibt nächster Schritt.
