@@ -12,7 +12,7 @@ export function visibleDocuments(u:Principal){
  if(can(u.role,'partner.read'))clauses.push(`(d.kind='BUSINESS_PARTNER' AND d.id IN(SELECT p.id FROM business_partners p WHERE p.tenant_id=$1${u.role==='CUSTOMER'?' AND p.id=$3':''}))`);
  if(can(u.role,'asset.read'))clauses.push(`(d.kind='TECHNICAL_OBJECT' AND d.id IN(SELECT a.id FROM technical_objects a WHERE a.tenant_id=$1 AND ${partnerCondition('a')}))`);
  if(can(u.role,'contract.read'))clauses.push(`(d.kind='SERVICE_CONTRACT' AND d.id IN(SELECT c.id FROM service_contracts c WHERE c.tenant_id=$1 AND ${partnerCondition('c')}))`);
- if(can(u.role,'inventory.read'))clauses.push(`d.kind IN ('MATERIAL','STOCK_TRANSFER')`);
+ if(can(u.role,'inventory.read'))clauses.push(`d.kind IN ('MATERIAL','STOCK_TRANSFER','INVENTORY_COUNT')`);
  if(can(u.role,'service.read')&&u.role!=='CUSTOMER')clauses.push(`(d.kind='WORK_ORDER_TASK' AND d.id IN(SELECT w.id FROM work_order_tasks w WHERE w.tenant_id=$1 AND w.ticket_id IN(SELECT id FROM (${tickets.sql}) visible_tickets)))`);
  if(can(u.role,'order.read'))clauses.push(`(d.kind='SERVICE_ORDER' AND d.id IN(SELECT o.id FROM service_orders o WHERE o.tenant_id=$1 AND o.case_id IN(SELECT id FROM (${cases.sql}) visible_cases)))`);
  if(can(u.role,'order.read'))clauses.push(`(d.kind='SERVICE_REPORT' AND d.id IN(SELECT r.id FROM service_reports r JOIN service_orders o ON o.tenant_id=r.tenant_id AND o.id=r.order_id WHERE r.tenant_id=$1 AND o.case_id IN(SELECT id FROM (${cases.sql}) visible_cases)${u.role==='CUSTOMER'?" AND r.status IN ('IN_REVIEW','APPROVED')":''}))`);

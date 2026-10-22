@@ -10,8 +10,8 @@ sap.ui.define(["netfusion/erp/controller/Base.controller","sap/m/ActionSheet","s
         group="billing";title="Faktura";if(this.state("/access/billingInternal"))tabs=[{key:"billing",text:"Fakturavorrat"}];selected="billing";
       }else if(["incomingInvoices","incomingInvoice","supplierReversal"].includes(name)){
         group="incoming";title="Rechnungseingang";tabs=[{key:"incomingInvoices",text:"Rechnungseingang"}];selected="incomingInvoices";
-      }else if(["warehouse","warehouseTransfer"].includes(name)){
-        group="warehouse";title="Lagerplätze & Einlagerung";tabs=[{key:"warehouse",text:"Lagerarbeitsplatz"}];selected="warehouse";
+      }else if(["warehouse","warehouseTransfer","inventoryCounts","inventoryCount"].includes(name)){
+        group="warehouse";title="Lagerplätze & Einlagerung";tabs=[{key:"warehouse",text:"Lagerarbeitsplatz"},{key:"inventoryCounts",text:"Inventuren"}];selected=["inventoryCounts","inventoryCount"].includes(name)?"inventoryCounts":"warehouse";
       }else if(["dispatch","planning"].includes(name)){
         group="dispatch";title="Disposition & Einsätze";if(this.state("/access/assign"))tabs.push({key:"dispatch",text:"Ticketzuweisung"});tabs.push({key:"planning",text:"Einsatzplanung"});
       }else{

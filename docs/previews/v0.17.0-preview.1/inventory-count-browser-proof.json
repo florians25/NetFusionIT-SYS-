@@ -1,0 +1,12 @@
+{
+  "number": "IV-56000000",
+  "correctionNumber": "LK-57000000",
+  "expected": "6.000000",
+  "counted": "5.000000",
+  "netValue": "-40.00",
+  "capturedBy": "WAREHOUSE",
+  "reviewedBy": "ADMIN",
+  "posted": true,
+  "mobileWidth": 390,
+  "errors": []
+}

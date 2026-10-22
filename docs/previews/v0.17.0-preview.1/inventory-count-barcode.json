@@ -1,0 +1,7 @@
+{
+  "file": "inventory-count.pdf",
+  "rasterDpi": 150,
+  "decoder": "ZXing 0.23.0",
+  "format": "CODE_128",
+  "value": "LK-57000000"
+}

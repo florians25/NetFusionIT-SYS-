@@ -1,0 +1,32 @@
+{
+  "version": "0.17.0-preview.1",
+  "time": "2026-10-22T22:04:10.672873+00:00",
+  "automatedTests": 235,
+  "passed": 235,
+  "failed": 0,
+  "newInventoryCountTests": 24,
+  "fullSuiteDurationMs": 180796.918186,
+  "browserChains": [
+    {
+      "chain": "inventory-counts",
+      "passed": true
+    },
+    {
+      "chain": "warehouse",
+      "passed": true
+    },
+    {
+      "chain": "location-transfers",
+      "passed": true
+    },
+    {
+      "chain": "service-deliveries",
+      "passed": true
+    }
+  ],
+  "inventoryBrowserRepeatedAfterFinalOriginalValueFix": true,
+  "barcodeRasterDpi": 150,
+  "migrations": 21,
+  "previousMigrationsUnchanged": "001–020",
+  "mainHasNoArtificialBusinessDocuments": true
+}

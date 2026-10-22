@@ -5,7 +5,7 @@
     "type": "application",
     "title": "NetFusion Service Workspace",
     "applicationVersion": {
-      "version": "0.16.0-preview.1"
+      "version": "0.17.0-preview.1"
     },
     "dataSources": {
       "service": {
@@ -254,6 +254,16 @@
           "name": "warehouseTransfer",
           "target": "WarehouseTransfer",
           "pattern": "warehouse/transfers/{id}"
+        },
+        {
+          "name": "inventoryCounts",
+          "target": "InventoryCounts",
+          "pattern": "inventory-counts"
+        },
+        {
+          "name": "inventoryCount",
+          "target": "InventoryCount",
+          "pattern": "inventory-counts/{id}"
         }
       ],
       "targets": {
@@ -376,6 +386,12 @@
         },
         "WarehouseTransfer": {
           "viewName": "WarehouseTransfer"
+        },
+        "InventoryCounts": {
+          "viewName": "InventoryCounts"
+        },
+        "InventoryCount": {
+          "viewName": "InventoryCount"
         }
       }
     }

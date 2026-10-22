@@ -1,4 +1,4 @@
-import {assertReceiptBuffer} from './warehouse-state';
+import {assertReceiptBuffer,assertLocationBufferOpen} from './warehouse-state';
 import {Injectable,ConflictException,NotFoundException} from '@nestjs/common';
 import {PoolClient} from 'pg';
 import {randomUUID} from 'node:crypto';
@@ -54,6 +54,7 @@ export class Inventory{
    await document(db,u,item.product_id,true);const setting=(await db.query('SELECT * FROM material_inventory_settings WHERE tenant_id=$1 AND product_id=$2 FOR UPDATE',[u.tenantId,item.product_id])).rows[0];if(!setting)throw new ConflictException('Serien-/Chargenführung und Bewertungsverfahren für den Artikel zuerst konfigurieren.');
    if(setting.serial_required!==!!l.serial||setting.batch_required!==!!l.batch||(l.serial&&!new D(l.quantity).eq(1)))throw new ConflictException('Serien-/Chargenangaben müssen exakt zur Materialkonfiguration passen; eine Seriennummer entspricht einem Stück.');
    if(!(await db.query('SELECT 1 FROM storage_locations l JOIN plants p ON p.tenant_id=l.tenant_id AND p.id=l.plant_id WHERE l.tenant_id=$1 AND l.id=$2 AND p.company_id=$3',[u.tenantId,l.locationId,c.id])).rowCount)throw new ConflictException('Lagerort dieses Buchungskreises fehlt.');
+   await assertLocationBufferOpen(db,u,l.locationId);
    const next=(added.get(item.id)||new D(0)).plus(l.quantity),limit=new D(item.quantity).times(new D(1).plus(new D(item.overdelivery_percent).div(100)));if(new D(item.received).plus(next).gt(limit))throw new ConflictException('Wareneingang überschreitet offene Menge und genehmigte Überlieferungstoleranz.');added.set(item.id,next);
    if(l.serial&&((await db.query('SELECT 1 FROM stock_balances WHERE tenant_id=$1 AND product_id=$2 AND serial=$3 AND quantity>0',[u.tenantId,item.product_id,l.serial])).rowCount||lines.some(r=>r.productId===item.product_id&&r.serial===l.serial)))throw new ConflictException('Seriennummer ist bereits im Bestand oder in diesem Wareneingang vorhanden.');
    const value=new D(l.quantity).times(item.unit_price).toDecimalPlaces(c.digits);if(value.gte('10000000000000000'))throw new ConflictException('Wareneingangswert überschreitet den unterstützten Finanzbetrag.');lines.push({...l,productId:item.product_id,unitPrice:item.unit_price,value:value.toFixed(c.digits)});

@@ -1,0 +1,10 @@
+import{test}from'node:test';
+import assert from'node:assert/strict';
+import{createRequire}from'node:module';
+const require=createRequire(import.meta.url),{valueCountDifferences:value}=require('../dist/inventory-count-valuation.js');
+test('Inventurvollabgang übernimmt den exakten ursprünglichen Restwert einschließlich Centverteilung',()=>{const p=value([{id:'a',delta:'-1'},{id:'b',delta:'-2'}],{quantity:'3',value:'0.01'},2);assert.equal(p.netValue,'-0.01');assert.deepEqual([...p.values],[['a','0.00'],['b','-0.01']]);});
+test('Eine reine Platzkorrektur desselben Artikels erzeugt keinen fiktiven Inventurgewinn/-verlust',()=>{const p=value([{id:'out',delta:'-3'},{id:'in',delta:'3'}],{quantity:'6',value:'240.00'},2);assert.equal(p.netQuantity,'0.000000');assert.equal(p.netValue,'0.00');assert.equal(p.values.get('out'),'-120.00');assert.equal(p.values.get('in'),'120.00');});
+test('Tatsächlicher Mehr-/Minderbestand wird aus vorhandener Unternehmensbewertung abgeleitet',()=>{const p=value([{id:'out',delta:'-2'},{id:'in',delta:'1'}],{quantity:'6',value:'240.00'},2);assert.equal(p.netValue,'-40.00');assert.equal(p.values.get('out'),'-80.00');assert.equal(p.values.get('in'),'40.00');assert.equal(value([{id:'a',delta:'2'}],{quantity:'6',value:'240'},2).netValue,'80.00');});
+test('Ungeklärte Bewertungsgrundlage und unzulässiger Abgang werden kontrolliert abgewiesen',()=>{assert.throws(()=>value([{id:'a',delta:'1'}],{quantity:'0',value:'0'},2),/Bewertungsgrundlage/);assert.throws(()=>value([{id:'a',delta:'-7'}],{quantity:'6',value:'240'},2),/Unternehmensbestand/);});
+test('Ausdrücklich vorhandener wertfreier Bestand bleibt bei einer Zähldifferenz wertfrei',()=>{const p=value([{id:'a',delta:'2'}],{quantity:'3',value:'0'},2);assert.equal(p.netValue,'0.00');assert.equal(p.values.get('a'),'0.00');});
+test('Große Mengen und vierstellige Währungspräzision bleiben ohne binäre Rundungsfehler erhalten',()=>{const p=value([{id:'a',delta:'-999999999999.999999'}],{quantity:'999999999999.999999',value:'99999999999999.9999'},4);assert.equal(p.netValue,'-99999999999999.9999');assert.equal(p.values.get('a'),'-99999999999999.9999');});
