@@ -10,6 +10,10 @@ test('Oberfläche verwendet nur OpenUI5-Standardcontrols und Standardklassen',as
   for(const file of source){
     const text=await readFile(file,'utf8');
     if(file.endsWith('.xml')){
+      for(const [tag] of text.matchAll(/<[A-Za-z][\w:.-]*(?:\s[^<>]*?)?\/?>/g)){
+        const attributes=Array.from(tag.matchAll(/(?:^|\s)([\w:.-]+)\s*=\s*"[^"]*"/g),m=>m[1]);
+        assert.equal(new Set(attributes).size,attributes.length,file+': doppelte XML-Attribute');
+      }
       for(const [,namespace] of text.matchAll(/xmlns(?::\w+)?="([^"]+)"/g))assert.ok(allowed.has(namespace),file+': '+namespace);
       for(const [,classes] of text.matchAll(/class="([^"]*)"/g))assert.ok(classes.split(/\s+/).every(c=>c.startsWith('sapUi')),file+': nur UI5-Standardklassen');
       assert.ok(!/html:|<HTML|<svg|<canvas|style=/.test(text),file+': keine eigenen HTML-Elemente');

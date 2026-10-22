@@ -55,6 +55,12 @@ jobs:
           test-results/journal-reversal.png
           test-results/trial-balance.png
           test-results/journal-mobile.png
+          test-results/purchase-order-create.png
+          test-results/requisition-partial.png
+          test-results/purchase-order-released.png
+          test-results/procurement-flow.png
+          test-results/order-procurement.png
+          test-results/purchase-order-mobile.png
       - name: Preserve browser diagnostics
         if: failure()
         uses: actions/upload-artifact@v4

@@ -45,3 +45,7 @@ RLS mit `app.tenant_id` für fachliche Tabellen; jeder Request setzt den Kontext
 | Integration | outbox_events, inbox_messages, import_batches/rows, reconciliation_runs; eindeutige externe Nachricht |
 
 Jede neue Tabelle benötigt Tenant-FK, RLS, Org-Scope-Entscheidung, Delete-Regel, Audit-Regel und Migrationstest. Journale und Bestandsbewegungen werden append-only, Korrektur durch Gegenbeleg. Eine technische DB-Historie allein ist keine unveränderliche gesetzliche Archivierung.
+
+## Beschaffung · Migration 007
+
+`supplier_data` ergänzt bestehende Geschäftspartner/Adressen um Zahlungsziel. `order_requirements`/`order_requirement_items` referenzieren Serviceauftrag/-position; `purchase_requisitions`/`purchase_requisition_items` zusätzlich Buchungskreis, Hauswährung, Bedarfsposition und Kostenkontierung. `purchase_orders`/`purchase_order_items` halten Lieferantensnapshot, BANF-/Positionsbezug, Mengen, Einkaufspreis, Termin und vereinbarte Toleranz. Alle sieben Tabellen besitzen Tenant-RLS und zusammengesetzte Tenant-Fremdschlüssel. Inhalts-/Positionsschutz verhindert stille Änderung von Herkunft und Genehmigungsinhalt. Die Migration erzeugt noch keine Bestands-, Wareneingangs- oder Rechnungsdaten.

@@ -5,7 +5,7 @@
     "type": "application",
     "title": "NetFusion Service Workspace",
     "applicationVersion": {
-      "version": "0.5.0"
+      "version": "0.6.0"
     },
     "dataSources": {
       "service": {
@@ -184,6 +184,16 @@
           "name": "journal",
           "target": "Journal",
           "pattern": "finance/journals/{id}"
+        },
+        {
+          "name": "suppliers",
+          "target": "Suppliers",
+          "pattern": "suppliers"
+        },
+        {
+          "name": "procurement",
+          "target": "Procurement",
+          "pattern": "procurement/{id}"
         }
       ],
       "targets": {
@@ -258,6 +268,12 @@
         },
         "Journal": {
           "viewName": "Journal"
+        },
+        "Suppliers": {
+          "viewName": "Suppliers"
+        },
+        "Procurement": {
+          "viewName": "Procurement"
         }
       }
     }

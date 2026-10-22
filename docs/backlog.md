@@ -22,7 +22,7 @@ Abnahme: Standard-/Festpreisregeln, Teilannahme und mehrfach parallel ausgelöst
 
 ## SERVICE-02 · Serviceaufträge und Servicerückmeldungen
 
-Status: Auftragsanlage, Positionen, Preisfindung, Freigabe, Ticketaufgaben, Arbeits-/Fahrzeiten/Pauschalen, Timer, automatische SRM beim Aufgabenabschluss mit Ticket-Korrelation, Teil-/Endrückmeldungen, Kundenbestätigung und technischer Abschluss implementiert; erweiterte Positionstypen, Beschaffung, Faktura und FI/CO-Integration offen · Masterprompt-Phase 4–8.
+Status: Auftragsanlage, Positionen, Preisfindung, Freigabe, Ticketaufgaben, Arbeits-/Fahrzeiten/Pauschalen, Timer, automatische SRM beim Aufgabenabschluss mit Ticket-Korrelation, Teil-/Endrückmeldungen, Kundenbestätigung und technischer Abschluss implementiert; auftragsbezogener Materialbedarf, BANF und Teilbestellungen mit Lieferanten-/Beschaffungsfreigabe implementiert; erweiterte Positionstypen, Wareneingang/Bestand/Verbrauch, Faktura und FI/CO-Integration offen · Masterprompt-Phase 4–8.
 Quelle: [vollständiger Nutzeranhang](requirements/serviceauftraege.md); alle darin enthaltenen Details gelten zusätzlich zur Kurzfassung.
 
 - Liste/Suche/Filter, Anzeigen/Anlegen/Bearbeiten; Servicegruppen, Positionen und hierarchische Servicepakete für Service, Material und Ausgaben.

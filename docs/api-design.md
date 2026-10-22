@@ -66,3 +66,11 @@ Verbindlich: [Ticket → Work Order Task → SRM](requirements/ticket-execution.
 `POST /api/finance/journals` legt einen ausgeglichenen Entwurf an. Finanzbelege nutzen den konfigurierten Vier-Augen-Workflow mit ausschließlich Buchhaltungs-/Administrationsrollen. `GET journals/:id` liefert Kopf, Positionen und exakt berechnete Soll-/Haben-Summen. `POST journals/:id/post` prüft Freigabe, Version, Konten, Präzision und offene Periode erneut, vergibt die endgültige Nummer und schreibt den Beleg unveränderlich fest. `POST journals/:id/reverse` erzeugt einen eigenen genehmigungspflichtigen Gegenbeleg, keine Überschreibung des Originals. Entwürfe beeinflussen die Salden nicht.
 
 Die Readiness-Probe liefert nur dann 200, wenn die Migrationsprüfsummen exakt zum laufenden Quellstand passen und alle Migrationstabellen existieren. Keine Daten oder Prüfsummen werden öffentlich ausgegeben.
+
+## Beschaffung ab Preview 0.6
+
+`GET/POST /api/procurement/suppliers` liest beziehungsweise erzeugt Lieferantenstammdaten mit bestehender Geschäftspartnerfreigabe. Kundenlisten filtern explizit die CUSTOMER-Rolle.
+
+`GET /api/service/orders/:id/procurement` liefert Bedarfe, BANF, Bestellungen und offene Materialpositionen. `POST .../material-requirements`, `.../requisitions` und `.../purchase-orders` erstellen ausschließlich auftrags-/positionsbezogene Belege. Mengenbindungen sind mit Auftragszeilensperre vor konkurrierenden Mehrfachanforderungen geschützt. Einkaufspreis und Auftragsverkaufspreis sind getrennt.
+
+`GET /api/procurement/documents/:id` liefert Kopf, Ursprungsauftrag, Positionen, Kontierung, noch ungebundene Mengen beziehungsweise Bestellwert. `POST .../:id/cancel` verwirft zulässige Entwürfe/abgelehnte Belege mit Version und Grund. Freigabe läuft über die gemeinsame Workflow-API mit belegspezifischer Berechtigung und erneutem Mengen-/Lieferanten-/Auftragscheck. Ersteller und Einreicher sind bei Vier-Augen beide ausgeschlossen. Keine WE-/Lager-/FI-Seiteneffekte aus Bestellfreigabe.

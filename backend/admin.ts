@@ -32,7 +32,7 @@ export class Admin {
     if(input.role!=='CUSTOMER'&&input.partnerId)throw new ConflictException('Kundenbindung ist nur für Kundenbenutzer erlaubt.');
     const hash=await hashPassword(input.password);
     return this.db.as(u,async db=>{
-      if(input.partnerId&&!(await db.query("SELECT 1 FROM business_partners WHERE tenant_id=$1 AND id=$2 AND organization_id=$3 AND status='ACTIVE'",[u.tenantId,input.partnerId,input.organizationId])).rowCount)throw new NotFoundException('Aktiver Kunde nicht gefunden.');
+      if(input.partnerId&&!(await db.query("SELECT 1 FROM business_partners WHERE tenant_id=$1 AND id=$2 AND organization_id=$3 AND status='ACTIVE' AND 'CUSTOMER'=ANY(roles)",[u.tenantId,input.partnerId,input.organizationId])).rowCount)throw new NotFoundException('Aktiver Kunde nicht gefunden.');
       const id=randomUUID();
       await db.query('INSERT INTO users(id,tenant_id,name,email,password_hash,role,partner_id) VALUES($1,$2,$3,$4,$5,$6,$7)',[id,u.tenantId,input.name,input.email,hash,input.role,input.partnerId||null]);
       await db.query('INSERT INTO user_organizations VALUES($1,$2,$3)',[u.tenantId,id,input.organizationId]);

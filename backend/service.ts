@@ -29,7 +29,7 @@ export class Service {
     const partnerId=u.role==='CUSTOMER'?u.partnerId:input.partnerId;
     if(!partnerId)throw new ConflictException('Kundenbezug erforderlich.');
     return this.db.as(u,db=>idempotent(db,u,'TICKET_CREATE',key,input,async()=>{
-      const partner=await db.query("SELECT * FROM business_partners WHERE tenant_id=$1 AND id=$2 AND organization_id=ANY($3::uuid[]) AND status='ACTIVE' FOR SHARE",[u.tenantId,partnerId,u.orgIds]);
+      const partner=await db.query("SELECT * FROM business_partners WHERE tenant_id=$1 AND id=$2 AND organization_id=ANY($3::uuid[]) AND status='ACTIVE' AND 'CUSTOMER'=ANY(roles) FOR SHARE",[u.tenantId,partnerId,u.orgIds]);
       if(!partner.rowCount)throw new NotFoundException('Aktiver Kunde nicht gefunden.');
       const org=partner.rows[0].organization_id, ticketId=randomUUID(),caseId=randomUUID();
       const number=await nextNumber(db,u.tenantId,'TCK'),caseNumber=await nextNumber(db,u.tenantId,'SVC');
@@ -106,12 +106,12 @@ export class Service {
       const visibleQuery=visibleDocuments(u),visible=visibleQuery.sql;
       const p=[...visibleQuery.values,id];
       if(!(await db.query(`SELECT 1 FROM (${visible}) v WHERE id=$${p.length}`,p)).rowCount)throw new NotFoundException('Beleg nicht gefunden.');
-      const r=await db.query(`SELECT r.id,r.source_id AS "sourceId",r.target_id AS "targetId",r.kind,s.number AS "sourceNumber",s.kind AS "sourceKind",d.number AS "targetNumber",d.kind AS "targetKind" FROM document_relations r JOIN documents s ON s.tenant_id=r.tenant_id AND s.id=r.source_id JOIN documents d ON d.tenant_id=r.tenant_id AND d.id=r.target_id WHERE (r.source_id=$${p.length} OR r.target_id=$${p.length}) AND r.source_id IN (${visible}) AND r.target_id IN (${visible})`,p);
+      const r=await db.query(`WITH RECURSIVE visible_docs AS MATERIALIZED (${visible}),edges AS MATERIALIZED (SELECT r.* FROM document_relations r WHERE r.tenant_id=$1 AND r.source_id IN(SELECT id FROM visible_docs) AND r.target_id IN(SELECT id FROM visible_docs)),reachable(id) AS (SELECT $${p.length}::uuid UNION SELECT CASE WHEN e.source_id=g.id THEN e.target_id ELSE e.source_id END FROM reachable g JOIN documents current ON current.tenant_id=$1 AND current.id=g.id JOIN edges e ON e.source_id=g.id OR e.target_id=g.id WHERE current.id=$${p.length} OR current.kind NOT IN ('BUSINESS_PARTNER','MATERIAL','TECHNICAL_OBJECT','SERVICE_CONTRACT')) SELECT r.id,r.source_id AS "sourceId",r.target_id AS "targetId",r.kind,s.number AS "sourceNumber",s.kind AS "sourceKind",d.number AS "targetNumber",d.kind AS "targetKind" FROM edges r JOIN documents s ON s.tenant_id=r.tenant_id AND s.id=r.source_id JOIN documents d ON d.tenant_id=r.tenant_id AND d.id=r.target_id WHERE r.source_id IN(SELECT id FROM reachable) AND r.target_id IN(SELECT id FROM reachable) ORDER BY s.created_at,s.number,r.kind,d.created_at,d.number`,p);
       return r.rows;
     });
   }
   async partners(u:Principal){
-    return this.db.as(u,async db=>(await db.query('SELECT id,number,name,email,status,organization_id AS "organizationId" FROM business_partners WHERE tenant_id=$1 AND organization_id=ANY($2::uuid[]) AND ($3::uuid IS NULL OR id=$3) ORDER BY name',[u.tenantId,u.orgIds,u.role==='CUSTOMER'?u.partnerId:null])).rows);
+    return this.db.as(u,async db=>(await db.query('SELECT id,number,name,email,status,organization_id AS "organizationId" FROM business_partners WHERE tenant_id=$1 AND organization_id=ANY($2::uuid[]) AND ($3::uuid IS NULL OR id=$3) AND $4=ANY(roles) ORDER BY name',[u.tenantId,u.orgIds,u.role==='CUSTOMER'?u.partnerId:null,'CUSTOMER'])).rows);
   }
   async technicians(u:Principal){
     return this.db.as(u,async db=>(await db.query("SELECT t.id,t.name,t.skills,t.organization_id AS \"organizationId\",(SELECT count(*)::int FROM dispatch_assignments a WHERE a.tenant_id=t.tenant_id AND a.technician_id=t.id AND a.active AND EXISTS(SELECT 1 FROM tickets tk WHERE tk.id=a.ticket_id AND tk.tenant_id=a.tenant_id AND tk.status NOT IN ('CLOSED','CANCELLED','COMMERCIALLY_CLOSED','TECHNICALLY_RESOLVED'))) AS \"assignedCount\" FROM technicians t JOIN users u ON u.tenant_id=t.tenant_id AND u.id=t.user_id WHERE t.tenant_id=$1 AND t.organization_id=ANY($2::uuid[]) AND t.active AND u.active AND u.role IN ('TECHNICIAN','FIELD_TECHNICIAN') ORDER BY t.name",[u.tenantId,u.orgIds])).rows);

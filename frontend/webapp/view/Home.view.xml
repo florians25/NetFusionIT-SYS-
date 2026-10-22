@@ -9,8 +9,8 @@
         <HBox alignItems="Center"><core:Icon src="sap-icon://building" class="sapUiTinyMarginEnd"/><Text text="{state&gt;/user/tenantName}"/><Text text="· Service" class="sapUiTinyMarginBegin"/></HBox>
         <Button icon="sap-icon://refresh" text="Aktualisieren" type="Transparent" press=".onRefresh"/>
       </HBox>
-      <Title text="Service" visible="{state&gt;/access/service}" titleStyle="H3" class="sapUiMediumMarginTop sapUiSmallMarginBottom"/>
-      <FlexBox wrap="Wrap" class="sapUiSmallMarginBottom" visible="{state&gt;/access/service}">
+      <Title visible="{state&gt;/access/service}" text="Service" titleStyle="H3" class="sapUiMediumMarginTop sapUiSmallMarginBottom"/>
+      <FlexBox visible="{state&gt;/access/service}" wrap="Wrap" class="sapUiSmallMarginBottom">
         <GenericTile header="Service-Cockpit" subheader="Ticket-Eingang und Arbeitsvorrat" press=".onCockpit" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Neue Tickets"><content><NumericContent value="{view&gt;/dashboard/newCount}" icon="sap-icon://overview-chart" valueColor="Neutral" withMargin="false"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Tickets bearbeiten" subheader="Service Desk" press=".onTickets" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Offene Tickets"><content><NumericContent value="{view&gt;/dashboard/open}" icon="sap-icon://customer-and-contacts" valueColor="Neutral" withMargin="false"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Ticket anlegen" subheader="{= ${state&gt;/access/customer} ? 'Kundenportal' : 'Neue Serviceanfrage' }" press=".onNew" visible="{state&gt;/access/create}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Anfrage erfassen"><content><ImageContent src="sap-icon://add-document"/></content></TileContent></tileContent></GenericTile>
@@ -18,8 +18,8 @@
         <GenericTile header="Dispatching" subheader="Techniker zuweisen" press=".onDispatch" visible="{state&gt;/access/assign}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Noch nicht zugewiesen"><content><NumericContent value="{view&gt;/dashboard/unassigned}" icon="sap-icon://appointment-2" valueColor="{= ${view&gt;/dashboard/unassigned} &gt; 0 ? 'Critical' : 'Neutral' }" withMargin="false"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Hohe Priorität" subheader="Kritische und wichtige Tickets" press=".onTickets" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Offen · Hoch / Kritisch"><content><NumericContent value="{view&gt;/dashboard/critical}" icon="sap-icon://alert" valueColor="{= ${view&gt;/dashboard/critical} &gt; 0 ? 'Error' : 'Neutral' }" withMargin="false"/></content></TileContent></tileContent></GenericTile>
       </FlexBox>
-      <Title text="Planung &amp; Servicebasis" titleStyle="H3" class="sapUiMediumMarginTop sapUiSmallMarginBottom"/>
-      <FlexBox wrap="Wrap" class="sapUiSmallMarginBottom">
+      <Title visible="{= ${state&gt;/access/service} || ${state&gt;/access/assetRead} || ${state&gt;/access/contractRead} || ${state&gt;/access/serviceConfig} }" text="Planung &amp; Servicebasis" titleStyle="H3" class="sapUiMediumMarginTop sapUiSmallMarginBottom"/>
+      <FlexBox visible="{= ${state&gt;/access/service} || ${state&gt;/access/assetRead} || ${state&gt;/access/contractRead} || ${state&gt;/access/serviceConfig} }" wrap="Wrap" class="sapUiSmallMarginBottom">
         <GenericTile header="Einsatzplanung" subheader="Technikerkalender und Termine" press=".onPlanning" visible="{state&gt;/access/service}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Arbeitszeiten und Verfügbarkeit"><content><ImageContent src="sap-icon://appointment-2"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Objekte &amp; Verträge" subheader="Installierte Basis und Serviceumfang" press=".onServiceMaster" visible="{= ${state&gt;/access/assetRead} || ${state&gt;/access/contractRead} }" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Kundenbezogene Servicebasis"><content><ImageContent src="sap-icon://it-system"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Servicekalender &amp; SLA" subheader="Geschäftszeiten und Fristen" press=".onServiceSetup" visible="{state&gt;/access/serviceConfig}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Servicekonfiguration"><content><ImageContent src="sap-icon://time-entry-request"/></content></TileContent></tileContent></GenericTile>
@@ -32,6 +32,7 @@
       </FlexBox>
       <Title text="Stammdaten &amp; Organisation" titleStyle="H3" class="sapUiMediumMarginTop sapUiSmallMarginBottom" visible="{state&gt;/access/internal}"/>
       <FlexBox wrap="Wrap" class="sapUiSmallMarginBottom" visible="{state&gt;/access/internal}">
+        <GenericTile header="Lieferanten" subheader="Stammdaten und Freigaben" press=".onSuppliers" visible="{state&gt;/access/supplierRead}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Geschäftspartner im Einkauf"><content><ImageContent src="sap-icon://supplier"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Kundenstamm" subheader="Geschäftspartner" press=".onPartners" visible="{state&gt;/access/partners}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Kunden und Kontaktdaten"><content><ImageContent src="sap-icon://business-card"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Finanzbuchhaltung" subheader="Konten, Perioden und Journal" press=".onFinance" visible="{state&gt;/access/financeRead}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Buchhaltung und Salden"><content><ImageContent src="sap-icon://accounting-document-verification"/></content></TileContent></tileContent></GenericTile>
         <GenericTile header="Genehmigungen" subheader="Freigaben und Rückfragen" press=".onWorkflow" visible="{state&gt;/access/workflow}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Freigabehistorie"><content><ImageContent src="sap-icon://approvals"/></content></TileContent></tileContent></GenericTile>
@@ -39,7 +40,7 @@
         <GenericTile header="Organisation" subheader="Serviceorganisationen" press=".onAdmin" visible="{state&gt;/access/admin}" frameType="OneByOne" class="sapUiTinyMarginEnd sapUiTinyMarginBottom"><tileContent><TileContent footer="Organisationsstruktur"><content><ImageContent src="sap-icon://org-chart"/></content></TileContent></tileContent></GenericTile>
       </FlexBox>
 
-      <HBox justifyContent="SpaceBetween" class="sapUiMediumMarginTop" wrap="Wrap"><Text text="NETFUSION · ENTERPRISE SERVICE ERP"/><Text text="OpenUI5 · Preview 0.5"/></HBox>
+      <HBox justifyContent="SpaceBetween" class="sapUiMediumMarginTop" wrap="Wrap"><Text text="NETFUSION · ENTERPRISE SERVICE ERP"/><Text text="OpenUI5 · Preview 0.6"/></HBox>
     </VBox>
   </Page>
 </mvc:View>

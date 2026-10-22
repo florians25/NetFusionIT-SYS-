@@ -9,8 +9,8 @@ const journalBody=(extra={})=>({companyId:company.id,periodId:period.id,postingD
 async function approve(id,version){const s=ok(await admin('/api/workflow/submit/'+id,cmd({version})));return accountant('/api/workflow/instances/'+s.id+'/decide',cmd({version:1,decision:'APPROVE',comment:'Buchung sachlich und rechnerisch geprüft.'}));}
 before(async()=>{
  h=await harness(3113);admin=await client(h.base,h.accounts.find(a=>a.role==='ADMIN'));customer=await client(h.base,h.accounts.find(a=>a.role==='CUSTOMER'));tech=await client(h.base,h.accounts.find(a=>a.role==='TECHNICIAN'));org=(await admin('/api/organization')).data[0].id;
- const user={name:'Buchhaltung Prüfung',email:'accountant@example.test',password:randomUUID(),role:'ACCOUNTANT',organizationId:org};ok(await admin('/api/admin/users',{method:'POST',body:user}));accountant=await client(h.base,{tenant:'netfusion',...user});ok(await admin('/api/catalog/currencies',cmd({code:'EUR',digits:2})));
- company=ok(await admin('/api/finance/companies',cmd({organizationId:org,code:'1000',name:'NetFusion Testgesellschaft',currency:'EUR',country:'DE',street:'Teststraße 1',postalCode:'10115',city:'Berlin',vatId:''})));
+ const user={name:'Buchhaltung Prüfung',email:'accountant@example.test',password:randomUUID(),role:'ACCOUNTANT',organizationId:org};ok(await admin('/api/admin/users',{method:'POST',body:user}));accountant=await client(h.base,{tenant:'netfusion',...user});ok(await admin('/api/catalog/currencies',cmd({code:'XTS',digits:4})));
+ company=ok(await admin('/api/finance/companies',cmd({organizationId:org,code:'1000',name:'NetFusion Testgesellschaft',currency:'XTS',country:'DE',street:'Teststraße 1',postalCode:'10115',city:'Berlin',vatId:''})));
  for(const kind of ['BANK','EQUITY','EXPENSE','REVENUE'])accounts[kind]=ok(await admin('/api/finance/companies/'+company.id+'/accounts',cmd({code:{BANK:'1200',EQUITY:'9000',EXPENSE:'4900',REVENUE:'8400'}[kind],name:{BANK:'Bank',EQUITY:'Eigenkapital',EXPENSE:'Sonstiger Aufwand',REVENUE:'Serviceerlöse'}[kind],kind})));
  period=ok(await admin('/api/finance/companies/'+company.id+'/periods',cmd({year:2026,period:10,dateFrom:'2026-10-01',dateTo:'2026-10-31'})));
  ok(await admin('/api/workflow/definitions',cmd({name:'Vier-Augen-Prüfung Buchhaltung',organizationId:org,subjectKind:'ACCOUNTING',fourEyes:true,steps:[{name:'Buchhaltungsprüfung',roles:['ACCOUNTANT']}]})));
@@ -21,7 +21,7 @@ test('Buchungskreis und Periode sind explizit; Rollen und Periodenüberschneidun
 });
 test('Unausgeglichene Journale, falsche Währungspräzision und geschlossene/falsche Perioden erzeugen keine Belege',async()=>{
  const before=ok(await admin('/api/finance/companies/'+company.id+'/journals'),200).length;
- for(const b of [journalBody({lines:journalBody().lines.map((l,i)=>({...l,amount:i?'100':'100.10'}))}),journalBody({lines:journalBody().lines.map(l=>({...l,amount:'100.001'}))}),journalBody({postingDate:'2026-11-01'}),journalBody({lines:journalBody().lines.map(l=>({...l,accountId:randomUUID()}))})])assert.equal((await admin('/api/finance/journals',cmd(b))).status,409);
+ for(const b of [journalBody({lines:journalBody().lines.map((l,i)=>({...l,amount:i?'100':'100.10'}))}),journalBody({lines:journalBody().lines.map(l=>({...l,amount:'100.00001'}))}),journalBody({postingDate:'2026-11-01'}),journalBody({lines:journalBody().lines.map(l=>({...l,accountId:randomUUID()}))})])assert.equal((await admin('/api/finance/journals',cmd(b))).status,409);
  assert.equal(ok(await admin('/api/finance/companies/'+company.id+'/journals'),200).length,before);
 });
 test('Journalentwurf verändert keine Kontensalden und kann nur nach unabhängiger Freigabe gebucht werden',async()=>{
@@ -53,4 +53,16 @@ test('Kontierungsregeln prüfen Buchungskreis, Kontenarten, vollständige Rollen
 test('Readiness prüft alle Migrationsprüfsummen und Tabellen des laufenden Quellstands',async()=>{
  const row=(await h.admin.query("SELECT name,checksum FROM schema_migrations ORDER BY name DESC LIMIT 1")).rows[0];try{await h.admin.query("UPDATE schema_migrations SET checksum='invalid' WHERE name=$1",[row.name]);assert.equal((await fetch(h.base+'/health/ready')).status,503);}finally{await h.admin.query('UPDATE schema_migrations SET checksum=$2 WHERE name=$1',[row.name,row.checksum]);}assert.equal((await fetch(h.base+'/health/ready')).status,200);
  try{await h.admin.query('ALTER TABLE gl_accounts RENAME TO gl_accounts_readiness_test');assert.equal((await fetch(h.base+'/health/ready')).status,503);}finally{await h.admin.query('ALTER TABLE gl_accounts_readiness_test RENAME TO gl_accounts');}assert.equal((await fetch(h.base+'/health/ready')).status,200);
+});
+
+test('Hohe ausgeglichene Beträge mit vier Nachkommastellen bleiben auch bei Summierung exakt',async()=>{
+ const lines=[...Array.from({length:2},()=>({...journalBody().lines[0],side:'DEBIT',amount:'9999999999999999.9999'})),...Array.from({length:2},()=>({...journalBody().lines[1],side:'CREDIT',amount:'9999999999999999.9999'}))];const j=ok(await admin('/api/finance/journals',cmd(journalBody({lines}))));const d=ok(await admin('/api/finance/journals/'+j.id),200);assert.equal(d.totals.debit,'19999999999999999.9998');assert.equal(d.totals.credit,d.totals.debit);
+});
+
+test('Belegersteller kann Vier-Augen-Prüfung auch über einen anderen Einreicher nicht umgehen',async()=>{
+ const u={name:'Unabhängige Finanzprüfung',email:'independent-finance@example.test',password:randomUUID(),role:'ADMIN',organizationId:org};ok(await admin('/api/admin/users',{method:'POST',body:u}));const independent=await client(h.base,{tenant:'netfusion',...u});
+ ok(await admin('/api/workflow/definitions',cmd({name:'Unabhängige Administrationsprüfung',organizationId:org,subjectKind:'ACCOUNTING',fourEyes:true,steps:[{name:'Finanzprüfung',roles:['ADMIN']}]})));
+ const d=ok(await admin('/api/finance/journals',cmd(journalBody()))),s=ok(await accountant('/api/workflow/submit/'+d.id,cmd({version:1})));
+ assert.equal((await admin('/api/workflow/instances/'+s.id+'/decide',cmd({version:1,decision:'APPROVE',comment:'Eigene Buchung durch Stellvertreter eingereicht.'}))).status,403);
+ ok(await independent('/api/workflow/instances/'+s.id+'/decide',cmd({version:1,decision:'APPROVE',comment:'Unabhängig vom Ersteller und Einreicher geprüft.'})));
 });

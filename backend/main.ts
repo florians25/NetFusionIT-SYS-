@@ -18,6 +18,8 @@ import { Commerce } from './commerce';
 import { CommerceController } from './commerce.controller';
 import { Work } from './work';
 import { WorkController } from './work.controller';
+import { Procurement } from './procurement';
+import { ProcurementController } from './procurement.controller';
 import { Finance } from './finance';
 import { FinanceController } from './finance.controller';
 import { Workflow } from './workflow';
@@ -27,7 +29,7 @@ import { Sla } from './sla';
 import { Operations } from './operations';
 import { Dispatch } from './dispatch';
 import { OperationsController } from './operations.controller';
-@Module({controllers:[FinanceController,WorkController,CommerceController,HealthController,AuthController,ApiController,ODataController,WorkflowController,OperationsController],providers:[Finance,Work,Commerce,Db,AuthService,SessionGuard,Service,Admin,OData,Workflow,Collaboration,Sla,Operations,Dispatch]})
+@Module({controllers:[ProcurementController,FinanceController,WorkController,CommerceController,HealthController,AuthController,ApiController,ODataController,WorkflowController,OperationsController],providers:[Procurement,Finance,Work,Commerce,Db,AuthService,SessionGuard,Service,Admin,OData,Workflow,Collaboration,Sla,Operations,Dispatch]})
 class AppModule{}
 @Catch()
 class SafeErrors implements ExceptionFilter {

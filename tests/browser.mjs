@@ -26,6 +26,7 @@ try{
     assert.equal(await page.locator('[id$="--appNavigation"]').getByRole('tab').count(),3,'Schnellzugriff ausschließlich für Service Desk');
   }
   async function logout(){
+    await settle();
     const name=await page.evaluate(async()=>{const s=await (await fetch('/api/auth/session')).json();return s.user.name;});
     await page.getByTitle(name,{exact:true}).click();
     await page.getByRole('button',{name:'Abmelden',exact:true}).click();
