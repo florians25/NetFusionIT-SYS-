@@ -1,0 +1,82 @@
+name: netfusion-erp-8070
+services:
+  initialize:
+    image: node:24-bookworm-slim
+    user: "0:0"
+    command: [node, /installer.mjs, initialize]
+    environment:
+      ERP_DOMAIN: ${ERP_DOMAIN:-localhost}
+      ERP_BOOTSTRAP_TENANT: ${ERP_BOOTSTRAP_TENANT:-netfusion}
+      ERP_BOOTSTRAP_COMPANY: ${ERP_BOOTSTRAP_COMPANY:-NetFusion IT}
+      ERP_BOOTSTRAP_NAME: ${ERP_BOOTSTRAP_NAME:-Administrator}
+      ERP_BOOTSTRAP_EMAIL: ${ERP_BOOTSTRAP_EMAIL:-admin@example.org}
+    volumes:
+      - ./scripts/docker-install.mjs:/installer.mjs:ro
+      - install-state:/run/netfusion-install
+      - app-secrets:/run/netfusion-app
+      - db-secret:/run/netfusion-db
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: [no-new-privileges:true]
+  db:
+    image: postgres:18.4-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: erp
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD_FILE: /run/netfusion-db/password
+    volumes:
+      - postgres-data:/var/lib/postgresql
+      - db-secret:/run/netfusion-db:ro
+    depends_on:
+      initialize:
+        condition: service_completed_successfully
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U postgres -d erp"]
+      interval: 5s
+      timeout: 5s
+      retries: 24
+  install:
+    build: .
+    image: netfusion-erp:${ERP_IMAGE_TAG:-0.19.0-preview.1}
+    command: [sh, -c, "node scripts/docker-install.mjs migrate && node scripts/docker-install.mjs bootstrap"]
+    volumes: ["install-state:/run/netfusion-install"]
+    depends_on:
+      db:
+        condition: service_healthy
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: [no-new-privileges:true]
+  api:
+    image: netfusion-erp:${ERP_IMAGE_TAG:-0.19.0-preview.1}
+    restart: unless-stopped
+    command: [node, scripts/docker-install.mjs, api]
+    volumes: ["app-secrets:/run/netfusion-app:ro"]
+    depends_on:
+      install:
+        condition: service_completed_successfully
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: [no-new-privileges:true]
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      NO_PROXY: api,db,localhost,127.0.0.1,::1
+      no_proxy: api,db,localhost,127.0.0.1,::1
+      ERP_DOMAIN: ${ERP_DOMAIN:-localhost}
+    ports: ["8070:443"]
+    volumes:
+      - ./deploy/Caddyfile.quickstart:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      api:
+        condition: service_healthy
+volumes:
+  postgres-data:
+  install-state:
+  app-secrets:
+  db-secret:
+  caddy-data:
+  caddy-config:

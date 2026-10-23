@@ -26,7 +26,7 @@ COPY --from=build /app/dist ./dist
 COPY --from=build /app/ui5-dist ./ui5-dist
 COPY backend/migrations ./backend/migrations
 COPY assets ./assets
-COPY scripts/migrate.mjs scripts/provision.mjs scripts/release.mjs scripts/bootstrap.mjs scripts/password.mjs ./scripts/
+COPY scripts/migrate.mjs scripts/provision.mjs scripts/release.mjs scripts/bootstrap.mjs scripts/password.mjs scripts/docker-install.mjs ./scripts/
 RUN chmod -R a+rX /app
 USER node
 EXPOSE 3000

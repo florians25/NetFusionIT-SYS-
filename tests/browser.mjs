@@ -23,8 +23,8 @@ try{
     await page.locator('[id$="--appCenterTitle"]').waitFor();
     assert.equal(await page.locator('[id$="--appNavigation"]').isVisible(),false,'App-Zentrale ohne globale Anwendungs-Tabs');
     await page.getByRole('button',{name:/Service-Cockpit/}).click();
-    await page.getByRole('heading',{name:'Service-Cockpit',exact:true}).waitFor();
-    assert.equal(await page.locator('[id$="--appNavigation"]').getByRole('tab').count(),3,'Schnellzugriff ausschließlich für Service Desk');
+    await page.getByRole('heading',{name:'Service-Cockpit',exact:true}).last().waitFor();
+    assert.equal(await page.locator('[id$="--appNavigation"]').getByRole('tab').count(),0,'Eigene Anwendungen ohne obere App-Reiter');
   }
   async function logout(){
     await settle();
@@ -65,7 +65,7 @@ try{
   await go(ticketHash.slice(1));
   await page.getByRole('tab',{name:'Bearbeitung',exact:true}).click();
   await page.getByRole('button',{name:'Status übernehmen',exact:true}).click();
-  await page.getByText('In Bearbeitung',{exact:true}).first().waitFor();
+  await page.getByText('In Bearbeitung',{exact:true}).filter({visible:true}).first().waitFor();
   await logout();await login('ADMIN');
   // Ausschließlich isolierte Browser-Testdaten: echte API-Kommandos, keine
   // vorgegebenen Dashboardzahlen und keine Änderungen an der Entwicklungs-DB.
@@ -92,7 +92,7 @@ try{
   await page.getByRole('heading',{name:'Benutzer, Organisation & Nummernkreise'}).waitFor();
   await page.getByRole('button',{name:'App-Zentrale',exact:true}).click();
   await page.getByRole('button',{name:/Service-Cockpit/}).click();
-  await page.getByRole('heading',{name:'Service-Cockpit',exact:true}).waitFor();
+  await page.getByRole('heading',{name:'Service-Cockpit',exact:true}).last().waitFor();
   await mkdir('test-results',{recursive:true});
   await page.waitForLoadState('networkidle');
   await settle();await page.screenshot({path:'test-results/cockpit-desktop.png',fullPage:true});
@@ -107,7 +107,7 @@ try{
   await mobile.goto(h.base+'/'+ticketHash);await mobile.getByRole('heading',{name:'VPN-Verbindung am Standort Berlin unterbrochen',exact:true}).waitFor();await mobile.waitForLoadState('networkidle');
   await settle(mobile);await mobile.screenshot({path:'test-results/ticket-mobile.png',fullPage:true});
   assert.ok(await mobile.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'Mobile Seite darf nicht horizontal überlaufen.');
-  await mobile.goto(h.base+'/#service-cockpit');await mobile.getByRole('heading',{name:'Service-Cockpit',exact:true}).waitFor();await mobile.waitForLoadState('networkidle');
+  await mobile.goto(h.base+'/#service-cockpit');await mobile.getByRole('heading',{name:'Service-Cockpit',exact:true}).last().waitFor();await mobile.waitForLoadState('networkidle');
   await settle(mobile);await mobile.screenshot({path:'test-results/cockpit-mobile.png',fullPage:true});
   assert.ok(await mobile.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'Mobiles Cockpit darf nicht horizontal überlaufen.');
   await mobileContext.close();

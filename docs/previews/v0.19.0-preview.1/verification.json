@@ -1,0 +1,96 @@
+{
+  "version": "0.19.0-preview.1",
+  "date": "2026-10-23",
+  "tests": {
+    "passed": 283,
+    "failed": 0,
+    "log": "erp-019-full-tests-clean-storage.log"
+  },
+  "build": {
+    "api": true,
+    "fullUI5LibrariesInDocker": true,
+    "appUI5Build": true
+  },
+  "browsers": {
+    "quoteChain": true,
+    "quoteSourceFlowNavigation": true,
+    "salesOrderChain": true,
+    "ticketAndAppCenter": true,
+    "mobileWidths": [
+      390
+    ],
+    "allHistoricalSuites": false
+  },
+  "main": {
+    "time": "2026-10-23T07:28:29.774Z",
+    "version": "0.19.0-preview.1",
+    "readiness": 200,
+    "authenticatedRole": "ADMIN",
+    "migrations": 23,
+    "lastMigration": {
+      "name": "023_service_quotes.sql",
+      "checksum": "022585f3c9d54d6041581b91a85c63b721c20483f80ab706af01052db13a1b8b"
+    },
+    "estimatesStatus": 200,
+    "quotesStatus": 200,
+    "counts": {
+      "quotes": 0,
+      "salesorders": 0,
+      "serviceorders": 0,
+      "invoices": 0,
+      "companies": 0
+    }
+  },
+  "dockerInstall": {
+    "time": "2026-10-23T07:31:26.155Z",
+    "port": 8070,
+    "origin": "https://localhost:8070",
+    "imageId": "8557870982c78559deb6d42a43a88a7563e3b3f397cd25a30079b94b3c9c24d8",
+    "realCaddyTLS": true,
+    "certificateVerification": true,
+    "secureSessionCookie": true,
+    "automaticMigrationsAndBootstrap": true,
+    "authenticatedRole": "ADMIN",
+    "originalAdminPreservedAfterRecreation": true,
+    "changedPasswordPreserved": true,
+    "separateAPISecrets": true,
+    "changedHostnameRejected": true,
+    "emptyQuoteWorklist": true
+  },
+  "pdf": {
+    "downloadedFromBrowser": true,
+    "title": "Kostenvoranschlag",
+    "templateVersion": 5,
+    "pages": 1,
+    "dpi": 150,
+    "decoded": "AG-41000000",
+    "format": "CODE_128",
+    "sha256": "8ba14f75fc37c9f258f2e87d868377b415ae15b28c5203b2545e9494b7cebc94"
+  },
+  "limits": [
+    "Direct AU delivery/procurement/billing execution remains DS backlog",
+    "Full reporting remains RPT backlog",
+    "No target Ubuntu deployment or production/legal approval"
+  ],
+  "dockerProduction": {
+    "imageId": "sha256:8557870982c78559deb6d42a43a88a7563e3b3f397cd25a30079b94b3c9c24d8",
+    "time": "2026-10-23T07:33:18.735Z",
+    "image": "netfusion-erp:0.19.0-preview.1",
+    "readiness": 200,
+    "authenticatedRole": "ADMIN",
+    "emptyBillingWorklist": true,
+    "emptyIncomingWorklist": true,
+    "uiStatus": 200,
+    "warehouseStructureAndScopedScan": true,
+    "actualInventoryCaptureAndAbort": true,
+    "salesConfigurationVerified": true,
+    "quoteWorklistVerified": true,
+    "actualWarehouseLabelBytes": 16410,
+    "incomingOriginalValidated": true,
+    "validator": "Mustang-CLI 2.26.0",
+    "pdfBytes": 37578,
+    "xmlBytes": 4891,
+    "readOnlyRuntime": true,
+    "buildCertificateAbsent": true
+  }
+}

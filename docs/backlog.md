@@ -1,6 +1,6 @@
 # Fachlicher Backlog
 
-Stand: 23.10.2026. Der vollständige [Masterprompt](master-prompt.md) bleibt der Grundauftrag. Die folgenden Ergänzungen wurden zusätzlich vom Nutzer beauftragt. Sie sind Anforderungen, keine Behauptung bereits implementierter Funktionen. Oberflächen bestehen ausschließlich aus Standardcontrols von **OpenUI5**. [Verbindliche Navigations-/Maskenvorgaben](requirements/navigation.md): App-Zentrale als Einstieg, ausschließlich anwendungsbezogene Schnellzugriffe und native Belegobjektseiten. SAP-Dokumentation dient als fachliche Referenz; SAP-Backend-Dienste oder SAPUI5-exklusive Controls werden dadurch nicht vorausgesetzt.
+Stand: 23.10.2026. Der vollständige [Masterprompt](master-prompt.md) bleibt der Grundauftrag. Die folgenden Ergänzungen wurden zusätzlich vom Nutzer beauftragt. Sie sind Anforderungen, keine Behauptung bereits implementierter Funktionen. Oberflächen bestehen ausschließlich aus Standardcontrols von **OpenUI5**. [Verbindliche Navigations-/Maskenvorgaben](requirements/navigation.md): App-Zentrale als Einstieg, keine globalen App-Tabreiter und native Belegobjektseiten mit fachlichen Abschnitten. SAP-Dokumentation dient als fachliche Referenz; SAP-Backend-Dienste oder SAPUI5-exklusive Controls werden dadurch nicht vorausgesetzt.
 
 [Vollständiger Modulindex mit vorhandener Teilbasis und offenen Prozesslücken](master-backlog-index.md).
 
@@ -10,7 +10,7 @@ Der Masterprompt umfasst alle darin genannten Module; diese Ergänzungsliste ist
 
 ## SERVICE-01 · Serviceangebote
 
-Status: in Arbeit, noch nicht vollständig ausgeliefert · Backend-Teilprüfungen für Anlage/Konditionen, unabhängige Freigabe, Kunden-PDF und selektive Entscheidung vorhanden; AG→AU-Übernahme, vollständige Folgeprozess- und native UI-Abnahme offen. Umsetzung zusammen mit Masterprompt-Phase 4 und 7.
+Status: Teilbasis in Preview0.19 · eigene Service-Kostenvoranschläge und getrennte Verkaufsangebote, Konditionen/Partner/Einteilungen, unabhängige Prüfung, Kunden-PDF, selektive Entscheidung und gebundene AG→AU-Übernahme einschließlich eigener Prüfung und nativer UI-Abnahme umgesetzt. Servicefolge bis tatsächliche SRM/Faktura/valide Rechnung geprüft. Weitere Vertrags-/Kredit-/Vorlagen-/Änderungs- und Versandfunktionen sowie direkte AU-Warenausführung bleiben offen. Umsetzung zusammen mit Masterprompt-Phase4 und7.
 Quelle: [vollständiger Nutzeranhang](requirements/serviceangebote.md).
 
 - Suchbare Liste, Filter, Kopf-/Positionspflege; Standardangebot mit verbrauchsabhängigen und festen Preisen sowie reines Festpreisangebot.

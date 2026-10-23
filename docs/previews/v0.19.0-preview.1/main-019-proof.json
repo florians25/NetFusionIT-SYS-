@@ -1,0 +1,20 @@
+{
+  "time": "2026-10-23T07:28:29.774Z",
+  "version": "0.19.0-preview.1",
+  "readiness": 200,
+  "authenticatedRole": "ADMIN",
+  "migrations": 23,
+  "lastMigration": {
+    "name": "023_service_quotes.sql",
+    "checksum": "022585f3c9d54d6041581b91a85c63b721c20483f80ab706af01052db13a1b8b"
+  },
+  "estimatesStatus": 200,
+  "quotesStatus": 200,
+  "counts": {
+    "quotes": 0,
+    "salesorders": 0,
+    "serviceorders": 0,
+    "invoices": 0,
+    "companies": 0
+  }
+}

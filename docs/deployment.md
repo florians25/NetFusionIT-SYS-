@@ -6,11 +6,15 @@ Node.js 24 LTS. `npm ci` → `npm run build` → `npm run dev:setup` → `npm ru
 
 Tests verwenden pro Lauf eine neue separate DB im selben lokalen Cluster und testen auch Fehler/Konkurrenz. Für den Neustarttest wird ausschließlich der selbst gestartete API-Prozess beendet und wieder gestartet. Verwendete Ports: API 3000, lokale PostgreSQL 55432, Test-API 3101, Browser-Test-API 3102.
 
-## Geplanter Produktionspfad
+## Docker-Schnellstart auf8070
+
+[Installation mit einem Compose-Befehl](docker-8070.md), automatischen Migrationen/Erstadministrator, internem HTTPS und persistenten getrennten Secret-Volumes. Die Konfiguration wird mit echter CA-Prüfung und Anmeldung über8070 sowie nach Containerneuanlage getestet; Zielserverabnahme bleibt offen.
+
+## Eigene Produktionskonfiguration
 
 `docker compose` stellt PostgreSQL und die gebaute API bereit; Caddy terminiert HTTPS. Kein Datenbankport nach außen. Umgebungswerte siehe `.env.example`; echte Werte sicher eintragen. Initialen Tenant und Administrator ausdrücklich mit dem Bootstrap-Kommando anlegen, keine Entwicklungskonten übernehmen. Migration als separater Release-Schritt mit privilegierter Migrationsrolle, API mit beschränkter Laufzeitrolle. Caddy-Konfiguration benötigt echte Domain und gültiges DNS. Container laufen unprivilegiert und mit persistentem DB-Volume.
 
-Vor Rollout: Tests, Build, Migrationsprüfung auf wiederhergestellter Stagingkopie, Backup, Expand/Contract-Kompatibilität, Healthcheck und Smoke-Test. Bei Fehlern API-Version zurückrollen; destructive DB-Rollbacks nur per geprüftem Restore-Plan. Die mitgelieferte Compose-Datei ist Ausgangspunkt und wird ohne verfügbaren Docker-Daemon nicht als live geprüft bezeichnet.
+Vor Rollout: Tests, Build, Migrationsprüfung auf wiederhergestellter Stagingkopie, Backup, Expand/Contract-Kompatibilität, Healthcheck und Smoke-Test. Bei Fehlern API-Version zurückrollen; destructive DB-Rollbacks nur per geprüftem Restore-Plan. Konkrete lokale Image-/Installationsprüfungen und ihre Grenzen stehen bei der jeweils veröffentlichten Preview.
 
 Der Nutzer hat Ubuntu mit Docker als Zielhosting bestätigt. Konkrete Ressourcen, Domain/DNS, externe Datensicherung und Serverhärtung sind dort noch zu prüfen; Cloud-Tests ersetzen diese Prüfung nicht. Keine Produktivveröffentlichung durch diese Aufgabe.
 
@@ -21,6 +25,6 @@ Java21 und die fest gepinnte offizielle Mustang-CLI2.26.0 sind für die PDF/A-/C
 Vor rechtlich relevantem Versand [Compliance-Freigaben](compliance-gap-analysis.md) einschließlich Register-/Vertretungsdaten, Steuerfällen, Aufbewahrung, Wiederherstellung und Unternehmensprofil abschließen. Technische EN16931-Validierung ist keine allgemeine Rechts-/GoBD-Zertifizierung. Für Eingangsrechnungen gelten die offenen [AP-Arbeitspakete](requirements/incoming-invoices-barcodes.md).
 
 
-Bei einem verwalteten HTTPS-Proxy kann der Build optional dessen **bereits vertrauenswürdige öffentliche CA** flüchtig verwenden: `docker build --secret id=build_ca,src=/pfad/zur/vertrauenswuerdigen-ca.crt -t netfusion-erp:0.11.0-preview.1 .`. Ohne Proxy ist kein Secret nötig. Die Datei wird ausschließlich im Build gemountet und nicht ins Laufzeitimage kopiert; TLS-Prüfung bleibt aktiv. Node-Fetch nutzt beim Werkzeugdownload die Umgebungsproxy-Konfiguration. Laufzeitcode/Schriften/Migrationen erhalten im Image explizite Leserechte für den unprivilegierten Benutzer; der Dateibaum bleibt root-eigen und Compose verwendet ein schreibgeschütztes Root-Dateisystem.
+Bei einem verwalteten HTTPS-Proxy kann der Build optional dessen **bereits vertrauenswürdige öffentliche CA** flüchtig verwenden: `docker build --secret id=build_ca,src=/pfad/zur/vertrauenswuerdigen-ca.crt -t netfusion-erp:0.19.0-preview.1 .`. Ohne Proxy ist kein Secret nötig. Die Datei wird ausschließlich im Build gemountet und nicht ins Laufzeitimage kopiert; TLS-Prüfung bleibt aktiv. Node-Fetch nutzt beim Werkzeugdownload die Umgebungsproxy-Konfiguration. Laufzeitcode/Schriften/Migrationen erhalten im Image explizite Leserechte für den unprivilegierten Benutzer; der Dateibaum bleibt root-eigen und Compose verwendet ein schreibgeschütztes Root-Dateisystem.
 
 `npm run test:docker` prüft ein bereits gebautes Image mit zufälligem isoliertem Compose-Projekt: PostgreSQL, Migration, einmaliger Testbootstrap, Produktionsanmeldung hinter Proxy-Headern, leeren Fakturavorrat, statische UI und tatsächliche PDF/A-/CII-Ausgabe. Es veröffentlicht keine Hostports, nutzt keine bestehenden Daten und entfernt danach ausschließlich seine Testcontainer/-volumes. Bericht unter test-results/docker-smoke.json. Dieser lokale Containercheck ersetzt weder den späteren Ubuntu-Zielserver noch Caddy/HTTPS-, AV-, Last- oder Restoreabnahme.

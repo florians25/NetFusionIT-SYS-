@@ -1,12 +1,12 @@
 # Verbindliche Oberflächenvorgaben des Nutzers
 
-Aktualisiert: 22.10.2026, nach den SAP-Musterbildern und der Navigationskorrektur.
+Aktualisiert: 23.10.2026, nach den SAP-Musterbildern und der Navigationskorrektur.
 
 - Ausschließlich OpenUI5-Standardcontrols, offizielle Themes und Standardklassen. Keine eigenen CSS-Dateien, Renderer, HTML-Ersatzcontrols oder SVG-Logos.
 - Nach Anmeldung öffnet sich die **App-Zentrale**. Anwendungen werden über ihre rollenabhängigen App-Kacheln aufgerufen. Die Zentrale enthält keine darunter angehängte Ticketliste.
 - Keine globale Tab-Leiste mit allen Anwendungen. Die Shell bietet die Rückkehr zur App-Zentrale und nennt die aktive Anwendung.
-- Schnellzugriffe oben enthalten ausschließlich Masken der aktiven Anwendung: im Service Desk Cockpit, Tickets und Servicefälle; in der Disposition Ticketzuweisung und Einsatzplanung. Bei nur einer Maske entfällt die zusätzliche Leiste.
-- Objektseiten verwenden kompakte Belegköpfe, nachvollziehbare Status/Summen und ausschließlich fachlich zugehörige Register. Positionsaktionen stehen direkt an der Positionstabelle. Native OpenUI5 ObjectPageLayout/AnchorBar, Tabellen und Formulare bilden die Referenzmuster ab.
+- Neueste Korrektur: keine App-Tabreiter in der Shell, auch nicht für verwandte Anwendungen. Cockpit, Tickets, Servicefälle, Einsatzplanung, Kostenvoranschläge, Verkaufsangebote und Kundenaufträge bleiben eigene Apps der App-Zentrale. Tatsächliche Geschäftsbelege lassen sich innerhalb des Vorgangs über den berechtigten Belegfluss öffnen. Fachliche Abschnitte einer Objektseite bleiben erhalten.
+- Objektseiten verwenden kompakte Belegköpfe, nachvollziehbare Status/Summen und ausschließlich fachlich zugehörige Register. Positionsaktionen stehen direkt an der Positionstabelle. Kostenvoranschlag, Verkaufsangebot und Kundenauftrag verwenden am Desktop das native `sap.ui.table.Table`-Positionsraster mit separaten Spalten für Position, Artikel, Kurztext, Menge, ME, Einzelpreis, Nettowert, Steuer, Termin, Abrechnungsregel, Status und Kundenmaterial. Langtexte und Kontierung bleiben über einen nativen Positionsdialog erreichbar; auf dem Smartphone dient eine native Pop-in-Tabelle. Native OpenUI5 ObjectPageLayout/AnchorBar, Tabellen und Formulare bilden die Referenzmuster ab.
 - Beispielbilder aus SAP sind fachliche und strukturelle Referenzen. Es werden keine nicht implementierten Aktionen oder erfundenen Kennzahlen als funktionsfähig dargestellt.
 - Das Service-Cockpit bleibt eine eigenständige Anwendung mit echten Ticket-Kennzahlen und Arbeitsvorräten.
 

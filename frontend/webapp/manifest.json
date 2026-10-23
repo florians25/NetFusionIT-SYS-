@@ -5,7 +5,7 @@
     "type": "application",
     "title": "NetFusion Service Workspace",
     "applicationVersion": {
-      "version": "0.18.0-preview.1"
+      "version": "0.19.0-preview.1"
     },
     "dataSources": {
       "service": {
@@ -279,6 +279,26 @@
           "name": "salesSetup",
           "target": "SalesSetup",
           "pattern": "sales/configuration"
+        },
+        {
+          "name": "quotes",
+          "target": "Quotes",
+          "pattern": "quotes"
+        },
+        {
+          "name": "quote",
+          "target": "Quote",
+          "pattern": "quotes/{id}"
+        },
+        {
+          "name": "estimates",
+          "target": "Quotes",
+          "pattern": "service/estimates"
+        },
+        {
+          "name": "estimate",
+          "target": "Quote",
+          "pattern": "service/estimates/{id}"
         }
       ],
       "targets": {
@@ -416,6 +436,12 @@
         },
         "SalesSetup": {
           "viewName": "SalesSetup"
+        },
+        "Quotes": {
+          "viewName": "Quotes"
+        },
+        "Quote": {
+          "viewName": "Quote"
         }
       }
     }
