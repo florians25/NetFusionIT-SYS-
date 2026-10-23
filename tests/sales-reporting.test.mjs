@@ -2,7 +2,8 @@ import {before,after,test} from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
 import {createRequire} from 'node:module';
-import {mkdir,writeFile} from 'node:fs/promises';
+import {mkdir,writeFile,readFile} from 'node:fs/promises';
+import vm from 'node:vm';
 import {harness} from '../scripts/test-harness.mjs';
 import {directSalesFixture} from './helpers/direct-sales-fixture.mjs';
 import {approvedSalesOrder} from './helpers/sales-fixture.mjs';
@@ -11,6 +12,11 @@ import {cmd,ok} from './helpers/service-fixture.mjs';
 let h,f,delivery,request,invoice1,invoice2,credit1,credit2;
 const url=(company,extra={})=>'/api/reporting/sales?'+new URLSearchParams({companyId:company,from:'2026-10-22',to:'2026-10-23',...extra});
 const read=async(extra={},api=f.admin)=>ok(await api(url(f.company.id,extra)),200);
+test('Seitenwechsel und Export behalten den tatsächlich angezeigten Berichtsfilter, während unbestätigte Filtereingaben noch bearbeitet werden',async()=>{
+ let methods;vm.runInNewContext(await readFile('frontend/webapp/controller/SalesReporting.controller.js','utf8'),{sap:{ui:{define:(deps,factory)=>factory({extend:(name,m)=>{methods=m;}},{})}}});
+ const applied={companyId:'angezeigter-buchungskreis',from:'2026-10-22',to:'2026-10-23',process:'DIRECT_SALES',groupBy:'CUSTOMER',partnerId:'angezeigter-kunde'},pending={companyId:'noch-bearbeiteter-buchungskreis',from:'2025-01-01',to:'2025-01-31',process:'SERVICE',groupBy:'MONTH',partnerId:'noch-bearbeiteter-kunde'},values={'/report/filters':applied,'/filters':pending,'/pageSize':50,'/offset':50},calls=[],controller={...methods,vm:()=>({getProperty:p=>values[p]}),run:fn=>fn.call(controller),loadReport:(offset,applied)=>calls.push({offset,applied})};
+ assert.deepEqual(JSON.parse(JSON.stringify(controller.parameters(50,true))),{...applied,offset:'50',pageSize:'50'});assert.equal(controller.parameters(0).companyId,pending.companyId);controller.onPrevious();controller.onNext();assert.deepEqual(calls,[{offset:0,applied:true},{offset:100,applied:true}]);assert.equal(applied.from,'2026-10-22');
+});
 async function post(f,order,line,quantity,postingDate='2026-10-22'){return ok(await f.billing('/api/billing/invoices',cmd({orderId:order,periodId:f.period.id,invoiceDate:'2026-10-22',postingDate,buyerReference:'REPORT-TEILFAKTURA',lines:[{requestLineId:line,quantity}]})));}
 async function credit(inv){const r=ok(await f.billing('/api/customer-credits/invoices/'+inv.id,cmd({version:1,periodId:f.period.id,postingDate:'2026-10-23',documentDate:'2026-10-23',reason:'Vollständige Korrektur der tatsächlichen Teilrechnung für nachvollziehbare Umsatz- und Kostenstatistik.'})));const a=ok(await f.billing('/api/workflow/submit/'+r.id,cmd({version:1})));ok(await f.accountant('/api/workflow/instances/'+a.id+'/decide',cmd({version:1,decision:'APPROVE',comment:'Ursprüngliche Teilrechnung und volle Gegenkontierung unabhängig für die Korrektur geprüft.'})));return ok(await f.billing('/api/customer-credits/'+r.id+'/post',cmd({version:3})));}
 before(async()=>{h=await harness(3192);f=await directSalesFixture(h);ok(await f.admin('/api/workflow/definitions',cmd({organizationId:f.org,name:'Unabhängige Gutschriftprüfung für Reports',subjectKind:'CREDIT_NOTE',fourEyes:true,steps:[{name:'Finanzprüfung',roles:['ACCOUNTANT']}]})));delivery=await f.deliver('3');request=ok(await f.request('3'));ok(await f.approve(request.id,1,f.billing,f.accountant));const l=ok(await f.billing('/api/billing/requests/'+request.id),200).lines[0];invoice1=await post(f,f.directOrder.id,l.id,'1');invoice2=await post(f,f.directOrder.id,l.id,'2');});
