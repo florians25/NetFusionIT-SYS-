@@ -1,0 +1,26 @@
+{
+  "command": "npm test",
+  "results": {
+    "tests": 385,
+    "pass": 385,
+    "fail": 0,
+    "skipped": 0
+  },
+  "newChecks": {
+    "customerCredits": 9,
+    "salesReporting": 11,
+    "archiveUpgrade": 1
+  },
+  "nativeBrowserScripts": [
+    "customer-credits-browser.mjs",
+    "sales-reporting-browser.mjs",
+    "service-quotes-browser.mjs",
+    "direct-sales-billing-browser.mjs",
+    "document-flow-tree-browser.mjs",
+    "workspaces-browser.mjs"
+  ],
+  "legacyFlowObjectViews": 18,
+  "nativeDocumentFlowViewsNow": 19,
+  "note": "Six affected native scripts checked; no complete32-script browser matrix claimed. Final report browser rerun after applied-filter fix.",
+  "sourceCodeCommit": "25d6d1f8ccf95a8e9f1f0685a621a0d8058cd053"
+}

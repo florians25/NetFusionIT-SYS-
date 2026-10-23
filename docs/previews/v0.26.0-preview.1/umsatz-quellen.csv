@@ -1,0 +1,5 @@
+﻿"Buchungsdatum";"Belegdatum";"Quelle";"Belegnummer";"Position";"Kundenauftrag / Serviceauftrag";"Kunde";"Artikel";"Bezeichnung";"Belegmenge";"Einheit";"Nettoumsatz";"Umsatzsteuer";"Fakturabezogener Warenwert";"Tatsächlicher Warenaufwand";"Währung"
+"22.10.2026";"22.10.2026";"Rechnung";"RE-45000000";"10";"AU-42000000";"Entwicklungskunde";"SPARE-10";"Netzwerk-Ersatzteile gemäß Kundenbestellung";"1,000000";"EA";"100,00";"19,00";"40,00";"0,00";"EUR"
+"22.10.2026";"22.10.2026";"Rechnung";"RE-45000001";"10";"AU-42000000";"Entwicklungskunde";"SPARE-10";"Netzwerk-Ersatzteile gemäß Kundenbestellung";"1,000000";"EA";"100,00";"19,00";"40,00";"0,00";"EUR"
+"22.10.2026";"22.10.2026";"Warenabgang";"WA-54000000";"10";"AU-42000000";"Entwicklungskunde";"SPARE-10";"Netzwerk-Ersatzteile gemäß Kundenbestellung";"2,000000";"EA";"0,00";"0,00";"0,00";"80,00";"EUR"
+"23.10.2026";"23.10.2026";"Rechnungskorrektur";"GU-46000000";"10";"AU-42000000";"Entwicklungskunde";"SPARE-10";"Netzwerk-Ersatzteile gemäß Kundenbestellung";"-1,000000";"EA";"-100,00";"-19,00";"-40,00";"0,00";"EUR"

@@ -1,0 +1,13 @@
+{
+  "source": "Native browser download from isolated customer-credit workflow",
+  "number": "GU-46000000",
+  "pdfSha256": "8cf8671be2e7e92366cd67f6c0dc02fa803c8948b186266c3d9576a0e4624d07",
+  "embeddedXmlSha256": "8a086b43d80f3ce3e79162e77a09291ae9c08b2e2751908e6821036cc1f79892",
+  "decodedCode128": "GU-46000000",
+  "normativePdfValidation": "valid",
+  "validator": "Mustang-CLI2.26.0",
+  "originalInvoice": "RE-45000000",
+  "printedDate": "23.10.2026",
+  "contact": "Martina Musterfrau",
+  "contactLabel": "Vertriebsmitarbeiter"
+}

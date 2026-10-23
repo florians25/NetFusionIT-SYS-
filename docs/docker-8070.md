@@ -57,3 +57,13 @@ Preview0.24 wurde in dieser Cloud mit dem tatsächlichen Schnellstart aufHTTPS80
 ## Neue Geschäftsunterlagen ab Preview0.25
 
 Nach Buchungskreisanlage in der eigenen App **Dokumenteinstellungen** den tatsächlichen Ansprechpartner mit Vorname, Nachname und Kontaktangaben pflegen. Neue Geschäftspapiere und Rechnungen benötigen diesen aktiven Stand. Die Installation legt keine erfundene Person dafür an. Historische PDFs bleiben unverändert.
+
+## Preview0.26: Gutschriften und Berichte
+
+Der unveränderte Ein-Befehl-Start baut jetzt0.26. Das lokale Image wurde mit echter Caddy-TLS-Installation auf8070, Zertifikatsprüfung, Secure-Cookie und Passworterhalt nach Containerneuanlage geprüft; [Nachweise](previews/v0.26.0-preview.1/README.md). Der tatsächliche vorgesehene Ubuntu-Zielserver bleibt separat abzunehmen.
+
+Vor neuen Geschäftsunterlagen den vollständigen Vertriebsmitarbeiter in **Dokumenteinstellungen** pflegen. Für Kundengutschriften eine unabhängige Finanzfreigabe für **Kundengutschrift (GU)** konfigurieren. Ersteller/Vorbereiter dürfen nicht selbst freigeben. Die Umsatz-App unterscheidet die reine Umsatzsicht und das zusätzliche Kostenrecht.
+
+Updates verwenden weiterhin den mitgelieferten Migrationsrunner. Die Kompatibilitätskorrektur erhält bestehende Angebotsarchive; vorhandene Originale und Migrationsdateien nicht manuell ändern. [Fachumfang und offene Grenzen](requirements/customer-credit-memos.md), [Berichtsdefinitionen](requirements/sales-reporting.md).
+
+Die vorhandene private Entwicklungssicherung wurde zusätzlich mit `pg_restore` in eine getrennte Prüfdatenbank zurückgespielt und von31 auf33 Migrationen aktualisiert. Quellprüfsummen und Datensatzmengen blieben erhalten; die Prüfdatenbank wurde entfernt. [Begrenzter Restore-Nachweis](previews/v0.26.0-preview.1/restore-verification.json). Dies ersetzt keine Wiederherstellungsprobe des tatsächlichen Ubuntu-Zielservers mit dessen produktiven Daten und Konfiguration.

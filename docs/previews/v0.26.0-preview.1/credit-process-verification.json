@@ -1,0 +1,10 @@
+{
+  "invoice": "RE-45000000",
+  "credit": "GU-46000000",
+  "gross": "238.00",
+  "originalPdfSha256": "4923e0678dadde20dad6e38203d9457df5db0f99416569e908f03ad189ac7959",
+  "creditPdfSha256": "bc93234cf2e3ece3b8bc4fe3cbba206de349caa1fca8e0e3245d701a2f49bd64",
+  "creditXmlSha256": "c20aef751c286adffbd120d4e209e473769167a2b0f9efb6256ceedd1a0c9e5a",
+  "normativeValidation": true,
+  "originalPreserved": true
+}

@@ -1,0 +1,13 @@
+{
+  "invoiceNet": "300.00",
+  "creditNet": "300.00",
+  "netRevenue": "0.00",
+  "billedCost": "0.00",
+  "stockExpense": "0.00",
+  "billingMargin": "0.00",
+  "periodContribution": "0.00",
+  "sourceRows": 6,
+  "scope": "DIRECT_SALES",
+  "currency": "EUR",
+  "postingDateBasis": "FI_POSTING_DATE"
+}

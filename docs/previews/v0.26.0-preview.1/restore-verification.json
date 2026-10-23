@@ -1,0 +1,25 @@
+{
+  "time": "2026-10-23T22:22:34.850Z",
+  "backupFile": ".local/backups/before-032-2026-10-23T21-59-20.376Z.dump",
+  "backupSha256": "f7bd0317d9659ce1f5e82a7fbf5aba142aea583c2a6a71bbafa0acaab9d8b7f1",
+  "actualPgRestore": true,
+  "restoredMigrations": 31,
+  "upgradedMigrations": 33,
+  "allSourceChecksumsVerified": true,
+  "restoredCounts": {
+    "users": 5,
+    "business_partners": 1,
+    "documents": 1,
+    "service_orders": 0,
+    "sales_orders": 0,
+    "invoices": 0,
+    "customer_credit_memos": 0,
+    "company_document_contacts": 0
+  },
+  "countsPreservedByUpgrade": true,
+  "tenantIsolationVerified": true,
+  "tenantIsolationTable": "business_partners",
+  "mainDatabaseUntouched": true,
+  "scope": "Actual private development snapshot; separate restore database, then31→33 upgrade. No target-server disaster-recovery test.",
+  "isolatedDatabaseRemoved": true
+}
