@@ -1,0 +1,24 @@
+{
+  "time": "2026-10-23T08:25:45.849Z",
+  "version": "0.20.0-preview.1",
+  "readiness": 200,
+  "authenticatedRole": "ADMIN",
+  "migrations": 24,
+  "lastMigration": {
+    "name": "024_direct_sales_stock.sql",
+    "checksum": "3a2d8dab3fb0e195dd61841bb36b895e2323bc170fdc6a4914fcb67cf5a25dc5"
+  },
+  "allMigrationChecksumsVerified": true,
+  "directFulfillmentStatus": 200,
+  "estimatesStatus": 200,
+  "quotesStatus": 200,
+  "counts": {
+    "quotes": 0,
+    "salesorders": 0,
+    "serviceorders": 0,
+    "invoices": 0,
+    "companies": 0,
+    "fulfillment": 0
+  },
+  "backupCatalogVerified": true
+}

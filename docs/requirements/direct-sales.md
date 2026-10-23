@@ -14,7 +14,7 @@ Der Ausführungsweg ist vor Freigabe ausdrücklich festzulegen und im genehmigte
 
 ## Verbindliche Arbeitspakete
 
-Alle folgenden Pakete sind offen. Eine vorhandene gemeinsame Teilbasis ist keine Abnahme der Direktvertriebskette.
+Preview0.20 liefert den ersten geprüften Lagerteilprozess: DS-01 und die Lageranteile aus DS-04/05/08/12/13/16 besitzen echte AU-/Reservierungs-/Teillieferungs-/Rücknahmenachweise. DS-02 baut auf der gebundenen AG→AU-Übernahme aus0.19 auf. Die vollständigen Pakete bleiben teilweise offen, insbesondere direkte Faktura DS-09 und AU-Beschaffung DS-06/07. [Umfang und Grenzen](direct-sales-execution.md). Eine Warenlieferung ist keine Abnahme der gesamten Direktvertriebskette.
 
 | ID | Umfang | Abnahme |
 | --- | --- | --- |

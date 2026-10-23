@@ -1,0 +1,15 @@
+{
+  "downloadedFromBrowser": true,
+  "title": "Lieferschein",
+  "templateVersion": 5,
+  "pages": 1,
+  "dpi": 150,
+  "decoded": "LS-44000000",
+  "format": "CODE_128",
+  "actualDeliveryDate": "23.10.2026",
+  "actualQuantity": "2",
+  "orderNumber": "AU-42000000",
+  "customerReference": "PO-AU-2026-001",
+  "noTechnicalServiceReference": true,
+  "sha256": "e7eb255d2f28dc1fdc2c02c2b54617b55c081fdd468028217d6c9b79f7d899d7"
+}

@@ -14,6 +14,11 @@ export function visibleDocuments(u:Principal){
  if(can(u.role,'contract.read'))clauses.push(`(d.kind='SERVICE_CONTRACT' AND d.id IN(SELECT c.id FROM service_contracts c WHERE c.tenant_id=$1 AND ${partnerCondition('c')}))`);
  if(can(u.role,'quote.read'))clauses.push(`(d.kind='QUOTATION' AND d.id IN(SELECT q.id FROM service_quotes q WHERE q.tenant_id=$1${u.role==='CUSTOMER'?" AND q.partner_id=$3 AND q.status IN('PUBLISHED','ACCEPTED','DECLINED')":''}))`);
  if(can(u.role,'sales.read'))clauses.push(`(d.kind='SALES_ORDER' AND d.id IN(SELECT so.id FROM sales_orders so WHERE so.tenant_id=$1${u.role==='CUSTOMER'?" AND so.partner_id=$3 AND so.status='RELEASED'":''}))`);
+ if(can(u.role,'sales.fulfillment.read')){
+  const own=u.role==='CUSTOMER'?' AND h.partner_id=$3':'';
+  clauses.push(`(d.kind='SALES_ORDER' AND d.id IN(SELECT h.id FROM sales_orders h WHERE h.tenant_id=$1 AND h.execution_mode='DIRECT_SALES' AND h.status='RELEASED'${own}))`);
+  clauses.push(`(d.kind='GOODS_ISSUE' AND d.id IN(SELECT g.id FROM goods_issues g JOIN sales_orders h ON h.tenant_id=g.tenant_id AND h.id=g.sales_order_id WHERE g.tenant_id=$1 AND g.sealed AND h.status='RELEASED'${own}))`);
+ }
  if(can(u.role,'inventory.read'))clauses.push(`d.kind IN ('MATERIAL','STOCK_TRANSFER','INVENTORY_COUNT')`);
  if(can(u.role,'service.read')&&u.role!=='CUSTOMER')clauses.push(`(d.kind='WORK_ORDER_TASK' AND d.id IN(SELECT w.id FROM work_order_tasks w WHERE w.tenant_id=$1 AND w.ticket_id IN(SELECT id FROM (${tickets.sql}) visible_tickets)))`);
  if(can(u.role,'order.read'))clauses.push(`(d.kind='SERVICE_ORDER' AND d.id IN(SELECT o.id FROM service_orders o WHERE o.tenant_id=$1 AND o.case_id IN(SELECT id FROM (${cases.sql}) visible_cases)))`);

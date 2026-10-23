@@ -1,0 +1,113 @@
+{
+  "version": "0.20.0-preview.1",
+  "date": "2026-10-23",
+  "tests": {
+    "passed": 295,
+    "failed": 0,
+    "log": "erp-020-full-regression.log",
+    "newDirectSalesCases": 12
+  },
+  "build": {
+    "api": true,
+    "fullUI5LibrariesInDocker": true,
+    "appUI5Build": true
+  },
+  "browsers": {
+    "directSalesStockChain": true,
+    "directSalesNativeOrderCreation": true,
+    "independentOrderApproval": true,
+    "twoActualBinsOnSecondIssue": true,
+    "exactOriginalReturn": true,
+    "serviceDeliveryAndSRM": true,
+    "salesOrderChain": true,
+    "quoteChain": true,
+    "mobileWidths": [
+      390
+    ],
+    "allHistoricalSuites": false
+  },
+  "main": {
+    "time": "2026-10-23T08:25:45.849Z",
+    "version": "0.20.0-preview.1",
+    "readiness": 200,
+    "authenticatedRole": "ADMIN",
+    "migrations": 24,
+    "lastMigration": {
+      "name": "024_direct_sales_stock.sql",
+      "checksum": "3a2d8dab3fb0e195dd61841bb36b895e2323bc170fdc6a4914fcb67cf5a25dc5"
+    },
+    "allMigrationChecksumsVerified": true,
+    "directFulfillmentStatus": 200,
+    "estimatesStatus": 200,
+    "quotesStatus": 200,
+    "counts": {
+      "quotes": 0,
+      "salesorders": 0,
+      "serviceorders": 0,
+      "invoices": 0,
+      "companies": 0,
+      "fulfillment": 0
+    },
+    "backupCatalogVerified": true
+  },
+  "dockerProduction": {
+    "imageId": "sha256:531b3c91317a66d5ebe9f978e4b83007e61e0bbecf9ff84b8cff1ec0eee3e574",
+    "time": "2026-10-23T08:22:06.753Z",
+    "image": "netfusion-erp:0.20.0-preview.1",
+    "readiness": 200,
+    "authenticatedRole": "ADMIN",
+    "emptyBillingWorklist": true,
+    "emptyIncomingWorklist": true,
+    "uiStatus": 200,
+    "warehouseStructureAndScopedScan": true,
+    "actualInventoryCaptureAndAbort": true,
+    "salesConfigurationVerified": true,
+    "quoteWorklistVerified": true,
+    "directSalesWorklistVerified": true,
+    "actualWarehouseLabelBytes": 16416,
+    "incomingOriginalValidated": true,
+    "validator": "Mustang-CLI 2.26.0",
+    "pdfBytes": 37578,
+    "xmlBytes": 4891,
+    "readOnlyRuntime": true,
+    "buildCertificateAbsent": true
+  },
+  "dockerInstall": {
+    "time": "2026-10-23T08:23:42.260Z",
+    "port": 8070,
+    "origin": "https://localhost:8070",
+    "imageId": "531b3c91317a66d5ebe9f978e4b83007e61e0bbecf9ff84b8cff1ec0eee3e574",
+    "realCaddyTLS": true,
+    "certificateVerification": true,
+    "secureSessionCookie": true,
+    "automaticMigrationsAndBootstrap": true,
+    "authenticatedRole": "ADMIN",
+    "originalAdminPreservedAfterRecreation": true,
+    "changedPasswordPreserved": true,
+    "separateAPISecrets": true,
+    "changedHostnameRejected": true,
+    "emptyQuoteWorklist": true
+  },
+  "pdf": {
+    "downloadedFromBrowser": true,
+    "title": "Lieferschein",
+    "templateVersion": 5,
+    "pages": 1,
+    "dpi": 150,
+    "decoded": "LS-44000000",
+    "format": "CODE_128",
+    "actualDeliveryDate": "23.10.2026",
+    "actualQuantity": "2",
+    "orderNumber": "AU-42000000",
+    "customerReference": "PO-AU-2026-001",
+    "noTechnicalServiceReference": true,
+    "sha256": "e7eb255d2f28dc1fdc2c02c2b54617b55c081fdd468028217d6c9b79f7d899d7"
+  },
+  "limits": [
+    "No direct AU billing requests/invoices yet",
+    "No direct AU procurement yet",
+    "No nonstock/license/drop-ship fulfillment yet",
+    "Full reports and remaining master backlog open",
+    "No target Ubuntu deployment or production/legal approval"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "orderNumber": "AU-42000000",
+  "nativeExecutionMode": "DIRECT_SALES",
+  "independentOrderReview": true,
+  "plannedQuantity": "5",
+  "firstIssueQuantity": "2",
+  "secondIssueQuantity": "3",
+  "secondIssueBinCount": 2,
+  "returnedOriginalQuantity": "2",
+  "effectiveDeliveredQuantity": "3.000000",
+  "remainingQuantity": "2.000000",
+  "noAdditionalServiceDocuments": true,
+  "actualInvoice": false,
+  "mobileWidth": 390,
+  "errors": []
+}

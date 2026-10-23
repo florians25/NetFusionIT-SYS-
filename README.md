@@ -53,13 +53,14 @@ docker compose --profile setup run --rm bootstrap
 
 Bootstrap legt einen echten Tenant, eine Serviceorganisation und einen Administrator an, überschreibt keine vorhandenen Mandanten und seedet keine Entwicklungskonten. Danach Bootstrap-Passwort aus `.env` entfernen. Kunden und interne Benutzer werden in der Administration angelegt. Vor produktivem Einsatz MFA/OIDC, zentralen Angriffsschutz, Backup/Restore, Monitoring, fachliche Regeln und Security-/Lasttests abschließen.
 
-Das Produktionsimage wurde in dieser Cloud mit isoliertem PostgreSQL, Migrationen, Bootstrap, Anmeldung, schreibgeschütztem unprivilegiertem Prozess und echter E-Rechnungsprüfung getestet. Der [Image-Nachweis](docs/previews/v0.19.0-preview.1/docker-smoke.json) gilt für genau dieses lokale Image. Auf dem vorgesehenen Ubuntu-Server stehen Domain/HTTPS, Antivirus, Ressourcen, Backup/Restore und tatsächliche Betriebskonfiguration noch zur Prüfung aus.
+Das Produktionsimage wurde in dieser Cloud mit isoliertem PostgreSQL, Migrationen, Bootstrap, Anmeldung, schreibgeschütztem unprivilegiertem Prozess und echter E-Rechnungsprüfung getestet. Der [Image-Nachweis](docs/previews/v0.20.0-preview.1/docker-smoke.json) gilt für genau dieses lokale Image. Auf dem vorgesehenen Ubuntu-Server stehen Domain/HTTPS, Antivirus, Ressourcen, Backup/Restore und tatsächliche Betriebskonfiguration noch zur Prüfung aus.
 
 ## Dokumentation
 
 - [Verbleibender Masterbacklog und aktuelle Arbeitsreihenfolge](docs/master-backlog-index.md)
-- [Direktvertrieb ohne Ticket/Serviceauftrag](docs/requirements/direct-sales.md), [Statistiken und Reports](docs/requirements/reporting.md) · beauftragt, noch offen
+- [Direktvertrieb ohne Ticket/Serviceauftrag](docs/requirements/direct-sales.md), [Statistiken und Reports](docs/requirements/reporting.md) · Lagerteilprozess geliefert, Faktura/Beschaffung und Reports weiter offen
 
+- [Preview 0.20.1: direkte Lagerauslieferung, Teilmengen und genaue Rücknahme](docs/previews/v0.20.0-preview.1/README.md), [Versionsnotizen](docs/releases/v0.20.0-preview.1.md)
 - [Preview 0.19.1: Kostenvoranschläge, Verkaufsangebote und Docker8070](docs/previews/v0.19.0-preview.1/README.md), [Versionsnotizen](docs/releases/v0.19.0-preview.1.md)
 - [Preview 0.18.1: eigener Kundenauftrag, unveränderliche AB und gebundene Serviceausführung](docs/previews/v0.18.0-preview.1/README.md), [Versionsnotizen](docs/releases/v0.18.0-preview.1.md)
 - [Preview 0.17.1: tatsächliche Inventur, unabhängige Differenzprüfung und genaue Gegenbewegung](docs/previews/v0.17.0-preview.1/README.md), [Versionsnotizen](docs/releases/v0.17.0-preview.1.md)

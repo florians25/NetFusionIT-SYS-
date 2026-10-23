@@ -1,0 +1,12 @@
+{
+  "number": "AG-41000000",
+  "offeredNet": "350.00",
+  "offeredPositions": 2,
+  "acceptedPositions": 1,
+  "sourceOrderNumber": "AU-42000000",
+  "sourceOrderNet": "200.00",
+  "schedules": 2,
+  "ownOrderApproval": "RELEASED",
+  "mobileWidth": 390,
+  "errors": []
+}

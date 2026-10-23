@@ -1,0 +1,22 @@
+{
+  "imageId": "sha256:531b3c91317a66d5ebe9f978e4b83007e61e0bbecf9ff84b8cff1ec0eee3e574",
+  "time": "2026-10-23T08:22:06.753Z",
+  "image": "netfusion-erp:0.20.0-preview.1",
+  "readiness": 200,
+  "authenticatedRole": "ADMIN",
+  "emptyBillingWorklist": true,
+  "emptyIncomingWorklist": true,
+  "uiStatus": 200,
+  "warehouseStructureAndScopedScan": true,
+  "actualInventoryCaptureAndAbort": true,
+  "salesConfigurationVerified": true,
+  "quoteWorklistVerified": true,
+  "directSalesWorklistVerified": true,
+  "actualWarehouseLabelBytes": 16416,
+  "incomingOriginalValidated": true,
+  "validator": "Mustang-CLI 2.26.0",
+  "pdfBytes": 37578,
+  "xmlBytes": 4891,
+  "readOnlyRuntime": true,
+  "buildCertificateAbsent": true
+}
