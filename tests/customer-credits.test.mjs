@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {randomUUID,createHash} from 'node:crypto';
 import {mkdir,writeFile} from 'node:fs/promises';
 import pg from 'pg';
+import {execFileSync} from 'node:child_process';
 import {harness} from '../scripts/test-harness.mjs';
 import {directSalesFixture} from './helpers/direct-sales-fixture.mjs';
 import {cmd,ok} from './helpers/service-fixture.mjs';
@@ -52,6 +53,7 @@ test('Validiertes ZUGFeRD381 referenziert Originaldatum und Rechnung; ursprüngl
  const xml=ok(await f.customer('/api/customer-credits/'+credit.id+'/xml',{binary:true}),200).toString(),pdf=ok(await f.customer('/api/customer-credits/'+credit.id+'/pdf',{binary:true}),200);
  assert.match(xml,/<ram:TypeCode>381<\/ram:TypeCode>/);assert.ok(xml.includes('<ram:InvoiceReferencedDocument>'));assert.ok(xml.includes(invoice.snapshot.number));assert.match(xml,/20261022/);assert.match(xml,/Keine Zahlung erforderlich/);
  assert.deepEqual(ok(await f.customer('/api/billing/invoices/'+invoice.id+'/pdf',{binary:true}),200),originalPdf);
+ const printed=execFileSync('pdftotext',['-layout','-','-'],{input:pdf,encoding:'utf8'}),originalPrinted=execFileSync('pdftotext',['-layout','-','-'],{input:originalPdf,encoding:'utf8'});assert.ok(!printed.includes('Zahlbar bis'),'Verrechnete Gutschrift darf kein Zahlungsziel verlangen.');assert.ok(printed.includes('Keine Zahlung erforderlich'));assert.ok(originalPrinted.includes('Zahlbar bis'),'Die Originalrechnung behält ihr tatsächlich vereinbartes Zahlungsziel.');
  const output=(await h.admin.query('SELECT validation_report FROM customer_credit_outputs WHERE credit_id=$1',[credit.id])).rows[0];assert.match(output.validation_report,/status="valid"/);
  const own=ok(await f.customer('/api/documents/'+f.directOrder.id+'/attachments'),200).attachments;assert.ok(own.some(a=>a.sourceId===credit.id&&a.documentType==='CREDIT_NOTE'));assert.ok(!ok(await f.warehouse('/api/documents/'+f.directOrder.id+'/attachments'),200).attachments.some(a=>a.documentType==='CREDIT_NOTE'));
  await mkdir('test-results/customer-credits',{recursive:true});await writeFile('test-results/customer-credits/'+credit.number+'.pdf',pdf);await writeFile('test-results/customer-credits/'+credit.number+'.xml',xml);await writeFile('test-results/customer-credits/verification.json',JSON.stringify({invoice:invoice.snapshot.number,credit:credit.number,gross:'238.00',originalPdfSha256:sha(originalPdf),creditPdfSha256:sha(pdf),creditXmlSha256:sha(xml),normativeValidation:true,originalPreserved:true},null,2)+'\n');
