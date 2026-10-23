@@ -1,0 +1,24 @@
+{
+  "sourceCodeCommit": "da4abbb8d24c7ebd6c5c1f3d34753e4b50d515d0",
+  "command": "npm test",
+  "results": {
+    "tests": 385,
+    "pass": 385,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "targetedCommand": "node --test tests/customer-credits.test.mjs tests/business-pdf.test.mjs",
+  "targetedPassed": 15,
+  "nativeBrowserScriptsRerun": [
+    "customer-credits-browser.mjs"
+  ],
+  "unchangedBrowserEvidence": "../v0.26.0-preview.1/test-verification.json",
+  "paymentDeadlineAssertions": {
+    "creditDeadlineAbsent": true,
+    "creditNoPaymentRequired": true,
+    "invoiceDeadlinePreserved": true
+  },
+  "note": "No new complete32-script browser matrix; five other affected scripts were checked in preview.1."
+}

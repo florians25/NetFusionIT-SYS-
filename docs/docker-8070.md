@@ -60,7 +60,7 @@ Nach Buchungskreisanlage in der eigenen App **Dokumenteinstellungen** den tatsä
 
 ## Preview0.26: Gutschriften und Berichte
 
-Der unveränderte Ein-Befehl-Start baut jetzt0.26. Das lokale Image wurde mit echter Caddy-TLS-Installation auf8070, Zertifikatsprüfung, Secure-Cookie und Passworterhalt nach Containerneuanlage geprüft; [Nachweise](previews/v0.26.0-preview.1/README.md). Der tatsächliche vorgesehene Ubuntu-Zielserver bleibt separat abzunehmen.
+Der unveränderte Ein-Befehl-Start baut jetzt0.26.0-preview.2. Das lokale Image wurde mit echter Caddy-TLS-Installation auf8070, Zertifikatsprüfung, Secure-Cookie und Passworterhalt nach Containerneuanlage geprüft; [Nachweise](previews/v0.26.0-preview.2/README.md). Der tatsächliche vorgesehene Ubuntu-Zielserver bleibt separat abzunehmen.
 
 Vor neuen Geschäftsunterlagen den vollständigen Vertriebsmitarbeiter in **Dokumenteinstellungen** pflegen. Für Kundengutschriften eine unabhängige Finanzfreigabe für **Kundengutschrift (GU)** konfigurieren. Ersteller/Vorbereiter dürfen nicht selbst freigeben. Die Umsatz-App unterscheidet die reine Umsatzsicht und das zusätzliche Kostenrecht.
 

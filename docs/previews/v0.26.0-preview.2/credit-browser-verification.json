@@ -1,0 +1,14 @@
+{
+  "invoice": "RE-45000000",
+  "credit": "GU-46000000",
+  "gross": "238.00",
+  "originalInvoiceUnchanged": true,
+  "independentReview": true,
+  "nativeDesktopPositions": true,
+  "customerCreditType381": true,
+  "actualFullReturn": true,
+  "originalValueCountermovement": true,
+  "phoneWidth": 390,
+  "additionalServiceDocuments": false,
+  "errors": []
+}

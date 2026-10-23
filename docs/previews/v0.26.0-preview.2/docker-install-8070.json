@@ -1,0 +1,17 @@
+{
+  "time": "2026-10-23T22:34:05.882Z",
+  "port": 8070,
+  "origin": "https://localhost:8070",
+  "imageId": "216f5bce4b29ae79d7486c593f3b620d0c01df9f63df7512527ccc926bf1c23f",
+  "realCaddyTLS": true,
+  "certificateVerification": true,
+  "secureSessionCookie": true,
+  "automaticMigrationsAndBootstrap": true,
+  "authenticatedRole": "ADMIN",
+  "originalAdminPreservedAfterRecreation": true,
+  "changedPasswordPreserved": true,
+  "separateAPISecrets": true,
+  "changedHostnameRejected": true,
+  "emptyQuoteWorklist": true,
+  "emptyDirectProcurementWorklist": true
+}
