@@ -1,0 +1,17 @@
+{
+  "downloadedFromBrowser": true,
+  "title": "Bestellung",
+  "templateVersion": 5,
+  "pages": 1,
+  "dpi": 150,
+  "decoded": "BE-52000002",
+  "format": "CODE_128",
+  "orderNumber": "AU-42000000",
+  "quantity": "3",
+  "unitPrice": "40.00",
+  "net": "120.00",
+  "deliveryDate": "30.10.2026",
+  "germanDocumentDate": true,
+  "noTechnicalServiceReference": true,
+  "sha256": "ca79d2480e3e7f0f9a8d4fdd134a06a07ac9628b730bc4ff98024846e2260486"
+}

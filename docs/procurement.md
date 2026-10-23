@@ -1,6 +1,6 @@
 # Auftragsbezogene Beschaffung
 
-Stand Preview 0.9. Verbindlich gilt die [Nutzerpräzisierung](requirements/ticket-execution.md): Einstieg und kaufmännische Referenz sind Serviceauftrag und freigegebene Position. Das Ticket bleibt technischer Arbeitsbeleg. Kostenpflichtige Beschaffung kann nicht frei aus einem Ticket angelegt werden.
+Stand Preview0.22. Für Service gilt die [Nutzerpräzisierung](requirements/ticket-execution.md): Einstieg und kaufmännische Referenz sind Serviceauftrag und freigegebene Position. Das Ticket bleibt technischer Arbeitsbeleg. Kostenpflichtige Beschaffung kann nicht frei aus einem Ticket angelegt werden. Im Direktvertrieb führt dagegen der reale Kundenauftrag die Beschaffung; kein SA/Ticket wird dafür erfunden. [Eigener AU-Prozess und Grenzen](requirements/direct-sales-procurement.md).
 
 ## Implementierter Prozess
 
@@ -22,4 +22,4 @@ Freigegebene Lagerbestellungen können mit offener Periode und expliziter Lager-
 
 ## Noch offene Folgeprozesse
 
-[Auftragsbezogene Auslieferung/Verbrauch, Gegenbewegung und WOT/SRM-Übergabe](material-deliveries.md) sind vorhanden. Nichtlager-/Fremdleistungsabnahme, Lieferantenrechnung, Drei-Wege-Abgleich, Lieferantenversand und nachträgliche Bestelländerungen sind noch offen. Bestellfreigabe allein erzeugt weder Bestand noch FI. Es gibt noch keinen Preis-/Mengenabweichungsworkflow für Eingangsrechnungen.
+[Auftragsbezogene Auslieferung/Verbrauch, Gegenbewegung und WOT/SRM-Übergabe](material-deliveries.md) sind vorhanden. Für Service sind gespeicherter Bestell-/Teil-WE-Abgleich, unabhängig geprüfte Eingangsrechnung/FI/OP und vollständiger interner Storno inzwischen vorhanden; [Umfang und Grenzen](incoming-invoices.md). AU-Teil-WE/Rechnungseingang, Nichtlager-/Fremdleistungsabnahme, Lieferantenversand und nachträgliche Bestelländerungen bleiben offen. Bestellfreigabe allein erzeugt weder Bestand noch FI. Es gibt noch keinen Preis-/Mengenabweichungsworkflow für Eingangsrechnungen.

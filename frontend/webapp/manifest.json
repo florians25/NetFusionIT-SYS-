@@ -5,7 +5,7 @@
     "type": "application",
     "title": "NetFusion Service Workspace",
     "applicationVersion": {
-      "version": "0.21.0-preview.1"
+      "version": "0.22.0-preview.1"
     },
     "dataSources": {
       "service": {
@@ -65,6 +65,16 @@
         "async": true
       },
       "routes": [
+        {
+          "name": "salesProcurements",
+          "target": "SalesProcurements",
+          "pattern": "sales/procurement"
+        },
+        {
+          "name": "salesProcurement",
+          "target": "SalesProcurement",
+          "pattern": "sales/procurement/{id}"
+        },
         {
           "name": "salesFulfillments",
           "target": "SalesFulfillments",
@@ -466,6 +476,14 @@
         },
         "SalesDelivery": {
           "viewName": "SalesDelivery"
+        },
+        "SalesProcurements": {
+          "viewName": "SalesProcurements",
+          "viewId": "SalesProcurements"
+        },
+        "SalesProcurement": {
+          "viewName": "SalesProcurement",
+          "viewId": "SalesProcurement"
         }
       }
     }

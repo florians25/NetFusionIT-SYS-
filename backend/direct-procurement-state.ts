@@ -1,0 +1,28 @@
+import {ConflictException} from '@nestjs/common';
+import {PoolClient} from 'pg';import{randomUUID}from'node:crypto';import Decimal from'decimal.js';
+import{Principal,audit}from'./core';import{createDocument,relate}from'./business';import{freeStock}from'./material-state';
+const D=Decimal.clone({precision:60});
+export async function ensureDirectNeeds(db:PoolClient,u:Principal,h:any,corr:string){
+ const lines=(await db.query(`SELECT s.*,i.description FROM sales_order_schedules s JOIN sales_order_items i ON i.tenant_id=s.tenant_id AND i.id=s.item_id JOIN products p ON p.tenant_id=i.tenant_id AND p.id=i.product_id WHERE s.tenant_id=$1 AND s.order_id=$2 AND i.rejection_reason IS NULL AND p.kind='STOCK' AND p.status='ACTIVE' AND NOT EXISTS(SELECT 1 FROM order_requirement_items ri WHERE ri.tenant_id=s.tenant_id AND ri.sales_schedule_id=s.id) ORDER BY i.position,s.position`,[u.tenantId,h.id])).rows;if(!lines.length)return;
+ const d=await createDocument(db,u,'MATERIAL_REQUIREMENT','MRQ',h.organization_id);await db.query("INSERT INTO order_requirements(id,tenant_id,sales_order_id,title,urgency,system_generated) VALUES($1,$2,$3,$4,'NORMAL',true)",[d.id,u.tenantId,h.id,'Materialbedarf · '+h.number]);
+ for(const[l,s]of lines.entries())await db.query('INSERT INTO order_requirement_items(id,tenant_id,requirement_id,sales_item_id,sales_schedule_id,position,quantity,needed_on,purpose) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)',[randomUUID(),u.tenantId,d.id,s.item_id,s.id,(l+1)*10,s.quantity,s.confirmed_on||s.requested_on,'Automatisch aus AU-Einteilung · '+s.description]);
+ await relate(db,u,h.id,d.id,'MATERIAL_REQUIREMENT');await audit(db,u,corr,'DIRECT_MATERIAL_DETECTED',d.id,{salesOrderId:h.id,schedules:lines.map(l=>l.id)});
+}
+export async function directCoverage(db:PoolClient,u:Principal,needId:string,exclude:string|null=null){
+ const n=(await db.query('SELECT quantity,sales_item_id,sales_schedule_id FROM order_requirement_items WHERE tenant_id=$1 AND id=$2',[u.tenantId,needId])).rows[0];
+ if(!n?.sales_schedule_id)throw new ConflictException('Tatsächlicher AU-Einteilungsbedarf fehlt.');
+ const q=(await db.query('SELECT direct_requested($1,$2,$3)::text AS requested',[u.tenantId,n.sales_schedule_id,exclude])).rows[0].requested;
+ const r=(await db.query("SELECT coalesce(sum(CASE WHEN status='CANCELLED' THEN consumed_quantity ELSE quantity END),0)::text AS quantity FROM stock_reservations WHERE tenant_id=$1 AND sales_schedule_id=$2",[u.tenantId,n.sales_schedule_id])).rows[0].quantity;
+ return {quantity:n.quantity,orderItemId:n.sales_item_id,requested:q,received:'0',reserved:r,covered:new D(q).plus(r)};
+}
+export async function directSupplyState(db:PoolClient,u:Principal,h:any){
+ const rows=(await db.query(`SELECT ri.id AS "requirementItemId",ri.requirement_id AS "requirementId",ri.sales_schedule_id AS "scheduleId",ri.needed_on::text AS "neededOn",ri.quantity::text,i.id AS "itemId",i.position,s.position AS "schedulePosition",i.product_id AS "productId",i.description,i.unit,p.sku,i.cost_center AS "costCenter",i.cost_object AS "costObject",direct_requested(ri.tenant_id,ri.sales_schedule_id)::text AS requested,
+ coalesce((SELECT sum(CASE WHEN r.status='CANCELLED' THEN r.consumed_quantity ELSE r.quantity END) FROM stock_reservations r WHERE r.tenant_id=ri.tenant_id AND r.sales_schedule_id=ri.sales_schedule_id),0)::text AS claimed,
+ coalesce((SELECT sum(r.quantity-r.consumed_quantity) FROM stock_reservations r WHERE r.tenant_id=ri.tenant_id AND r.sales_schedule_id=ri.sales_schedule_id AND r.status='ACTIVE'),0)::text AS reserved,
+ coalesce((SELECT sum(r.consumed_quantity) FROM stock_reservations r WHERE r.tenant_id=ri.tenant_id AND r.sales_schedule_id=ri.sales_schedule_id),0)::text AS delivered,
+ coalesce((SELECT sum(pi.quantity) FROM purchase_order_items pi JOIN purchase_orders po ON po.tenant_id=pi.tenant_id AND po.id=pi.purchase_order_id JOIN purchase_requisition_items qi ON qi.tenant_id=pi.tenant_id AND qi.id=pi.requisition_item_id WHERE qi.tenant_id=ri.tenant_id AND qi.requirement_item_id=ri.id AND po.status IN ('RELEASED','PARTIALLY_RECEIVED','FULLY_RECEIVED','CLOSED')),0)::text AS ordered
+ FROM order_requirement_items ri JOIN order_requirements mr ON mr.tenant_id=ri.tenant_id AND mr.id=ri.requirement_id JOIN sales_order_items i ON i.tenant_id=ri.tenant_id AND i.id=ri.sales_item_id JOIN sales_order_schedules s ON s.tenant_id=ri.tenant_id AND s.id=ri.sales_schedule_id JOIN products p ON p.tenant_id=i.tenant_id AND p.id=i.product_id WHERE ri.tenant_id=$1 AND mr.sales_order_id=$2 AND mr.status='OPEN' ORDER BY i.position,s.position`,[u.tenantId,h.id])).rows;
+ const stocks=new Map<string,any[]>(),free=new Map<string,Decimal>();for(const r of rows)if(!stocks.has(r.productId)){const s=await freeStock(db,u,h.company_id,r.productId);stocks.set(r.productId,s);free.set(r.productId,s.reduce((n,s)=>n.plus(s.available),new D(0)));}
+ for(const r of rows){const uncovered=D.max(0,new D(r.quantity).minus(r.claimed).minus(r.requested)),available=D.min(uncovered,D.max(0,free.get(r.productId)||0));free.set(r.productId,(free.get(r.productId)||new D(0)).minus(available));Object.assign(r,{uncovered:uncovered.toFixed(6),available:available.toFixed(6),shortage:D.max(0,uncovered.minus(available)).toFixed(6),stock:stocks.get(r.productId),status:new D(r.delivered).gte(r.quantity)?'MATERIAL_DELIVERED':new D(r.claimed).gte(r.quantity)?'MATERIAL_READY':new D(r.ordered).gt(0)?new D(r.ordered).gte(r.requested)?'ORDERED':'PARTIALLY_ORDERED':new D(r.requested).gt(0)?'REQUESTED':new D(r.claimed).gt(0)?'PARTIALLY_RESERVED':available.gt(0)?'STOCK_AVAILABLE':'SHORTAGE'});}
+ return rows;
+}

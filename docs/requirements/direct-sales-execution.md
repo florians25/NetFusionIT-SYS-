@@ -1,6 +1,6 @@
 # Direkte Lagerauslieferung · Preview0.20
 
-Erster tatsächlicher Teilumfang aus [DS-01–16](direct-sales.md). Noch keine vollständige Direktvertriebsabnahme: Preview0.21 ergänzt inzwischen die [direkte Lieferfaktura](direct-sales-billing.md); AU-Beschaffung bleibt offen.
+Erster tatsächlicher Teilumfang aus [DS-01–16](direct-sales.md). Noch keine vollständige Direktvertriebsabnahme: Preview0.21 ergänzt inzwischen die [direkte Lieferfaktura](direct-sales-billing.md); Preview0.22 ergänzt inzwischen [AU-Bedarf/BANF/Teilbestellungen](direct-sales-procurement.md); tatsächlicher AU-Teil-WE/Rechnungseingang bleibt offen.
 
 Der Ausführungsweg wird bei AU-Anlage ausdrücklich gewählt und in der unabhängigen Freigabe gebunden. Ein Verkaufsangebot erzeugt einen Direktvertriebs-AU, ein Service-Kostenvoranschlag einen Service-AU. Der Weg bleibt nach Speicherung unveränderlich; ein anderer Weg braucht einen eigenen kontrollierten Änderungsprozess. Bereits archivierte kommerzielle Originale bleiben unverändert.
 

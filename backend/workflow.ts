@@ -42,7 +42,8 @@ export class Workflow {
   await lockServiceQuote(db,u,id);await lockSalesOrder(db,u,id);await lockInventoryCount(db,u,id);await lockSupplierReversal(db,u,id);await lockSupplierPosting(db,u,id);await lockBillingSubject(db,u,id);await lockProcurementSubject(db,u,id);await lockReportSubject(db,u,id);
   const doc=await document(db,u,id,true),subject=approvalSubjects[doc.kind];
   if(!subject)throw new ConflictException('Dieser Belegtyp unterstützt noch keinen Freigabeprozess.');
-  requirePermission(u.role,subject.permission);
+  const directRequest=doc.kind==='REQUISITION'&&(await db.query('SELECT 1 FROM purchase_requisitions WHERE tenant_id=$1 AND id=$2 AND sales_order_id IS NOT NULL',[u.tenantId,id])).rowCount;
+  requirePermission(u.role,directRequest?'sales.procurement.plan':subject.permission);
   const r=await db.query(`SELECT * FROM ${subject.table} WHERE tenant_id=$1 AND id=$2 FOR UPDATE`,[u.tenantId,id]);
   if(!r.rowCount)throw new NotFoundException('Fachbeleg nicht gefunden.');
   version(r.rows[0].version,expected);
@@ -130,7 +131,7 @@ export class Workflow {
    if(['APPROVED','REJECTED'].includes(status))await db.query(`UPDATE ${subject.table} SET status=$3,version=version+1 WHERE tenant_id=$1 AND id=$2`,[u.tenantId,i.document_id,status==='APPROVED'?subject.approved:subject.rejected]);
    if(doc.kind==='SERVICE_ORDER'&&status==='APPROVED'){await ensureOrderRequirements(db,u,i.document_id,correlation);await refreshMaterialStatus(db,u,i.document_id,correlation);}
    if(doc.kind==='PURCHASE_ORDER'&&status==='APPROVED'){const p=(await db.query('SELECT requisition_id FROM purchase_orders WHERE tenant_id=$1 AND id=$2',[u.tenantId,i.document_id])).rows[0];await refreshRequisition(db,u,p.requisition_id);}
-   if(['REQUISITION','PURCHASE_ORDER'].includes(doc.kind)&&['APPROVED','REJECTED'].includes(status)){const p=await procurementSubject(db,u,i.document_id,doc.kind);await refreshMaterialStatus(db,u,p.order_id,correlation);}
+   if(['REQUISITION','PURCHASE_ORDER'].includes(doc.kind)&&['APPROVED','REJECTED'].includes(status)){const p=await procurementSubject(db,u,i.document_id,doc.kind);await refreshMaterialStatus(db,u,p.sales_order_id||p.order_id,correlation);}
    await audit(db,u,correlation,'APPROVAL_'+input.decision,i.document_id,{instanceId:id,step:i.current_step,comment:input.comment,status});
    await notify(db,u,[i.submitted_by],'APPROVAL_'+status,i.document_id,{instanceId:id});
    return {id,status,version:i.version+1,currentStep:nextStep};

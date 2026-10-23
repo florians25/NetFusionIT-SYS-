@@ -32,6 +32,8 @@ export const grants:Record<string,readonly Role[]>={
  'sales.approve':['ADMIN','SERVICE_MANAGER','SALES','EXECUTIVE'],
  'sales.configure':['ADMIN','MASTER_DATA'],
  'sales.read':['ADMIN','SERVICE_MANAGER','SALES','BILLING','ACCOUNTANT','CONTROLLER','EXECUTIVE','CUSTOMER'],
+ 'sales.procurement.read':['ADMIN','SERVICE_MANAGER','SALES','BUYER','PURCHASING_MANAGER','WAREHOUSE','ACCOUNTANT','CONTROLLER','EXECUTIVE'],
+ 'sales.procurement.plan':['ADMIN','SERVICE_MANAGER','SALES','BUYER','PURCHASING_MANAGER'],
  'sales.fulfillment.read':['ADMIN','SERVICE_MANAGER','WAREHOUSE','SALES','BILLING','ACCOUNTANT','CONTROLLER','EXECUTIVE','CUSTOMER'],
  'sales.reserve':['ADMIN','SERVICE_MANAGER','WAREHOUSE','SALES'],
  'sales.deliver':['ADMIN','WAREHOUSE'],

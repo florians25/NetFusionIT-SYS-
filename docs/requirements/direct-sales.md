@@ -1,6 +1,6 @@
 # Direktvertrieb · eigenständiger Warenverkauf aus dem Kundenauftrag
 
-Beauftragt am 23.10.2026. **Status: offen.** Preview0.18 liefert den eigenen AU und dessen gebundene Serviceausführung; sie liefert noch keinen eigenständigen Warenverkauf bis Lieferung und Rechnung. Die laufende Angebotsentwicklung ersetzt diese fehlende Ausführung nicht. Dieser Umfang ergänzt [SD-01–17 / BILL-01–10 / CRM-01–10](sales-billing-crm.md) und den [Masterbacklog](../master-backlog-index.md).
+Beauftragt am 23.10.2026. **Status: teilweise geliefert bis Preview0.22.** Preview0.20/21 liefern direkten Lagerverkauf und Lieferfaktura;0.22 ergänzt AU-Bedarf, Lagerreservierung, BANF und Teilbestellungen. Tatsächlicher AU-Teil-WE/Rechnungseingang und weitere Korrektur-/Vertriebsfälle bleiben offen. Dieser Umfang ergänzt [SD-01–17 / BILL-01–10 / CRM-01–10](sales-billing-crm.md) und den [Masterbacklog](../master-backlog-index.md).
 
 ## Zwei ausdrücklich getrennte Ausführungswege
 
@@ -14,7 +14,7 @@ Der Ausführungsweg ist vor Freigabe ausdrücklich festzulegen und im genehmigte
 
 ## Verbindliche Arbeitspakete
 
-Preview0.20 liefert den ersten geprüften Lagerteilprozess: DS-01 und die Lageranteile aus DS-04/05/08/12/13/16 besitzen echte AU-/Reservierungs-/Teillieferungs-/Rücknahmenachweise. DS-02 baut auf der gebundenen AG→AU-Übernahme aus0.19 auf. Die vollständigen Pakete bleiben teilweise offen, insbesondere direkte Faktura DS-09 und AU-Beschaffung DS-06/07. [Umfang und Grenzen](direct-sales-execution.md). Eine Warenlieferung ist keine Abnahme der gesamten Direktvertriebskette. Preview0.21 ergänzt DS-09 für tatsächliche inländische Lagerlieferungen einschließlich AF/Freigabe/Vorrat/Teil-/Restrechnung/ZUGFeRD/FI/OP und geschützte Rücknahme nach Quellenbindung. [Fakturaumfang und Grenzen](direct-sales-billing.md). AU-Beschaffung, erweiterte Korrektur/Steuer/Finanzpartner und Reports bleiben offen.
+Preview0.20 liefert den ersten geprüften Lagerteilprozess: DS-01 und die Lageranteile aus DS-04/05/08/12/13/16 besitzen echte AU-/Reservierungs-/Teillieferungs-/Rücknahmenachweise. DS-02 baut auf der gebundenen AG→AU-Übernahme aus0.19 auf. Die vollständigen Pakete bleiben teilweise offen, insbesondere direkte Faktura DS-09 und AU-Beschaffung DS-06/07. [Umfang und Grenzen](direct-sales-execution.md). Eine Warenlieferung ist keine Abnahme der gesamten Direktvertriebskette. Preview0.21 ergänzt DS-09 für tatsächliche inländische Lagerlieferungen einschließlich AF/Freigabe/Vorrat/Teil-/Restrechnung/ZUGFeRD/FI/OP und geschützte Rücknahme nach Quellenbindung. [Fakturaumfang und Grenzen](direct-sales-billing.md). Preview0.22 ergänzt DS-06 für reale freigegebene Lagerartikel-Einteilungen: zwei freie Stück zuerst reservieren, nur drei fehlende anfordern, unabhängige BANF-/Bestellprüfung und Teilbestellungen mit AU-Kontierung. [Beschaffungsumfang und Grenzen](direct-sales-procurement.md). DS-07 mit tatsächlichem AU-Teil-WE/Rechnungseingang, erweiterte Korrektur/Steuer/Finanzpartner und Reports bleiben offen.
 
 | ID | Umfang | Abnahme |
 | --- | --- | --- |

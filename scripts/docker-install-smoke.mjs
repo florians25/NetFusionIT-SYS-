@@ -20,7 +20,7 @@ try{
  access=JSON.parse((await compose(['run','--rm','--no-deps','install','cat','/run/netfusion-install/access.json'])).stdout);
  ca=(await compose(['exec','-T','caddy','cat','/data/caddy/pki/authorities/local/root.crt'])).stdout;
  await waitReady();
- await login(access.password);assert.equal((await call('/api/quotes')).data.length,0);assert.equal((await call('/')).status,200);
+ await login(access.password);assert.equal((await call('/api/quotes')).data.length,0);assert.equal((await call('/api/sales/procurement')).data.length,0);assert.equal((await call('/')).status,200);
  const session=await call('/api/auth/session'),userId=session.data.user.id;
  // Change the actual initial administrator password, then recreate the entire stack.
  const nextPassword=randomBytes(24).toString('base64url');
@@ -32,7 +32,7 @@ try{
  // A changed hostname must fail without rotating the persisted credentials.
  let rejected=false;try{await compose(['run','--rm','--no-deps','-e','ERP_DOMAIN=other.example.test','initialize']);}catch{rejected=true;}assert.ok(rejected);await login(nextPassword);
  const image=(await compose(['images','-q','api'])).stdout.trim();
- const proof={time:new Date().toISOString(),port:8070,origin:'https://localhost:8070',imageId:image,realCaddyTLS:true,certificateVerification:true,secureSessionCookie:true,automaticMigrationsAndBootstrap:true,authenticatedRole:'ADMIN',originalAdminPreservedAfterRecreation:true,changedPasswordPreserved:true,separateAPISecrets:true,changedHostnameRejected:true,emptyQuoteWorklist:true};
+ const proof={time:new Date().toISOString(),port:8070,origin:'https://localhost:8070',imageId:image,realCaddyTLS:true,certificateVerification:true,secureSessionCookie:true,automaticMigrationsAndBootstrap:true,authenticatedRole:'ADMIN',originalAdminPreservedAfterRecreation:true,changedPasswordPreserved:true,separateAPISecrets:true,changedHostnameRejected:true,emptyQuoteWorklist:true,emptyDirectProcurementWorklist:true};
  await mkdir('test-results',{recursive:true});await writeFile('test-results/docker-install-8070.json',JSON.stringify(proof,null,2)+'\n');console.log(JSON.stringify(proof));
 }catch(error){
  // No child output is printed: one command intentionally retrieves the first-login credentials.

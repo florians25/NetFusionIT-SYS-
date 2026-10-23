@@ -1,0 +1,14 @@
+{
+  "orderNumber": "AU-42000000",
+  "plannedQuantity": "5",
+  "availableStock": "2",
+  "reservedQuantity": "2",
+  "requestedQuantity": "3",
+  "approvedPurchaseQuantity": "3",
+  "partialPurchases": [
+    "1",
+    "2"
+  ],
+  "noAdditionalServiceDocuments": true,
+  "goodsReceiptImplemented": false
+}

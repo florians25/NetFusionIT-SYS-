@@ -1,0 +1,124 @@
+{
+  "version": "0.22.0-preview.1",
+  "date": "2026-10-23",
+  "tests": {
+    "passed": 320,
+    "failed": 0,
+    "directProcurementCases": 13,
+    "log": "erp-022-release-regression.log",
+    "finalTargetedAfterRemainingQuantityCorrection": {
+      "passed": 31,
+      "failed": 0,
+      "log": "erp-022-final-detail-tests.log"
+    }
+  },
+  "build": {
+    "api": true,
+    "fullUI5LibrariesInDocker": true,
+    "nativeUI5App": true,
+    "OpenUI5": "1.152.1"
+  },
+  "browsers": {
+    "directProcurement": true,
+    "rerunAfterFinalWorkflowPermission": true,
+    "legacyServiceProcurement": true,
+    "directSalesStock": true,
+    "directSalesBilling": true,
+    "actualOriginalDownload": true,
+    "mobileWidths": [
+      390
+    ],
+    "allHistoricalSuites": false
+  },
+  "main": {
+    "time": "2026-10-23T11:17:56.915Z",
+    "version": "0.22.0-preview.1",
+    "readiness": 200,
+    "authenticatedRole": "ADMIN",
+    "migrations": 26,
+    "lastMigration": {
+      "name": "026_direct_sales_procurement.sql",
+      "checksum": "201869c60053a95c714e807efd9e8c3192aff076e832dc52e0fd0d29c750ceae"
+    },
+    "allMigrationChecksumsVerified": true,
+    "directFulfillmentStatus": 200,
+    "directProcurementStatus": 200,
+    "estimatesStatus": 200,
+    "quotesStatus": 200,
+    "counts": {
+      "quotes": 0,
+      "salesorders": 0,
+      "serviceorders": 0,
+      "invoices": 0,
+      "companies": 0,
+      "fulfillment": 0,
+      "requisitions": 0,
+      "purchaseorders": 0,
+      "tickets": 0
+    },
+    "backupCatalogVerified": true
+  },
+  "dockerProduction": {
+    "imageId": "sha256:2311dda08d1eb93acc9d1c00aab6a85f2061a23a05ebd0dce5572470b9b3f3ac",
+    "time": "2026-10-23T11:19:46.990Z",
+    "image": "netfusion-erp:0.22.0-preview.1",
+    "readiness": 200,
+    "authenticatedRole": "ADMIN",
+    "emptyBillingWorklist": true,
+    "emptyIncomingWorklist": true,
+    "uiStatus": 200,
+    "warehouseStructureAndScopedScan": true,
+    "actualInventoryCaptureAndAbort": true,
+    "salesConfigurationVerified": true,
+    "quoteWorklistVerified": true,
+    "directSalesWorklistVerified": true,
+    "directProcurementWorklistVerified": true,
+    "actualWarehouseLabelBytes": 16406,
+    "incomingOriginalValidated": true,
+    "validator": "Mustang-CLI 2.26.0",
+    "pdfBytes": 37578,
+    "xmlBytes": 4891,
+    "readOnlyRuntime": true,
+    "buildCertificateAbsent": true
+  },
+  "dockerInstall": {
+    "time": "2026-10-23T11:21:09.743Z",
+    "port": 8070,
+    "origin": "https://localhost:8070",
+    "imageId": "2311dda08d1eb93acc9d1c00aab6a85f2061a23a05ebd0dce5572470b9b3f3ac",
+    "realCaddyTLS": true,
+    "certificateVerification": true,
+    "secureSessionCookie": true,
+    "automaticMigrationsAndBootstrap": true,
+    "authenticatedRole": "ADMIN",
+    "originalAdminPreservedAfterRecreation": true,
+    "changedPasswordPreserved": true,
+    "separateAPISecrets": true,
+    "changedHostnameRejected": true,
+    "emptyQuoteWorklist": true,
+    "emptyDirectProcurementWorklist": true
+  },
+  "pdf": {
+    "downloadedFromBrowser": true,
+    "title": "Bestellung",
+    "templateVersion": 5,
+    "pages": 1,
+    "dpi": 150,
+    "decoded": "BE-52000002",
+    "format": "CODE_128",
+    "orderNumber": "AU-42000000",
+    "quantity": "3",
+    "unitPrice": "40.00",
+    "net": "120.00",
+    "deliveryDate": "30.10.2026",
+    "germanDocumentDate": true,
+    "noTechnicalServiceReference": true,
+    "sha256": "ca79d2480e3e7f0f9a8d4fdd134a06a07ac9628b730bc4ff98024846e2260486"
+  },
+  "limits": [
+    "Actual direct AU goods receipt/partial receipt/reversal and incoming invoice still require DS-07/10",
+    "No external purchase-order transmission or post-approval amendment yet",
+    "Invoiced returns/credits, extended tax/FX/financial parties, non-stock/licenses/drop-shipping and full reporting remain open",
+    "No target Ubuntu deployment or complete master-backlog acceptance"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "orderNumber": "AU-42000000",
+  "purchaseNumber": "BE-52000002",
+  "plannedQuantity": "5",
+  "reservedQuantity": "2",
+  "requestedQuantity": "3",
+  "orderedQuantity": "3",
+  "unitPrice": "40.00",
+  "net": "120.00",
+  "independentRequisitionApproval": true,
+  "independentPurchaseApproval": true,
+  "actualOriginalDownloaded": true,
+  "noAdditionalServiceDocuments": true,
+  "mobileWidth": 390,
+  "goodsReceiptImplemented": false,
+  "errors": []
+}

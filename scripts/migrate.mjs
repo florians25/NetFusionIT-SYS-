@@ -29,6 +29,7 @@ export async function migrate(connectionString) {
     const role = process.env.ERP_DB_ROLE || 'erp_app';
     if (!/^[a-z_][a-z0-9_]*$/.test(role)) throw new Error('Ungültige Laufzeitrolle');
     if ((await client.query('SELECT 1 FROM pg_roles WHERE rolname=$1',[role])).rowCount) {
+      await client.query(`GRANT SELECT ON procurement_item_sources TO "${role}"`);
       await client.query(`GRANT USAGE ON SCHEMA public TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT,UPDATE ON sales_order_fulfillment TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT,UPDATE ON service_quotes TO "${role}"`);

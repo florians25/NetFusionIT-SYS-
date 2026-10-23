@@ -12,5 +12,5 @@ export class ProcurementController {
  @Post('service/orders/:id/requisitions')@Permission('requisition.write')requisition(@Req() r:AuthRequest,@Param('id') id:string,@Body() b:unknown){csrf(r);return this.procurement.createRequisition(r.user,id,b,r.get('Idempotency-Key'),r.correlationId);}
  @Post('service/orders/:id/purchase-orders')@Permission('procurement.write')purchaseOrder(@Req() r:AuthRequest,@Param('id') id:string,@Body() b:unknown){csrf(r);return this.procurement.createPurchaseOrder(r.user,id,b,r.get('Idempotency-Key'),r.correlationId);}
  @Post('procurement/documents/:id/cancel')@Permission('requisition.read')cancel(@Req() r:AuthRequest,@Param('id') id:string,@Body() b:unknown){csrf(r);return this.procurement.cancel(r.user,id,b,r.get('Idempotency-Key'),r.correlationId);}
- @Get('procurement/documents/:id')@Permission('requisition.read')detail(@Req() r:AuthRequest,@Param('id') id:string){return this.procurement.detail(r.user,id);}
+ @Get('procurement/documents/:id')@Permission('document.read')detail(@Req() r:AuthRequest,@Param('id') id:string){return this.procurement.detail(r.user,id);}
 }
