@@ -1,6 +1,6 @@
 # Preview0.25 · größere Arbeitsseiten und vollständige Ansprechpartner
 
-Die letzte Dokumentkorrektur ist umgesetzt: **keine zusätzliche Infobox und keine Anschriftentabelle.** Die Anschrift bleibt normal links. Rechts oben stehen Nummer, Datum, vollständiger Ansprechpartner und wichtige Kunden-/Lieferanten-/Bestellreferenzen. Weitere Daten stehen im Beleginhalt. Alle gezeigten Masken und Dokumente stammen aus tatsächlichen Prüfabläufen mit synthetischen Testdaten.
+Die letzte Dokumentkorrektur ist umgesetzt: **keine zusätzliche Infobox und keine Anschriftentabelle.** Die Anschrift bleibt normal links. Rechts oben stehen Nummer, Datum, der vollständige Name unter **Vertriebsmitarbeiter** und wichtige Kunden-/Lieferanten-/Bestellreferenzen. Weitere Daten stehen im Beleginhalt. Alle gezeigten Masken und Dokumente stammen aus tatsächlichen Prüfabläufen mit synthetischen Testdaten.
 
 ## Arbeitsseiten
 
@@ -35,3 +35,9 @@ Die freigegebene Direktvertriebsbestellung über3EA zu40,00EUR netto enthält ta
 Vor neuen Geschäftsunterlagen den tatsächlichen Ansprechpartner in der eigenen App **Dokumenteinstellungen** pflegen. Alte unstrukturierte Personennamen müssen mit den wirklichen Komponenten vervollständigt werden; keine automatische Namenszerlegung. Archivierte PDFs werden nicht verändert. Bereits vor029 angelegte Rechnungsausgabeaufträge behalten ihren Vorlagenstand5; neue verwenden6. Die Browserseiten speichern Entwürfe im Arbeitsspeicher; Neuladen beendet die Bearbeitung.
 
 [Fachumfang und Grenzen](../../requirements/workspaces-document-contacts.md), [Restbacklog](../../master-backlog-index.md), [Installation auf8070](../../docker-8070.md). Vollständige CRM-/SAP-/DIN-/Rechts-/Security-/Produktionsabnahme bleibt offen. Das Git-Preview erhält einen annotierten Tag; eine separate GitHub-Releaseseite ist in dieser Umgebung wegen gesperrtem GitHub-API-Zugriff weiterhin nicht erstellt.
+
+## Nachtrag: Vertriebsmitarbeiter rechts oben
+
+Nach der letzten Nutzerpräzisierung tragen neue Ausgaben die Bezeichnung **Vertriebsmitarbeiter** beim gepflegten vollständigen Namen im rechten Kopf. Die Anschrift links bleibt normaler Text. Die Druckbezeichnung wird im neuen Formular- bzw. Rechnungssnapshot festgehalten; alte Archivbytes und wartende alte Rechnungsausgaben behalten ihre vorhandene Bezeichnung. Die Pflege in Dokumenteinstellungen nennt die Rolle ebenfalls ausdrücklich. [24/24 zusätzliche Prüfungen und native Arbeitsseitenprüfung](sales-contact-verification.json). PDF und Ansprechpartner-Screenshots oben zeigen diesen Nachtrag.
+
+Die Docker-/HTTPS-Nachweise beziehen sich auf das davor erzeugte Code-Preview-Image08da8ee…; für diesen nachfolgenden Druckbezeichnungs-Nachtrag wurde kein neues Image oder erneuter HTTPS-Installationsnachweis behauptet. Die aktuelle Quelle auf main wird mit dem dokumentierten Dockerbefehl neu gebaut. Der veröffentlichte Git-Tag bleibt unverändert.

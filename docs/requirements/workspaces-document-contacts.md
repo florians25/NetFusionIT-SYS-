@@ -26,3 +26,7 @@ Historische unstrukturierte Namen werden nicht geraten oder anhand von Leerzeich
 Dies ersetzt keine vollständige CRM-, Entwurfs-, Barrierefreiheits-, DIN-, Rechts- oder Geräteabnahme. Geschäftsbereiche/Profitcenter, weitere Organisationszuordnungen und alle übrigen offenen Masterbacklog-Pakete bleiben offen. Die bestehende Ticketausnahme ohne Belegfluss bleibt bestehen.
 
 Technische Referenzen: OpenUI5 [Page](https://sdk.openui5.org/1.152.1/#/api/sap.m.Page), [SimpleForm](https://sdk.openui5.org/1.152.1/#/api/sap.ui.layout.form.SimpleForm), [Table](https://sdk.openui5.org/1.152.1/#/api/sap.ui.table.Table) und [Fixed RowMode](https://sdk.openui5.org/1.152.1/#/api/sap.ui.table.rowmodes.Fixed). Die verwendeten Controls werden mit dem tatsächlich installierten SDK im Browser geprüft.
+
+## Weitere Nutzerpräzisierung
+
+Der vollständige Name im rechten Kopf wird ausdrücklich als **Vertriebsmitarbeiter** bezeichnet. Die tatsächlich gepflegte Person des Buchungskreises bleibt die Quelle; es wird kein automatisch zugeordneter oder erfundener Benutzer behauptet. Die Bezeichnung gehört zum neuen Ausgabesnapshot, damit neue Ausgaben nicht eine ältere anders bezeichnete Archivversion wiederverwenden. Bereits vorhandene Originale und wartende alte Rechnungssnapshots bleiben unverändert. Die linke Anschrift bleibt ohne Tabelle.

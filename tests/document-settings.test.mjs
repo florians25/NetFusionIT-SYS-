@@ -22,7 +22,7 @@ test('Dokumentapp verlangt explizite Personendaten und berechtigte Pflege; fehle
 test('Neue Formulare archivieren den vollständigen Kontakt; Profiländerung schreibt alte PDFs und Hashes nicht um',async()=>{
  old=ok(await generate());assert.equal(old.templateVersion,6);oldBytes=ok(await f.admin('/api/documents/'+order.id+'/attachments/'+old.id+'/download',{binary:true}),200);
  assert.equal(createHash('sha256').update(oldBytes).digest('hex'),old.sha256);
- const snapshot=(await h.admin.query('SELECT source_snapshot FROM document_attachments WHERE id=$1',[old.id])).rows[0].source_snapshot;assert.equal(snapshot.contact.firstName,'Martina');assert.equal(snapshot.contact.lastName,'Musterfrau');
+ const snapshot=(await h.admin.query('SELECT source_snapshot FROM document_attachments WHERE id=$1',[old.id])).rows[0].source_snapshot;assert.equal(snapshot.contactLabel,'Vertriebsmitarbeiter');assert.equal(snapshot.contact.firstName,'Martina');assert.equal(snapshot.contact.lastName,'Musterfrau');
  ok(await save(data(1,{firstName:'Carolin',lastName:'Beispiel-Müller'})),200);
  const again=ok(await f.admin('/api/documents/'+order.id+'/attachments/'+old.id+'/download',{binary:true}),200);assert.deepEqual(again,oldBytes);
  const next=ok(await generate());assert.notEqual(next.id,old.id);const snap=(await h.admin.query('SELECT source_snapshot FROM document_attachments WHERE id=$1',[next.id])).rows[0].source_snapshot;assert.equal(snap.contact.firstName,'Carolin');assert.equal(snap.contact.version,2);

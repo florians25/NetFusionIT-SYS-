@@ -5,7 +5,7 @@ import {renderBusinessPdf as renderV5} from './business-pdf-v5';
 export interface DocumentContact {firstName:string;lastName:string;email:string;phone:string;version?:number;}
 export interface BusinessPdf {
  title:string;number:string;sourceNumber:string;status:string;date:string;
- contact?:DocumentContact;
+ contact?:DocumentContact;contactLabel?:'Vertriebsmitarbeiter';
  issuer:{name:string;street?:string;postalCode?:string;city?:string;country?:string;vatId?:string};
  recipient?:{name:string;street?:string;postalCode?:string;city?:string;country?:string};
  fields:[string,string][];columns:{title:string;width:number;align?:'left'|'right'}[];rows:string[][];
@@ -42,7 +42,7 @@ export async function renderBusinessPdf(data:BusinessPdf,archiveNumber:string,op
  }
  function drawLines(values:string[],x:number,top:number,w:number,size=9,strong=false,align:'left'|'right'='left',pitch=12){values.forEach((v,i)=>line(v,x,top+i*pitch,w,size,strong,align));}
  function stroke(x:number,top:number,w:number,color=rule,weight=.5){doc.moveTo(x,top).lineTo(x+w,top).lineWidth(weight).strokeColor(color).stroke();}
- function continuation(){doc.addPage();line(data.issuer.name,left,mm(15),width*.62,9,true);line(data.title,left,mm(23),width*.6,11,true);line(data.number,left+width*.6,mm(23),width*.27,9,true,'right');pageFields.push({page:doc.bufferedPageRange().count-1,y:mm(23)});line('Ihr Ansprechpartner: '+data.contact!.firstName+' '+data.contact!.lastName,left,mm(31),width,8);stroke(left,mm(37),width);y=mm(44);}
+ function continuation(){doc.addPage();line(data.issuer.name,left,mm(15),width*.62,9,true);line(data.title,left,mm(23),width*.6,11,true);line(data.number,left+width*.6,mm(23),width*.27,9,true,'right');pageFields.push({page:doc.bufferedPageRange().count-1,y:mm(23)});line((data.contactLabel||'Ihr Ansprechpartner')+': '+data.contact!.firstName+' '+data.contact!.lastName,left,mm(31),width,8);stroke(left,mm(37),width);y=mm(44);}
  function page(height:number){if(y+height>bottom)continuation();}
  const address=(a:NonNullable<BusinessPdf['recipient']>)=>[a.name,a.street,[a.postalCode,a.city].filter(Boolean).join(' '),a.country].filter(Boolean) as string[];
  const issuerAddress=[data.issuer.street,[data.issuer.postalCode,data.issuer.city].filter(Boolean).join(' '),data.issuer.country].filter(Boolean).join(' · ');
@@ -66,7 +66,7 @@ export async function renderBusinessPdf(data:BusinessPdf,archiveNumber:string,op
  const important=new Set(['Kundennummer','Lieferanten-Nr.','Kundenreferenz','Ihre Bestellung','Kundenauftrag','Serviceauftrag','Bestellung','Bestellnummer','Zahlbar bis']);
  const header=remaining.filter(([k,v])=>important.has(k)&&v.length<70&&!v.includes('\n')).slice(0,3);
  if(data.sourceNumber!==data.number&&!header.some(([,v])=>v===data.sourceNumber))header.push(['Ursprungsbeleg',data.sourceNumber]);
- let infoY=primaryY+31;line('Ansprechpartner',infoX,infoY,infoW,7);const contactName=data.contact!.firstName+' '+data.contact!.lastName;let contactSize=9;font(contactSize);while(doc.widthOfString(contactName)>infoW&&contactSize>7){contactSize-=.25;font(contactSize);}const contactLines=lines(contactName,infoW,contactSize);if(contactLines.length>3)throw new BusinessPdfLayoutError('Vollständiger Ansprechpartner überschreitet den Belegkopf.');drawLines(contactLines,infoX,infoY+10,infoW,contactSize);infoY+=contactLines.length*12+17;
+ let infoY=primaryY+31;line(data.contactLabel||'Ansprechpartner',infoX,infoY,infoW,7);const contactName=data.contact!.firstName+' '+data.contact!.lastName;let contactSize=9;font(contactSize);while(doc.widthOfString(contactName)>infoW&&contactSize>7){contactSize-=.25;font(contactSize);}const contactLines=lines(contactName,infoW,contactSize);if(contactLines.length>3)throw new BusinessPdfLayoutError('Vollständiger Ansprechpartner überschreitet den Belegkopf.');drawLines(contactLines,infoX,infoY+10,infoW,contactSize);infoY+=contactLines.length*12+17;
  for(const [label,value] of header){line(label,infoX,infoY,infoW,7);const values=lines(dateValue(value),infoW,9);drawLines(values,infoX,infoY+10,infoW,9,false,'left',11);infoY+=values.length*11+15;}
  let leftEnd=mm(90);
  if(delivery){const values=lines(delivery[1],mm(80),10);leftEnd=mm(96)+12+values.length*12;line('Lieferanschrift',left,mm(96),mm(80),7,true);drawLines(values,left,mm(96)+12,mm(80),10,false,'left',12);}

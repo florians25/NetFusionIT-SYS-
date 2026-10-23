@@ -1,0 +1,9 @@
+{
+  "tests": 24,
+  "pass": 24,
+  "fail": 0,
+  "command": "node --test --test-concurrency=1 tests/business-pdf.test.mjs tests/document-settings.test.mjs tests/billing.test.mjs tests/purchasing-direct.test.mjs tests/ui-policy.test.mjs",
+  "change": "Vertriebsmitarbeiter in right document header; plain left address; role label pinned in new source snapshot, legacy output data retained.",
+  "workspaceBrowserPassed": true,
+  "legacyPendingInvoiceOutputPreserved": true
+}

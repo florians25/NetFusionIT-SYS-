@@ -51,7 +51,7 @@
     ]
   ],
   "issuer": {
-    "id": "2e64e1f9-e10c-4b99-b205-0a0ea3139462",
+    "id": "75aaa05d-729a-4d1c-a746-15c6052b3963",
     "city": "Berlin",
     "name": "NetFusion Testgesellschaft",
     "vatId": "",
@@ -107,7 +107,7 @@
     "firstName": "Martina"
   },
   "recipient": {
-    "id": "3a1e9e58-c745-4f8d-8121-97574353ad1b",
+    "id": "c5f94392-1594-4deb-8b7d-7b1b1afa96d0",
     "city": "Hamburg",
     "name": "Netzwerk Ersatzteilhandel GmbH",
     "email": "supplier@example.test",
@@ -118,8 +118,9 @@
     "country": "DE",
     "version": 3,
     "postalCode": "20095",
-    "organizationId": "68072528-bfbd-4b61-b35f-a064257479cb",
+    "organizationId": "4c09016d-7c23-4ea8-ac9d-9aff86d6a3af",
     "paymentTermsDays": 30
   },
+  "contactLabel": "Vertriebsmitarbeiter",
   "sourceNumber": "BE-52000002"
 }
