@@ -9,7 +9,16 @@ export async function migrate(connectionString) {
   try {
     await client.query('SELECT pg_advisory_lock(884811)');
     await client.query('CREATE TABLE IF NOT EXISTS schema_migrations (name text PRIMARY KEY, checksum text NOT NULL, applied_at timestamptz NOT NULL DEFAULT now())');
+    await client.query('ALTER TABLE schema_migrations ADD COLUMN IF NOT EXISTS execution_patch jsonb');
     const dir = new URL('../backend/migrations/', import.meta.url);
+    const digest = value=>createHash('sha256').update(value).digest('hex');
+    // A released source file is never edited to repair an upgrade. Record the
+    // narrow forward patch as well as the unchanged original source checksum.
+    for(const {name,execution_patch:p} of (await client.query('SELECT name,execution_patch FROM schema_migrations WHERE execution_patch IS NOT NULL')).rows){
+      if(name!=='030_customer_credit_memos.sql'||p.migration!=='033_preserve_quotation_output_compatibility.sql')throw new Error(`Ausführungskorrektur zu ${name} wurde verändert.`);
+      const forward=await readFile(new URL(p.migration,dir),'utf8'),original=await readFile(new URL(name,dir),'utf8'),statement=text=>text.split('\n').find(line=>line.startsWith('ALTER TABLE document_attachments ADD CONSTRAINT '));
+      if(digest(forward)!==p.checksum||digest(statement(original))!==p.originalStatementChecksum||digest(statement(forward))!==p.replacementStatementChecksum)throw new Error(`Ausführungskorrektur zu ${name} wurde verändert.`);
+    }
     for (const name of (await readdir(dir)).filter(n=>n.endsWith('.sql')).sort()) {
       const sql = await readFile(new URL(name,dir),'utf8');
       const checksum = createHash('sha256').update(sql).digest('hex');
@@ -20,8 +29,16 @@ export async function migrate(connectionString) {
       }
       await client.query('BEGIN');
       try {
-        await client.query(sql);
-        await client.query('INSERT INTO schema_migrations(name,checksum) VALUES($1,$2)',[name,checksum]);
+        let executable=sql,patch=null;
+        if(name==='030_customer_credit_memos.sql'){
+          const patchName='033_preserve_quotation_output_compatibility.sql',forward=await readFile(new URL(patchName,dir),'utf8');
+          const old="ALTER TABLE document_attachments ADD CONSTRAINT document_attachments_document_type_check CHECK(document_type IN('RECORD','ORDER_CONFIRMATION','PURCHASE_ORDER','GOODS_RECEIPT','DELIVERY_NOTE','SERVICE_REPORT','EXTERNAL_PDF','INVOICE','CREDIT_NOTE'));";
+          const replacement=forward.split('\n').find(line=>line.startsWith('ALTER TABLE document_attachments ADD CONSTRAINT '));
+          if(!replacement||!replacement.includes("'QUOTATION','CREDIT_NOTE'" )||sql.split(old).length!==2)throw new Error('Eindeutige Ausführungskorrektur für bestehende Angebotsarchive fehlt.');
+          executable=sql.replace(old,replacement);patch={migration:patchName,checksum:digest(forward),originalStatementChecksum:digest(old),replacementStatementChecksum:digest(replacement)};
+        }
+        await client.query(executable);
+        await client.query('INSERT INTO schema_migrations(name,checksum,execution_patch) VALUES($1,$2,$3)',[name,checksum,patch]);
         await client.query('COMMIT');
       } catch(e) { await client.query('ROLLBACK'); throw e; }
     }
