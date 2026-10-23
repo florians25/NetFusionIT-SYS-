@@ -1,0 +1,2 @@
+# Preserve the original machine-generated validation report, including its whitespace.
+direct-sales-billing-validation.xml -whitespace
