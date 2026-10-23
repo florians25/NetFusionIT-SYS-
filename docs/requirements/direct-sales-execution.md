@@ -1,6 +1,6 @@
 # Direkte Lagerauslieferung · Preview0.20
 
-Erster tatsächlicher Teilumfang aus [DS-01–16](direct-sales.md). Noch keine vollständige Direktvertriebsabnahme: lieferbezogene Fakturaanforderungen und direkte AU-Beschaffung fehlen weiterhin und werden anschließend ergänzt.
+Erster tatsächlicher Teilumfang aus [DS-01–16](direct-sales.md). Noch keine vollständige Direktvertriebsabnahme: Preview0.21 ergänzt inzwischen die [direkte Lieferfaktura](direct-sales-billing.md); AU-Beschaffung bleibt offen.
 
 Der Ausführungsweg wird bei AU-Anlage ausdrücklich gewählt und in der unabhängigen Freigabe gebunden. Ein Verkaufsangebot erzeugt einen Direktvertriebs-AU, ein Service-Kostenvoranschlag einen Service-AU. Der Weg bleibt nach Speicherung unveränderlich; ein anderer Weg braucht einen eigenen kontrollierten Änderungsprozess. Bereits archivierte kommerzielle Originale bleiben unverändert.
 
@@ -12,6 +12,6 @@ Rücknahme bucht den vollständigen Original-WA mit gleicher Menge, Bewertung, K
 
 Der Schwarz-Weiß-Lieferschein nutzt tatsächliches Warenausgangsdatum, vereinbarten Warenempfänger, AU-/Kundenbestellreferenz und Originalmengen. Kleine native Anlagenlisten am Warenbeleg und AU zeigen wirkliche geschützte PDF-Dateien; Kunden erhalten nur eigene freigegebene Originale und keine interne Bewertung oder Lagerdetails. Datumswerte werden aus PostgreSQL als Datumstext gelesen, damit eine Serverzeitzone das aufgedruckte Lieferdatum nicht verschiebt.
 
-Noch offen: AU-Fehlbedarf/BANF/Bestellung/Teil-WE und Rechnungseingang, lieferbezogene AF/Freigabe/Vorrat/RE/ZUGFeRD/FI/OP, Änderung nach Freigabe, Teilretoure nach Faktura/Gutschrift, eigene ungebuchte Kommissionier-/Lieferaufträge, Packstücke/Versand, Nichtlager-/Lizenzbereitstellung und Streckengeschäft. Diese Lücken sind kein erledigter Direktvertrieb und kein Gesamtabschluss des Backlogs.
+Noch offen: AU-Fehlbedarf/BANF/Bestellung/Teil-WE und Rechnungseingang, erweiterte Faktura-/Steuer-/Finanzpartnerfälle, Änderung nach Freigabe, Teilretoure nach Faktura/Gutschrift, eigene ungebuchte Kommissionier-/Lieferaufträge, Packstücke/Versand, Nichtlager-/Lizenzbereitstellung und Streckengeschäft. Diese Lücken sind kein erledigter Direktvertrieb und kein Gesamtabschluss des Backlogs.
 
 Abgenommen:295/295 vollständige Tests einschließlich12 Direktvertriebsfällen, eigene native Desktop-/390px-Browserkette und betroffene Service-/AU-/KVA-Regressionen. [Echte Artefakte](../previews/v0.20.0-preview.1/README.md). Migrationen001–024 sind nach Anwendung und Prüfsummenprüfung eingefroren.

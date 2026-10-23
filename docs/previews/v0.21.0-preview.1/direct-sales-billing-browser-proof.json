@@ -1,0 +1,19 @@
+{
+  "orderNumber": "AU-42000000",
+  "actualDeliveryQuantity": "2",
+  "requestedQuantity": "2",
+  "invoicedQuantity": "1",
+  "remainingApprovedQuantity": "1.000000",
+  "invoiceNumber": "RE-45000000",
+  "net": "100.00",
+  "tax": "19.00",
+  "gross": "119.00",
+  "actualDeliveryDate": "22.10.2026",
+  "independentApproval": true,
+  "germanDecimalInput": "1,0",
+  "noAdditionalServiceDocuments": true,
+  "noTicketReferences": true,
+  "returnBlockedAfterRequest": true,
+  "customerWidth": 390,
+  "errors": []
+}

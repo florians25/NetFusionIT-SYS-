@@ -1,0 +1,131 @@
+{
+  "version": "0.21.0-preview.1",
+  "date": "2026-10-23",
+  "tests": {
+    "passed": 307,
+    "failed": 0,
+    "log": "erp-021-full-regression.log",
+    "directSalesBillingCases": 12,
+    "finalTargetedAfterAttachmentAggregation": {
+      "passed": 20,
+      "failed": 0,
+      "log": "erp-021-attachments-final-tests.log"
+    }
+  },
+  "build": {
+    "api": true,
+    "fullUI5LibrariesInDocker": true,
+    "nativeUI5App": true
+  },
+  "browsers": {
+    "directSalesBilling": true,
+    "directSalesStock": true,
+    "legacyServiceBillingAndCRM": true,
+    "sourceOrderNavigation": true,
+    "actualOriginalDownload": true,
+    "mobileNativeInvoiceActions": true,
+    "customerWidths": [
+      390
+    ],
+    "allHistoricalSuites": false
+  },
+  "main": {
+    "time": "2026-10-23T08:58:21.213Z",
+    "version": "0.21.0-preview.1",
+    "readiness": 200,
+    "authenticatedRole": "ADMIN",
+    "migrations": 25,
+    "lastMigration": {
+      "name": "025_direct_sales_billing.sql",
+      "checksum": "b7adab226727112e3ab2fdf2889ecc2ab981e03b9db3a1b21e2058cc9a5b620e"
+    },
+    "allMigrationChecksumsVerified": true,
+    "directFulfillmentStatus": 200,
+    "estimatesStatus": 200,
+    "quotesStatus": 200,
+    "counts": {
+      "quotes": 0,
+      "salesorders": 0,
+      "serviceorders": 0,
+      "invoices": 0,
+      "companies": 0,
+      "fulfillment": 0
+    },
+    "backupCatalogVerified": true
+  },
+  "dockerProduction": {
+    "imageId": "sha256:d29a1f30e2d7e3e2d51510ec488562ea81f4deee9115410ee70d81b1b1d32084",
+    "time": "2026-10-23T08:58:27.181Z",
+    "image": "netfusion-erp:0.21.0-preview.1",
+    "readiness": 200,
+    "authenticatedRole": "ADMIN",
+    "emptyBillingWorklist": true,
+    "emptyIncomingWorklist": true,
+    "uiStatus": 200,
+    "warehouseStructureAndScopedScan": true,
+    "actualInventoryCaptureAndAbort": true,
+    "salesConfigurationVerified": true,
+    "quoteWorklistVerified": true,
+    "directSalesWorklistVerified": true,
+    "actualWarehouseLabelBytes": 16409,
+    "incomingOriginalValidated": true,
+    "validator": "Mustang-CLI 2.26.0",
+    "pdfBytes": 37578,
+    "xmlBytes": 4891,
+    "readOnlyRuntime": true,
+    "buildCertificateAbsent": true
+  },
+  "dockerInstall": {
+    "time": "2026-10-23T08:59:41.356Z",
+    "port": 8070,
+    "origin": "https://localhost:8070",
+    "imageId": "d29a1f30e2d7e3e2d51510ec488562ea81f4deee9115410ee70d81b1b1d32084",
+    "realCaddyTLS": true,
+    "certificateVerification": true,
+    "secureSessionCookie": true,
+    "automaticMigrationsAndBootstrap": true,
+    "authenticatedRole": "ADMIN",
+    "originalAdminPreservedAfterRecreation": true,
+    "changedPasswordPreserved": true,
+    "separateAPISecrets": true,
+    "changedHostnameRejected": true,
+    "emptyQuoteWorklist": true
+  },
+  "pdf": {
+    "downloadedFromBrowser": true,
+    "title": "Rechnung",
+    "templateVersion": 5,
+    "pages": 1,
+    "dpi": 150,
+    "decoded": "RE-45000000",
+    "format": "CODE_128",
+    "actualDeliveryDate": "22.10.2026",
+    "invoicedQuantity": "1.0",
+    "net": "100.00",
+    "tax": "19.00",
+    "gross": "119.00",
+    "orderNumber": "AU-42000000",
+    "customerReference": "PO-AU-2026-001",
+    "deliveryNumber": "LS-44000000",
+    "noTechnicalServiceReference": true,
+    "embeddedXml": "factur-x.xml",
+    "independentlyValidatedPdf": true,
+    "validator": "Mustang-CLI 2.26.0",
+    "sha256": "f429f5d04fd91861a2b5b2f0fcd60c83eeb41131c6a3028654b2ce5c7085ad9e",
+    "xmlSha256": "06f19aa55bea8ef586d14e1049f58662b0b4e6a08d2faef387a1fb446ffdd3b3",
+    "validatorWarnings": [
+      {
+        "code": "PEPPOL-EN16931-R008",
+        "message": "Empty ApplicableHeaderTradeDelivery; validator status remains valid."
+      }
+    ],
+    "peppolConformanceClaimed": false
+  },
+  "limits": [
+    "Direct AU procurement/partial goods receipt/incoming invoice not implemented yet",
+    "Invoiced returns/credits and extended tax/FX/financial parties remain open",
+    "Full reporting and remaining master backlog open",
+    "No Peppol/XRechnung conformity or production/legal acceptance claimed",
+    "No target Ubuntu deployment"
+  ]
+}

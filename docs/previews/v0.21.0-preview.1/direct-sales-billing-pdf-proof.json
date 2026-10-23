@@ -1,0 +1,30 @@
+{
+  "downloadedFromBrowser": true,
+  "title": "Rechnung",
+  "templateVersion": 5,
+  "pages": 1,
+  "dpi": 150,
+  "decoded": "RE-45000000",
+  "format": "CODE_128",
+  "actualDeliveryDate": "22.10.2026",
+  "invoicedQuantity": "1.0",
+  "net": "100.00",
+  "tax": "19.00",
+  "gross": "119.00",
+  "orderNumber": "AU-42000000",
+  "customerReference": "PO-AU-2026-001",
+  "deliveryNumber": "LS-44000000",
+  "noTechnicalServiceReference": true,
+  "embeddedXml": "factur-x.xml",
+  "independentlyValidatedPdf": true,
+  "validator": "Mustang-CLI 2.26.0",
+  "sha256": "f429f5d04fd91861a2b5b2f0fcd60c83eeb41131c6a3028654b2ce5c7085ad9e",
+  "xmlSha256": "06f19aa55bea8ef586d14e1049f58662b0b4e6a08d2faef387a1fb446ffdd3b3",
+  "validatorWarnings": [
+    {
+      "code": "PEPPOL-EN16931-R008",
+      "message": "Empty ApplicableHeaderTradeDelivery; validator status remains valid."
+    }
+  ],
+  "peppolConformanceClaimed": false
+}

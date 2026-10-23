@@ -1,0 +1,11 @@
+{
+  "orderNumber": "AU-42000000",
+  "deliveredQuantity": "5",
+  "invoiceCount": 3,
+  "net": "500.00",
+  "tax": "95.00",
+  "gross": "595.00",
+  "actualDeliveryDate": "22.10.2026",
+  "noAdditionalServiceDocuments": true,
+  "outputValidated": true
+}

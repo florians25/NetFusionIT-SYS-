@@ -16,7 +16,7 @@ services:
       retries: 12
   migrate:
     build: .
-    image: netfusion-erp:${ERP_IMAGE_TAG:-0.20.0-preview.1}
+    image: netfusion-erp:${ERP_IMAGE_TAG:-0.21.0-preview.1}
     command: [node, scripts/release.mjs]
     environment:
       DATABASE_URL: postgresql://erp_app:${ERP_DATABASE_PASSWORD:?Set a random URL-safe application DB password}@db:5432/erp
@@ -27,7 +27,7 @@ services:
     read_only: true
     tmpfs: [/tmp]
   api:
-    image: netfusion-erp:${ERP_IMAGE_TAG:-0.20.0-preview.1}
+    image: netfusion-erp:${ERP_IMAGE_TAG:-0.21.0-preview.1}
     restart: unless-stopped
     environment:
       NODE_ENV: production
@@ -57,7 +57,7 @@ services:
       - caddy-config:/config
     depends_on: [api]
   bootstrap:
-    image: netfusion-erp:${ERP_IMAGE_TAG:-0.20.0-preview.1}
+    image: netfusion-erp:${ERP_IMAGE_TAG:-0.21.0-preview.1}
     profiles: [setup]
     command: [node, scripts/bootstrap.mjs]
     environment:

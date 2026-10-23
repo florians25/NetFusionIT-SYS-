@@ -1,0 +1,15 @@
+# Direktvertriebsfaktura · Preview0.21
+
+Tatsächlich gebuchte, nicht zurückgenommene Warenpositionen liefern die Fakturaquelle `WA:<goods_issue_item_id>`. AU-Planmenge und Lagerreservierung sind keine Leistung und erzeugen keine Rechnung. Auftrag, Position und Einteilung bleiben über den originalen WA nachvollziehbar; kein künstlicher SA, WOT oder SRM. Die Fakturaanforderung verwendet den gemeinsamen Freigabeprozess und den gemeinsamen Vorrat, Rechnung, FI, Forderung und Ausgabejob.
+
+Ein Entwurf bindet seine Teilmenge bereits gegen andere Anforderungen. Nur unabhängig freigegebene Anforderungen erscheinen im Vorrat. Teilfaktura verbraucht ausschließlich freigegebene Restmengen; Parallelaufrufe können sie nicht doppelt abrechnen. Mengen-/Preis-/Steuer-/Lieferdatumsprüfungen gelten auch als SQL-Commitkontrollen. Service- und AU-Quellen sind durch echte FKs und XOR-Referenzen getrennt. Zwei Aufträge mit leerem Servicebezug werden nicht als derselbe Ursprung behandelt.
+
+Preis und Steuer kommen aus dem unabhängig freigegebenen AU, das Lieferdatum vom wirklichen Warenabgang. Der Leistungszeitraum darf für diese Quelle nicht frei erfunden werden. Kundenbestellreferenz, konkrete Rechnungsanschrift, gemeinsamer Rechnungsempfänger/Regulierer und Zahlungsziel bleiben gebunden. Gleiche zweistellige Währung, Inland DE und positive reguläre Steuer bleiben die begrenzte erste Fakturabasis. Abweichende Finanzpartner/FX/Steuerfälle und Rundungsdifferenzkorrekturen brauchen eigene Folgeprozesse.
+
+Eine gültige RE erzeugt Erlös/Steuer/Forderung. Der bereits bei WA gebuchte Bestand und Warenaufwand werden nicht erneut gebucht. Original-PDF/A-3b mit eingebettetem CII EN16931, Hash und tatsächlichem Mustang-Prüfprotokoll bleiben unveränderlich. Formularrevision5, Schwarz-Weiß, Code128, ein einzelnes tatsächliches Lieferdatum in deutscher Schreibweise, echte AU-/PO-/LS-Referenzen. Reine Warenrechnungen besitzen keine Ticketreferenz. Ein ZUGFeRD-Nachweis ist kein XRechnungsnachweis oder rechtliches Produktivtestat.
+
+Bereits eine aktive AF verhindert einfache Original-WA-Rücknahme. Ein kontrollierter Storno einer unfakturierten AF gibt die Quelle wieder frei; fakturierte Anforderungen bleiben gebunden. AF-Anlage und Warenrücknahme sperren denselben echten Unternehmens-/Auftragsstand. Ein Konkurrenztest bestätigt, dass nur eine Seite gewinnen kann. Retoure/Gutschrift nach Faktura ist weiterhin offen und wird nicht durch eine unzulässige einfache Rücknahme ersetzt.
+
+Native OpenUI5-Masken verwenden die tatsächlichen AU- und LS-Ursprünge. Deutsche Dezimalmengeneingabe, festes Lieferdatum in der Anforderung, unabhängige Freigabe und Restmenge im Vorrat. Auf390px wird die PDF-Aktion im nativen Objektaktionsmenü angeboten. Der AU bündelt eigene Rechnungs-/Lieferbelege in seiner kleinen Anlagenliste; Kunde und Lagerrolle erhalten verschiedene berechtigte Sichten.
+
+Nachweise: [Preview0.21](../previews/v0.21.0-preview.1/README.md), [verbleibender DS-Backlog](direct-sales.md). AU-Beschaffung mit BANF/BE/Teil-WE und Eingangsfaktura, fakturierte Retoure/Korrektur, Sammel-/periodische Faktura, zusätzliche Ausführungsarten und Reports bleiben offen.

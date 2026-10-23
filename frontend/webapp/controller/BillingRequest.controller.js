@@ -4,6 +4,6 @@ sap.ui.define(['netfusion/erp/controller/Base.controller','netfusion/erp/util/Fo
   load:async function(){if(!await this.guard('billingInternal'))return;return this.run(async function(){this.vm().setProperty('/request',await this.api('/api/billing/requests/'+this.id));});},
   onSubmit:function(){this.run(async function(){await this.api('/api/workflow/submit/'+this.id,{method:'POST',key:crypto.randomUUID(),body:{version:this.vm().getProperty('/request/version')}});await this.load();});},
   onCancel:function(){form(this,'Fakturaanforderung zurücknehmen',[{key:'reason',label:'Begründung',type:'textarea',required:true}],async function(data,key){data.version=this.vm().getProperty('/request/version');await this.api('/api/billing/requests/'+this.id+'/cancel',{method:'POST',key:key,body:data});});},
-  onOrder:function(){this.route('order',{id:this.vm().getProperty('/request/order_id')});}
+  onOrder:function(){this.onDocument(this.vm().getProperty('/request/orderKind'),this.vm().getProperty('/request/orderId'));}
  });
 });

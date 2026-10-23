@@ -1,7 +1,7 @@
 import {inventoryFixture} from './inventory-fixture.mjs';
 import {cmd,ok} from './service-fixture.mjs';
-export async function warehouseFixture(h,{tracked=false,firstUnitPrice='40'}={}){
- const f=await inventoryFixture(h,{firstUnitPrice});if(tracked)ok(await f.admin('/api/inventory/materials/'+f.product.id+'/settings',cmd({version:0,serialRequired:true,batchRequired:true,valuationMethod:'MOVING_AVERAGE'})));else ok(await f.configure());ok(await f.rules());
+export async function warehouseFixture(h,{tracked=false,firstUnitPrice='40',companyVatId=''}={}){
+ const f=await inventoryFixture(h,{firstUnitPrice,companyVatId});if(tracked)ok(await f.admin('/api/inventory/materials/'+f.product.id+'/settings',cmd({version:0,serialRequired:true,batchRequired:true,valuationMethod:'MOVING_AVERAGE'})));else ok(await f.configure());ok(await f.rules());
  const body=await f.body(f.pos[0],tracked?'1':'6');if(tracked)body.items=['WH-SERIAL-1','WH-SERIAL-2'].map(serial=>({...body.items[0],quantity:'1',batch:'WH-BATCH-A',serial}));
  const receipt=ok(await f.warehouse('/api/procurement/documents/'+f.pos[0].id+'/receipts',cmd(body))),context=()=>f.warehouse('/api/warehouse/companies/'+f.company.id),initial=ok(await context(),200),buffer=initial.bins.find(b=>b.systemBuffer);
  const area=ok(await f.warehouse('/api/warehouse/areas',cmd({locationId:f.location.id,code:'A',name:'Netzwerk-Ersatzteile'}))),rack=ok(await f.warehouse('/api/warehouse/racks',cmd({areaId:area.id,aisle:'01',code:'R03',name:'Ersatzteilregal 03'})));

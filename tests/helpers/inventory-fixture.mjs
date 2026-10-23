@@ -2,8 +2,8 @@ import {randomUUID} from 'node:crypto';
 import {client} from '../../scripts/test-harness.mjs';
 import {cmd,ok} from './service-fixture.mjs';
 import {procurementFixture} from './procurement-fixture.mjs';
-export async function inventoryFixture(h,{firstUnitPrice='40'}={}){
- const f=await procurementFixture(h),u={name:'Lager Berlin',email:'warehouse@example.test',password:randomUUID(),role:'WAREHOUSE',organizationId:f.org};ok(await f.admin('/api/admin/users',{method:'POST',body:u}));h.accounts.push({tenant:'netfusion',...u});const warehouse=await client(h.base,{tenant:'netfusion',...u});
+export async function inventoryFixture(h,{firstUnitPrice='40',companyVatId=''}={}){
+ const f=await procurementFixture(h,{companyVatId}),u={name:'Lager Berlin',email:'warehouse@example.test',password:randomUUID(),role:'WAREHOUSE',organizationId:f.org};ok(await f.admin('/api/admin/users',{method:'POST',body:u}));h.accounts.push({tenant:'netfusion',...u});const warehouse=await client(h.base,{tenant:'netfusion',...u});
  const supplier=ok(await f.admin('/api/procurement/suppliers',cmd({organizationId:f.org,name:'Netzwerk Ersatzteilhandel GmbH',email:'supplier@example.test',street:'Lieferantenstraße 2',postalCode:'20095',city:'Hamburg',country:'DE',vatId:'',paymentTermsDays:30})));ok(await f.approve(supplier.id,1));
  const period=ok(await f.admin('/api/finance/companies/'+f.company.id+'/periods',cmd({year:2026,period:10,dateFrom:'2026-10-01',dateTo:'2026-10-31'}))),inventory=ok(await f.admin('/api/finance/companies/'+f.company.id+'/accounts',cmd({code:'1000',name:'Materialbestand',kind:'ASSET'}))),grir=ok(await f.admin('/api/finance/companies/'+f.company.id+'/accounts',cmd({code:'1900',name:'Wareneingang Rechnungseingang',kind:'LIABILITY'})));
  const plant=ok(await warehouse('/api/inventory/companies/'+f.company.id+'/plants',cmd({code:'BER',name:'Werk Berlin'}))),location=ok(await warehouse('/api/inventory/companies/'+f.company.id+'/locations',cmd({plantId:plant.id,code:'0001',name:'Zentrallager Berlin',kind:'CENTRAL'})));
