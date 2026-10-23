@@ -1,0 +1,26 @@
+{
+  "orderNumber": "AU-42000000",
+  "purchaseNumber": "BE-52000002",
+  "firstReceipt": "WE-53000001",
+  "downloadedReceipt": "WE-53000002",
+  "germanQuantityInputs": [
+    "1,0",
+    "2,0"
+  ],
+  "partialReceiptQuantities": [
+    "1",
+    "2"
+  ],
+  "downloadedQuantity": "2",
+  "downloadedValue": "80.00",
+  "netReceivedBeforeReversal": "3",
+  "reservedBeforeReversal": "5",
+  "reversalQuantity": "2",
+  "netReceivedAfterReversal": "1",
+  "reservedAfterReversal": "3",
+  "openProcurementAfterReversal": "2",
+  "actualOriginalDownloaded": true,
+  "noAdditionalServiceDocuments": true,
+  "mobileWidth": 390,
+  "errors": []
+}

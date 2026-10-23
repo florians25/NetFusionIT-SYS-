@@ -1,0 +1,137 @@
+{
+  "id": "5fb327b4-ce2f-4553-b70c-f542e81b6b01",
+  "number": "EG-59000000",
+  "dueDate": "2026-11-22",
+  "orderId": "e107c25f-73ff-4610-bdc0-d0cd103ce436",
+  "accounts": {
+    "payableAccountId": "4cf07e41-7781-4b39-9858-ff520d895c8c",
+    "inputTaxAccountId": "019f9725-3807-4f62-a47b-de6ccc8e4846",
+    "inputTaxRuleVersion": 1
+  },
+  "creditor": {
+    "id": "47d5d240-a3ab-4bcc-a2ce-e513c3fdf53f",
+    "number": "K20000000",
+    "version": 3,
+    "accountId": "4cf07e41-7781-4b39-9858-ff520d895c8c",
+    "paymentBlock": false,
+    "paymentTermsDays": 30
+  },
+  "original": {
+    "net": "120.00",
+    "tax": "22.80",
+    "date": "2026-10-23",
+    "buyer": {
+      "city": "Berlin",
+      "iban": "",
+      "name": "NetFusion Testgesellschaft",
+      "vatId": "",
+      "street": "Teststraße 1",
+      "country": "DE",
+      "taxNumber": "",
+      "postalCode": "10115"
+    },
+    "gross": "142.80",
+    "items": [
+      {
+        "net": "120.00",
+        "sku": "ER-34000000",
+        "unit": "C62",
+        "taxRate": "19",
+        "unitNet": "40.000000000000",
+        "position": 10,
+        "quantity": "3",
+        "serviceTo": "2026-10-23",
+        "description": "Netzwerk-Ersatzteile zum Kundenauftrag",
+        "priceAmount": "40",
+        "serviceFrom": "2026-10-23",
+        "basisQuantity": "1",
+        "externalPosition": "10",
+        "purchaseOrderPosition": ""
+      }
+    ],
+    "taxes": [
+      {
+        "rate": "19",
+        "basis": "120.00",
+        "amount": "22.80"
+      }
+    ],
+    "format": "CII",
+    "number": "LF-AU-BROWSER-001",
+    "seller": {
+      "city": "Hamburg",
+      "iban": "DE89370400440532013000",
+      "name": "Netzwerk Ersatzteilhandel GmbH",
+      "vatId": "DE123456789",
+      "street": "Lieferantenstraße 2",
+      "country": "DE",
+      "taxNumber": "",
+      "postalCode": "20095"
+    },
+    "dueDate": "2026-11-22",
+    "payable": "142.80",
+    "profile": "urn:cen.eu:en16931:2017",
+    "currency": "EUR",
+    "typeCode": "380",
+    "buyerReference": "Tatsächliche Ersatzteillieferung zum AU",
+    "purchaseOrderReference": ""
+  },
+  "periodId": "4756b1ec-f5a6-430c-ad72-56b2f336a8a7",
+  "companyId": "e445313f-3b55-4ac6-83c8-495aefa0f94f",
+  "orderKind": "SALES_ORDER",
+  "taxReview": {
+    "at": "2026-10-23T15:23:52.156Z",
+    "name": "Florian · Administration",
+    "note": "Originalpflichtangaben, Rechnungsempfänger, tatsächliche Leistung und Vorsteuerberechtigung unabhängig geprüft.",
+    "actorId": "8d470f18-ba7e-43df-9b45-1f3f49231a1b"
+  },
+  "preparedAt": "2026-10-23T15:23:48.423Z",
+  "preparedBy": "a5388ff5-0d17-4fcd-a2c4-a8e010fcdf74",
+  "supplierId": "e46ffedc-5558-4abd-a05e-54d8c3b19b1f",
+  "allocations": [
+    {
+      "net": "40.00",
+      "unit": "C62",
+      "quantity": "1.000000",
+      "receiptId": "230586ff-03f4-45e4-ba19-537b7cdce900",
+      "description": "Netzwerk-Ersatzteile zum Kundenauftrag",
+      "receiptDate": "2026-10-23",
+      "grirAccountId": "abaf614b-7d3d-493f-adaf-057ecf80f672",
+      "invoiceItemId": "8202ccd4-a141-4540-a281-2d853b0cc9bf",
+      "receiptItemId": "d00970c4-0c3b-4260-bdce-9af192ddf154",
+      "receiptNumber": "WE-53000001",
+      "grirAccountCode": "1900",
+      "invoicePosition": "10",
+      "originalQuantity": "1.000000",
+      "previousPostedNet": "0.00",
+      "originalClearingValue": "40.00",
+      "previousPostedQuantity": "0.000000",
+      "netUsedBeforeAllocation": "0.00",
+      "quantityUsedBeforeAllocation": "0.000000"
+    },
+    {
+      "net": "80.00",
+      "unit": "C62",
+      "quantity": "2.000000",
+      "receiptId": "223a4311-5a12-4868-bfc4-45b95f51018e",
+      "description": "Netzwerk-Ersatzteile zum Kundenauftrag",
+      "receiptDate": "2026-10-23",
+      "grirAccountId": "d1d52cfb-6986-468b-adee-022b957f1f49",
+      "invoiceItemId": "8202ccd4-a141-4540-a281-2d853b0cc9bf",
+      "receiptItemId": "495e8f47-9998-4897-9a77-2bb5dfd0b47d",
+      "receiptNumber": "WE-53000002",
+      "grirAccountCode": "1901",
+      "invoicePosition": "10",
+      "originalQuantity": "2.000000",
+      "previousPostedNet": "0.00",
+      "originalClearingValue": "80.00",
+      "previousPostedQuantity": "0.000000",
+      "netUsedBeforeAllocation": "0.00",
+      "quantityUsedBeforeAllocation": "0.000000"
+    }
+  ],
+  "postingDate": "2026-10-23",
+  "commercialNote": "Original, tatsächliche Teilelieferungen und Kundenauftragspositionen sachlich abgeglichen.",
+  "originalSha256": "24fd5d9f4a11c0ad5ca732ea95ca1714e47ea56259308a291ebbf022be48e7a1",
+  "purchaseOrderId": "9b636ea1-1c3b-4f79-9e47-1cf994242ac8"
+}

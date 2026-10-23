@@ -1,0 +1,19 @@
+{
+  "originalBrowserDownload": true,
+  "number": "WE-53000002",
+  "pages": 1,
+  "format": "A4",
+  "templateRevision": 5,
+  "sha256": "d4799a433a148c46316682718dec9c5dd78b99f79c9c856f436fb15c3b72f2d6",
+  "bytes": 22204,
+  "decodedBarcode": "WE-53000002",
+  "symbology": "CODE_128",
+  "rasterDpi": 150,
+  "tokens": [
+    "80,00 EUR",
+    "2 EA",
+    "AU-42000000",
+    "23.10.2026"
+  ],
+  "noServiceOrTicketReference": true
+}

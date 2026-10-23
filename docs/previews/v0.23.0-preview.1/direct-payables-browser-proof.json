@@ -1,0 +1,18 @@
+{
+  "orderNumber": "AU-42000000",
+  "purchaseNumber": "BE-52000002",
+  "invoiceNumber": "EG-59000000",
+  "partialReceipts": [
+    "1",
+    "2"
+  ],
+  "net": "120.00",
+  "tax": "22.80",
+  "gross": "142.80",
+  "independentTaxApproval": true,
+  "originalAccountsCleared": true,
+  "noSecondStockPosting": true,
+  "noAdditionalServiceDocuments": true,
+  "actualOriginalDownloaded": true,
+  "mobileWidth": 390
+}

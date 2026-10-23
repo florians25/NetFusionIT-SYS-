@@ -1,0 +1,16 @@
+{
+  "time": "2026-10-23T15:27:46.541Z",
+  "migrationCount": 26,
+  "counts": {
+    "tickets": 0,
+    "sales_orders": 0,
+    "purchase_orders": 0,
+    "goods_receipts": 0,
+    "supplier_invoices": 0
+  },
+  "archiveBytes": 884927,
+  "archiveSha256": "6723e7ca88c94794284c839903191183fb4b86e539a8252fad686eb2ed59898f",
+  "mode": 384,
+  "catalogVerified": true,
+  "restoreExecuted": false
+}

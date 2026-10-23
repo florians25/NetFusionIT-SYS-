@@ -12,4 +12,4 @@ Bereits eine aktive AF verhindert einfache Original-WA-Rücknahme. Ein kontrolli
 
 Native OpenUI5-Masken verwenden die tatsächlichen AU- und LS-Ursprünge. Deutsche Dezimalmengeneingabe, festes Lieferdatum in der Anforderung, unabhängige Freigabe und Restmenge im Vorrat. Auf390px wird die PDF-Aktion im nativen Objektaktionsmenü angeboten. Der AU bündelt eigene Rechnungs-/Lieferbelege in seiner kleinen Anlagenliste; Kunde und Lagerrolle erhalten verschiedene berechtigte Sichten.
 
-Nachweise: [Preview0.21](../previews/v0.21.0-preview.1/README.md), [verbleibender DS-Backlog](direct-sales.md). AU-Beschaffung mit BANF/BE/Teil-WE und Eingangsfaktura, fakturierte Retoure/Korrektur, Sammel-/periodische Faktura, zusätzliche Ausführungsarten und Reports bleiben offen.
+Nachweise: [Preview0.21](../previews/v0.21.0-preview.1/README.md), [verbleibender DS-Backlog](direct-sales.md). AU-Beschaffung mit BANF/BE ist seit0.22 vorhanden; [tatsächlicher AU-Teil-WE und Rechnungseingang](direct-sales-receipts-payables.md) seit0.23. Fakturierte Retoure/Korrektur, Sammel-/periodische Faktura, zusätzliche Ausführungsarten und Reports bleiben offen.

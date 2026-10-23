@@ -1,0 +1,16 @@
+{
+  "orderNumber": "AU-42000000",
+  "purchaseNumber": "BE-52000002",
+  "plannedQuantity": "5",
+  "stockReservation": "2",
+  "partialReceipts": [
+    "1",
+    "2"
+  ],
+  "netReceived": "3",
+  "reservedForOrder": "5",
+  "doubleReceiptPrevented": true,
+  "actualConsumptionBlocksReceiptReversal": true,
+  "exactOriginalReversal": true,
+  "noAdditionalServiceDocuments": true
+}

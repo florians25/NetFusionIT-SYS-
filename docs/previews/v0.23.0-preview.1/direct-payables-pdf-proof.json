@@ -1,0 +1,20 @@
+{
+  "originalBrowserDownload": true,
+  "number": "EG-59000000",
+  "pages": 1,
+  "format": "A4",
+  "templateRevision": 5,
+  "sha256": "4ae89bbc45d322b7eff49bc2af2a2752017401756261222e6d8b46947cf9dad1",
+  "bytes": 25960,
+  "decodedBarcode": "EG-59000000",
+  "symbology": "CODE_128",
+  "rasterDpi": 150,
+  "tokens": [
+    "120,00 EUR",
+    "22,80 EUR",
+    "142,80 EUR",
+    "AU-42000000",
+    "23.10.2026"
+  ],
+  "noServiceOrTicketReference": true
+}

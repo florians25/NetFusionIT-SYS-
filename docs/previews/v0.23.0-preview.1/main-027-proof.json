@@ -1,0 +1,29 @@
+{
+  "time": "2026-10-23T15:32:39.574Z",
+  "version": "0.23.0-preview.1",
+  "readiness": 200,
+  "authenticatedRole": "ADMIN",
+  "migrations": 27,
+  "lastMigration": {
+    "name": "027_direct_sales_receipts_and_payables.sql",
+    "checksum": "a90baea3e4e5b36e46a1c01677997fc539c233554503e0420464bf2c299a8695"
+  },
+  "allMigrationChecksumsVerified": true,
+  "counts": {
+    "tickets": 0,
+    "salesorders": 0,
+    "serviceorders": 0,
+    "purchaseorders": 0,
+    "goodsreceipts": 0,
+    "supplierinvoices": 0,
+    "invoices": 0,
+    "companies": 0
+  },
+  "worklists": {
+    "/api/sales/fulfillment": 200,
+    "/api/sales/procurement": 200,
+    "/api/incoming-invoices": 200,
+    "/api/quotes": 200
+  },
+  "backupCatalogVerified": true
+}

@@ -50,4 +50,4 @@ Vor Updates Datenbank und alle Installations-/Archiv-/Caddy-Volumes sichern. `do
 
 Der technische Installationsnachweis ersetzt die noch offene fachliche und betriebliche Produktivabnahme des ERP nicht. Der verfügbare Ubuntu-Zielserver wurde durch Änderungen im Repository nicht automatisch eingerichtet.
 
-Technisch geprüft: [automatische Erstinstallation, tatsächliches HTTPS8070 und Passworterhalt nach Containerneuanlage](previews/v0.22.0-preview.1/docker-install-8070.json). Interne Dienstadressen sind vom ausgehenden HTTP-Proxy ausgenommen; dies verhindert eine versehentliche Umleitung des Caddy→API-Verkehrs in Proxy-Umgebungen.
+Technisch geprüft: [automatische Erstinstallation, tatsächliches HTTPS8070 und Passworterhalt nach Containerneuanlage](previews/v0.23.0-preview.1/docker-install-8070.json). Interne Dienstadressen sind vom ausgehenden HTTP-Proxy ausgenommen; dies verhindert eine versehentliche Umleitung des Caddy→API-Verkehrs in Proxy-Umgebungen.

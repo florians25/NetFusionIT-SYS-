@@ -1,0 +1,166 @@
+{
+  "version": "0.23.0-preview.1",
+  "date": "2026-10-23",
+  "tests": {
+    "fullPassed": 338,
+    "fullFailed": 0,
+    "fullLog": "erp-023-first-full-regression.log",
+    "newDirectReceiptsCases": 7,
+    "newDirectPayablesCases": 8,
+    "newTrackingCases": 3,
+    "finalUIAttachmentsPdfPassed": 13,
+    "finalLog": "erp-023-final-ui-pdf-tests.log"
+  },
+  "build": {
+    "api": true,
+    "fullUI5LibrariesInDocker": true,
+    "nativeUI5App": true,
+    "OpenUI5": "1.152.1"
+  },
+  "browsers": {
+    "directPartialReceipts": true,
+    "directInvoiceMatchingPosting": true,
+    "legacyServiceProcurement": true,
+    "legacyInventory": true,
+    "legacySupplierReversal": true,
+    "directSalesStock": true,
+    "directSalesBilling": true,
+    "actualOriginalDownloads": true,
+    "mobileWidths": [
+      390
+    ],
+    "allHistoricalSuites": false
+  },
+  "limits": [
+    "Same-company, same-currency approved DIRECT stock items; AU overdelivery tolerance0",
+    "Price/quantity deviations rejected before preparation; posted AP open item payment-blocked",
+    "No invoice credit/partial reversal/payment run/manual MR11 account maintenance yet",
+    "No full DS-10 cost/margin reporting, invoiced customer returns, non-stock/drop-shipping/FX or full master-backlog acceptance",
+    "No complete AU receipt-to-invoice business chain repeated inside Docker smoke",
+    "No target Ubuntu deployment, registry publication or separate GitHub Release object"
+  ],
+  "main": {
+    "time": "2026-10-23T15:32:39.574Z",
+    "version": "0.23.0-preview.1",
+    "readiness": 200,
+    "authenticatedRole": "ADMIN",
+    "migrations": 27,
+    "lastMigration": {
+      "name": "027_direct_sales_receipts_and_payables.sql",
+      "checksum": "a90baea3e4e5b36e46a1c01677997fc539c233554503e0420464bf2c299a8695"
+    },
+    "allMigrationChecksumsVerified": true,
+    "counts": {
+      "tickets": 0,
+      "salesorders": 0,
+      "serviceorders": 0,
+      "purchaseorders": 0,
+      "goodsreceipts": 0,
+      "supplierinvoices": 0,
+      "invoices": 0,
+      "companies": 0
+    },
+    "worklists": {
+      "/api/sales/fulfillment": 200,
+      "/api/sales/procurement": 200,
+      "/api/incoming-invoices": 200,
+      "/api/quotes": 200
+    },
+    "backupCatalogVerified": true
+  },
+  "mainBackup": {
+    "time": "2026-10-23T15:27:46.541Z",
+    "migrationCount": 26,
+    "counts": {
+      "tickets": 0,
+      "sales_orders": 0,
+      "purchase_orders": 0,
+      "goods_receipts": 0,
+      "supplier_invoices": 0
+    },
+    "archiveBytes": 884927,
+    "archiveSha256": "6723e7ca88c94794284c839903191183fb4b86e539a8252fad686eb2ed59898f",
+    "mode": 384,
+    "catalogVerified": true,
+    "restoreExecuted": false
+  },
+  "dockerProduction": {
+    "imageId": "sha256:689f686670aea456991450febf1d8ce3d9edd3fa70be504242b039901336691f",
+    "time": "2026-10-23T15:28:08.713Z",
+    "image": "netfusion-erp:0.23.0-preview.1",
+    "readiness": 200,
+    "authenticatedRole": "ADMIN",
+    "emptyBillingWorklist": true,
+    "emptyIncomingWorklist": true,
+    "uiStatus": 200,
+    "warehouseStructureAndScopedScan": true,
+    "actualInventoryCaptureAndAbort": true,
+    "salesConfigurationVerified": true,
+    "quoteWorklistVerified": true,
+    "directSalesWorklistVerified": true,
+    "directProcurementWorklistVerified": true,
+    "actualWarehouseLabelBytes": 16424,
+    "incomingOriginalValidated": true,
+    "validator": "Mustang-CLI 2.26.0",
+    "pdfBytes": 37578,
+    "xmlBytes": 4891,
+    "readOnlyRuntime": true,
+    "buildCertificateAbsent": true
+  },
+  "dockerInstall": {
+    "time": "2026-10-23T15:29:28.084Z",
+    "port": 8070,
+    "origin": "https://localhost:8070",
+    "imageId": "689f686670aea456991450febf1d8ce3d9edd3fa70be504242b039901336691f",
+    "realCaddyTLS": true,
+    "certificateVerification": true,
+    "secureSessionCookie": true,
+    "automaticMigrationsAndBootstrap": true,
+    "authenticatedRole": "ADMIN",
+    "originalAdminPreservedAfterRecreation": true,
+    "changedPasswordPreserved": true,
+    "separateAPISecrets": true,
+    "changedHostnameRejected": true,
+    "emptyQuoteWorklist": true,
+    "emptyDirectProcurementWorklist": true
+  },
+  "receiptPDF": {
+    "originalBrowserDownload": true,
+    "number": "WE-53000002",
+    "pages": 1,
+    "format": "A4",
+    "templateRevision": 5,
+    "sha256": "d4799a433a148c46316682718dec9c5dd78b99f79c9c856f436fb15c3b72f2d6",
+    "bytes": 22204,
+    "decodedBarcode": "WE-53000002",
+    "symbology": "CODE_128",
+    "rasterDpi": 150,
+    "tokens": [
+      "80,00 EUR",
+      "2 EA",
+      "AU-42000000",
+      "23.10.2026"
+    ],
+    "noServiceOrTicketReference": true
+  },
+  "payablesPDF": {
+    "originalBrowserDownload": true,
+    "number": "EG-59000000",
+    "pages": 1,
+    "format": "A4",
+    "templateRevision": 5,
+    "sha256": "4ae89bbc45d322b7eff49bc2af2a2752017401756261222e6d8b46947cf9dad1",
+    "bytes": 25960,
+    "decodedBarcode": "EG-59000000",
+    "symbology": "CODE_128",
+    "rasterDpi": 150,
+    "tokens": [
+      "120,00 EUR",
+      "22,80 EUR",
+      "142,80 EUR",
+      "AU-42000000",
+      "23.10.2026"
+    ],
+    "noServiceOrTicketReference": true
+  }
+}
