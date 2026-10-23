@@ -1,6 +1,8 @@
 # Reporting und Statistiken · verbindlicher Ausbau
 
-Beauftragt im Masterprompt und am 23.10.2026 nochmals ausdrücklich präzisiert. **Status: offen, vorhandene Cockpit-Zähler und Summen/Salden sind Teilbasis.** Berichte werden zusammen mit ihren tatsächlich implementierten Fachquellen entwickelt; fehlende Quellen werden als fehlende Abdeckung ausgewiesen. [Masterbacklog mit aktueller Reihenfolge](../master-backlog-index.md), [Direktvertrieb](direct-sales.md).
+Beauftragt im Masterprompt und am 23.10.2026 nochmals ausdrücklich präzisiert. **Status0.26: erste geprüfte App für RPT-01/02/03/06/12 vorhanden; die übrigen Pakete und unten genannten Erweiterungen bleiben offen.** Berichte werden zusammen mit ihren tatsächlich implementierten Fachquellen entwickelt; fehlende Quellen werden als fehlende Abdeckung ausgewiesen. [Masterbacklog mit aktueller Reihenfolge](../master-backlog-index.md), [Direktvertrieb](direct-sales.md).
+
+Umgesetzt: [Umsatz und tatsächliche Warenkosten](sales-reporting.md) mit FI-Datumsbezug, Rechnung/GU, centgebundener ursprünglicher WA-Kostenteilung, tatsächlichen Rücknahmen, Gruppen-/Quellen-Drill-down, Vergleich und rollenabhängigem Export. Servicekosten bleiben ausdrücklich unvollständig. Gespeicherte Varianten, zusätzliche Dimensionen und operative Berichte sind weiterhin offen.
 
 ## Fachliche Regeln aus dem Handbuchabgleich
 
@@ -13,7 +15,7 @@ Die tatsächlichen SAP-Fachtexte zu Sales, Umsatz, offenen Verkäufen und Deckun
 - **Zeit-/Währungsbezug:** Rechnungs-, Liefer-/Leistungs- und FI-Buchungsdatum ausdrücklich unterscheiden. Kalender-/Geschäftsperiode und Vergleichszeitraum anzeigen. Unterschiedliche Währungen getrennt auswerten; Umrechnung nur mit tatsächlichem freigegebenem Kurs und ausgewiesenem Stichtag.
 - **Drill-down und Datenschutz:** Aggregat → Kunde/Artikel/Auftrag → berechtigte Belegposition → Originalbeleg. Filterung bereits auf Datenbankebene nach Tenant, Organisation, Rolle und erlaubten Dimensionen; keine intern sichtbaren Kosten im Kundenportal. Begrenzte, seitenweise Detailabfragen statt unbeschränktem Vollabruf.
 
-## Verbleibende Arbeitspakete
+## Verbindliche Arbeitspakete und verbleibender Vollumfang
 
 | ID | Bericht / Funktion | Abnahme |
 | --- | --- | --- |

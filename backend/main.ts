@@ -1,4 +1,6 @@
 import 'reflect-metadata';
+import {SalesReporting} from './sales-reporting';
+import {SalesReportingController} from './sales-reporting.controller';
 import {CustomerCredits} from './customer-credits';
 import {CustomerCreditsController} from './customer-credits.controller';
 import {DocumentSettings} from './document-settings';
@@ -66,7 +68,7 @@ import { Sla } from './sla';
 import { Operations } from './operations';
 import { Dispatch } from './dispatch';
 import { OperationsController } from './operations.controller';
-@Module({controllers:[CustomerCreditsController,DocumentSettingsController,PurchasingOrganizationController,DirectProcurementController,SalesFulfillmentController,ServiceQuotesController,SalesOrdersController,InventoryCountsController,WarehouseController,SupplierReversalsController,IncomingInvoicesController,BillingController,PartnerFinanceController,AttachmentsController,ServiceDeliveriesController,NumberSeriesController,MaterialPlanningController,InventoryController,ProcurementController,FinanceController,WorkController,CommerceController,HealthController,AuthController,ApiController,ODataController,WorkflowController,OperationsController],providers:[CustomerCredits,DocumentSettings,PurchasingOrganization,DirectProcurement,SalesFulfillment,ServiceQuotes,SalesOrders,InventoryCounts,Warehouse,SupplierReversals,SupplierPosting,IncomingInvoiceMatching,IncomingInvoices,Billing,PartnerFinance,Attachments,ServiceDeliveries,NumberSeries,MaterialPlanning,Inventory,Procurement,Finance,Work,Commerce,Db,AuthService,SessionGuard,Service,Admin,OData,Workflow,Collaboration,Sla,Operations,Dispatch]})
+@Module({controllers:[SalesReportingController,CustomerCreditsController,DocumentSettingsController,PurchasingOrganizationController,DirectProcurementController,SalesFulfillmentController,ServiceQuotesController,SalesOrdersController,InventoryCountsController,WarehouseController,SupplierReversalsController,IncomingInvoicesController,BillingController,PartnerFinanceController,AttachmentsController,ServiceDeliveriesController,NumberSeriesController,MaterialPlanningController,InventoryController,ProcurementController,FinanceController,WorkController,CommerceController,HealthController,AuthController,ApiController,ODataController,WorkflowController,OperationsController],providers:[SalesReporting,CustomerCredits,DocumentSettings,PurchasingOrganization,DirectProcurement,SalesFulfillment,ServiceQuotes,SalesOrders,InventoryCounts,Warehouse,SupplierReversals,SupplierPosting,IncomingInvoiceMatching,IncomingInvoices,Billing,PartnerFinance,Attachments,ServiceDeliveries,NumberSeries,MaterialPlanning,Inventory,Procurement,Finance,Work,Commerce,Db,AuthService,SessionGuard,Service,Admin,OData,Workflow,Collaboration,Sla,Operations,Dispatch]})
 class AppModule{}
 @Catch()
 class SafeErrors implements ExceptionFilter {

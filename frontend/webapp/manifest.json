@@ -5,7 +5,7 @@
     "type": "application",
     "title": "NetFusion Service Workspace",
     "applicationVersion": {
-      "version": "0.25.0"
+      "version": "0.26.0"
     },
     "dataSources": {
       "service": {
@@ -349,6 +349,11 @@
           "name": "customerCredit",
           "pattern": "customer-credits/{id}",
           "target": "CustomerCredit"
+        },
+        {
+          "name": "salesReporting",
+          "pattern": "reporting/sales",
+          "target": "SalesReporting"
         }
       ],
       "targets": {
@@ -525,6 +530,9 @@
         },
         "CustomerCredit": {
           "viewName": "CustomerCredit"
+        },
+        "SalesReporting": {
+          "viewName": "SalesReporting"
         }
       }
     }

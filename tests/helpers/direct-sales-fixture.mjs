@@ -3,8 +3,8 @@ import{client}from'../../scripts/test-harness.mjs';
 import{warehouseFixture}from'./warehouse-fixture.mjs';
 import{configureSales,approvedSalesOrder}from'./sales-fixture.mjs';
 import{cmd,ok}from'./service-fixture.mjs';
-export async function directSalesFixture(h){
- const f=await configureSales(h,await warehouseFixture(h,{companyVatId:'DE123456789'})),staff={};
+export async function directSalesFixture(h,warehouseOptions={}){
+ const f=await configureSales(h,await warehouseFixture(h,{companyVatId:'DE123456789',...warehouseOptions})),staff={};
  for(const role of ['BILLING','ACCOUNTANT']){const u={name:'Direktvertriebsfaktura '+role,email:role.toLowerCase()+'@example.test',password:randomUUID(),role,organizationId:f.org};ok(await f.admin('/api/admin/users',{method:'POST',body:u}));h.accounts.push({tenant:'netfusion',...u});staff[role]=await client(h.base,{tenant:'netfusion',...u});}
  const billing=staff.BILLING,accountant=staff.ACCOUNTANT,accounts={};for(const[kind,code,name]of[['RECEIVABLE','1400','Forderungen aus Warenverkauf'],['REVENUE','8400','Warenerlöse'],['TAX','1776','Umsatzsteuer']])accounts[kind]=ok(await f.admin('/api/finance/companies/'+f.company.id+'/accounts',cmd({kind,code,name})));
  ok(await f.admin('/api/finance/companies/'+f.company.id+'/rules',cmd({event:'SALES_INVOICE',version:0,accounts:{receivable:accounts.RECEIVABLE.id,revenue:accounts.REVENUE.id,tax:accounts.TAX.id}})));

@@ -55,6 +55,8 @@ export const grants:Record<string,readonly Role[]>={
  'partner.account.read':['ADMIN','MASTER_DATA','BILLING','ACCOUNTANT','CONTROLLER','EXECUTIVE'],
  'partner.account.write':['ADMIN','ACCOUNTANT'],
  'billing.read':['ADMIN','BILLING','ACCOUNTANT','CONTROLLER','EXECUTIVE','CUSTOMER'],
+ 'reporting.sales.read':['ADMIN','SALES','BILLING','ACCOUNTANT','CONTROLLER','EXECUTIVE'],
+ 'reporting.cost.read':['ADMIN','ACCOUNTANT','CONTROLLER','EXECUTIVE'],
  'billing.credit.read':['ADMIN','BILLING','ACCOUNTANT','CONTROLLER','EXECUTIVE'],
  'billing.credit.write':['ADMIN','BILLING','ACCOUNTANT'],
  'billing.write':['ADMIN','BILLING'], 'finance.read':['ADMIN','ACCOUNTANT','CONTROLLER','EXECUTIVE'],
