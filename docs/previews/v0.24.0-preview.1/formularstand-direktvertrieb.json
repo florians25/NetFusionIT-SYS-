@@ -1,0 +1,117 @@
+{
+  "date": "2026-10-23",
+  "rows": [
+    [
+      "0010",
+      "SPARE-10\nNetzwerk-Ersatzteile laut Kundenbestellung\nEmpfangswerk: BER · Werk Berlin",
+      "3 EA",
+      "40,00 EUR",
+      "/ 1 EA",
+      "120,00 EUR",
+      "2026-10-30"
+    ]
+  ],
+  "title": "Bestellung",
+  "fields": [
+    [
+      "Organisation",
+      "Service Deutschland"
+    ],
+    [
+      "Vorgangsversion",
+      "3"
+    ],
+    [
+      "Kundenauftrag",
+      "AU-42000000"
+    ],
+    [
+      "Einkaufsorganisation",
+      "EK10 · Zentrale Beschaffung"
+    ],
+    [
+      "Einkäufergruppe",
+      "IT01 · IT-Systemtechnik"
+    ],
+    [
+      "Bestelltext",
+      "Direkte Warenbeschaffung zum Kundenauftrag"
+    ],
+    [
+      "Lieferanten-Nr.",
+      "LF-20000000"
+    ],
+    [
+      "Zahlungsziel",
+      "30 Tage"
+    ],
+    [
+      "Lieferanschrift",
+      "NetFusion Testgesellschaft\nTeststraße 1\n10115 Berlin\nDE"
+    ]
+  ],
+  "issuer": {
+    "city": "Berlin",
+    "name": "NetFusion Testgesellschaft",
+    "vatId": "",
+    "digits": 2,
+    "street": "Teststraße 1",
+    "country": "DE",
+    "postalCode": "10115"
+  },
+  "notice": "Bestellwerte netto. Lieferungen und Rechnungen bitte mit dieser Bestellnummer kennzeichnen.",
+  "number": "BE-52000002",
+  "status": "Freigegeben",
+  "totals": [
+    [
+      "Bestellwert netto",
+      "120,00 EUR"
+    ]
+  ],
+  "columns": [
+    {
+      "title": "Pos.",
+      "width": 40
+    },
+    {
+      "title": "Material / Bezeichnung",
+      "width": 200
+    },
+    {
+      "title": "Menge",
+      "width": 55
+    },
+    {
+      "title": "Preis netto",
+      "width": 75
+    },
+    {
+      "title": "Preis-\neinheit",
+      "width": 60
+    },
+    {
+      "title": "Gesamt\nnetto",
+      "width": 85
+    },
+    {
+      "title": "Liefer-\ntermin",
+      "width": 70
+    }
+  ],
+  "recipient": {
+    "id": "590d5665-74ee-42aa-a146-86f85120fe31",
+    "city": "Hamburg",
+    "name": "Netzwerk Ersatzteilhandel GmbH",
+    "email": "supplier@example.test",
+    "vatId": "",
+    "number": "LF-20000000",
+    "status": "ACTIVE",
+    "street": "Lieferantenstraße 2",
+    "country": "DE",
+    "version": 3,
+    "postalCode": "20095",
+    "organizationId": "3ca54b46-2716-4bf1-b691-16a0ed041e4d",
+    "paymentTermsDays": 30
+  },
+  "sourceNumber": "BE-52000002"
+}

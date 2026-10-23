@@ -5,7 +5,7 @@
     "type": "application",
     "title": "NetFusion Service Workspace",
     "applicationVersion": {
-      "version": "0.23.0-preview.1"
+      "version": "0.24.0-preview.1"
     },
     "dataSources": {
       "service": {
@@ -214,6 +214,11 @@
           "name": "suppliers",
           "target": "Suppliers",
           "pattern": "suppliers"
+        },
+        {
+          "name": "purchasingSetup",
+          "target": "PurchasingSetup",
+          "pattern": "procurement/configuration"
         },
         {
           "name": "procurement",
@@ -484,6 +489,9 @@
         "SalesProcurement": {
           "viewName": "SalesProcurement",
           "viewId": "SalesProcurement"
+        },
+        "PurchasingSetup": {
+          "viewName": "PurchasingSetup"
         }
       }
     }

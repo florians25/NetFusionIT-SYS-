@@ -1,0 +1,30 @@
+{
+  "openUI5": "1.152.1",
+  "nativeControlsOnly": true,
+  "configurationCreatedThroughUI": true,
+  "independentPurchaseApproval": true,
+  "partialReceipt": "1 of 3",
+  "receivingPlant": "BER",
+  "organizationSnapshot": {
+    "buyerGroupId": "efd2179c-9b0f-412a-a237-e4f9006219ef",
+    "buyerGroupCode": "IT01",
+    "buyerGroupName": "IT-Systemtechnik",
+    "buyerGroupVersion": 1,
+    "purchasingOrganizationId": "a160955e-8339-464e-9efc-aa007fd55f47",
+    "purchasingOrganizationCode": "EK10",
+    "purchasingOrganizationName": "Zentrale Beschaffung",
+    "purchasingOrganizationVersion": 2
+  },
+  "purchaseOrder": "BE-52000002",
+  "phoneWidth": 390,
+  "horizontalOverflow": false,
+  "errors": [],
+  "shots": [
+    "01-einkaufsstruktur",
+    "02-bestellung-anlegen",
+    "03-bestellung-freigegeben",
+    "04-teilwareneingang",
+    "05-einkaufsstruktur-mobil",
+    "06-bestellung-mobil"
+  ]
+}

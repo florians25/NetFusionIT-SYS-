@@ -1,0 +1,13 @@
+{
+  "migrations": 28,
+  "allChecksumsVerified": true,
+  "configuration": 200,
+  "artificialDocumentsCreated": 0,
+  "documentCounts": {
+    "service_orders": 0,
+    "sales_orders": 0,
+    "purchase_orders": 0,
+    "goods_receipts": 0
+  },
+  "readiness": 200
+}

@@ -14,7 +14,7 @@ import { Db,Principal,parse,uuid,audit,idempotent } from './core';
 import { ROLES,requirePermission } from './permissions';
 import { checkOrg,document,notify,version } from './business';
 import { submitReport,decideReport,lockReportSubject } from './work';
-import { procurementSubject,lockProcurementSubject,validateProcurementApproval,refreshRequisition } from './procurement';
+import { procurementSubject,lockProcurementSubject,validateProcurementApproval,refreshRequisition,checkPurchasingResponsibility } from './procurement';
 export const approvalSubjects:Record<string,{table:string,pending:string,approved:string,rejected:string,permission:string}>={QUOTATION:{table:'service_quotes',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'quote.write'},SALES_ORDER:{table:'sales_orders',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'sales.write'},INVENTORY_COUNT:{table:'inventory_counts',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'inventory.count.prepare'},SUPPLIER_INVOICE_REVERSAL:{table:'supplier_invoice_reversals',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'ap.post'},SUPPLIER_INVOICE:{table:'supplier_invoices',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'ap.post'},BILLING_REQUEST:{table:'billing_requests',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'billing.release'},PARTNER_ACCOUNT:{table:'partner_company_accounts',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'partner.account.write'},COMPANY_BILLING_PROFILE:{table:'company_billing_profiles',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'partner.account.write'},BUSINESS_PARTNER:{table:'business_partners',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'partner.write'},MATERIAL:{table:'products',pending:'IN_REVIEW',approved:'ACTIVE',rejected:'REJECTED',permission:'material.write'},SERVICE_ORDER:{table:'service_orders',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'order.write'},REQUISITION:{table:'purchase_requisitions',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'requisition.write'},PURCHASE_ORDER:{table:'purchase_orders',pending:'IN_REVIEW',approved:'RELEASED',rejected:'REJECTED',permission:'procurement.write'},ACCOUNTING:{table:'journals',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'finance.write'},SERVICE_REPORT:{table:'service_reports',pending:'IN_REVIEW',approved:'APPROVED',rejected:'REJECTED',permission:'order.execute'}};
 @Injectable()
 export class Workflow {
@@ -95,6 +95,7 @@ export class Workflow {
    const doc=await document(db,u,i.document_id,true),subject=approvalSubjects[doc.kind];
    if(!subject)throw new ConflictException('Freigabe-Belegtyp fehlt.');
    if(input.inputTaxChecked!==undefined&&doc.kind!=='SUPPLIER_INVOICE')throw new ConflictException('Vorsteuerbestätigung gehört ausschließlich zur Eingangsrechnungsfreigabe.');
+   if(doc.kind==='PURCHASE_ORDER')await checkPurchasingResponsibility(db,u,i.document_id);
    if(doc.kind==='QUOTATION'&&input.decision!=='RESUBMIT')await serviceQuoteReviewer(db,u,i.document_id);
    if(doc.kind==='SALES_ORDER'&&input.decision!=='RESUBMIT')await salesOrderReviewer(db,u,i.document_id);
    if(doc.kind==='INVENTORY_COUNT'&&input.decision!=='RESUBMIT')await inventoryCountReviewer(db,u,i.document_id);
@@ -118,7 +119,7 @@ export class Workflow {
     if(!(await db.query("SELECT 1 FROM service_orders o JOIN business_partners p ON p.tenant_id=o.tenant_id AND p.id=o.partner_id WHERE o.tenant_id=$1 AND o.id=$2 AND p.status='ACTIVE'",[u.tenantId,i.document_id])).rowCount)throw new ConflictException('Kunde ist nicht mehr aktiv; Auftrag kann nicht freigegeben werden.');
     if((await db.query("SELECT 1 FROM service_order_items i JOIN products p ON p.tenant_id=i.tenant_id AND p.id=i.product_id WHERE i.tenant_id=$1 AND i.order_id=$2 AND p.status<>'ACTIVE'",[u.tenantId,i.document_id])).rowCount)throw new ConflictException('Ein Auftragsartikel ist nicht mehr freigegeben.');
    }
-   if(['REQUISITION','PURCHASE_ORDER'].includes(doc.kind)&&status==='APPROVED')await validateProcurementApproval(db,u,i.document_id,doc.kind);
+   if(['REQUISITION','PURCHASE_ORDER'].includes(doc.kind)&&input.decision==='APPROVE')await validateProcurementApproval(db,u,i.document_id,doc.kind);
    if(doc.kind==='BILLING_REQUEST'&&status==='APPROVED')await validateBillingRequest(db,u,i.document_id);
    if(['PARTNER_ACCOUNT','COMPANY_BILLING_PROFILE'].includes(doc.kind)&&status==='APPROVED')await validateFinancialMaster(db,u,i.document_id,doc.kind);
    if(doc.kind==='INVENTORY_COUNT'&&status==='APPROVED')await approveInventoryCount(db,u,i.document_id,input.comment);

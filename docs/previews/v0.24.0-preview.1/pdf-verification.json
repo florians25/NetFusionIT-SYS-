@@ -1,0 +1,14 @@
+{
+  "number": "BE-52000002",
+  "orderNumber": "AU-42000000",
+  "sha256": "503b8d15ca4d6dc68f4c24ab5354ed8d5f86b865783a65af935393af4d58c085",
+  "templateVersion": 5,
+  "decodedBarcode": "BE-52000002",
+  "barcode": "Code128",
+  "quantity": "3",
+  "net": "120.00",
+  "deliveryDate": "30.10.2026",
+  "purchasingOrganization": "EK10",
+  "buyerGroup": "IT01",
+  "receivingPlant": "BER"
+}
