@@ -1,0 +1,19 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:f="sap.f" xmlns:core="sap.ui.core" controllerName="netfusion.erp.controller.CustomerCredits" displayBlock="true">
+ <f:DynamicPage fitContent="false">
+  <f:title><f:DynamicPageTitle><f:heading><Title text="Kundengutschriften"/></f:heading><f:actions><Button text="Fakturavorrat" press=".onBilling" visible="{state&gt;/access/billingInternal}"/><Button text="Aktualisieren" icon="sap-icon://refresh" press=".load"/></f:actions></f:DynamicPageTitle></f:title>
+  <f:header><f:DynamicPageHeader><FlexBox wrap="Wrap">
+   <VBox class="sapUiLargeMarginEnd sapUiSmallMarginBottom"><Label text="Gutschriften gesamt"/><ObjectNumber number="{view&gt;/summary/total}" emphasized="true"/></VBox>
+   <VBox class="sapUiLargeMarginEnd sapUiSmallMarginBottom"><Label text="In Vorbereitung"/><ObjectNumber number="{view&gt;/summary/draft}"/></VBox>
+   <VBox class="sapUiLargeMarginEnd sapUiSmallMarginBottom"><Label text="Prüfung / Buchung offen"/><ObjectNumber number="{view&gt;/summary/review}" state="Warning"/></VBox>
+   <VBox class="sapUiSmallMarginBottom"><Label text="Gebucht und verrechnet"/><ObjectNumber number="{view&gt;/summary/posted}" state="Success"/></VBox>
+  </FlexBox></f:DynamicPageHeader></f:header>
+  <f:content><VBox class="sapUiContentPadding">
+   <MessageStrip text="Eine vollständige Rechnungskorrektur bereiten Sie an der ursprünglichen Warenrechnung vor. Erst unabhängige Finanzfreigabe und Buchung erzeugen den Gutschriftbetrag und den Debitoren-Gegenposten." showIcon="true" class="sapUiSmallMarginBottom"/>
+   <OverflowToolbar><Title text="Gutschriften mit Rechnungsbezug" level="H3"/><ToolbarSpacer/><SearchField id="creditSearch" placeholder="Gutschrift, Rechnung, Kunde oder Auftrag" width="24rem" liveChange=".onFilter"/><Select id="creditStatus" change=".onFilter" ariaLabelledBy="creditStatusLabel"><core:Item key="" text="Alle Status"/><core:Item key="DRAFT" text="Entwurf"/><core:Item key="IN_REVIEW" text="In Prüfung"/><core:Item key="APPROVED" text="Freigegeben"/><core:Item key="REJECTED" text="Abgelehnt"/><core:Item key="POSTED" text="Gebucht"/></Select></OverflowToolbar><Label id="creditStatusLabel" text="Gutschriftstatus" visible="false"/>
+   <Table id="creditList" items="{view&gt;/rows}" noDataText="Noch keine Gutschriften im berechtigten Organisationsumfang vorhanden" growing="true" sticky="ColumnHeaders,HeaderToolbar">
+    <columns><Column width="12rem"><Text text="Gutschrift / Status"/></Column><Column><Text text="Kunde / Kundenauftrag"/></Column><Column minScreenWidth="Tablet" demandPopin="true"><Text text="Ursprungsrechnung"/></Column><Column minScreenWidth="Tablet" demandPopin="true" width="9rem"><Text text="Belegdatum"/></Column><Column hAlign="End" width="10rem"><Text text="Gutschrift brutto"/></Column></columns>
+    <items><ColumnListItem type="Navigation" press=".onOpen"><cells><VBox><ObjectIdentifier title="{view&gt;number}"/><ObjectStatus text="{path:'view&gt;status',formatter:'.formatter.status'}" state="{path:'view&gt;status',formatter:'.formatter.statusState'}"/></VBox><ObjectIdentifier title="{view&gt;partnerName}" text="{view&gt;orderNumber}"/><Text text="{view&gt;invoiceNumber}" wrapping="false"/><Text text="{path:'view&gt;documentDate',formatter:'.formatter.dateOnly'}" wrapping="false"/><ObjectNumber number="{path:'view&gt;gross',formatter:'.formatter.money'}" unit="{view&gt;currency}"/></cells></ColumnListItem></items>
+   </Table>
+  </VBox></f:content>
+ </f:DynamicPage>
+</mvc:View>

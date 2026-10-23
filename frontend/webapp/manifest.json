@@ -339,6 +339,16 @@
           "pattern": "document-settings",
           "name": "documentSettings",
           "target": "documentSettings"
+        },
+        {
+          "name": "customerCredits",
+          "pattern": "customer-credits",
+          "target": "CustomerCredits"
+        },
+        {
+          "name": "customerCredit",
+          "pattern": "customer-credits/{id}",
+          "target": "CustomerCredit"
         }
       ],
       "targets": {
@@ -509,6 +519,12 @@
         "documentSettings": {
           "viewName": "DocumentSettings",
           "viewLevel": 1
+        },
+        "CustomerCredits": {
+          "viewName": "CustomerCredits"
+        },
+        "CustomerCredit": {
+          "viewName": "CustomerCredit"
         }
       }
     }

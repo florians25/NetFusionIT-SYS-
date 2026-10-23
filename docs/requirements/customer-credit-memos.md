@@ -1,0 +1,19 @@
+# Kundengutschrift und vollständige Warenrücknahme
+
+Ein eigener GU-Beleg korrigiert eine gebuchte Direktvertriebsrechnung vollständig. Er übernimmt deren tatsächliche Positionen, Mengen, Nettopreise, Steuergruppen, Rechnungs-/Lieferdaten und ursprüngliche Kontierung. Der Ersteller und jeder spätere Vorbereiter sind von der eigenen Finanzfreigabe ausgeschlossen. Eine Rückfrage, Ablehnung oder kontrollierte Rücknahme der ungebuchten Freigabe bleibt in der Historie sichtbar. Neue Vorbereitung benötigt eine erneute unabhängige Prüfung.
+
+Erst die Buchung erzeugt die exakte Gegen-FI auf den ursprünglichen Konten und einen eigenen Debitoren-Gegenposten. Der originale OP wird erhalten; die Saldenansicht verrechnet ihn auf null. Das Kreditlimit verwendet diesen tatsächlichen Rest. Parallelaufrufe und wiederholte Kommandos erzeugen keine zweite Gutschrift oder Gegenbuchung. Eine zwischenzeitlich geschlossene Periode oder ungültig gewordene Finanzfreigabe verhindert die Buchung vollständig.
+
+Die Gutschrift erhält eine eigene validierte PDF/A-3b-/CII-Ausgabe mit Dokumenttyp381, ursprünglicher Rechnungsnummer und ursprünglichem Rechnungsdatum. Die Ausgabe verwendet das gemeinsame Schwarz-Weiß-Formular mit normaler Anschrift links, vollständigem Vertriebsmitarbeiter rechts und Code128. Sie wird unveränderlich in der kleinen Anlagenliste des GU und des AU archiviert. Das frühere Rechnungs-PDF bleibt bytegleich. Kunden können ausschließlich eigene gebuchte Gutschriften herunterladen; interne Prüfstände und Kostenkontierung sind nicht öffentlich.
+
+Gutschrift und tatsächliche Warenannahme sind getrennte Vorgänge. Das Lager darf eine ganze Auslieferung erst zurücknehmen, wenn sämtliche noch aktiven Fakturaanforderungsmengen vollständig fakturiert und gutgeschrieben sind. Eine offene, nur teilweise fakturierte Anforderung bleibt gesperrt. Unfakturierte Anforderungen können weiterhin kontrolliert storniert werden. Der Lagerbenutzer bestätigt den vollständigen tatsächlichen Rückerhalt an der originalen Auslieferung. Die bestehende Gegenbewegung übernimmt Menge, Fach, Charge/Serie, Wert und ursprüngliche FI-Konten; sie bucht weder einen Planbestand noch einen neuen Einkaufspreis. Die alten Fakturaquellen bleiben historisch verbraucht und lassen sich nicht erneut abrechnen.
+
+Native OpenUI5-Apps: eigener Gutschriftenarbeitsplatz mit Status/Suche, große Objektseite mit Originalpositionen im Desktop-Raster, mobile Pop-ins, unabhängige Freigabehistorie, Gegenkontierung, Anlagen und aufklappbarer Belegflussbaum. Einstieg über die App-Zentrale oder die ursprüngliche Rechnung. Deutsche Daten und Zahlen; keine zusätzlichen globalen Reiter.
+
+## Nachweise und Grenzen
+
+API-/DB-Prüfung umfasst Wiederholung/Konkurrenz, Eigenfreigabesperre, Periodensperre und erneute Prüfung, mandantengeschützte Salden/Ausgaben, SQL-Gegenbuchungssperre, exakte FI/OP, echte Bestandsgegenbewegung und unveränderte Originalbytes. Der native Browserablauf prüft zwei unabhängige Finanzrollen, tatsächlichen PDF-Download, Lagerannahme und390px.
+
+Dies ist die vollständige Rechnungskorrektur für den vorhandenen unbezahlten Inlands-Warenverkauf. Eigene RT-Retourenaufträge, Teilgutschriften, Teilrückgaben mit verbleibendem AF-Rest, Prüfung/Sperrbestand, Wiederaufbereitung, Servicekorrekturen, bereits ausgeglichene Rechnungen, Rückzahlungen und externe Versandkanäle bleiben offen. Eine GU hebt die ursprüngliche Anforderung nicht auf und erzeugt keine automatische Ersatzrechnung. Der Periodenbericht muss die GU am eigenen Buchungsdatum und die physische Gegenbewegung an deren tatsächlichem Buchungsdatum berücksichtigen.
+
+Migrationen030/031 ergänzen neue Tabellen, geschützte Salden und die Weiterentwicklung der vorhandenen Rücknahmeschranke.031 korrigiert die JSON-Ausdrucksgruppierung nach dem isolierten Migrationstest; bereits angewandte Skripte werden nicht nachträglich verändert.001–029 bleiben unverändert.
