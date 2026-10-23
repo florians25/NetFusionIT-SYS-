@@ -37,7 +37,7 @@ export class Collaboration {
   return this.db.as(u,async db=>{
    const partner=(await db.query('SELECT id,number,name,email,status,version,roles,legal_form AS "legalForm",vat_id AS "vatId",currency,organization_id AS "organizationId" FROM business_partners WHERE tenant_id=$1 AND id=$2 AND organization_id=ANY($3::uuid[]) AND ($4::uuid IS NULL OR id=$4)',[u.tenantId,id,u.orgIds,u.role==='CUSTOMER'?u.partnerId:null])).rows[0];
    if(!partner)throw new NotFoundException('Kunde nicht gefunden.');
-   return {...partner,contacts:(await db.query('SELECT id,number,name,email,phone,mobile,department,position,functions,active,valid_from::text AS "validFrom",valid_to::text AS "validTo",version FROM partner_contacts WHERE tenant_id=$1 AND partner_id=$2 ORDER BY name',[u.tenantId,id])).rows,addresses:(await db.query('SELECT id,kind,street,postal_code AS "postalCode",city,country,is_default AS "isDefault",active,version FROM partner_addresses WHERE tenant_id=$1 AND partner_id=$2 ORDER BY kind',[u.tenantId,id])).rows};
+   return {...partner,contacts:(await db.query('SELECT id,number,name,first_name AS "firstName",last_name AS "lastName",email,phone,mobile,department,position,functions,active,valid_from::text AS "validFrom",valid_to::text AS "validTo",version FROM partner_contacts WHERE tenant_id=$1 AND partner_id=$2 ORDER BY name',[u.tenantId,id])).rows,addresses:(await db.query('SELECT id,kind,street,postal_code AS "postalCode",city,country,is_default AS "isDefault",active,version FROM partner_addresses WHERE tenant_id=$1 AND partner_id=$2 ORDER BY kind',[u.tenantId,id])).rows};
   });
  }
  async partnerUpdate(u:Principal,id:string,raw:unknown,key:unknown,correlation:string){

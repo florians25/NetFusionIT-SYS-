@@ -5,7 +5,7 @@
     "type": "application",
     "title": "NetFusion Service Workspace",
     "applicationVersion": {
-      "version": "0.24.0-preview.1"
+      "version": "0.25.0"
     },
     "dataSources": {
       "service": {
@@ -329,6 +329,16 @@
           "name": "estimate",
           "target": "Quote",
           "pattern": "service/estimates/{id}"
+        },
+        {
+          "name": "workspace",
+          "pattern": "workspace/{id}",
+          "target": "Workspace"
+        },
+        {
+          "pattern": "document-settings",
+          "name": "documentSettings",
+          "target": "documentSettings"
         }
       ],
       "targets": {
@@ -492,6 +502,13 @@
         },
         "PurchasingSetup": {
           "viewName": "PurchasingSetup"
+        },
+        "Workspace": {
+          "viewName": "Workspace"
+        },
+        "documentSettings": {
+          "viewName": "DocumentSettings",
+          "viewLevel": 1
         }
       }
     }

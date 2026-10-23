@@ -1,4 +1,4 @@
-sap.ui.define(['sap/m/Dialog','sap/m/Button','sap/m/Label','sap/m/Text','sap/ui/core/Title','sap/ui/layout/form/SimpleForm'],function(Dialog,Button,Label,Text,Title,SimpleForm){
+sap.ui.define(['sap/m/Dialog','sap/m/Button','sap/m/Label','sap/m/Text','sap/ui/core/Title','sap/ui/layout/form/SimpleForm','netfusion/erp/util/Workspace'],function(Dialog,Button,Label,Text,Title,SimpleForm,Workspace){
  'use strict';
  return function(controller,item,order,internal){
   var f=controller.formatter,content=[],dialog;
@@ -12,7 +12,6 @@ sap.ui.define(['sap/m/Dialog','sap/m/Button','sap/m/Label','sap/m/Text','sap/ui/
   field('Bruttowert',f.currencyValue(item.gross,order.digits)+' '+order.currency);field('Wunschtermin',f.dateOnly(item.requestedOn));
   content.push(new Title({text:'Texte und Sperren'}));field('Positionstext',item.itemText);field('Liefersperre',item.deliveryBlock);field('Fakturasperre',item.billingBlock);field('Absagegrund',item.rejectionReason);
   if(internal){content.push(new Title({text:'Kontierung'}));field('Kostenstelle',item.costCenter);field('Kostenträger',item.costObject);field('Profitcenter',item.profitCenter);field('Projekt',item.projectReference);}
-  dialog=new Dialog({title:'Positionsdetails · '+item.position+' · '+item.product.sku,contentWidth:'760px',content:[new SimpleForm({layout:'ResponsiveGridLayout',columnsL:2,columnsM:2,editable:false,content:content})],buttons:(order.canEdit?[new Button({text:'Position bearbeiten',type:'Emphasized',press:function(){dialog.close();controller.editItem(item);}})]:[]).concat([new Button({text:'Schließen',press:function(){dialog.close();}})]),afterClose:function(){dialog.destroy();}});
-  controller.getView().addDependent(dialog);dialog.open();return dialog;
+  var buttons=(order.canEdit?[new Button({text:'Position bearbeiten',type:'Emphasized',press:function(){dialog.close();controller.editItem(item);}})]:[]).concat([new Button({text:'Zurück zum Vorgang',press:function(){dialog.close();}})]);dialog=Workspace.open(controller,{title:'Positionsdetails · '+item.position+' · '+item.product.sku,content:[new SimpleForm({layout:'ResponsiveGridLayout',columnsXL:2,columnsL:2,columnsM:1,editable:false,content:content})],buttons:buttons});return dialog;
  };
 });

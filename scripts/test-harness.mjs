@@ -6,6 +6,7 @@ import { configuration,databaseUrls,startDatabase,root } from './local.mjs';
 import { migrate } from './migrate.mjs';
 import { seed } from './seed.mjs';
 export async function harness(port=3101){
+  const offset=Number(process.env.ERP_TEST_PORT_OFFSET||0);if(!Number.isInteger(offset)||offset<0||port+offset>65535)throw new Error('Ungültiger isolierter Testport-Versatz.');port+=offset;
   const config=await configuration();let ownedDatabase=null,server=null,admin=null,closed=false,logs='';
   const cluster=new pg.Client({connectionString:databaseUrls(config,'postgres').admin,connectionTimeoutMillis:1000});
   try{await cluster.connect();}catch{ownedDatabase=await startDatabase(config);}finally{await cluster.end().catch(()=>{});}

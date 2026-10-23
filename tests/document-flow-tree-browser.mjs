@@ -1,3 +1,4 @@
+import {editingSurface} from './helpers/editing-surface.mjs';
 import {chromium} from 'playwright-core';
 import assert from 'node:assert/strict';
 import {mkdir,writeFile} from 'node:fs/promises';
@@ -14,7 +15,7 @@ try{
  async function settle(p){await p.waitForLoadState('networkidle');await p.waitForFunction(()=>!document.querySelector('.sapMNavItemFading,.sapMNavItemTransparent,.sapMNavItemSlideRightToCenter,[aria-busy="true"]'));await p.waitForFunction(()=>!window.sap?.ui?.getCore?.().getUIDirty?.());}
  async function login(p,h,role){await p.goto(h.base+'/?sap-ui-animationMode=none#login');const a=h.accounts.find(a=>a.role===role);await p.getByRole('textbox',{name:'E-Mail-Adresse',exact:true}).fill(a.email);await p.getByRole('textbox',{name:'Passwort',exact:true}).fill(a.password);await p.getByRole('button',{name:'Anmelden',exact:true}).click();await p.locator('[id$="--appCenterTitle"]').waitFor();await settle(p);}
  const tree=p=>p.locator('[id$="--documentFlowTree"]').filter({visible:true});
- async function action(p,name){let b=p.getByRole('button',{name,exact:true}).filter({visible:true});if(!await b.count()){const toolbar=p.locator('.sapMOTB').filter({has:p.locator('[id$="--documentFlowTitle"]')}).filter({visible:true});await toolbar.locator('[id$="-overflowButton"]').click();b=p.getByRole('button',{name,exact:true}).filter({visible:true});}await b.click();await settle(p);if(await p.getByRole('dialog',{name:'Verfügbare Werte',exact:true}).isVisible()){await p.keyboard.press('Escape');await p.getByRole('dialog',{name:'Verfügbare Werte',exact:true}).waitFor({state:'hidden'});}}
+ async function action(p,name){let b=p.getByRole('button',{name,exact:true}).filter({visible:true});if(!await b.count()){const toolbar=p.locator('.sapMOTB').filter({has:p.locator('[id$="--documentFlowTitle"]')}).filter({visible:true});await toolbar.locator('[id$="-overflowButton"]').click();b=p.getByRole('button',{name,exact:true}).filter({visible:true});}await b.click();await settle(p);if(await editingSurface(p,{name:'Verfügbare Werte',exact:true}).isVisible()){await p.keyboard.press('Escape');await editingSurface(p,{name:'Verfügbare Werte',exact:true}).waitFor({state:'hidden'});}}
  async function screenshot(p,name){await settle(p);await p.screenshot({path:'test-results/'+name+'.png',fullPage:true});}
  async function flow(p,h,api,view,route,id,number){
   console.log('Checking native flow',view,number);const edges=ok(await api('/api/documents/'+id+'/flow'),200),unique=new Set(edges.map(e=>JSON.stringify([e.sourceId,e.targetId,e.kind])));

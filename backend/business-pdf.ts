@@ -1,17 +1,22 @@
 import PDFDocument from 'pdfkit';
 import path from 'node:path';
 import bwipjs from 'bwip-js';
+import {renderBusinessPdf as renderV5} from './business-pdf-v5';
+export interface DocumentContact {firstName:string;lastName:string;email:string;phone:string;version?:number;}
 export interface BusinessPdf {
  title:string;number:string;sourceNumber:string;status:string;date:string;
+ contact?:DocumentContact;
  issuer:{name:string;street?:string;postalCode?:string;city?:string;country?:string;vatId?:string};
  recipient?:{name:string;street?:string;postalCode?:string;city?:string;country?:string};
  fields:[string,string][];columns:{title:string;width:number;align?:'left'|'right'}[];rows:string[][];
  totals?:[string,string][];paragraphs?:[string,string][];notice?:string;
 }
 // DIN 5008 Form B: dimensions in mm, then converted to PDF points.
-export const BUSINESS_PDF_TEMPLATE_VERSION=5;
+export const BUSINESS_PDF_TEMPLATE_VERSION=6;
 export class BusinessPdfLayoutError extends Error {}
-export async function renderBusinessPdf(data:BusinessPdf,archiveNumber:string,options:{pdfa?:boolean}={}):Promise<Buffer>{
+export async function renderBusinessPdf(data:BusinessPdf,archiveNumber:string,options:{pdfa?:boolean;templateVersion?:5|6}={}):Promise<Buffer>{
+ if(options.templateVersion===5)return renderV5(data,archiveNumber,{pdfa:options.pdfa});
+ if(!data.contact?.firstName?.trim()||!data.contact?.lastName?.trim())throw new BusinessPdfLayoutError('Vorname und Nachname des Dokumentansprechpartners fehlen.');
  // BWIPP generates the Code 128 checksum and automatic code-set switches.
  // Keep vector bars for clean monochrome printing; no external image/URL is used.
  if(!/^[A-Za-z0-9][A-Za-z0-9._\/-]{0,47}$/.test(data.number))throw new BusinessPdfLayoutError('Belegnummer ist für den Belegbarcode nicht zulässig.');
@@ -37,7 +42,7 @@ export async function renderBusinessPdf(data:BusinessPdf,archiveNumber:string,op
  }
  function drawLines(values:string[],x:number,top:number,w:number,size=9,strong=false,align:'left'|'right'='left',pitch=12){values.forEach((v,i)=>line(v,x,top+i*pitch,w,size,strong,align));}
  function stroke(x:number,top:number,w:number,color=rule,weight=.5){doc.moveTo(x,top).lineTo(x+w,top).lineWidth(weight).strokeColor(color).stroke();}
- function continuation(){doc.addPage();line(data.issuer.name,left,mm(15),width*.62,9,true);line(data.title,left,mm(23),width*.6,11,true);line(data.number,left+width*.6,mm(23),width*.27,9,true,'right');pageFields.push({page:doc.bufferedPageRange().count-1,y:mm(23)});stroke(left,mm(31),width);y=mm(38);}
+ function continuation(){doc.addPage();line(data.issuer.name,left,mm(15),width*.62,9,true);line(data.title,left,mm(23),width*.6,11,true);line(data.number,left+width*.6,mm(23),width*.27,9,true,'right');pageFields.push({page:doc.bufferedPageRange().count-1,y:mm(23)});line('Ihr Ansprechpartner: '+data.contact!.firstName+' '+data.contact!.lastName,left,mm(31),width,8);stroke(left,mm(37),width);y=mm(44);}
  function page(height:number){if(y+height>bottom)continuation();}
  const address=(a:NonNullable<BusinessPdf['recipient']>)=>[a.name,a.street,[a.postalCode,a.city].filter(Boolean).join(' '),a.country].filter(Boolean) as string[];
  const issuerAddress=[data.issuer.street,[data.issuer.postalCode,data.issuer.city].filter(Boolean).join(' '),data.issuer.country].filter(Boolean).join(' · ');
@@ -47,31 +52,37 @@ export async function renderBusinessPdf(data:BusinessPdf,archiveNumber:string,op
  for(const mark of [105,148.5,210])stroke(mm(5),mm(mark),mm(mark===148.5?3:5));
  const sender=data.issuer.name+(issuerAddress?' · '+issuerAddress:''),senderLines=lines(sender,mm(85),6.5);if(senderLines.length>2)throw new BusinessPdfLayoutError('Absenderangabe überschreitet das DIN-Anschriftfeld.');
  drawLines(senderLines,mm(20),mm(45),mm(85),6.5,false,'left',7);
+ // Plain DIN window address; no additional table or framed block.
  if(data.recipient){const recipientLines=address(data.recipient).flatMap(v=>lines(v,mm(85),10));if(recipientLines.length>6)throw new BusinessPdfLayoutError('Empfängeranschrift überschreitet sechs Zeilen im DIN-Anschriftfeld.');drawLines(recipientLines,mm(20),mm(62.7),mm(85),10,false,'left',mm(4.23));}
  const dateValue=(v:string)=>/^\d{4}-\d{2}-\d{2}$/.test(v)?v.slice(8,10)+'.'+v.slice(5,7)+'.'+v.slice(0,4):v.replace(/\b\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z\b/g,value=>new Intl.DateTimeFormat('de-DE',{timeZone:'Europe/Berlin',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',timeZoneName:'short'}).format(new Date(value)));
  const infoX=mm(110),infoW=mm(80),titleLines=lines(data.title,infoW,12,true);drawLines(titleLines,infoX,mm(38),infoW,12,true,'left',15);
  const primaryY=Math.max(mm(50),mm(38)+titleLines.length*15+8);
  line('Nummer',infoX,primaryY,mm(40),7);line(data.number,infoX,primaryY+11,mm(40),10,true);
  line('Datum',mm(153),primaryY,mm(25),7);line(dateValue(data.date),mm(153),primaryY+11,mm(25),9);
- line('Seite',mm(180),primaryY,mm(10),7);pageFields.push({page:0,y:primaryY+11});
+
  const delivery=data.fields.find(([k])=>k==='Lieferanschrift'),version=data.fields.find(([k])=>k==='Vorgangsversion');
  const remaining=data.fields.filter(([k])=>!['Organisation','Vorgangsversion','Lieferanschrift'].includes(k));
  const reference=(k:string)=>/Bestellung|auftrag|referenz|nummer|Nummer|Referenz/.test(k);
- const header=remaining.filter(([k,v])=>{if(['Betreff','Bestelltext','Auslieferungstext','Ticket-Korrelation','Korrelations-ID'].includes(k)||v.length>=70||v.includes('\n'))return false;font(7.5);return !reference(k)||doc.widthOfString(dateValue(v))<=mm(38);}).slice(0,6);
- if(data.sourceNumber!==data.number)header.push(['Ursprungsbeleg',data.sourceNumber]);header.push(['Belegstand',data.status]);
- let infoY=primaryY+31;
- for(let i=0;i<header.length;i+=2){const pair=header.slice(i,i+2).map(([k,v])=>{font(9);const size=reference(k)&&doc.widthOfString(dateValue(v))>mm(38)?7.5:9;return {k,size,values:lines(dateValue(v),mm(38),size)};}),height=Math.max(...pair.map(p=>p.values.length))*12+16;pair.forEach((p,j)=>{const x=infoX+j*mm(42);line(p.k,x,infoY,mm(38),7);drawLines(p.values,x,infoY+10,mm(38),p.size,false,'left',12);});infoY+=height;}
+ const important=new Set(['Kundennummer','Lieferanten-Nr.','Kundenreferenz','Ihre Bestellung','Kundenauftrag','Serviceauftrag','Bestellung','Bestellnummer','Zahlbar bis']);
+ const header=remaining.filter(([k,v])=>important.has(k)&&v.length<70&&!v.includes('\n')).slice(0,3);
+ if(data.sourceNumber!==data.number&&!header.some(([,v])=>v===data.sourceNumber))header.push(['Ursprungsbeleg',data.sourceNumber]);
+ let infoY=primaryY+31;line('Ansprechpartner',infoX,infoY,infoW,7);const contactName=data.contact!.firstName+' '+data.contact!.lastName;let contactSize=9;font(contactSize);while(doc.widthOfString(contactName)>infoW&&contactSize>7){contactSize-=.25;font(contactSize);}const contactLines=lines(contactName,infoW,contactSize);if(contactLines.length>3)throw new BusinessPdfLayoutError('Vollständiger Ansprechpartner überschreitet den Belegkopf.');drawLines(contactLines,infoX,infoY+10,infoW,contactSize);infoY+=contactLines.length*12+17;
+ for(const [label,value] of header){line(label,infoX,infoY,infoW,7);const values=lines(dateValue(value),infoW,9);drawLines(values,infoX,infoY+10,infoW,9,false,'left',11);infoY+=values.length*11+15;}
  let leftEnd=mm(90);
  if(delivery){const values=lines(delivery[1],mm(80),10);leftEnd=mm(96)+12+values.length*12;line('Lieferanschrift',left,mm(96),mm(80),7,true);drawLines(values,left,mm(96)+12,mm(80),10,false,'left',12);}
  y=Math.max(mm(delivery?123:104),infoY+14,leftEnd+18);
  // Long references and narratives stay below the two address/header columns.
- for(const [label,value] of remaining.filter(f=>!header.includes(f))){const values=lines(dateValue(value),width,10),h=values.length*14+17;page(h);line(label,left,y,width,7,true);drawLines(values,left,y+11,width,10,false,'left',14);y+=h;}
+ const details=remaining.filter(f=>!header.includes(f)),compact=details.filter(([label,value])=>value.length<100&&!value.includes('\n')&&!['Betreff','Bestelltext','Auslieferungstext','Ticket-Korrelation','Korrelations-ID'].includes(label));
+ for(let i=0;i<compact.length;i+=2){const pair=compact.slice(i,i+2).map(([label,value])=>({label,values:lines(dateValue(value),width/2-12,9)})),height=Math.max(...pair.map(p=>p.values.length))*12+18;page(height);pair.forEach((p,j)=>{const x=left+j*width/2;line(p.label,x,y,width/2-12,7,true);drawLines(p.values,x,y+11,width/2-12,9,false,'left',12);});y+=height;}
+ for(const [label,value] of details.filter(f=>!compact.includes(f))){const values=lines(dateValue(value),width,10),h=values.length*14+17;page(h);line(label,left,y,width,7,true);drawLines(values,left,y+11,width,10,false,'left',14);y+=h;}
  if(data.notice){for(const v of lines(data.notice,width,10)){page(14);line(v,left,y,width,10);y+=14;}y+=12;}
  if(data.columns.length){
   const sum=data.columns.reduce((v,c)=>v+c.width,0),colWidths=data.columns.map(c=>c.width/sum*width),pitch=11,pad=4;
   if(colWidths.length>1&&colWidths[0]<34){colWidths[1]-=34-colWidths[0];colWidths[0]=34;}
+  const headingText=(v:string)=>v.replace(/-\n/g,'').replace(/\n/g,' ');
+  const preferred=colWidths.map((w,i)=>{if(i===1)return w;const values=data.rows.map(r=>r[i]||'').filter(v=>v.length<=36&&!v.includes('\n')).map(v=>/^\d{4}-\d{2}-\d{2}$/.test(v)?v.slice(8,10)+'.'+v.slice(5,7)+'.'+v.slice(0,4):v);font(8);const cellWidth=Math.max(w,...values.map(v=>doc.widthOfString(v)+pad*2));font(8,true);return Math.max(cellWidth,doc.widthOfString(headingText(data.columns[i].title))+pad*2);}),extra=preferred.reduce((n,w,i)=>n+w-colWidths[i],0);if(colWidths.length>1&&colWidths[1]-extra>=100){preferred[1]-=extra;preferred.forEach((w,i)=>{colWidths[i]=w;});}
   const alignment=(i:number):'left'|'right'=>data.columns[i].align||(/Menge|Istmenge|Netto|Brutto|Preis|Wert|Betrag/i.test(data.columns[i].title)?'right':'left');
-  function cells(values:string[],heading=false){return data.columns.map((_,i)=>{let value=values[i]||'–';if(!heading&&i===0&&/^(Pos|Auftrags)/.test(data.columns[0].title)&&/^\d+$/.test(value))value=value.padStart(4,'0');if(/^\d{4}-\d{2}-\d{2}$/.test(value))value=value.slice(8,10)+'.'+value.slice(5,7)+'.'+value.slice(0,4);return lines(value,colWidths[i]-pad*2,8,heading);});}
+  function cells(values:string[],heading=false){return data.columns.map((_,i)=>{let value=heading?headingText(values[i]||'–'):values[i]||'–';if(!heading&&i===0&&/^(Pos|Auftrags)/.test(data.columns[0].title)&&/^\d+$/.test(value))value=value.padStart(4,'0');if(/^\d{4}-\d{2}-\d{2}$/.test(value))value=value.slice(8,10)+'.'+value.slice(5,7)+'.'+value.slice(0,4);return lines(value,colWidths[i]-pad*2,8,heading);});}
   function draw(values:string[][],height:number,heading=false){
    if(heading)stroke(left,y,width,ink,1);let x=left;
    values.forEach((v,i)=>{drawLines(v,x+pad,y+pad,colWidths[i]-pad*2,8,heading||i===0,alignment(i),pitch);x+=colWidths[i];});if(heading)stroke(left,y+height,width,ink,1);y+=height+(heading?0:6);

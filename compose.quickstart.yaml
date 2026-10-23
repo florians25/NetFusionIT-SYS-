@@ -38,7 +38,7 @@ services:
       retries: 24
   install:
     build: .
-    image: netfusion-erp:${ERP_IMAGE_TAG:-0.24.0-preview.1}
+    image: netfusion-erp:${ERP_IMAGE_TAG:-0.25.0-preview.1}
     command: [sh, -c, "node scripts/docker-install.mjs migrate && node scripts/docker-install.mjs bootstrap"]
     volumes: ["install-state:/run/netfusion-install"]
     depends_on:
@@ -48,7 +48,7 @@ services:
     tmpfs: [/tmp]
     security_opt: [no-new-privileges:true]
   api:
-    image: netfusion-erp:${ERP_IMAGE_TAG:-0.24.0-preview.1}
+    image: netfusion-erp:${ERP_IMAGE_TAG:-0.25.0-preview.1}
     restart: unless-stopped
     command: [node, scripts/docker-install.mjs, api]
     volumes: ["app-secrets:/run/netfusion-app:ro"]

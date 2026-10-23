@@ -1,19 +1,20 @@
-sap.ui.define(["sap/m/Dialog","sap/m/Input","sap/m/TextArea","sap/m/DatePicker","sap/m/DateTimePicker","sap/m/MultiComboBox","sap/m/Select","sap/m/Label","sap/m/Button","sap/ui/core/Item","sap/ui/layout/form/SimpleForm","sap/m/MessageToast"],function(Dialog,Input,TextArea,DatePicker,DateTimePicker,MultiComboBox,Select,Label,Button,Item,SimpleForm,Toast){
- "use strict";
- return function(controller,title,fields,save){
-  var controls={},content=[];
-  fields.forEach(function(f){var c;
-   if(f.type==="select")c=new Select({width:"100%",selectedKey:f.value||f.options[0]&&f.options[0].key||"",items:f.options.map(function(o){return new Item({key:o.key,text:o.text});})});
-   else if(f.type==="multiselect")c=new MultiComboBox({width:"100%",selectedKeys:f.value||[],items:f.options.map(function(o){return new Item({key:o.key,text:o.text});})});
-   else if(f.type==="datetime")c=new DateTimePicker({width:"100%",displayFormat:"dd.MM.yyyy HH:mm:ss",dateValue:f.value?new Date(f.value):null});
-   else if(f.type==="date")c=new DatePicker({width:"100%",valueFormat:"yyyy-MM-dd",displayFormat:"dd.MM.yyyy",value:f.value||""});
-   else if(f.type==="textarea")c=new TextArea({width:"100%",rows:4,value:f.value||""});
-   else if(f.type==="boolean")c=new Select({width:"100%",selectedKey:f.value?"true":"false",items:(f.options||[{key:"true",text:"Ja"},{key:"false",text:"Nein"}]).map(function(o){return new Item({key:o.key,text:o.text});})});
-   else c=new Input({width:"100%",value:f.value===undefined||f.value===null?"":String(f.value),type:f.type==="integer"?"Number":"Text",placeholder:f.placeholder||"",maxLength:f.maxLength||2000});
-   if(f.readonly&&c.setEditable)c.setEditable(false);
-   controls[f.key]=c;content.push(new Label({text:f.label,labelFor:c,required:!!f.required}),c);
+sap.ui.define(['sap/m/Dialog','sap/m/Input','sap/m/TextArea','sap/m/DatePicker','sap/m/DateTimePicker','sap/m/MultiComboBox','sap/m/Select','sap/m/Label','sap/m/Button','sap/ui/core/Item','sap/ui/core/Title','sap/ui/layout/form/SimpleForm','sap/m/MessageToast','netfusion/erp/util/Workspace'],function(Dialog,Input,TextArea,DatePicker,DateTimePicker,MultiComboBox,Select,Label,Button,Item,Title,SimpleForm,Toast,Workspace){
+ 'use strict';
+ return function(controller,title,fields,save,options){
+  options=options||{};var full=options.page!==undefined?options.page:fields.length>=10,controls={},content=[],lastSection='',host,workspace,dialog,signature,key;
+  fields.forEach(function(f,index){var c,section=f.section||(!fields.some(function(x){return !!x.section;})&&full&&fields.length>=8?(index===0?'Allgemeine Angaben':index===Math.ceil(fields.length/2)?'Weitere Angaben':''):'');if(section&&section!==lastSection){content.push(new Title({text:section}));lastSection=section;}
+   if(f.type==='select')c=new Select({width:'100%',selectedKey:f.value||f.options[0]&&f.options[0].key||'',items:f.options.map(function(o){return new Item({key:o.key,text:o.text});})});
+   else if(f.type==='multiselect')c=new MultiComboBox({width:'100%',selectedKeys:f.value||[],items:f.options.map(function(o){return new Item({key:o.key,text:o.text});})});
+   else if(f.type==='datetime')c=new DateTimePicker({width:'100%',displayFormat:'dd.MM.yyyy HH:mm:ss',dateValue:f.value?new Date(f.value):null});
+   else if(f.type==='date')c=new DatePicker({width:'100%',valueFormat:'yyyy-MM-dd',displayFormat:'dd.MM.yyyy',value:f.value||''});
+   else if(f.type==='textarea')c=new TextArea({width:'100%',rows:4,value:f.value||''});
+   else if(f.type==='boolean')c=new Select({width:'100%',selectedKey:f.value?'true':'false',items:(f.options||[{key:'true',text:'Ja'},{key:'false',text:'Nein'}]).map(function(o){return new Item({key:o.key,text:o.text});})});
+   else c=new Input({width:'100%',value:f.value===undefined||f.value===null?'':String(f.value),type:f.type==='integer'?'Number':f.type==='password'?'Password':'Text',placeholder:f.placeholder||'',maxLength:f.maxLength||2000});
+   if(f.readonly&&c.setEditable)c.setEditable(false);controls[f.key]=c;content.push(new Label({text:f.label,labelFor:c,required:!!f.required}),c);
   });
-  var signature,key;
-  var dialog=new Dialog({title:title,contentWidth:"720px",content:[new SimpleForm({editable:true,layout:"ResponsiveGridLayout",content:content})],beginButton:new Button({text:"Speichern",type:"Emphasized",press:function(){dialog.setBusyIndicatorDelay(0);dialog.setBusy(true);dialog.getBeginButton().setEnabled(false);controller.run(async function(){try{var data={};fields.forEach(function(f){var c=controls[f.key],v=f.type==="select"?c.getSelectedKey():f.type==="multiselect"?c.getSelectedKeys():f.type==="boolean"?c.getSelectedKey()==="true":f.type==="datetime"?(c.getDateValue()?c.getDateValue().toISOString():null):c.getValue();data[f.key]=f.nullable&&!v?null:f.type==="integer"?(v.trim()?Number(v):null):v;});var next=JSON.stringify(data);if(next!==signature){signature=next;key=crypto.randomUUID();}var navigation=controller.navigationVersion;await save.call(controller,data,key);dialog.close();Toast.show("Gespeichert");if(controller.navigationVersion===navigation)controller.load();}finally{dialog.setBusy(false);dialog.getBeginButton().setEnabled(true);}});}}),endButton:new Button({text:"Abbrechen",press:function(){dialog.close();}}),afterClose:function(){dialog.destroy();}});controller.getView().addDependent(dialog);dialog.open();return {dialog:dialog,controls:controls};
+  var form=new SimpleForm({editable:true,layout:'ResponsiveGridLayout',columnsXL:full?2:1,columnsL:full?2:1,columnsM:1,labelSpanXL:4,labelSpanL:4,labelSpanM:4,adjustLabelSpan:false,content:content}),cancel=new Button({text:'Abbrechen',press:function(){if(workspace)workspace.close();else dialog.close();}}),button=new Button({text:'Speichern',type:'Emphasized',press:function(){host.setBusyIndicatorDelay(0);host.setBusy(true);button.setEnabled(false);controller.run(async function(){try{if(workspace)workspace.ensureCurrent();var data={};fields.forEach(function(f){var c=controls[f.key],v=f.type==='select'?c.getSelectedKey():f.type==='multiselect'?c.getSelectedKeys():f.type==='boolean'?c.getSelectedKey()==='true':f.type==='datetime'?(c.getDateValue()?c.getDateValue().toISOString():null):c.getValue();data[f.key]=f.nullable&&!v?null:f.type==='integer'?(v.trim()?Number(v):null):v;});var next=JSON.stringify(data);if(next!==signature){signature=next;key=crypto.randomUUID();}var navigation=controller.navigationVersion;await save.call(controller,data,key);Toast.show('Gespeichert');if(workspace)workspace.close();else{dialog.close();if(controller.navigationVersion===navigation)controller.load();}}finally{host.setBusy(false);button.setEnabled(true);}});}});
+  if(full){host=form;workspace=Workspace.open(controller,{title:title,content:[form],buttons:[button,cancel]});}
+  else{dialog=new Dialog({title:title,contentWidth:fields.length>4?'960px':'720px',resizable:true,draggable:true,content:[form],beginButton:button,endButton:cancel,afterClose:function(){dialog.destroy();}});host=dialog;controller.getView().addDependent(dialog);dialog.open();}
+  return {dialog:dialog,workspace:workspace,controls:controls};
  };
 });

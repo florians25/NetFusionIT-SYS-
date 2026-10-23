@@ -19,3 +19,7 @@ Vorhandene Belegarten: Serviceauftragsbestätigung, Bestellung, WE, Lieferschein
 Die zusätzlichen Nutzerbilder umfassen Verkaufsauftragskopf, Positionsübersicht/-details, Partnerrollen, Termine, Konditionen, Liefer-/Fakturasperren, Absage und Freigabe sowie Bestellkopf, Kontierung, Lieferung/Rechnung, Konditionen, Historie, Ausgabe und BANF-Bearbeiterzuweisung. Diese Funktionen sind verbindlicher Ausbauumfang, nicht durch vorhandene Serviceaufträge vollständig geliefert.
 
 Ein eigener Kundenauftrag verwendet AU und bewahrt freigegebene Kopf-/Positions-/Preisstände. Übergabe an Serviceauftrag und technische Ausführung dürfen kaufmännische Sperren nicht umgehen. Kostenpflichtige Beschaffung, Istverbrauch und SRM-Abrechnung bleiben den genehmigten Serviceauftragspositionen zugeordnet. Teilmengen, Folgebeleggrenzen, Ablehnung, Storno/Gegenbelege und unabhängige Freigabe sind fachlich abzunehmen. Keine bloßen leeren Register oder funktionslosen Musteraktionen.
+
+## Letzte Layoutkorrektur, Preview0.25
+
+Revision6 übernimmt die [aktuelle Vorgabe](workspaces-document-contacts.md): keine zusätzliche Infobox und keine gerahmte Anschriftentabelle. Die linke Anschrift bleibt normal gesetzt. Der vollständige Ansprechpartner gehört in den reduzierten rechten Belegkopf mit Nummer, Datum und wichtigen Referenzen. Organisationsdaten stehen im Beleginhalt; Seitennummern in der Fußzeile. Historische Archivbytes und wartende Ausgabeaufträge mit Vorlagenstand5 bleiben geschützt.

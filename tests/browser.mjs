@@ -1,3 +1,4 @@
+import {editingSurface} from './helpers/editing-surface.mjs';
 import {selectTicketTab} from './helpers/ui5-navigation.mjs';
 import { chromium } from 'playwright-core';
 import { mkdir } from 'node:fs/promises';
@@ -38,7 +39,7 @@ try{
   await page.getByRole('textbox',{name:'Betreff',exact:true}).fill('VPN-Verbindung am Standort Berlin unterbrochen');
   await page.getByRole('textbox',{name:/Beschreibung/}).fill('Seit heute Morgen können sich mehrere Mitarbeitende nicht über VPN verbinden. Bitte prüfen Sie die Firewall und den VPN-Zugang.');
   await page.getByRole('button',{name:'Ticket speichern',exact:true}).click();
-  await page.getByRole('dialog').getByText(/wurden gespeichert/).waitFor();
+  await editingSurface(page).getByText(/wurden gespeichert/).waitFor();
   await page.getByRole('button',{name:'OK',exact:true}).click();
   await page.getByRole('heading',{name:'VPN-Verbindung am Standort Berlin unterbrochen',exact:true}).waitFor();
   await page.getByRole('tab',{name:'Kommunikation',exact:true}).click();
@@ -55,7 +56,7 @@ try{
   await page.locator('[id$="--worklist"]').getByText('VPN-Verbindung am Standort Berlin unterbrochen',{exact:true}).waitFor();
   await page.getByTitle('Techniker direkt zuweisen',{exact:true}).click();
   await page.getByRole('button',{name:'Zuweisen',exact:true}).click();
-  await page.getByRole('dialog').waitFor({state:'hidden'});
+  await editingSurface(page).waitFor({state:'hidden'});
   await page.locator('[id$="--queueHeader"]').getByRole('tab',{name:/^Alle/}).click();
   await page.locator('[id$="--worklist"]').getByText('VPN-Verbindung am Standort Berlin unterbrochen',{exact:true}).click();
   await page.getByText('Jonas Weber',{exact:true}).last().waitFor();
@@ -82,7 +83,7 @@ try{
   await page.getByRole('button',{name:'App-Zentrale',exact:true}).click();
   await page.getByRole('button',{name:/Kundenstamm/}).click();
   await page.getByRole('button',{name:'Kunde anlegen',exact:true}).click();
-  const dialog=page.getByRole('dialog');
+  const dialog=editingSurface(page);
   await dialog.getByRole('textbox',{name:'Name',exact:true}).fill('Browser-Testkunde GmbH');
   await dialog.getByRole('textbox',{name:'E-Mail',exact:true}).fill('browser@example.test');
   await dialog.getByRole('button',{name:'Speichern',exact:true}).click();

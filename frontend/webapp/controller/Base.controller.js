@@ -27,7 +27,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller","sap/m/MessageBox","sap/ui/model/jso
     onDocumentFlowToggle:function(){this.documentFlowState=this.vm().getProperty('/flow');},
     onFlowDocument:function(e){var node=e.getSource().getBindingContext('view').getObject();this.onDocument(node.kind,node.id);},
     onHome:function(){this.route("home");},onCockpit:function(){this.route("cockpit");},onTickets:function(){this.route("tickets");},onCases:function(){this.route("cases");},onDispatch:function(){this.route("dispatch");},onPartners:function(){this.route("partners");},onAdmin:function(){this.route("admin");},onWorkflow:function(){this.route("workflow");},onRoadmap:function(){this.route("roadmap");},onNew:function(){this.route("newTicket");},
-    onEstimates:function(){this.route("estimates");},onQuotes:function(){this.route("quotes");},onSalesOrders:function(){this.route("salesOrders");},onSalesProcurements:function(){this.route("salesProcurements");},onSalesFulfillments:function(){this.route("salesFulfillments");},onPurchasingSetup:function(){this.route("purchasingSetup");},onSalesSetup:function(){this.route("salesSetup");},
+    onEstimates:function(){this.route("estimates");},onQuotes:function(){this.route("quotes");},onSalesOrders:function(){this.route("salesOrders");},onSalesProcurements:function(){this.route("salesProcurements");},onSalesFulfillments:function(){this.route("salesFulfillments");},onDocumentSettings:function(){this.route("documentSettings");},onPurchasingSetup:function(){this.route("purchasingSetup");},onSalesSetup:function(){this.route("salesSetup");},
     onInventoryCounts:function(){this.route("inventoryCounts");},
     onWarehouse:function(){this.route("warehouse");},
     onInventory:function(){this.route("inventory");},

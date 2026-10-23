@@ -23,7 +23,7 @@ export const Roles=(...roles:Role[])=>SetMetadata('roles',roles);
 export class AuthService {
   constructor(private db:Db){}
   async resolve(id:string):Promise<Principal|null>{
-    const r=await this.db.pool.query(`SELECT u.id,u.tenant_id AS "tenantId",t.name AS "tenantName",t.slug AS "tenantSlug",u.name,u.email,u.role,u.partner_id AS "partnerId",coalesce(array_agg(o.organization_id) FILTER(WHERE o.organization_id IS NOT NULL),'{}') AS "orgIds" FROM users u JOIN tenants t ON t.id=u.tenant_id LEFT JOIN user_organizations o ON o.tenant_id=u.tenant_id AND o.user_id=u.id WHERE u.id=$1 AND u.active GROUP BY u.id,t.id`,[id]);
+    const r=await this.db.pool.query(`SELECT u.id,u.tenant_id AS "tenantId",t.name AS "tenantName",t.slug AS "tenantSlug",u.name,u.first_name AS "firstName",u.last_name AS "lastName",u.email,u.role,u.partner_id AS "partnerId",coalesce(array_agg(o.organization_id) FILTER(WHERE o.organization_id IS NOT NULL),'{}') AS "orgIds" FROM users u JOIN tenants t ON t.id=u.tenant_id LEFT JOIN user_organizations o ON o.tenant_id=u.tenant_id AND o.user_id=u.id WHERE u.id=$1 AND u.active GROUP BY u.id,t.id`,[id]);
     return r.rows[0]?{...r.rows[0],permissions:Object.keys(grants).filter(permission=>can(r.rows[0].role,permission))}:null;
   }
   async login(tenant:string,email:string,password:string){

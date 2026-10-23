@@ -1,3 +1,4 @@
+import {configureDocumentContact} from './document-contact-fixture.mjs';
 import {client} from '../../scripts/test-harness.mjs';
 import {randomUUID} from 'node:crypto';
 import {serviceFixture,cmd,ok} from './service-fixture.mjs';
@@ -6,6 +7,7 @@ export async function billingFixture(h){
  for(const role of ['ACCOUNTANT','BILLING']){const user={name:'Fakturaprüfung '+role,email:role.toLowerCase()+'@example.test',password:randomUUID(),role,organizationId:f.org};ok(await f.admin('/api/admin/users',{method:'POST',body:user}));staff[role]=await client(h.base,{tenant:'netfusion',...user});}
  const accountant=staff.ACCOUNTANT,billing=staff.BILLING;
  const company=ok(await f.admin('/api/finance/companies',cmd({organizationId:f.org,code:'1000',name:'NetFusion Testgesellschaft GmbH',currency:'EUR',country:'DE',street:'Teststraße 1',postalCode:'10115',city:'Berlin',vatId:'DE123456789'})));
+ await configureDocumentContact(f.admin,company.id);
  const period=ok(await f.admin('/api/finance/companies/'+company.id+'/periods',cmd({year:2026,period:10,dateFrom:'2026-10-01',dateTo:'2026-10-31'}))),accounts={};
  for(const [kind,code,name] of [['RECEIVABLE','1400','Forderungen'],['PAYABLE','1600','Verbindlichkeiten'],['REVENUE','8400','Serviceerlöse'],['TAX','1776','Umsatzsteuer']])accounts[kind]=ok(await f.admin('/api/finance/companies/'+company.id+'/accounts',cmd({kind,code,name})));
  ok(await f.admin('/api/finance/companies/'+company.id+'/rules',cmd({event:'SALES_INVOICE',version:0,accounts:{receivable:accounts.RECEIVABLE.id,revenue:accounts.REVENUE.id,tax:accounts.TAX.id}})));
