@@ -1,0 +1,127 @@
+{
+  "views": [
+    {
+      "view": "SalesOrder",
+      "number": "AU-42000000",
+      "relationships": 16
+    },
+    {
+      "view": "SalesProcurement",
+      "number": "AU-42000000",
+      "relationships": 16
+    },
+    {
+      "view": "SalesFulfillment",
+      "number": "AU-42000000",
+      "relationships": 16
+    },
+    {
+      "view": "Procurement",
+      "number": "BE-52000002",
+      "relationships": 16
+    },
+    {
+      "view": "GoodsReceipt",
+      "number": "WE-53000002",
+      "relationships": 16
+    },
+    {
+      "view": "IncomingInvoice",
+      "number": "EG-59000000",
+      "relationships": 16
+    },
+    {
+      "view": "SupplierReversal",
+      "number": "SB-89000000",
+      "relationships": 16
+    },
+    {
+      "view": "Journal",
+      "number": "BU-80000003",
+      "relationships": 16
+    },
+    {
+      "view": "Order",
+      "number": "SA-61000000",
+      "relationships": 18
+    },
+    {
+      "view": "Case",
+      "number": "SVC-2026-000001",
+      "relationships": 18
+    },
+    {
+      "view": "Procurement",
+      "number": "BA-50000001",
+      "relationships": 16
+    },
+    {
+      "view": "Procurement",
+      "number": "MRQ-2026-000003",
+      "relationships": 16
+    },
+    {
+      "view": "SalesProcurement",
+      "number": "AU-42000000",
+      "relationships": 16
+    },
+    {
+      "view": "WarehouseTransfer",
+      "number": "UL-55000000",
+      "relationships": 0
+    },
+    {
+      "view": "InventoryCount",
+      "number": "IV-56000000",
+      "relationships": 0
+    },
+    {
+      "view": "SalesDelivery",
+      "number": "WA-54000000",
+      "relationships": 6
+    },
+    {
+      "view": "BillingRequest",
+      "number": "DO-87000004",
+      "relationships": 6
+    },
+    {
+      "view": "Invoice",
+      "number": "RE-45000000",
+      "relationships": 6
+    },
+    {
+      "view": "Quote",
+      "number": "AG-41000000",
+      "relationships": 0
+    },
+    {
+      "view": "Invoice",
+      "number": "RE-45000000",
+      "relationships": 6
+    },
+    {
+      "view": "Invoice",
+      "number": "RE-45000000",
+      "relationships": 2
+    },
+    {
+      "view": "Report",
+      "number": "TN-78000000",
+      "relationships": 8
+    },
+    {
+      "view": "GoodsIssue",
+      "number": "WA-54000000",
+      "relationships": 19
+    }
+  ],
+  "errors": [],
+  "nativeDocumentNavigation": true,
+  "mobileWidth": 390,
+  "ticketWithoutFlow": true,
+  "customerAuthorizationPreserved": true,
+  "uniqueViews": 18,
+  "keyboardAndSingleNodeExpansion": true,
+  "allActualRelationsRetained": true
+}

@@ -23,3 +23,7 @@ Für mobile native Header-Aktionsmenüs ist ab Preview0.10 OpenUI5 1.152.1 festg
 ## Zusätzliche Nutzerkorrekturen
 
 In der Ticketmaske entfällt der Belegfluss ausdrücklich; direkte Servicefallnavigation bleibt erhalten. Nachrichten-/Notizverlauf und technische Bearbeitung werden weiter ausgebaut. Die neuen SAP-Auftrags-/Einkaufsbilder und DIN-Belegvorgaben sind unter [Geschäftsbelege und SAP-Muster](business-documents.md) erfasst. Kostenpflichtige Servicefolgebelege bleiben am Serviceauftrag. Beim zusätzlich beauftragten [Direktvertrieb](direct-sales.md) führt der AU die kaufmännischen Folgebelege ohne technisches Ticket/SA. Berichte erhalten einen eigenen berechtigten Arbeitsplatz mit echten Kennzahlen und Drill-down; keine globale Tab-Leiste.
+
+## Belegfluss als Baum
+
+Nutzerpräzisierung23.10.2026: Belegfluss in allen passenden Vorgängen als aufklappbaren Baum darstellen. Gemeinsamer nativer OpenUI5-Tree, aktueller Beleg als markierte Wurzel, Vorgänger/Nachfolger und echte Belegsprünge; einzelne Zweige sowie Gesamtbaum auf-/zuklappen. Teilbelege und weitere Beziehungen vollständig erhalten; Zyklen/Mehrfachbezüge als endliche Querverweise. Dieselbe serverseitig bereinigte Quelle und dieselben Zugriffsrechte. Die frühere ausdrückliche Ausnahme für die Ticketmaske bleibt bestehen. [Datenmodell, Masken und Verhalten](../document-flow.md).

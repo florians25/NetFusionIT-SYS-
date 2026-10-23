@@ -1,0 +1,24 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
+ <VBox width="100%">
+  <OverflowToolbar>
+   <Title id="documentFlowTitle" text="Belegfluss" level="H3"/>
+   <ObjectStatus text="{= ${view&gt;/flow/documentCount} + (${view&gt;/flow/documentCount} === 1 ? ' Beleg · ' : ' Belege · ') + ${view&gt;/flow/relationCount} + (${view&gt;/flow/relationCount} === 1 ? ' Beziehung' : ' Beziehungen') }" visible="{= !!${view&gt;/flow/documentCount} }"/>
+   <ToolbarSpacer/>
+   <Button text="Alles aufklappen" icon="sap-icon://expand-group" press=".onDocumentFlowExpand" enabled="{= ${view&gt;/flow/relationCount} &gt; 0 }"/>
+   <Button text="Alles zuklappen" icon="sap-icon://collapse-group" press=".onDocumentFlowCollapse" enabled="{= ${view&gt;/flow/relationCount} &gt; 0 }"/>
+  </OverflowToolbar>
+  <Tree id="documentFlowTree" width="100%" mode="None" ariaLabelledBy="documentFlowTitle" items="{path:'view&gt;/flow/roots',parameters:{arrayNames:['children']}}" noDataText="Keine sichtbaren Belegbeziehungen vorhanden." updateFinished=".onDocumentFlowUpdate" toggleOpenState=".onDocumentFlowToggle">
+   <CustomTreeItem>
+    <VBox width="100%" class="sapUiTinyMarginTop sapUiTinyMarginBottom">
+     <HBox wrap="Wrap" alignItems="Center">
+      <Link text="{= ${view&gt;direction} ? ${view&gt;direction} + ' ' + ${view&gt;number} : ${view&gt;number} }" press=".onFlowDocument" enabled="{= !${view&gt;current} }" class="sapUiSmallMarginEnd" wrapping="true"/>
+      <Text text="{path:'view&gt;kind',formatter:'.formatter.documentKind'}" class="sapUiSmallMarginEnd" wrapping="true"/>
+      <ObjectStatus text="Aktueller Beleg" state="Information" visible="{view&gt;current}" class="sapUiSmallMarginEnd"/>
+      <ObjectStatus text="Querverweis" icon="sap-icon://chain-link" visible="{view&gt;reference}"/>
+     </HBox>
+     <Text text="{path:'view&gt;relation',formatter:'.formatter.relation'}" visible="{= !!${view&gt;relation} }" wrapping="true"/>
+    </VBox>
+   </CustomTreeItem>
+  </Tree>
+ </VBox>
+</core:FragmentDefinition>

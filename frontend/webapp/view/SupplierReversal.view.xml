@@ -28,7 +28,7 @@
     </IconTabFilter>
     <IconTabFilter text="Freigabehistorie" key="history" count="{= ${view&gt;/decisions}.length }"><Table items="{view&gt;/decisions}" noDataText="Noch keine unabhängige Entscheidung vorhanden"><columns><Column><Text text="Entscheidung"/></Column><Column><Text text="Verantwortlich"/></Column><Column minScreenWidth="Tablet" demandPopin="true"><Text text="Zeitpunkt"/></Column><Column><Text text="Begründung"/></Column></columns><items><ColumnListItem><cells><Text text="{path:'view&gt;decision',formatter:'.formatter.approvalDecision'}"/><Text text="{view&gt;actorName}"/><Text text="{path:'view&gt;createdAt',formatter:'.formatter.date'}"/><Text text="{view&gt;comment}"/></cells></ColumnListItem></items></Table></IconTabFilter>
     <IconTabFilter text="Originalnachweis" key="original"><form:SimpleForm editable="false" layout="ResponsiveGridLayout"><form:content><Label text="Eingangsrechnung"/><Link text="{view&gt;/invoiceNumber}" press=".onInvoice"/><Label text="Lieferantenbeleg"/><Text text="{view&gt;/externalNumber}"/><Label text="Original SHA-256"/><Text text="{view&gt;/preparedSnapshot/invoiceSnapshot/originalSha256}"/><Label text="Ursprünglicher Finanzhash"/><Text text="{view&gt;/sourceJournal/hash}"/></form:content></form:SimpleForm><MessageStrip text="Der eigene SB-Beleg dokumentiert eine interne Rechnungskorrektur. Lieferantengutschriften, Zahlungen und physische Lagergegenbewegungen sind eigene Vorgänge." showIcon="true"/></IconTabFilter>
-   </items></IconTabBar>
+   <IconTabFilter text="Belegfluss" key="flow"><core:Fragment fragmentName="netfusion.erp.fragment.DocumentFlow" type="XML"/></IconTabFilter></items></IconTabBar>
   </VBox></f:content>
  </f:DynamicPage>
 </mvc:View>
