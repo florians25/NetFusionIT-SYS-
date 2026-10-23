@@ -1,0 +1,134 @@
+{
+  "scripts": 30,
+  "passed": 30,
+  "execution": "Two isolated groups with distinct test port offsets; targeted reruns after fixes.",
+  "physicalDevicesTested": false,
+  "results": [
+    {
+      "script": "tests/attachments-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/billing-browser.mjs",
+      "status": 0,
+      "rerunAfterFix": true
+    },
+    {
+      "script": "tests/browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/commerce-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/direct-payables-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/direct-procurement-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/direct-receipts-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/direct-sales-billing-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/direct-sales-stock-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/document-flow-tree-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/finance-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/incoming-invoices-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/incoming-matching-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/inventory-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/inventory-counts-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/location-transfers-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/material-planning-browser.mjs",
+      "status": 0,
+      "rerunAfterFix": true
+    },
+    {
+      "script": "tests/number-series-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/operations-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/procurement-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/purchasing-organization-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/sales-orders-browser.mjs",
+      "status": 0,
+      "rerunAfterFix": true
+    },
+    {
+      "script": "tests/service-deliveries-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/service-quotes-browser.mjs",
+      "status": 0,
+      "rerunAfterFix": true
+    },
+    {
+      "script": "tests/supplier-posting-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/supplier-reversal-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/warehouse-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/work-browser.mjs",
+      "status": 0
+    },
+    {
+      "script": "tests/workflow-browser.mjs",
+      "status": 0,
+      "rerunAfterFix": true
+    },
+    {
+      "script": "tests/workspaces-browser.mjs",
+      "status": 0,
+      "rerunAfterFix": false
+    }
+  ]
+}

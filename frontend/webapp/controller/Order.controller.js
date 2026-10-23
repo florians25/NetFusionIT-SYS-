@@ -1,9 +1,9 @@
 sap.ui.define(["netfusion/erp/controller/Base.controller","netfusion/erp/util/FormDialog","netfusion/erp/util/MaterialPlanDialog","netfusion/erp/util/DeliveryDialog"],function(Base,form,materialPlanDialog,deliveryDialog){
  "use strict";
  return Base.extend("netfusion.erp.controller.Order",{
-  onInit:function(){this.model({order:{items:[],totals:{},context:{}},material:{items:[],summary:{positions:0,ready:0,withoutStock:0},reservations:[]},procurement:{requirements:[],requisitions:[],purchaseOrders:[],receipts:[]},products:[],flow:[],trace:[]});this.vm().setSizeLimit(10000);this.getOwnerComponent().getRouter().getRoute("order").attachPatternMatched(function(e){this.id=e.getParameter("arguments").id;this.load();},this);},
+  onInit:function(){this.model({canEdit:false,canSubmit:false,order:{items:[],totals:{},context:{}},material:{items:[],summary:{positions:0,ready:0,withoutStock:0},reservations:[]},procurement:{requirements:[],requisitions:[],purchaseOrders:[],receipts:[]},products:[],flow:[],trace:[]});this.vm().setSizeLimit(10000);this.getOwnerComponent().getRouter().getRoute("order").attachPatternMatched(function(e){this.id=e.getParameter("arguments").id;this.load();},this);},
   load:async function(){if(!await this.guard("orders"))return;return this.run(async function(){
-   var result=this.materialResult;this.materialResult=null;var id=this.id,userId=this.state('/user/id'),canRead=this.state('/access/requisitionRead'),r=await Promise.all([
+   var result=this.materialResult;this.materialResult=null;var id=this.id,userId=this.state('/user/id'),canRead=this.state('/access/serviceRequisitionRead'),r=await Promise.all([
     this.api('/api/service/orders/'+id),this.api('/api/service/orders/'+id+'/execution'),this.api('/api/documents/'+id+'/flow'),
     canRead?this.api('/api/service/orders/'+id+'/procurement'):Promise.resolve({requirements:[],requisitions:[],purchaseOrders:[],receipts:[]}),
     canRead?this.api('/api/service/orders/'+id+'/material-planning'):Promise.resolve({items:[],summary:{positions:0,ready:0},reservations:[]}),

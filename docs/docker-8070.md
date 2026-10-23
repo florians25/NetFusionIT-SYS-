@@ -53,3 +53,7 @@ Der technische Installationsnachweis ersetzt die noch offene fachliche und betri
 Technisch geprüft: [automatische Erstinstallation, tatsächliches HTTPS8070 und Passworterhalt nach Containerneuanlage](previews/v0.23.0-preview.1/docker-install-8070.json). Interne Dienstadressen sind vom ausgehenden HTTP-Proxy ausgenommen; dies verhindert eine versehentliche Umleitung des Caddy→API-Verkehrs in Proxy-Umgebungen.
 
 Preview0.24 wurde in dieser Cloud mit dem tatsächlichen Schnellstart aufHTTPS8070 geprüft: Caddy-Zertifikatsprüfung, sichere Sitzung, automatische Migration028/Bootstrap, Containerneuanlage und Erhalt eines geänderten Administratorpassworts. [Nachweis](previews/v0.24.0-preview.1/docker-install-8070.json). Das ersetzt die Betriebsabnahme auf dem vorgesehenen Ubuntu-Server nicht.
+
+## Neue Geschäftsunterlagen ab Preview0.25
+
+Nach Buchungskreisanlage in der eigenen App **Dokumenteinstellungen** den tatsächlichen Ansprechpartner mit Vorname, Nachname und Kontaktangaben pflegen. Neue Geschäftspapiere und Rechnungen benötigen diesen aktiven Stand. Die Installation legt keine erfundene Person dafür an. Historische PDFs bleiben unverändert.

@@ -1,0 +1,9 @@
+{
+  "file": ".local/backups/before-029-2026-10-23T20-38-34.364Z.dump",
+  "bytes": 937471,
+  "sha256": "cfdc002fe734443fa537955d7b99a2511264e1266579951d84f01450f091063f",
+  "mode": "600",
+  "catalogChecked": true,
+  "restoreTested": false,
+  "beforeMigration": 29
+}

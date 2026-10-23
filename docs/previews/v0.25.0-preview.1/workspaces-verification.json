@@ -1,0 +1,13 @@
+{
+  "desktopWidth": 1720,
+  "fullPage": true,
+  "save": true,
+  "cancel": true,
+  "expiredDraft": true,
+  "passwordMasked": true,
+  "personName": "Clara Sophie Beispiel-Müller",
+  "mobileWidth": 390,
+  "mobilePageOverflow": false,
+  "openUI5": "1.152.1",
+  "consoleErrors": []
+}
