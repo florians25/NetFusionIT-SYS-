@@ -14,9 +14,10 @@ Abnahme: Ticket ohne Auftrag → Aufgabe → Arbeits-/Fahrzeiten und Pauschalen 
 
 ## Kaufmännische Führung über den Serviceauftrag
 
-Weitere verbindliche Nutzerpräzisierung: Beschaffung und alle kostenpflichtigen Folgeprozesse werden vom Serviceauftrag aus geführt. Technische Erfassung im Ticket und kaufmännische Ausführung bleiben über Belegreferenzen verbunden.
+Weitere verbindliche Nutzerpräzisierung für Service: Beschaffung und alle kostenpflichtigen Servicefolgeprozesse werden vom Serviceauftrag aus geführt. Technische Erfassung im Ticket und kaufmännische Ausführung bleiben über Belegreferenzen verbunden.
 
 - BANF, Bestellung, externe Leistungen, Wareneingang mit Bestellbezug, Kostenkontierung, Preisfindung und Fakturierung benötigen einen Serviceauftrags-/Positionsbezug und werden aus dessen Masken angestoßen.
 - Das Ticket löst keine ungebundenen kostenpflichtigen Beschaffungsvorgänge oder Kundenforderungen aus. Pauschalen im Ticket dokumentieren tatsächlich erbrachte Leistungen; ihre Preis-/Abrechnungsbehandlung erfolgt im Serviceauftrag.
 - Die Auftragsobjektseite erhält eigene fachliche Bereiche für Material-/Beschaffungsbedarf, Bestellungen/Wareneingänge, Kosten und Abrechnung. Alle Folgebelege bleiben im Belegfluss mit Ticket, Aufgabe, SRM und Auftrag nachvollziehbar.
+- Direktvertrieb ist gemäß Ergänzung vom 23.10.2026 ein eigener AU-geführter Warenverkaufsprozess ohne Ticket/SA/WOT/SRM; siehe [DS-01–16](direct-sales.md). Diese Serviceregeln dürfen seine Ausführung nicht künstlich an einen technischen Auftrag binden.
 - Diese ausdrückliche Präzisierung hat Vorrang vor frei angelegten, nicht zugeordneten Beschaffungsvorgängen im ursprünglichen Masterprompt.

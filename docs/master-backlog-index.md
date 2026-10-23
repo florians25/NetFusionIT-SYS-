@@ -1,6 +1,18 @@
 # Masterbacklog: vollständige Modulabdeckung und offene Prozesslücken
 
-Stand22.10.2026, Basis Preview0.18.0-preview.1. Die [Originalspezifikation](master-prompt.md) gilt vollständig; [Zusatzanforderungen](backlog.md) und [37 SD-/Faktura-/CRM-Arbeitspakete](requirements/sales-billing-crm.md) ergänzen sie. „Teilbasis“ bedeutet ausdrücklich keinen abgeschlossenen SAP-Ersatz. Jeder offene Ablauf benötigt Datenmodell, API, Rechte, Status/Mengen/Werte, native OpenUI5-Maske und aussagekräftige Prozessprüfung.
+Stand 23.10.2026, veröffentlichte Basis Preview0.18.0-preview.1. Die [Originalspezifikation](master-prompt.md) gilt vollständig; [Zusatzanforderungen](backlog.md) [37 SD-/Faktura-/CRM-Arbeitspakete](requirements/sales-billing-crm.md), [16 Direktvertriebspakete](requirements/direct-sales.md) und [Reporting](requirements/reporting.md) ergänzen sie. Die Pakete überschneiden sich fachlich und sind keine addierbare Fortschrittsquote. „Teilbasis“ bedeutet ausdrücklich keinen abgeschlossenen SAP-Ersatz. Jeder offene Ablauf benötigt Datenmodell, API, Rechte, Status/Mengen/Werte, native OpenUI5-Maske und aussagekräftige Prozessprüfung.
+
+## Aktuelle Arbeit und Reihenfolge
+
+1. **In Arbeit: Angebote.** Backend-Teilprüfungen für Anlage, Konditionen, unabhängige Freigabe, geschütztes Kunden-PDF und selektive Kundenentscheidung bestanden. Noch offen sind die sichere AG→AU-Übernahme, vollständige Folgeprozessprüfung und Angebotsmasken einschließlich Browserabnahme. Dieser lokale Arbeitsstand ist noch keine veröffentlichte Preview.
+2. **Danach: Direktvertrieb.** Eigene AU-Ausführung ohne Ticket/SA/SRM; Lagerverkauf und auftragsbezogene Beschaffung, tatsächliche Teillieferung, Fakturaanforderung/Vorrat, Rechnung/FI/OP und genaue Gegenbewegungen. [DS-01–16](requirements/direct-sales.md) sind offen.
+3. **Anschließend: weitere kommerzielle und operative Lücken.** Restliche SD-/BILL-/CRM-Pakete, Einkauf/Lager/Retouren, Werkstattreparatur, Verträge, Ticket/Disposition/SLA, Finance und Projekte gemäß Modultabelle.
+4. **Laufend mit den Fachprozessen: Reports und SAP-Handbuchabgleich.** Umsatz, Auftragsbestand, Deckungsbeitrag, Material/Einkauf, Service/SLA sowie offene Posten mit echten Quellen, Periodenbezug und Drill-down. Kein Planwert als gebuchter Umsatz. [RPT-01–12](requirements/reporting.md).
+5. **Vor Produktivbetrieb: übergreifende Abnahme.** Recht/Steuer/Datenschutz, Berechtigungen/Sicherheit, Backup/Restore, Last/Monitoring und tatsächlicher Ubuntu-Zielserver. Unabhängige Entwicklung wird fortgesetzt.
+
+Lieferstand wird mit konkreten Tests, Screenshots und Preview-Nachweisen fortgeschrieben. Die Übersicht ist kein Nachweis eines bereits abgeschlossenen Moduls.
+
+## Verbleibender Umfang je Modul
 
 | Modul / Bereich | Vorhandene Teilbasis | Weiterer verbindlicher Umfang |
 | --- | --- | --- |
@@ -15,9 +27,10 @@ Stand22.10.2026, Basis Preview0.18.0-preview.1. Die [Originalspezifikation](mast
 | SLA | Kalender/Feiertage/Zeitzone, Reaktion/Lösung, Pausen/Snapshots | Wiederherstellung/Vor-Ort/Verfügbarkeit, mehrstufige Eskalation, automatisierte Benachrichtigung und Vertragskontingente |
 | Installierte Basis | Objekte, Komponenten-/Kunden-/Vertragsbezug, Serieninformationen | Vollständige Servicehistorie, Eigentum/Garantie, Mehrfachobjektfälle, standortübergreifende Strukturen und sichere Übernahme |
 | Serviceverträge | Basisvertrag, Status/Gültigkeit, SLA | Positionsfindung, Deckung/Kontingente, Preise/Anpassungen, Abrechnung/Verlängerung, Vorlagen/Import/Kreditprüfung |
-| Serviceangebote | Noch offen | Standard/Festpreis, Pakete, Versionen, selektive Annahme/Änderungsangebot, Kundenfreigabe, Ausgabe und korrelierte Auftragserzeugung |
+| Serviceangebote | Laufender, unveröffentlichter Backend-Ausbau: Anlage/Konditionen, unabhängige Prüfung, Kunden-PDF und selektive Kundenentscheidung teilgeprüft | Sichere AG→AU-Übernahme, vollständige Prozess-/UI-Abnahme; außerdem Pakete, Vorlagen, Vertragsfindung, Versionen/Änderungsangebot, Kredit und tatsächliche Versandkanäle |
 | Serviceaufträge/WOT/SRM | Freigabe, Katalogpreise, technische Ausführung, korrelierte Istquellen und SRM | Servicegruppen/Pakete, zusätzliche Positionstypen, Änderungsfreigabe, Festpreispläne, Teil-/Korrekturrückmeldung, erweiterte Kontierung/Intercompany |
 | Sales Order AU |0.18 eigener AU mit Vertriebsstämmen, vier konkreten Partnerrollen/Adressen, Kopf/Position/Hierarchie/Kontierung, gebundenen Konditionen, geplanten Teileinteilungen, Sperren, unabhängiger mehrstufiger Freigabe, eingefrorenem AB-PDF und quellengebundenem SA; tatsächlicher WA/LS und Rechnung erhalten vereinbarte Anschrift und AU-/Kundenbestellreferenz | SD-01–17 bleiben teilweise offen: Varianten/Massenaktionen, weitere Organisations-/Positionsarten, Istzuordnung zu einzelnen Einteilungen, Angebot/Teilannahme, Teilübernahme, Änderung nach Freigabe, durchgängiger abweichender Finanzpartner/Regulierer, FX/Kredit, Retoure/Korrektur, Versand/Outbox und erweiterte Faktura |
+| Direktvertrieb | Eigener AU und gemeinsame Lager-/Faktura-/Finanzteilbasis vorhanden; eigenständige Warenverkaufskette noch offen | [DS-01–16](requirements/direct-sales.md): freier AU oder angenommene AG, eigene Kosten-/Beschaffungsquelle AU, Lager/Fehlbedarf/BANF/Bestellung/Teil-WE, Reservierung/Teil-WA/LS, lieferbezogene Fakturaanforderung/Vorrat/RE/FI/OP, Rückabwicklung; Nichtlager/Lizenzen und Streckengeschäft. Kein Ticket/SA/WOT/SRM für reinen Warenverkauf |
 | Artikel/Produkte | Arten, Freigabe, Preise, Einheiten, Serie/Charge | Hersteller-/Lieferantenbeziehungen, Ersatzartikel, Mindest-/Meldebestand, Disposition, Bewertungsarten, Lizenz-/Laufzeitregeln und Änderungsfreigabe |
 | Pricing | Konditionsfindung/Priorität/Staffel/Gültigkeit/Dezimalwerte/Snapshot | Erweiterte Schemata/Partner-/Projektpreise, Steuerkategorien, Konditionspflege/Versionen, Freigabe, statistische Werte und fakturasichere Rundung |
 | Bedarf/BANF | Automatischer Artikelbedarf, Lager zuerst, Fehlmenge, unabhängige Freigabe | Alternativartikel, Direktlieferung, Umplanung, Wunschlieferant, Sammelbedarf, vollständige Bearbeiter-/Freigabe-/Änderungsprozesse |
@@ -34,7 +47,7 @@ Stand22.10.2026, Basis Preview0.18.0-preview.1. Die [Originalspezifikation](mast
 | Projekte/Leistungsnachweise | Ticket-WOT und tatsächliche SRM | Projektstruktur/-aufgaben, Budgets, Meilensteine, Kapazität, projektbezogene Preise/Zeiten/Faktura und vollständige Tätigkeitsnachweise |
 | Workflow | Definition/Snapshot/Vier-Augen/Stufen/Rückfrage/Audit | Betragsgrenzen, Bedingungen, Delegation/Vertretung/Eskalation, kritische Stammdaten-/Rechnungsänderungen und Massengenehmigung |
 | Dokumente/Ausgabe | Kleine PDF-Modale, Archive/Hash/Version, Schwarz-Weiß-Formulare, Quarantäne | Code128 in gemeinsamer PDF-Basis; weitere Belegarten/Positionsanlagen, echtes AV im Betrieb, Vorlagenstamm, E-Mail/Druck/Outbox, Aufbewahrung/Löschung und E-Rechnungsvalidierung |
-| Reporting | Tatsächliche Cockpit-/Fachzähler und Salden | Service-/SLA-/Material-/Umsatz-/OP-/Kostenberichte, erlaubte Exporte, zeitbezogene Abgrenzung, Drill-down und Rollenfilter |
+| Reporting | Tatsächliche Cockpit-/Fachzähler und Salden; kein vollständiges Berichtsmodul | [RPT-01–12](requirements/reporting.md): Umsatz nach Kunde/Artikel/Zeitraum/Vertriebsweg, Auftragseingang/-bestand, Angebotserfolg, Deckungsbeitrag, Einkauf/Liefertermine, Lager/Bewegung, Service/Zeit/SLA, OP/Fälligkeit, Periodenvergleich, berechtigte Exporte und Drill-down; Auftrags-/Liefer-/Rechnungs-/Zahlungswerte getrennt |
 | Integration/Migration | Lesender OData-Teilumfang, REST-Kommandos/Migrationen | Vollständige API-Verträge, Imports/Mapping/externe Schlüssel, Webhooks/Outbox/Retry, Mail, Buchhaltungs-/Bank-/E-Rechnungskanäle |
 | Administration/Betrieb | Benutzer, Nummernkreise, Workflows, Docker-/Caddy-Vorbereitung | Einstellungen/Steuer/Formular-/Organisationsstämme, echte Zielserverabnahme, Backup/Restore, Monitoring/Alarmierung, Last/Security/Recovery, Rollout/Updates |
 

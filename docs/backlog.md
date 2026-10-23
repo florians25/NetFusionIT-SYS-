@@ -1,16 +1,16 @@
 # Fachlicher Backlog
 
-Stand: 22.10.2026. Der vollständige [Masterprompt](master-prompt.md) bleibt der Grundauftrag. Die folgenden Ergänzungen wurden zusätzlich vom Nutzer beauftragt. Sie sind Anforderungen, keine Behauptung bereits implementierter Funktionen. Oberflächen bestehen ausschließlich aus Standardcontrols von **OpenUI5**. [Verbindliche Navigations-/Maskenvorgaben](requirements/navigation.md): App-Zentrale als Einstieg, ausschließlich anwendungsbezogene Schnellzugriffe und native Belegobjektseiten. SAP-Dokumentation dient als fachliche Referenz; SAP-Backend-Dienste oder SAPUI5-exklusive Controls werden dadurch nicht vorausgesetzt.
+Stand: 23.10.2026. Der vollständige [Masterprompt](master-prompt.md) bleibt der Grundauftrag. Die folgenden Ergänzungen wurden zusätzlich vom Nutzer beauftragt. Sie sind Anforderungen, keine Behauptung bereits implementierter Funktionen. Oberflächen bestehen ausschließlich aus Standardcontrols von **OpenUI5**. [Verbindliche Navigations-/Maskenvorgaben](requirements/navigation.md): App-Zentrale als Einstieg, ausschließlich anwendungsbezogene Schnellzugriffe und native Belegobjektseiten. SAP-Dokumentation dient als fachliche Referenz; SAP-Backend-Dienste oder SAPUI5-exklusive Controls werden dadurch nicht vorausgesetzt.
 
 [Vollständiger Modulindex mit vorhandener Teilbasis und offenen Prozesslücken](master-backlog-index.md).
 
 ## Umfang und aktueller Lieferstand
 
-Der Masterprompt umfasst alle darin genannten Module; diese Ergänzungsliste ist keine vollständige Liste bereits gelieferter Funktionen. Ein Grundstamm, eine Tabellenmaske oder ein reservierter Nummernkreis erledigt keinen End-to-End-Prozess. Die jüngste [detaillierte SD-/Faktura-/CRM-Aufteilung](requirements/sales-billing-crm.md) enthält 17 Sales-Order-Abläufe, 10 Faktura- und 10 CRM-Arbeitspakete mit Abnahmekriterien. Der eigene AU-Kundenauftrag bleibt offen. Preview0.11 liefert einen ersten Teil von Faktura und CRM, weitere Arbeitspakete bleiben offen; der vorhandene SA bleibt ein eigener Vorgang.
+Der Masterprompt umfasst alle darin genannten Module; diese Ergänzungsliste ist keine vollständige Liste bereits gelieferter Funktionen. Ein Grundstamm, eine Tabellenmaske oder ein reservierter Nummernkreis erledigt keinen End-to-End-Prozess. Die jüngste [detaillierte SD-/Faktura-/CRM-Aufteilung](requirements/sales-billing-crm.md) enthält 17 Sales-Order-Abläufe, 10 Faktura- und 10 CRM-Arbeitspakete mit Abnahmekriterien. Preview0.18 liefert den eigenen AU mit unabhängiger Freigabe, AB und gebundener SA-Ausführung. Die vollständige SD-Abdeckung bleibt offen. Die Angebotsbearbeitung ist im laufenden Backendausbau teilgeprüft, aber noch nicht als vollständige Preview ausgeliefert. Neu beauftragt sind [eigenständiger Direktvertrieb ohne Ticket/SA](requirements/direct-sales.md) und [ausführliche Statistik-/Berichtsfunktionen](requirements/reporting.md). Den tatsächlichen Restumfang und die aktuelle Reihenfolge zeigt der [Masterbacklog](master-backlog-index.md); frühere Versionsabschnitte unten dokumentieren jeweils ihren historischen Teilstand.
 
 ## SERVICE-01 · Serviceangebote
 
-Status: offen · Umsetzung zusammen mit Masterprompt-Phase 4 und 7.
+Status: in Arbeit, noch nicht vollständig ausgeliefert · Backend-Teilprüfungen für Anlage/Konditionen, unabhängige Freigabe, Kunden-PDF und selektive Entscheidung vorhanden; AG→AU-Übernahme, vollständige Folgeprozess- und native UI-Abnahme offen. Umsetzung zusammen mit Masterprompt-Phase 4 und 7.
 Quelle: [vollständiger Nutzeranhang](requirements/serviceangebote.md).
 
 - Suchbare Liste, Filter, Kopf-/Positionspflege; Standardangebot mit verbrauchsabhängigen und festen Preisen sowie reines Festpreisangebot.
@@ -101,7 +101,15 @@ Abnahme: Remote-SHA/Tag, bestandene Build-/Funktionstests, datierte Versionsnoti
 
 ## PROC-01 · Kaufmännische Führung am Serviceauftrag
 
-Nutzerpräzisierung vom 22.10.2026: Beschaffung und alle kostenpflichtigen Folgeprozesse werden vom Serviceauftrag aus angestoßen. BANF/Bestellung/externe Leistung/Wareneingang, Kontierung, Preisfindung und Abrechnung erhalten zwingenden Auftrags-/Positionsbezug. Das Ticket bleibt technischer Arbeitsbeleg und erzeugt keine ungebundenen kostenpflichtigen Beschaffungsbelege. Siehe [verbindliche Prozessvorgabe](requirements/ticket-execution.md).
+Nutzerpräzisierung vom 22.10.2026, für Service unverändert verbindlich: Beschaffung und alle kostenpflichtigen Servicefolgeprozesse werden vom Serviceauftrag aus angestoßen. BANF/Bestellung/externe Leistung/Wareneingang, Kontierung, Preisfindung und Abrechnung erhalten zwingenden Auftrags-/Positionsbezug. Das Ticket bleibt technischer Arbeitsbeleg und erzeugt keine ungebundenen kostenpflichtigen Beschaffungsbelege. Siehe [verbindliche Prozessvorgabe](requirements/ticket-execution.md).
+
+Die Ergänzung vom 23.10.2026 führt zusätzlich den **Direktvertrieb aus AU** ein: Bei reinem Warenverkauf führt der Kundenauftrag Kosten, Bedarf, Beschaffung, Lieferung und Faktura. Es gibt keine Pflicht zu Ticket, WOT, SA oder SRM. [DS-01–16 und Prozessabnahme](requirements/direct-sales.md).
+
+## SALES-DIRECT / REPORTING · Ergänzung vom 23.10.2026
+
+Status: beauftragt, offen. Lagerverkauf und auftragsbezogene Warenbeschaffung einschließlich Teil-WE, Teil-Auslieferung, Fakturaanforderung/Freigabe/Vorrat, ZUGFeRD, FI/OP, Gegenbewegung und Retoure erhalten einen eigenen AU-Ursprung. Nichtlager-/Lizenzverkauf und Streckengeschäft werden gesondert nachgewiesen. Die gemeinsame AU-/Lager-/Finanzbasis ersetzt keinen vollständigen Vertriebsprozess.
+
+[Reporting RPT-01–12](requirements/reporting.md): Umsatzstatistik nach Kunde/Artikel/Zeitraum/Vertriebsbereich, Auftragseingang/-bestand, Angebotserfolg, Deckungsbeitrag, Lager/Einkauf, Servicezeiten/SLA und OP/Fälligkeit. Quellen-/Perioden-/Währungsbezug, Filter, Vorperiodenvergleich, berechtigter Export und Drill-down sind Teil der Abnahme. SAP-Handbücher werden fachlich abgeglichen; tatsächliche Abrufe mit Datum/Version und konkreten übernommenen Regeln sind zu protokollieren. Kein behaupteter Quellenabgleich aus einem bloßen HTTP200 der Portalhülle.
 
 ## MATERIAL-01 · Automatische Versorgung und Lagerverwaltung
 

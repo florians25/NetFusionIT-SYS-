@@ -2,6 +2,8 @@
 
 Nutzerpräzisierungen vom22.10.2026 ergänzen den vollständigen [Masterprompt](../master-prompt.md). Die übermittelten SAP-Masken sind verbindliche Strukturreferenzen. Bestehende Serviceaufträge ersetzen keinen eigenen Kundenauftrag. Diese Liste bezeichnet Anforderungen; der Lieferstatus wird erst anhand funktionierender APIs, Datenhaltung, Berechtigungen und End-to-End-Prüfung geändert.
 
+Ergänzung vom 23.10.2026: [Direktvertrieb DS-01–16](direct-sales.md) führt Warenverkauf direkt aus dem AU, ohne Ticket/SA/WOT/SRM. Kosten und Beschaffung liegen dort am AU; im Service weiterhin am SA. [RPT-01–12](reporting.md) ergänzen Umsatz-/Auftrags-/Kosten- und operative Statistiken.
+
 ## SD: eigenständiger Kundenauftrag AU
 
 | ID | Ablauf / Maske | Abnahme |
@@ -11,13 +13,13 @@ Nutzerpräzisierungen vom22.10.2026 ergänzen den vollständigen [Masterprompt](
 | SD-03 | Vertriebsbereich: Verkaufsorganisation, Vertriebsweg, Sparte; Buchungskreis, Geschäftsstelle/-gruppe, Zuständigkeit | Konfiguration und Berechtigungen verhindern falsche Organisationskombinationen |
 | SD-04 | Partnerrollen Auftraggeber, Waren-/Leistungsempfänger, Rechnungsempfänger, Regulierer, Ansprechpartner | Vorgangsrollen getrennt vom Geschäftspartnerstamm; Mehrdeutigkeit und manuelle Übersteuerung dokumentiert; gültige Adressen als Snapshot |
 | SD-05 | Dichte editierbare Positionstabelle: Pos./Überpos., Artikel, Kundenmaterial, Text, Menge/Einheit, Preis, Typ, Termin, Ablehnung | Artikel-/Positionsarten und Hierarchie prüfen; keine Löschung bereits ausgeführter/fakturierter Positionen |
-| SD-06 | Positionsdetails: Grunddaten, Materialgruppe, Charge/Serie, Kontierung, Kosten-/Profitcenter, Projekt/PSP | Pflichtfelder je Positionstyp; Istkosten bleiben im Serviceauftrag geführt |
+| SD-06 | Positionsdetails: Grunddaten, Materialgruppe, Charge/Serie, Kontierung, Kosten-/Profitcenter, Projekt/PSP | Pflichtfelder je Positionstyp; Istkosten bleiben beim fachlichen Ursprung: SA für Service, AU für Direktvertrieb |
 | SD-07 | Konditionsregister: Grundpreis, Rabatt, Zuschlag, Steuer, Summen, statistische/interne Konditionen, Herkunft | Gültigkeit/Staffel/Priorität, exakte Rundung, steuerliche Kategorien und vollständiges Preisfindungsprotokoll; Kunden sehen keine internen Kosten |
 | SD-08 | Liefer-/Leistungseinteilungen: Wunsch-, bestätigter und tatsächlicher Termin, Teilmengen, offene Restmengen | Mehrere Einteilungen; Überlieferung nur gemäß Regel; keine doppelte Mengenbindung bei Parallelität |
 | SD-09 | Liefer-/Fakturasperren an Kopf/Position mit Grund, Unvollständigkeitsprüfung | Sperre verhindert den konkreten Folgeprozess serverseitig; Aufheben auditieren und ggf. unabhängig freigeben |
 | SD-10 | Zahlung, Incoterms/Version/Ort, Versandart, Werk/Lager, Abhol-/Lieferanschrift | Kein erfundener Standard; fehlende Pflichtkonfiguration verhindert Freigabe statt späterer Falschbuchung |
 | SD-11 | Mehrstufige unabhängige Freigabe, Rückfrage, Ablehnung, erneute Einreichung, Änderungsfreigabe | Ersteller/Einreicher können Vier-Augen-Prüfung nicht umgehen; genehmigter Stand eingefroren |
-| SD-12 | Angebot → Teilannahme → AU → freigegebener SA für kostenpflichtige Ausführung/Beschaffung | Nur angenommene Positionen kopieren, Preis-/Quellenstand erhalten, Wiederholung erzeugt keine Doppelaufträge |
+| SD-12 | Angebot → Teilannahme → AU; Direktvertrieb mit eigener Lieferung/Beschaffung oder freigegebener SA für Serviceausführung | Nur angenommene Positionen kopieren, Preis-/Quellenstand erhalten, Wiederholung erzeugt keine Doppelaufträge |
 | SD-13 | Teil-Auslieferung, Rücknahme, Retoure, Liefer-/Leistungsstatus, Warenausgang und Geschäftslieferschein | Tatsächliche Mengen/Serien, Reservierung/Verbrauch und Originalgegenbewegung; Kontierung und Bestand atomar |
 | SD-14 | Positionsbezogene Fakturaanforderungen, Fakturavorrat, Teil-/Sammel-/Endrechnung | Keine Faktura direkt aus technischen Ticketzeiten; nur freigegebene und noch offene Anforderungsmengen |
 | SD-15 | Absagegrund, Änderungsauftrag, Storno/Gutschrift mit ursprünglichen Referenzen | Bereits ausgeführte oder fakturierte Mengen nicht still zurücksetzen; Gegenbelege und Salden nachvollziehbar |
@@ -26,8 +28,8 @@ Nutzerpräzisierungen vom22.10.2026 ergänzen den vollständigen [Masterprompt](
 
 ## BILL: Freigabe als Fakturaanforderung und Fakturavorrat
 
-- BILL-01: Freigegebene tatsächliche Leistungen aus SRM und Serviceauftragspositionen selektieren. Leistungserbringungsdatum bzw. Leistungszeitraum je Position, Steuerdatum, Rechnungstermin und Buchungsdatum getrennt führen. Arbeits-/Fahrzeiten, Material, Pauschalen, Zuschläge und Vertragsleistungen nach ihrer Abrechnungsregel behandeln.
-- BILL-02: Eigenständige Fakturaanforderung mit Kopf, Positionen, Ursprungsauftrag/-position/-SRM, Ticket-Korrelation, freigegebener Menge/Wert, Preis-/Steuersnapshot, Freigabe, Sperre und Restmenge. Keine Anfrage mit Rechnungsnummer versehen.
+- BILL-01: Freigegebene tatsächliche Leistungen aus SRM und Serviceauftragspositionen bzw. tatsächliche AU-Liefermengen im Direktvertrieb selektieren. Warenlieferungen benötigen keine SRM. Leistungserbringungsdatum bzw. Leistungszeitraum je Position, Steuerdatum, Rechnungstermin und Buchungsdatum getrennt führen. Arbeits-/Fahrzeiten, Material, Pauschalen, Zuschläge und Vertragsleistungen nach ihrer Abrechnungsregel behandeln.
+- BILL-02: Eigenständige Fakturaanforderung mit Kopf, Positionen, typisiertem Ursprungsauftrag/-position, tatsächlicher AU-Lieferquelle oder Service-SRM mit Ticket-Korrelation, freigegebener Menge/Wert, Preis-/Steuersnapshot, Freigabe, Sperre und Restmenge. Keine Anfrage mit Rechnungsnummer versehen.
 - BILL-03: Erst freigegebene Anforderungen erscheinen im Fakturavorrat. Filtern nach Kunde, Rechnungsempfänger, Regulierer, Buchungskreis, Zeitraum/Fälligkeit, Währung, Sperre, Bearbeiter. Teilmengen, Vorschau, Freigabe, Rücknahme und Fehlerprotokoll.
 - BILL-04: Rechnung nur aus offenen freigegebenen Mengen. Parallele/erneute Verarbeitung darf dieselbe Quelle nicht doppelt fakturieren. Festpreis, Istaufwand und nicht fakturierbare Leistungen strikt getrennt; keine stille Übernahme der Planmenge als Istleistung.
 - BILL-05: Sammelrechnung nur nach definierten Splitkriterien: Rechnungsempfänger/Regulierer, Buchungskreis, Währung, Steuer-/Zahlungsbedingungen, Referenzanforderungen. Monats-/periodische Abrechnung und Vertragspläne als weitere Quellen.
@@ -37,7 +39,7 @@ Nutzerpräzisierungen vom22.10.2026 ergänzen den vollständigen [Masterprompt](
 - BILL-09: Gutschrift, Teil-/Vollstorno, Korrektur-/Ersatzrechnung, Steuerkorrektur und OP-Ausgleich mit Genehmigung und Ursprungsbezug. Bezahlte Rechnungen brauchen Rückzahlungs-/Verrechnungsvorgang; keine Änderung der Originalrechnung.
 - BILL-10: Mahnung, Zahlung/Teilzahlung, Bankzuordnung, Skonto, Ausbuchung und Abstimmung mit Debitoren-/Hauptbuch; überfällige Posten und Sperren nachvollziehbar.
 
-Abnahme: technische Freigabe → ausgewählte Fakturaanforderung mit Leistungsdatum → unabhängige/regelgerechte Freigabe → Vorrat → Teil-/Restfaktura → unveränderliche RE + valides ZUGFeRD + FI + OP. Konkurrenz, Preisänderung nach Freigabe, falsche Währung/Organisation/Kunde, Sperre, geschlossene Periode, fehlende Steuer-/Debitorenstammdaten und Ausgabefehler prüfen.
+Abnahme: tatsächliche AU-Lieferung oder technisch freigegebene Serviceleistung → ausgewählte Fakturaanforderung mit Liefer-/Leistungsdatum → unabhängige/regelgerechte Freigabe → Vorrat → Teil-/Restfaktura → unveränderliche RE + valides ZUGFeRD + FI + OP. Konkurrenz, Preisänderung nach Freigabe, falsche Währung/Organisation/Kunde, Sperre, geschlossene Periode, fehlende Steuer-/Debitorenstammdaten und Ausgabefehler prüfen.
 
 ## CRM/BP: zentraler Geschäftspartner mit vertrieblichen und buchhalterischen Rollen
 

@@ -12,6 +12,10 @@ Aus einem zulässigen freigegebenen AU entsteht ein quellengebundener SA mit tat
 
 Abweichende Rechnungsempfänger/Regulierer, Fremdwährung, Teilübernahme, Änderungen nach Freigabe, Angebot/Teilannahme, Retoure und Korrektur benötigen die vollständige durchgängige Bindung bis in SA, Lieferschein, Faktura, FI und OP. Bis zur jeweiligen Umsetzung muss der konkrete Folgeprozess kontrolliert blockieren; keine stille Rückkehr zum Auftraggeber, kein geratenes FX und kein Abschlusslabel für den gesamten SD-Backlog.
 
+## Ergänzung vom 23.10.2026: Direktvertrieb
+
+Der oben beschriebene SA-Pfad bezeichnet den gelieferten Serviceumfang der Preview0.18. Zusätzlich ist [DS-01–16](direct-sales.md) beauftragt: AU führt reinen Warenverkauf einschließlich Kosten/Beschaffung, tatsächlicher Teil-Auslieferung und lieferbezogener Fakturaanforderung/Vorrat/RE/FI/OP selbst. Kein Ticket, SA, WOT oder SRM ist für diesen Weg erforderlich. Dieser Direktvertrieb ist noch offen; die bestehende SA-Ausführung wird nicht als dessen Umsetzung ausgegeben.
+
 ## Konkreter Umfang und offene Fortsetzung
 
 Native Arbeitsliste mit Suche, Status- und Datumsfiltern; Detailmasken für Kopf/Bedingungen, vier Partnerrollen, Positionen mit Überposition, externe Texte, Kontierung, Konditionen, Teileinteilungen, Unvollständigkeit, Prüfung und Belegfluss. Preise entstehen aus realen Katalogkonditionen, Textänderungen halten den Preisstand. Explizite Neuermittlung und Einteilungsänderung erhalten den vorherigen Stand im Verlauf. Sämtliche beteiligten Bearbeiter bleiben von der eigenen unabhängigen Freigabe ausgeschlossen.

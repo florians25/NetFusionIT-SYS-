@@ -2,6 +2,8 @@
 
 Nutzerpräzisierung vom 22.10.2026: Materialbedarf wird automatisch anhand der Artikel erkannt. BANF-Erzeugung und Positions-/Auftragsstatus gehören in den Serviceauftrag; vorhandene Lagerartikel werden genutzt. Fehlender Bestand benötigt einen verständlichen Hinweis. Die bisherigen Masken und die manuelle Bedarf→BANF-Klickstrecke sind dem Nutzer zu einfach und zu leer.
 
+Ergänzung vom 23.10.2026: Diese Beschreibung bleibt für Service gültig. [Direktvertrieb](direct-sales.md) benötigt dieselbe belastbare Versorgung aus AU-Positionen mit typisierter AU-Kosten-/Beschaffungsquelle, ohne Ticket/SA/SRM. AU und SA konkurrieren um denselben tatsächlichen freien Bestand; keine Doppelreservierung. Die AU-Erweiterung ist noch offen.
+
 ## Umsetzungsregeln
 
 - Artikelart unterscheidet Lagerersatzteil, Nichtlagerteil und Fremdleistung von Arbeitszeit, Fahrtleistung und Pauschale. Die freigegebene Auftragsposition erzeugt ihren Materialbedarf automatisch; keine erneute Artikel-/Mengenerfassung in einem separaten Anforderungsformular.

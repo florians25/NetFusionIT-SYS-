@@ -47,6 +47,9 @@ Das Produktionsimage wurde in dieser Cloud mit isoliertem PostgreSQL, Migratione
 
 ## Dokumentation
 
+- [Verbleibender Masterbacklog und aktuelle Arbeitsreihenfolge](docs/master-backlog-index.md)
+- [Direktvertrieb ohne Ticket/Serviceauftrag](docs/requirements/direct-sales.md), [Statistiken und Reports](docs/requirements/reporting.md) · beauftragt, noch offen
+
 - [Preview 0.18.1: eigener Kundenauftrag, unveränderliche AB und gebundene Serviceausführung](docs/previews/v0.18.0-preview.1/README.md), [Versionsnotizen](docs/releases/v0.18.0-preview.1.md)
 - [Preview 0.17.1: tatsächliche Inventur, unabhängige Differenzprüfung und genaue Gegenbewegung](docs/previews/v0.17.0-preview.1/README.md), [Versionsnotizen](docs/releases/v0.17.0-preview.1.md)
 - [Preview 0.16.1: freie Lagerortumlagerung, genauer Gegenbeleg und konsistente Bestandsanzeige](docs/previews/v0.16.0-preview.1/README.md), [Versionsnotizen](docs/releases/v0.16.0-preview.1.md)

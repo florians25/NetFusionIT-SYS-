@@ -22,4 +22,4 @@ Für mobile native Header-Aktionsmenüs ist ab Preview0.10 OpenUI5 1.152.1 festg
 
 ## Zusätzliche Nutzerkorrekturen
 
-In der Ticketmaske entfällt der Belegfluss ausdrücklich; direkte Servicefallnavigation bleibt erhalten. Nachrichten-/Notizverlauf und technische Bearbeitung werden weiter ausgebaut. Die neuen SAP-Auftrags-/Einkaufsbilder und DIN-Belegvorgaben sind unter [Geschäftsbelege und SAP-Muster](business-documents.md) erfasst. Kostenpflichtige Folgebelege bleiben am Serviceauftrag.
+In der Ticketmaske entfällt der Belegfluss ausdrücklich; direkte Servicefallnavigation bleibt erhalten. Nachrichten-/Notizverlauf und technische Bearbeitung werden weiter ausgebaut. Die neuen SAP-Auftrags-/Einkaufsbilder und DIN-Belegvorgaben sind unter [Geschäftsbelege und SAP-Muster](business-documents.md) erfasst. Kostenpflichtige Servicefolgebelege bleiben am Serviceauftrag. Beim zusätzlich beauftragten [Direktvertrieb](direct-sales.md) führt der AU die kaufmännischen Folgebelege ohne technisches Ticket/SA. Berichte erhalten einen eigenen berechtigten Arbeitsplatz mit echten Kennzahlen und Drill-down; keine globale Tab-Leiste.

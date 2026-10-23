@@ -1,0 +1,48 @@
+# Direktvertrieb · eigenständiger Warenverkauf aus dem Kundenauftrag
+
+Beauftragt am 23.10.2026. **Status: offen.** Preview0.18 liefert den eigenen AU und dessen gebundene Serviceausführung; sie liefert noch keinen eigenständigen Warenverkauf bis Lieferung und Rechnung. Die laufende Angebotsentwicklung ersetzt diese fehlende Ausführung nicht. Dieser Umfang ergänzt [SD-01–17 / BILL-01–10 / CRM-01–10](sales-billing-crm.md) und den [Masterbacklog](../master-backlog-index.md).
+
+## Zwei ausdrücklich getrennte Ausführungswege
+
+**Direktvertrieb:** optionales Angebot AG → Kundenauftrag AU → unabhängige Freigabe / AB → Lagerreservierung oder auftragsbezogene Beschaffung → tatsächliche Teil-/Auslieferung mit WA/LS → Fakturaanforderung → Freigabe → Fakturavorrat → Rechnung / ZUGFeRD → FI / Debitorenposten. Ein AU darf auch ohne vorheriges Angebot entstehen. Ticket, Servicefall, WOT, SA und SRM sind keine Voraussetzung für einen Warenverkauf.
+
+**Service:** optionales Angebot AG → AU oder vorhandener eigenständiger SA → freigegebener SA als kaufmännischer Auftrag → Ticket/WOT mit tatsächlichen Arbeits-/Fahrzeiten, Pauschalen und Material → korrelierte SRM → Fakturaanforderung → Freigabe → Fakturavorrat → Rechnung / FI / OP. Die bestehenden Servicevorgaben bleiben für diesen Weg verbindlich.
+
+Die frühere Vorgabe „alle kostenpflichtigen Folgeprozesse über den SA“ gilt damit für Service. Beim Direktvertrieb trägt der AU Kosten, Bedarf, Beschaffung, Lieferung und Abrechnung. Beschaffungs-/Lager-/Fakturabelege benötigen einen eindeutig typisierten AU-/Positionsbezug statt eines erfundenen SA. Bestehende SA-Quellen dürfen durch die Erweiterung nicht umgedeutet werden.
+
+Der Ausführungsweg ist vor Freigabe ausdrücklich festzulegen und im genehmigten Stand zu binden. Wechsel nach Freigabe oder gemischte Waren-/Serviceausführung benötigen einen eigenen Änderungs-/Aufteilungsprozess mit eindeutiger Positions- und Mengenherkunft. Bis zu dessen Umsetzung dürfen gemischte Fälle nicht stillschweigend in einen anderen Weg fallen.
+
+## Verbindliche Arbeitspakete
+
+Alle folgenden Pakete sind offen. Eine vorhandene gemeinsame Teilbasis ist keine Abnahme der Direktvertriebskette.
+
+| ID | Umfang | Abnahme |
+| --- | --- | --- |
+| DS-01 | AU-Ausführungsweg Direktvertrieb, eigener kaufmännischer Ursprung, Freigabe-/Rollenregeln | Warenauftrag ohne Ticket/SA anlegen, unabhängig freigeben und ausführen; keine versteckten WOT-/SRM-Pflichten und kein leerer technischer Ersatzbeleg |
+| DS-02 | AG-Annahme → AU sowie freier AU ohne AG | Nur tatsächlich angenommene Angebotspositionen mit vereinbarten Preisen übernehmen; wiederholte/parallele Übernahme erzeugt genau einen AU. Freier AU erhält eigene Konditionsfindung |
+| DS-03 | Vertriebsbereich, vier Partnerrollen, konkrete Anschriften/Ansprechpartner, Zahlungs-/Versandbedingungen, Incoterms, Kundenbestellreferenz | Vereinbarte Daten bleiben auf AB, LS, Rechnung und E-Rechnung konsistent; abweichender Finanzpartner/Regulierer benötigt durchgängige Prüfung bis FI/OP |
+| DS-04 | Warenpositionen mit Artikel-/Kundenmaterial, Menge/Einheit, Hierarchie, Einteilungen, Preis-/Steuer-/Kostenspur und Sperren | Geplante, reservierte, bestellte, eingegangene, ausgegebene, zurückgenommene und fakturierte Mengen getrennt; keine Planmenge als tatsächliche Lieferung |
+| DS-05 | Verfügbarkeit, freie Mengen, Reservierung und Fehlmengenhinweis aus AU | Gleiche Lagerplätze/Serien/Chargen und Reservierungsregeln wie im Service; Konkurrenz zwischen AU und SA darf Bestand nicht doppelt reservieren oder verbrauchen |
+| DS-06 | AU-Fehlbedarf → BANF → unabhängige Freigabe → Teilbestellung mit Lieferant | Nur ungedeckte Mengen beschaffen, vorhandenen Bestand nutzen; AU-/Positionskontierung in allen Folgebelegen, keine doppelte BANF bei Wiederholung |
+| DS-07 | Tatsächlicher Teil-WE mit konkreter Menge, Lagerort/Fach, Serie/Charge und Originalgegenbewegung | Teilmengen aktualisieren AU-Versorgung und Reservierung; Bestellung und Rechnungseingang bleiben mengen-/wertmäßig gebunden; Storno schützt bereits verwendete Mengen |
+| DS-08 | Kommissionierung, Fachentnahme, Teil-Auslieferung, bewerteter WA und LS direkt zu AU | Tatsächliche Entnahmemengen und vereinbarte Lieferanschrift, offene Restmengen je Position/Einteilung; atomare Bestands-/Kostenbuchung ohne SRM |
+| DS-09 | AU-Lieferung → positionsbezogene Fakturaanforderung → Freigabe → Vorrat → Teil-/Endrechnung | Nur tatsächlich gelieferte, noch offene freigegebene Quellenmengen; Lieferdatum/-zeitraum statt erfundenem Leistungsnachweis. Echte AU-/Kundenbestell-/LS-Referenzen, valides ZUGFeRD, FI und Debitorenrest |
+| DS-10 | AU-Kosten/Erlöse/Deckungsbeitrag sowie Bestell-/WE-/Eingangsrechnungsbezug | Quellenkontierung und Bewertung bis Haupt-/Nebenbuch nachvollziehbar; keine zweite Lager-/Aufwandsbuchung beim Rechnungseingang, interne Kosten kundenunsichtbar |
+| DS-11 | Liefer-/Fakturasperre, Unvollständigkeit, Absage und Änderung nach Freigabe | Serverseitige Folgeprozesssperren; Mengenreduzierung, Preis-/Adresswechsel oder Wegwechsel erhalten alte Freigaben/Originale und prüfen bereits ausgeführte Mengen |
+| DS-12 | Rücknahme, Kundenretoure, Gutschrift/Rechnungskorrektur und Wiedereinlagerung | Original-WA/Wert/Tracking und Rechnungsbezug erhalten; vor Faktura genaue Gegenbewegung, nach Faktura eigener freigegebener Korrekturpfad; keine stille Änderung von Rechnung oder OP |
+| DS-13 | Tatsächlicher AU-Belegfluss, Statusübersicht und kleine Anlagenliste | AG/AB/BANF/BE/WE/WA/LS/Faktura/RE und Gegenbelege nur bei echten Referenzen; Schwarz-Weiß-Formulare mit Code128 und unveränderten Archivbytes |
+| DS-14 | Nichtlagerwaren, Software-/Lizenzverkauf und belegte Bereitstellung | Eigener fachlicher Liefer-/Bereitstellungsnachweis ohne fiktiven Lagerbestand oder Technikerzeit; Laufzeit/Serien-/Lizenzzuordnung und Abrechnungsregel ausdrücklich konfigurieren |
+| DS-15 | Streckengeschäft / Lieferant direkt an Kunden | AU-/Bestellposition und Kundenlieferanschrift binden; echte Lieferbestätigung als Quelle, keine Buchung im eigenen Lager vortäuschen; getrennte Eingangs-/Ausgangsrechnung und Rücksendung |
+| DS-16 | Native Vertriebsarbeitsplätze, Kundenansicht, Rollenfilter und Reporting | Aufruf über App-Zentrale, nur anwendungsbezogene Schnellzugriffe; dichte AU-/Bedarfs-/Liefer-/Fakturadetails, echte Zähler/Filter und lesbare mobile Pop-ins. Keine eigenen CSS-/HTML-Controls |
+
+DS-01–10, die nötigen Sperren/Gegenbewegungen aus DS-11/12 sowie DS-13/16 bilden die erste durchgängige Warenverkaufskette. Vollständige nachträgliche Änderungen, fakturierte Retouren, Nichtlager-/Lizenzverkauf und Streckengeschäft bleiben bis zu ihrer eigenen Prüfung sichtbar offen; ein Lagerverkauf darf sie nicht als erledigt ausweisen. Erweiterte Steuerfälle, Kredit, FX, Sammelfaktura und Zahlungsabwicklung bleiben mit den bestehenden SD-/BILL-/Finance-Paketen verknüpft.
+
+## Erforderliche Prozessnachweise
+
+1. **Ab Lager:** freier Waren-AU ohne AG/Ticket/SA, unabhängige Prüfung/AB, tatsächliche Lieferung einer Bestellmenge von fünf Stück in zwei und drei Stück, zwei freigegebene Fakturaanforderungen und korrekte Teil-/Restrechnung. Restmengen, Bestandswert, Kosten, Steuer, FI und OP stimmen überein.
+2. **Mit Beschaffung:** fünf Stück Bedarf, zwei frei vorhanden, nur drei per BANF/Bestellung. Teil-WE mit einem und zwei Stück, echte Fachzuordnung und AU-Reservierung; keine Überbeschaffung oder konkurrierende Verwendung durch SA.
+3. **Mit Angebot:** selektive Kundenannahme eines konkreten Angebotsstands, nur angenommene Warenpositionen im AU; spätere Katalog-/Kundengruppenänderung ersetzt keinen akzeptierten Preis.
+4. **Rückabwicklung:** tatsächlichen Teil-WA vor Faktura exakt zurücknehmen und offene Mengen wiederherstellen; nach Faktura nur freigegebene mengen-/wertgebundene Retoure/Korrektur. Originale bleiben erhalten.
+5. **Negativ-/Konkurrenzfälle:** fremder Mandant/Organisation/Kunde, fehlende Freigabe/Steuer-/Finanzrolle, Liefer-/Fakturasperre, geschlossene Periode, Überlieferung, Doppelentnahme, wiederholte Faktura, parallele Rücknahme und manipulierte AU-/SA-Quellen serverseitig abweisen.
+
+Alle sichtbaren Daten verwenden deutsche Datumsformate; Liefer-/Leistungsdatum bleiben kompakt. Ticketnummern stehen nur bei tatsächlicher Serviceherkunft auf Rechnungen. Nummernkreise AG/AU/AB/BA/BE/WE/WA/LS/RE/GU/RT/SB werden wiederverwendet; kein neuer Servicebeleg allein für eine technische Nummer. Desktop-/Smartphone-Browser, echte PDF-/Barcode-/E-Rechnungsprüfung und Docker-Prozessnachweis gehören zur jeweiligen Preview-Abnahme.
