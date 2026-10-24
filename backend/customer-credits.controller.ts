@@ -7,6 +7,8 @@ import {CustomerCredits} from './customer-credits';
 export class CustomerCreditsController{
  constructor(private credits:CustomerCredits){}
  @Get()list(@Req() r:AuthRequest){return this.credits.list(r.user);}
+ @Get('invoices/:id/selection')@Permission('billing.credit.write')selection(@Req() r:AuthRequest,@Param('id') id:string){return this.credits.selection(r.user,id);}
+ @Post(':id/cancel')@Permission('billing.credit.write')cancel(@Req() r:AuthRequest,@Param('id') id:string,@Body() b:unknown){csrf(r);return this.credits.cancel(r.user,id,b,r.get('Idempotency-Key'),r.correlationId);}
  @Get(':id')detail(@Req() r:AuthRequest,@Param('id') id:string){return this.credits.detail(r.user,id);}
  @Post('invoices/:id')@Permission('billing.credit.write')create(@Req() r:AuthRequest,@Param('id') id:string,@Body() b:unknown){csrf(r);return this.credits.create(r.user,id,b,r.get('Idempotency-Key'),r.correlationId);}
  @Post(':id/prepare')@Permission('billing.credit.write')prepare(@Req() r:AuthRequest,@Param('id') id:string,@Body() b:unknown){csrf(r);return this.credits.prepare(r.user,id,b,r.get('Idempotency-Key'),r.correlationId);}

@@ -97,6 +97,7 @@ export async function migrate(connectionString) {
       await client.query(`GRANT SELECT,INSERT ON goods_receipt_items TO "${role}"`);
       await client.query(`GRANT SELECT ON stock_balances,inventory_valuations TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT ON journal_entries TO "${role}"`);
+      await client.query(`GRANT SELECT,INSERT ON customer_credit_lines TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT ON sla_events TO "${role}"`);
     }
   } finally { await client.end(); }

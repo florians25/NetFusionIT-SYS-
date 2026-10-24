@@ -39,6 +39,7 @@ const eventsSql=`WITH original AS (
  SELECT cm.id,d.number,'CREDIT_NOTE','CREDIT_NOTE',o.line_id,o.position,cm.posting_date,cm.document_date,o.invoice_id,o.number,coalesce(o.sales_order_id,o.order_id),o.snapshot->>'orderNumber',CASE WHEN o.sales_order_id IS NULL THEN 'SERVICE' ELSE 'DIRECT_SALES' END,
  o.partner_id,o.snapshot->'buyer'->>'name',o.product_id,o.sales_area_id,o.line_snapshot->>'sku',o.line_snapshot->>'description',-o.quantity,o.line_snapshot->>'unit',-o.net,-o.line_tax,-o.billed_cost,0::numeric
  FROM original o JOIN customer_credit_memos cm ON cm.tenant_id=$1 AND cm.invoice_id=o.invoice_id AND cm.sealed JOIN documents d ON d.tenant_id=cm.tenant_id AND d.id=cm.id
+ WHERE cm.correction_mode='FULL' OR EXISTS(SELECT 1 FROM customer_credit_lines cl WHERE cl.tenant_id=cm.tenant_id AND cl.credit_id=cm.id AND cl.invoice_item_id=o.line_id)
  UNION ALL
  SELECT g.id,d.number,'GOODS_ISSUE',CASE g.movement_type WHEN 'ISSUE' THEN 'STOCK_ISSUE' ELSE 'STOCK_RETURN' END,gi.id,gi.position,g.posting_date,g.document_date,NULL::uuid,NULL::text,h.id,od.number,'DIRECT_SALES',h.partner_id,
  coalesce((SELECT p->>'name' FROM jsonb_array_elements(h.released_snapshot->'commercial'->'partners') p WHERE p->>'role'='SOLD_TO'),h.released_snapshot->'commercial'->'header'->>'partnerName'),gi.product_id,h.sales_area_id,si.price_snapshot->'product'->>'sku',si.description,
