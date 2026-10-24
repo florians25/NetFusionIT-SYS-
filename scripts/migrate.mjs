@@ -65,8 +65,8 @@ export async function migrate(connectionString) {
       await client.query(`GRANT SELECT ON supplier_invoice_balances TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT ON initial_setup_runs TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT,UPDATE ON ticket_intakes,ticket_asset_links TO "${role}"`);
-      await client.query(`GRANT SELECT,INSERT,UPDATE ON customer_settlements TO "${role}"`);
-      await client.query(`GRANT SELECT,INSERT ON customer_settlement_reviews TO "${role}"`);
+      await client.query(`GRANT SELECT,INSERT,UPDATE ON supplier_settlements,supplier_payment_controls,customer_settlements TO "${role}"`);
+      await client.query(`GRANT SELECT,INSERT ON supplier_settlement_reviews,supplier_payment_control_events,customer_settlement_reviews TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT,UPDATE,DELETE ON report_variants TO "${role}"`);
       await client.query(`GRANT SELECT ON customer_invoice_balances TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT,UPDATE ON customer_credit_memos,customer_credit_output_jobs TO "${role}"`);
@@ -106,6 +106,8 @@ export async function migrate(connectionString) {
       await client.query(`GRANT SELECT,INSERT ON return_custody_events,return_inspections,customer_return_lines,customer_return_receipt_items TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT ON customer_credit_lines TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT,UPDATE,DELETE ON personal_workspaces TO "${role}"`);
+      await client.query(`GRANT SELECT,INSERT,UPDATE ON service_playbooks,knowledge_articles,ticket_watchers,task_checklist_items,crm_activities TO "${role}"`);
+      await client.query(`GRANT SELECT,INSERT ON task_checklists,task_checklist_events,ticket_knowledge_links,crm_activity_events TO "${role}"`);
       await client.query(`GRANT SELECT,INSERT ON sla_events TO "${role}"`);
     }
   } finally { await client.end(); }

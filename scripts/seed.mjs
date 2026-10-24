@@ -12,11 +12,11 @@ export async function seed(connectionString) {
     await db.query("INSERT INTO organizations(id,tenant_id,name,kind) VALUES($1,$2,'Service Deutschland','SERVICE_ORGANIZATION')",[org,tenant]);
     await db.query("INSERT INTO business_partners(id,tenant_id,organization_id,number,name,email) VALUES($1,$2,$3,'10000001','Entwicklungskunde','kunde@example.test')",[partner,tenant,org]);
     for(const [role,email,name] of [
-      ['ADMIN','admin@netfusion.test','Florian · Administration'],
-      ['DISPATCHER','dispatch@netfusion.test','Mara · Disposition'],
+      ['ADMIN','admin@netfusion.test','Florian Adler'],
+      ['DISPATCHER','dispatch@netfusion.test','Mara Schneider'],
       ['TECHNICIAN','technik@netfusion.test','Jonas Weber'],
-      ['SUPPORT','support@netfusion.test','Lea · Support'],
-      ['CUSTOMER','kunde@example.test','Alex · Kundenportal']]) {
+      ['SUPPORT','support@netfusion.test','Lea Hoffmann'],
+      ['CUSTOMER','kunde@example.test','Alex Neumann']]) {
       const id=randomUUID(),password=randomBytes(18).toString('base64url');
       await db.query('INSERT INTO users(id,tenant_id,email,name,password_hash,role,partner_id) VALUES($1,$2,$3,$4,$5,$6,$7)',[id,tenant,email,name,await hashPassword(password),role,role==='CUSTOMER'?partner:null]);
       await db.query('INSERT INTO user_organizations VALUES($1,$2,$3)',[tenant,id,org]);

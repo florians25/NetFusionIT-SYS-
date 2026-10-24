@@ -25,7 +25,7 @@ async function source(db:PoolClient,u:Principal,id:string){
  if(!j||j.status!=='POSTED'||j.reversal_of)throw new ConflictException('Wirksamer ursprünglicher Finanzbeleg fehlt.');
  if((await db.query("SELECT 1 FROM journals WHERE tenant_id=$1 AND reversal_of=$2 AND status='POSTED'",[u.tenantId,j.id])).rowCount)throw new ConflictException('Die Ursprungsrechnung ist bereits gegengebucht.');
  const op=(await db.query('SELECT * FROM supplier_invoice_open_items WHERE tenant_id=$1 AND invoice_id=$2',[u.tenantId,id])).rows[0];
- if(!op||!op.payment_block||op.amount!==i.gross)throw new ConflictException('Unbezahlter zahlungsgesperrter Originalposten erforderlich.');
+ if(!op||!op.payment_block||op.amount!==i.gross||!(await db.query("SELECT supplier_invoice_balance_at($1,$2,'9999-12-31')=$3::numeric AS unpaid",[u.tenantId,id,i.gross])).rows[0].unpaid)throw new ConflictException('Unbezahlter zahlungsgesperrter Originalposten erforderlich.');
  const lines=(await db.query('SELECT e.position,e.account_id AS "accountId",a.code,a.name,e.side,e.amount::text,e.description,e.cost_center AS "costCenter",e.partner_id AS "partnerId",e.tax_code AS "taxCode",a.active FROM journal_entries e JOIN gl_accounts a ON a.tenant_id=e.tenant_id AND a.id=e.account_id WHERE e.tenant_id=$1 AND e.journal_id=$2 ORDER BY e.position FOR SHARE OF a',[u.tenantId,j.id])).rows;
  if(!lines.length||lines.some(l=>!l.active))throw new ConflictException('Die ursprünglichen Konten müssen für die Gegenbuchung aktiv sein.');
  return {...i,number:d.number,journal:j,lines:lines.map(({active,...l})=>l)};
@@ -33,6 +33,7 @@ async function source(db:PoolClient,u:Principal,id:string){
 async function plan(db:PoolClient,u:Principal,h:any){
  const i=await source(db,u,h.invoice_id),c=await companyWithin(db,u,i.company_id);await periodWithin(db,u,c,h.period_id,h.posting_day,true);
  if(h.posting_day<i.posting_day||h.document_day<i.snapshot.original.date)throw new ConflictException('Stornobuchung darf nicht vor der Originalbuchung, Stornobelegdatum nicht vor dem Rechnungsdatum liegen.');
+ if((await db.query('SELECT 1 FROM supplier_settlements WHERE tenant_id=$1 AND invoice_id=$2 AND sealed AND posting_date>$3::date',[u.tenantId,i.id,h.posting_day])).rowCount)throw new ConflictException('Rechnungsstorno darf nicht vor gebuchten Zahlungsbewegungen liegen.');
  const snapshot={id:h.id,number:h.number,invoiceId:i.id,invoiceNumber:i.number,externalNumber:i.external_number,companyId:i.company_id,periodId:h.period_id,postingDate:h.posting_day,documentDate:h.document_day,reason:h.reason,preparedBy:h.prepared_by,preparedAt:new Date(h.prepared_at).toISOString(),currency:i.currency,net:i.net,tax:i.tax,gross:i.gross,invoiceSnapshot:i.snapshot,sourceJournal:{id:i.journal.id,number:i.journal.number,hash:i.journal.content_hash,lines:i.lines}};
  return {h,i,snapshot};
 }

@@ -17,7 +17,7 @@ try{
  await page.getByRole('button',{name:'Definition konfigurieren',exact:true}).click();
  let dialog=editingSurface(page);await dialog.getByRole('textbox',{name:'Bezeichnung',exact:true}).fill('Kundenstammdatenprüfung');
  await dialog.getByRole('textbox').nth(1).fill('Stammdatenprüfung');
- await dialog.getByRole('textbox').nth(1).press('Tab');await page.waitForFunction(()=>!sap.ui.getCore().getUIDirty());const roles=dialog.getByRole('combobox').last(),roleId=await roles.getAttribute('id');await page.locator('[id="'+roleId.replace(/-inner$/,'-arrow')+'"]').click();await page.getByRole('option',{name:'IT-Support',exact:true}).filter({visible:true}).click();await roles.press('Escape');
+ await dialog.getByRole('textbox').nth(1).press('Tab');await page.waitForFunction(()=>!sap.ui.getCore().getUIDirty());const roles=dialog.getByRole('combobox').last(),roleId=await roles.getAttribute('id');await roles.focus();await roles.press('F4');await page.getByRole('option',{name:'IT-Support',exact:true}).filter({visible:true}).click();await roles.press('Escape');
  await dialog.getByRole('button',{name:'Neue Definition aktivieren',exact:true}).click();await dialog.waitFor({state:'hidden'});
  assert.equal((await api('/api/workflow/definitions')).data[0].steps[0].roles[0],'SUPPORT');
  await page.goto(h.base+'/#partners/'+partner.id);await page.getByRole('button',{name:'Zur Freigabe einreichen',exact:true}).click();await page.getByText('In Prüfung',{exact:true}).waitFor();

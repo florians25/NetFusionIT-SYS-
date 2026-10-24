@@ -5,7 +5,7 @@
     "type": "application",
     "title": "NetFusion Service Workspace",
     "applicationVersion": {
-      "version": "0.28.0"
+      "version": "0.31.0"
     },
     "dataSources": {
       "service": {
@@ -65,6 +65,16 @@
         "async": true
       },
       "routes": [
+        {
+          "name": "servicePlaybooks",
+          "pattern": "service/playbooks",
+          "target": "ServiceLibrary"
+        },
+        {
+          "name": "serviceKnowledge",
+          "pattern": "service/knowledge",
+          "target": "ServiceLibrary"
+        },
         {
           "name": "salesProcurements",
           "target": "SalesProcurements",
@@ -163,7 +173,7 @@
         {
           "name": "planning",
           "target": "Planning",
-          "pattern": "planning"
+          "pattern": "planning:?query:"
         },
         {
           "name": "serviceMaster",
@@ -404,6 +414,46 @@
           "name": "initialSetup",
           "pattern": "initial-setup",
           "target": "InitialSetup"
+        },
+        {
+          "pattern": "supplier-payments",
+          "name": "supplierPayments",
+          "target": "SupplierSettlements"
+        },
+        {
+          "pattern": "supplier-payments/{id}",
+          "name": "supplierSettlement",
+          "target": "SupplierSettlement"
+        },
+        {
+          "pattern": "reports/purchasing",
+          "name": "purchasingReport",
+          "target": "EnterpriseReport"
+        },
+        {
+          "pattern": "reports/delivery-reliability",
+          "name": "deliveryReliabilityReport",
+          "target": "EnterpriseReport"
+        },
+        {
+          "pattern": "reports/stock",
+          "name": "stockReport",
+          "target": "EnterpriseReport"
+        },
+        {
+          "pattern": "reports/movements",
+          "name": "movementReport",
+          "target": "EnterpriseReport"
+        },
+        {
+          "pattern": "reports/ticket-sla",
+          "name": "ticketSlaReport",
+          "target": "EnterpriseReport"
+        },
+        {
+          "pattern": "reports/service-time",
+          "name": "serviceTimeReport",
+          "target": "EnterpriseReport"
         }
       ],
       "targets": {
@@ -607,6 +657,22 @@
         },
         "InitialSetup": {
           "viewName": "InitialSetup"
+        },
+        "ServiceLibrary": {
+          "viewName": "ServiceLibrary",
+          "viewId": "serviceLibrary"
+        },
+        "SupplierSettlements": {
+          "viewName": "SupplierSettlements",
+          "viewLevel": 1
+        },
+        "SupplierSettlement": {
+          "viewName": "SupplierSettlement",
+          "viewLevel": 2
+        },
+        "EnterpriseReport": {
+          "viewName": "EnterpriseReport",
+          "viewLevel": 1
         }
       }
     }

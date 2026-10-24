@@ -19,10 +19,10 @@ export class Collaboration {
   }));
  }
  async link(u:Principal,id:string,raw:unknown,key:unknown,correlation:string){
-  requirePermission(u.role,'service.manage');parse(uuid,id);const input=parse(z.object({targetId:uuid,kind:z.enum(['RELATED','PARENT','DUPLICATE'])}).strict(),raw);
+  requirePermission(u.role,'service.manage');parse(uuid,id);const input=parse(z.object({targetId:uuid,kind:z.enum(['RELATED','PARENT','DUPLICATE','PROBLEM','FOLLOW_UP'])}).strict(),raw);
   if(id===input.targetId)throw new ConflictException('Ticket kann nicht mit sich selbst verknüpft werden.');
   return this.db.as(u,db=>idempotent(db,u,'TICKET_LINK:'+id,key,input,async()=>{
-   await this.service.ticket(db,u,id);await this.service.ticket(db,u,input.targetId);
+   const source=await this.service.ticket(db,u,id),target=await this.service.ticket(db,u,input.targetId);if(source.organizationId!==target.organizationId||source.partnerId!==target.partnerId)throw new ConflictException('Ticketbeziehungen benötigen denselben Kunden und dieselbe Serviceorganisation.');if(input.kind==='PROBLEM'&&target.type!=='PROBLEM')throw new ConflictException('Als Problembezug ein tatsächliches Problemticket auswählen.');
    if(input.kind==='PARENT'){
     await db.query('SELECT pg_advisory_xact_lock(hashtextextended($1,0))',[`TICKET_TREE:${u.tenantId}`]);
     const cycle=await db.query("WITH RECURSIVE parents(id) AS(SELECT target_id FROM ticket_links WHERE tenant_id=$1 AND source_id=$2 AND kind='PARENT' UNION SELECT l.target_id FROM ticket_links l JOIN parents p ON p.id=l.source_id WHERE l.tenant_id=$1 AND l.kind='PARENT') SELECT 1 FROM parents WHERE id=$3",[u.tenantId,input.targetId,id]);
