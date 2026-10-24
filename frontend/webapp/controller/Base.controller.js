@@ -1,7 +1,8 @@
-sap.ui.define(["sap/ui/core/mvc/Controller","sap/m/MessageBox","sap/ui/model/json/JSONModel","netfusion/erp/model/formatter","sap/ui/model/Filter","sap/ui/model/FilterOperator","netfusion/erp/util/AttachmentsDialog","netfusion/erp/model/DocumentFlow"],function(Controller,MessageBox,JSONModel,formatter,Filter,Op,attachments,DocumentFlow){
+sap.ui.define(["sap/ui/core/mvc/Controller","sap/m/MessageBox","sap/ui/model/json/JSONModel","netfusion/erp/model/formatter","sap/ui/model/Filter","sap/ui/model/FilterOperator","netfusion/erp/util/AttachmentsDialog","netfusion/erp/model/DocumentFlow","netfusion/erp/util/Presentation"],function(Controller,MessageBox,JSONModel,formatter,Filter,Op,attachments,DocumentFlow,Presentation){
   "use strict";
   return Controller.extend("netfusion.erp.controller.Base",{
     formatter:formatter,
+    onBeforeRendering:function(){Presentation.apply(this);},
     model:function(data){this.getView().setModel(new JSONModel(data||{}),"view");return this.getView().getModel("view");},
     vm:function(){return this.getView().getModel("view");},
     state:function(path){return this.getOwnerComponent().getModel("state").getProperty(path);},

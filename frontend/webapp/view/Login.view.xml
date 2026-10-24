@@ -12,7 +12,7 @@
             <Label text="Passwort" labelFor="password"/><Input id="password" value="{view&gt;/password}" type="Password" submit=".onLogin"/>
           </form:SimpleForm>
           <Button text="Anmelden" type="Emphasized" press=".onLogin" width="100%" class="sapUiSmallMarginTop"/>
-          <ObjectStatus text="Version 0.1 · Entwicklungsumgebung" state="Information" class="sapUiMediumMarginTop"/>
+          <ObjectStatus text="NetFusion · Enterprise Service ERP" state="Information" class="sapUiMediumMarginTop"/>
           <Text text="Zugangsdaten werden durch Ihre Administration vergeben." class="sapUiSmallMarginTop"/>
         </VBox>
       </Panel>

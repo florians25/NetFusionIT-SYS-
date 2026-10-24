@@ -4,6 +4,8 @@ Stand 24.10.2026, Lieferbasis Preview0.30.0-preview.1. Die [Originalspezifikatio
 
 ## Aktuelle Arbeit und Reihenfolge
 
+**In Arbeit nach0.30:** gesamte native Oberfläche vereinheitlichen, anschließend [festgelegtes Zwanzigerpaket mit20 fachlichen Abnahmekriterien](requirements/next-twenty-ui-service-finance.md): Ticket-/Wissens-/Asset-/CRM-Funktionen, operative Einkaufs-/Lager-/Serviceberichte, Kreditorenzahlungen und persönliche Arbeitsansichten. Noch nicht als geliefert markiert.
+
 **Preview0.30 · Zehnerpaket und zusätzliche Erstkonfiguration/Ticketpflege:** Reine Preisgutschrift, Servicegutschrift, Restgutschrift nach gemischten Korrekturen, Teil-Zahlungseingang, exakter Zahlungsstorno, Rückzahlung aus bezahlter Rechnung/GU, Auftrags-/Liefer-/Fakturavorratbericht, Angebotspipeline, historische OP-Altersstruktur und persönliche Varianten mit berechtigtem CSV/Drill-down. [Konkreter Lieferumfang und offene Grenzen](requirements/commercial-corrections-settlements-reports.md). Zusätzlich Terminal-Erstassistent und sechs native Einrichtungsschritte einschließlich USt-IdNr., Werken/Lagerorten/Regalen, Einkauf/Vertrieb, Konten/Perioden und Bank sowie umfangreiche interne Ticketqualifikation mit mehreren Assets. [Feldliste und Prüfregeln](requirements/initial-setup-internal-tickets.md), [Screenshots und Nachweise](previews/v0.30.0-preview.1/README.md). 445/445 Gesamttests und native Desktop-/390px-Prozesse bestanden. Der übrige Masterbacklog bleibt verbindlich offen.
 
 
