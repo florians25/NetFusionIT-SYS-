@@ -41,6 +41,7 @@ export const grants:Record<string,readonly Role[]>={
  'sales.fulfillment.read':['ADMIN','SERVICE_MANAGER','WAREHOUSE','SALES','BILLING','ACCOUNTANT','CONTROLLER','EXECUTIVE','CUSTOMER'],
  'sales.return.read':['ADMIN','SERVICE_MANAGER','SALES','WAREHOUSE','BILLING','ACCOUNTANT','CONTROLLER','EXECUTIVE'],
  'sales.return.write':['ADMIN','SERVICE_MANAGER','SALES'],
+ 'sales.return.inspect':['ADMIN','SERVICE_MANAGER','SALES'],
  'sales.return.receive':['ADMIN','WAREHOUSE'],
  'sales.reserve':['ADMIN','SERVICE_MANAGER','WAREHOUSE','SALES'],
  'sales.deliver':['ADMIN','WAREHOUSE'],

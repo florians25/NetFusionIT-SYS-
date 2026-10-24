@@ -1,0 +1,8 @@
+{
+    auto_https off
+}
+
+http://{$ERP_DOMAIN}:443 {
+    encode zstd gzip
+    reverse_proxy api:3000
+}

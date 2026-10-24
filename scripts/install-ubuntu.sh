@@ -10,8 +10,8 @@ main() {
   local install_dir="${ERP_INSTALL_DIR:-}" project="${ERP_INSTALL_PROJECT:-netfusion-erp-8070}"
   local missing=() tool compose_version major minor old_commit='' auto_domain='' configured=0 explicit='' metadata
   local backup='' old_api='' volume source_version image_id database_exists=0
-  local local_dir ca_file access_file access_temporary readiness_file i ready=0
-  [[ $# -eq 0 ]] || fail 'Optionen werden als ERP_INSTALL_DIR, ERP_DOMAIN oder ERP_INSTALL_PROJECT gesetzt.'
+  local protocol caddy_file ca_args=() local_dir ca_file access_file access_temporary readiness_file i ready=0
+  [[ $# -eq 0 ]] || fail 'Optionen werden als ERP_INSTALL_DIR, ERP_DOMAIN oder ERP_INSTALL_PROJECT und ERP_INSTALL_PROTOCOL=http|https gesetzt.'
   for tool in git curl flock; do command -v "$tool" >/dev/null 2>&1 || missing+=("$tool"); done
   if ((${#missing[@]})); then
     [[ $(id -u) -eq 0 ]] || fail "Fehlende Programme: ${missing[*]}. Installer mit sudo starten."
@@ -84,12 +84,14 @@ main() {
   trap 'printf "Installation angehalten. Vorhandene Daten bleiben erhalten; Diagnose: docker compose -f %q -p %q ps -a\n" "$install_dir/compose.quickstart.yaml" "$project" >&2; rm -f -- "$metadata"' ERR
   phase 'Vorhandene Installationseinstellungen übernehmen.'
   "${compose[@]}" run --rm --no-deps --quiet-pull \
-    -e "ERP_INSTALL_DATABASE_EXISTS=$database_exists" -e "ERP_INSTALL_EXPLICIT_KEYS=$explicit" -e "ERP_INSTALL_AUTO_DOMAIN=$auto_domain" -e "ERP_INSTALL_DOMAIN_CONFIGURED=$configured" \
+    -e "ERP_INSTALL_PROTOCOL=${ERP_INSTALL_PROTOCOL:-}" -e "ERP_INSTALL_DATABASE_EXISTS=$database_exists" -e "ERP_INSTALL_EXPLICIT_KEYS=$explicit" -e "ERP_INSTALL_AUTO_DOMAIN=$auto_domain" -e "ERP_INSTALL_DOMAIN_CONFIGURED=$configured" \
     -v "$install_dir/scripts/install-ubuntu-config.mjs:/installer-config.mjs:ro" \
     initialize node /installer-config.mjs >"$metadata"
   local values=(); mapfile -d '' -t values <"$metadata"; rm -f -- "$metadata"
-  [[ ${#values[@]} -eq 7 ]] || fail 'Unvollständige Installationsmetadaten.'
+  [[ ${#values[@]} -eq 8 ]] || fail 'Unvollständige Installationsmetadaten.'
   export ERP_DOMAIN="${values[0]}" ERP_BOOTSTRAP_TENANT="${values[1]}" ERP_BOOTSTRAP_COMPANY="${values[2]}" ERP_BOOTSTRAP_NAME="${values[3]}" ERP_BOOTSTRAP_EMAIL="${values[4]}"
+  protocol="${values[7]}"; export ERP_INSTALL_PROTOCOL="$protocol"
+  if [[ $protocol == http ]]; then compose+=(-f "$install_dir/compose.quickstart.http.yaml"); fi
   "${compose[@]}" config --quiet
   old_api=$("${compose[@]}" ps -a -q api)
   if [[ -n $old_api ]]; then image_id=$(docker inspect --format '{{.Image}}' "$old_api"); else image_id=''; fi
@@ -98,7 +100,7 @@ main() {
   if [[ ${values[5]} == 1 ]]; then
     phase 'Anwendung für die Sicherung anhalten; Datenbank und Volumes sichern.'
     "${compose[@]}" stop caddy api
-    "${compose[@]}" up -d --wait --wait-timeout 120 db
+    "${compose[@]}" up -d --no-deps --wait --wait-timeout 120 db
     mkdir -p -- "$local_dir/backups"
     backup=$(mktemp -d "$local_dir/backups/$(date -u +%Y%m%dT%H%M%SZ).XXXXXXXX")
     "${compose[@]}" exec -T db pg_dump -U postgres -d erp --format=custom >"$backup/database.dump"
@@ -123,27 +125,30 @@ main() {
   phase 'Container starten, Migrationen ausführen und bestehenden Mandanten erhalten.'
   "${compose[@]}" up -d --force-recreate
   ca_file="$local_dir/netfusion-root.crt"
-  for i in {1..15}; do
-    if "${compose[@]}" cp caddy:/data/caddy/pki/authorities/local/root.crt "$ca_file" >/dev/null 2>&1; then break; fi
-    sleep 1
-  done
-  [[ -s $ca_file ]] || fail 'Öffentliches Caddy-Stammzertifikat noch nicht verfügbar.'
-  chmod 644 "$ca_file"
-  phase 'HTTPS und Readiness auf Port8070 mit Zertifikatsprüfung kontrollieren.'
+  if [[ $protocol == https ]]; then
+    for i in {1..15}; do
+      if "${compose[@]}" cp caddy:/data/caddy/pki/authorities/local/root.crt "$ca_file" >/dev/null 2>&1; then break; fi
+      sleep 1
+    done
+    [[ -s $ca_file ]] || fail 'Öffentliches Caddy-Stammzertifikat noch nicht verfügbar.'
+    chmod 644 "$ca_file"; ca_args=(--cacert "$ca_file")
+  fi
+  phase "$protocol und Readiness auf Port8070 kontrollieren."
   readiness_file="$local_dir/readiness.json"
   for i in {1..30}; do
     if curl --noproxy '*' --silent --show-error --fail --connect-timeout 2 --max-time 5 \
-      --cacert "$ca_file" --resolve "$ERP_DOMAIN:8070:127.0.0.1" "https://$ERP_DOMAIN:8070/health/ready" >"$readiness_file" 2>/dev/null \
+      "${ca_args[@]}" --resolve "$ERP_DOMAIN:8070:127.0.0.1" "$protocol://$ERP_DOMAIN:8070/health/ready" >"$readiness_file" 2>/dev/null \
       && grep -Eq '"status"[[:space:]]*:[[:space:]]*"ready"' "$readiness_file"; then ready=1; break; fi
     sleep 2
   done
-  [[ $ready == 1 ]] || fail 'HTTPS-Readiness nicht erreicht. Containerstatus und Installationsprotokoll prüfen.'
+  [[ $ready == 1 ]] || fail 'Readiness nicht erreicht. Containerstatus und Installationsprotokoll prüfen.'
   access_file="$local_dir/initial-access.json"
   access_temporary=$(mktemp "$local_dir/access.XXXXXXXX")
   "${compose[@]}" run --rm --no-deps --quiet-pull install cat /run/netfusion-install/access.json >"$access_temporary"
   chmod 600 "$access_temporary"; mv -f -- "$access_temporary" "$access_file"
-  phase "Bereit: https://$ERP_DOMAIN:8070"
-  printf 'Checkout: %s\nErstzugang (geschützt): %s\nÖffentliches HTTPS-Stammzertifikat: %s\n' "$install_dir" "$access_file" "$ca_file"
+  phase "Bereit: $protocol://$ERP_DOMAIN:8070"
+  printf 'Checkout: %s\nErstzugang (geschützt): %s\n' "$install_dir" "$access_file"
+  if [[ $protocol == https ]]; then printf 'Öffentliches HTTPS-Stammzertifikat: %s\n' "$ca_file"; else printf 'HTTP-Testmodus aktiv: ausschließlich mit Testdaten im geschützten Testnetz verwenden.\n'; fi
   if [[ ${values[6]} == 0 && -t 1 ]]; then
     printf '\nEinmalige Erstzugangsdaten für dieses Terminal:\n'; cat -- "$access_file"
   else printf 'Bereits geänderte Passwörter bleiben erhalten; initial-access.json dokumentiert ausschließlich den Erstzugang.\n'; fi

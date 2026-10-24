@@ -16,11 +16,11 @@ export function assertBinOpen(b:any,ownCountId?:string){if(b.active_count_id&&b.
 export async function assertBinSource(db:PoolClient,u:Principal,b:any,productId:string,quantity:string,batch:string,serial:string,ownCountId?:string){
  // The caller holds the company and bin locks. The projection itself keeps
  // SELECT-only application privileges; a row lock would require UPDATE rights.
- assertBinOpen(b,ownCountId);const stock=(await db.query('SELECT quantity::text FROM warehouse_bin_balances WHERE tenant_id=$1 AND bin_id=$2 AND product_id=$3 AND batch=$4 AND serial=$5',[u.tenantId,b.id,productId,batch,serial])).rows[0];
+ assertBinOpen(b,ownCountId);if((await db.query('SELECT return_bin_held($1,$2)>0 AS held',[u.tenantId,b.id])).rows[0].held)throw new ConflictException('Fach enthält gesperrten Kunden-Prüfbestand; getrenntes Zielfach wählen.');const stock=(await db.query('SELECT quantity::text FROM warehouse_bin_balances WHERE tenant_id=$1 AND bin_id=$2 AND product_id=$3 AND batch=$4 AND serial=$5',[u.tenantId,b.id,productId,batch,serial])).rows[0];
  if(!stock||new D(stock.quantity).lt(quantity))throw new ConflictException('Die tatsächliche Menge dieses Artikels, dieser Charge und Seriennummer reicht auf dem gewählten Platz nicht aus.');
 }
 export async function assertBinTarget(db:PoolClient,u:Principal,b:any,product:any,quantity:string,batch:string,ownCountId?:string){
- assertBinOpen(b,ownCountId);const stock=(await db.query('SELECT s.product_id,s.batch,s.quantity::text,p.unit FROM warehouse_bin_balances s JOIN products p ON p.tenant_id=s.tenant_id AND p.id=s.product_id WHERE s.tenant_id=$1 AND s.bin_id=$2 AND s.quantity>0',[u.tenantId,b.id])).rows;
+ assertBinOpen(b,ownCountId);if((await db.query('SELECT return_bin_held($1,$2)>0 AS held',[u.tenantId,b.id])).rows[0].held)throw new ConflictException('Fach enthält gesperrten Kunden-Prüfbestand; getrenntes Zielfach wählen.');const stock=(await db.query('SELECT s.product_id,s.batch,s.quantity::text,p.unit FROM warehouse_bin_balances s JOIN products p ON p.tenant_id=s.tenant_id AND p.id=s.product_id WHERE s.tenant_id=$1 AND s.bin_id=$2 AND s.quantity>0',[u.tenantId,b.id])).rows;
  if(!b.allow_mixed_products&&stock.some(s=>s.product_id!==product.id))throw new ConflictException('Dieser Platz erlaubt keine Artikelvermischung.');
  if(!b.allow_mixed_batches&&stock.some(s=>s.product_id===product.id&&s.batch!==batch))throw new ConflictException('Dieser Platz erlaubt keine Chargenvermischung dieses Artikels.');
  if(b.capacity!==null&&(b.capacity_unit!==product.unit||stock.some(s=>s.unit!==b.capacity_unit)||stock.reduce((v,s)=>v.plus(s.quantity),new D(quantity)).gt(b.capacity)))throw new ConflictException('Menge oder Einheit überschreitet die konfigurierte Platzkapazität.');

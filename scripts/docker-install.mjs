@@ -18,11 +18,12 @@ async function child(script,env){
   if(signal||code!==0)throw new Error('Installationsschritt fehlgeschlagen: '+script);
 }
 function configuration(){
+  const protocol=process.env.ERP_INSTALL_PROTOCOL||'https';if(!['https','http'].includes(protocol))throw new Error('ERP_INSTALL_PROTOCOL muss http oder https sein.');
   const host=(process.env.ERP_DOMAIN||'localhost').toLowerCase();
   if(host.length>253||!host.split('.').every(label=>/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(label)))throw new Error('ERP_DOMAIN muss ein Hostname oder eine IPv4-Adresse ohne Protokoll und Port sein.');
   const tenant=process.env.ERP_BOOTSTRAP_TENANT||'netfusion',company=process.env.ERP_BOOTSTRAP_COMPANY||'NetFusion IT',name=process.env.ERP_BOOTSTRAP_NAME||'Administrator',email=(process.env.ERP_BOOTSTRAP_EMAIL||'admin@example.org').toLowerCase();
   if(!/^[a-z0-9-]{2,48}$/.test(tenant)||!company.trim()||!name.trim()||!/^\S+@\S+\.\S+$/.test(email))throw new Error('Mandant, Firma, Administratorname oder E-Mail ungültig.');
-  return {host,tenant,company,name,email};
+  return {host,tenant,company,name,email,protocol};
 }
 async function initialize(){
   const requested=configuration();
@@ -31,15 +32,16 @@ async function initialize(){
   await mkdir(database,{recursive:true});await chmod(database,0o755);
   let config=await optional(state+'/configuration.json');
   if(config){
-    for(const key of Object.keys(requested))if(config[key]!==requested[key])throw new Error('Bestehende Installation verwendet andere Einstellungen ('+key+'). Vorhandene Daten und Zugangsdaten werden nicht überschrieben.');
+    for(const key of Object.keys(requested).filter(k=>k!=='protocol'))if(config[key]!==requested[key])throw new Error('Bestehende Installation verwendet andere Einstellungen ('+key+'). Vorhandene Daten und Zugangsdaten werden nicht überschrieben.');
   }else{
-    config={schema:1,...requested,origin:'https://'+requested.host+':8070',postgresPassword:randomBytes(32).toString('hex'),applicationPassword:randomBytes(32).toString('hex'),sessionSecret:randomBytes(48).toString('hex'),password:randomBytes(24).toString('base64url')};
+    config={schema:1,...requested,origin:requested.protocol+'://'+requested.host+':8070',postgresPassword:randomBytes(32).toString('hex'),applicationPassword:randomBytes(32).toString('hex'),sessionSecret:randomBytes(48).toString('hex'),password:randomBytes(24).toString('base64url')};
     await owned(state+'/configuration.json',JSON.stringify(config)+'\n');
   }
   if(config.schema!==1)throw new Error('Nicht unterstützter Installationsstand.');
+  if(config.protocol!==requested.protocol||config.origin!==requested.protocol+'://'+config.host+':8070'){config={...config,protocol:requested.protocol,origin:requested.protocol+'://'+config.host+':8070'};await owned(state+'/configuration.json',JSON.stringify(config)+'\n');}
   // These volumes are mounted separately: the API never receives DB-admin or bootstrap secrets.
   await owned(database+'/password',config.postgresPassword+'\n',0o444);
-  await owned(app+'/environment.json',JSON.stringify({NODE_ENV:'production',ERP_HOST:'0.0.0.0',PORT:'3000',DATABASE_URL:'postgresql://erp_app:'+config.applicationPassword+'@db:5432/erp',ERP_SESSION_SECRET:config.sessionSecret,ERP_PUBLIC_ORIGIN:config.origin,ERP_TRUST_PROXY:'1'})+'\n');
+  await owned(app+'/environment.json',JSON.stringify({NODE_ENV:'production',ERP_HOST:'0.0.0.0',PORT:'3000',DATABASE_URL:'postgresql://erp_app:'+config.applicationPassword+'@db:5432/erp',ERP_SESSION_SECRET:config.sessionSecret,ERP_PUBLIC_ORIGIN:config.origin,ERP_HTTP_TEST:config.protocol==='http'?'1':'0',ERP_TRUST_PROXY:'1'})+'\n');
   await owned(state+'/access.json',JSON.stringify({url:config.origin,tenant:config.tenant,email:config.email,password:config.password},null,2)+'\n');
   console.log('Docker-Installation vorbereitet; zufällige Geheimnisse bleiben in geschützten Docker-Volumes.');
 }

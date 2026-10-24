@@ -2,11 +2,13 @@
 
 ## Installation und Updates mit einem Befehl
 
-Auf dem Ubuntu-Server mit vorhandener Docker Engine ausführen:
+**HTTP-Testsystem:** Auf dem Ubuntu-Server mit vorhandener Docker Engine ausführen:
 
 ```sh
-sudo bash -c 'set -e; command -v curl >/dev/null || { apt-get update; apt-get install -y curl ca-certificates; }; t=$(mktemp); trap "rm -f -- \"$t\"" EXIT; curl -fsSL https://raw.githubusercontent.com/florians25/NetFusionIT-SYS-/main/scripts/install-ubuntu.sh -o "$t"; bash "$t"'
+sudo bash -c 'set -e; command -v curl >/dev/null || { apt-get update; apt-get install -y curl ca-certificates; }; t=$(mktemp); trap "rm -f -- \"$t\"" EXIT; curl -fsSL https://raw.githubusercontent.com/florians25/NetFusionIT-SYS-/main/scripts/install-ubuntu.sh -o "$t"; ERP_INSTALL_PROTOCOL=http bash "$t"'
 ```
+
+Aufruf anschließend unter `http://SERVER-IP:8070`. Dieser Modus ist für Testdaten im geschützten Testnetz bestimmt. Für HTTPS im selben Befehl `ERP_INSTALL_PROTOCOL=https` setzen. Die Wahl bleibt gespeichert; der Installer kann sie bei einem späteren Lauf ausdrücklich umstellen, ohne Mandant oder Passwörter zurückzusetzen. Der normale Installer ohne Protokollangabe übernimmt die gespeicherte Wahl und verwendet bei einer neuen Installation HTTPS.
 
 Der Bootstrap lädt das Skript zuerst vollständig in eine temporäre Datei; ein fehlgeschlagener Download wird nicht ausgeführt. Fehlendes Curl wird installiert. Der Installer ergänzt bei Bedarf Git, CA-Zertifikate, `flock` und das in den eingerichteten Paketquellen verfügbare Docker-Compose-v2-Plugin. Docker Compose ab2.20 und Zugriff auf den laufenden Docker-Dienst sind erforderlich.
 
@@ -17,7 +19,7 @@ Der Bootstrap lädt das Skript zuerst vollständig in eine temporäre Datei; ein
 3. Produktionsimage bauen, während die bisherige Anwendung weiterlaufen kann. Erst nach erfolgreichem Build API/Caddy für das Update anhalten.
 4. Bei vorhandener Installation eine private Sicherung unter `.local/backups/<Zeitstempel>.<Kennung>` erzeugen: Custom-Format-DB-Dump mit geprüftem Katalog, globale Datenbankrollen, `install-state`, `app-secrets`, `db-secret`, `caddy-data`, `caddy-config`, vorheriger Checkout/Source-Archiv, Image-ID und gegebenenfalls `.env`. SHA256-Manifest prüfen. Verzeichnis0700, Dateien0600. Diese Archive enthalten Zugangsdaten/Schlüssel und gehören in den geschützten externen Sicherungsprozess. Die lokale Sicherung ist kein Ersatz für eine externe Wiederherstellungsvorsorge.
 5. Container mit erhaltenen Volumes neu anlegen, Migrationen ausführen und den vorhandenen Administrator erhalten. Keine Entwicklungskonten oder Demo-Belege anlegen. Bereits geänderte Passwörter werden nicht zurückgesetzt.
-6. Öffentliches Caddy-Stammzertifikat exportieren und die tatsächliche HTTPS-Readiness auf8070 mit diesem Zertifikat prüfen. Fertige URL und Pfade im Terminal anzeigen.
+6. Tatsächliche Readiness auf8070 im gewählten HTTP-/HTTPS-Modus prüfen; bei HTTPS das öffentliche Caddy-Stammzertifikat exportieren und verwenden. Fertige URL und Pfade im Terminal anzeigen.
 
 Nach dem ersten interaktiven Start stehen die **Erstzugangsdaten direkt im eigenen Terminal**. Bei umgeleiteter Ausgabe werden keine Passwörter in das Installationslog geschrieben. Zusätzlich liegen sie mit Modus0600 in `.local/initial-access.json`. Bei Updates werden sie nicht erneut angezeigt; die Datei dokumentiert weiterhin das ursprüngliche Erstpasswort. Ein später geändertes Passwort bleibt gültig.
 
@@ -39,7 +41,7 @@ Dieser direkte Start umfasst keinen Git-Pull und keine automatische Sicherung. B
 
 [Prüfnachweis des neuen Git-/Installer-/Backupablaufs](previews/ubuntu-installer/README.md).
 
-## Anmeldung und HTTPS
+## Anmeldung und optionales HTTPS
 
 Die Zugangsdaten ausschließlich im eigenen Terminal abrufen:
 
@@ -49,14 +51,14 @@ docker compose -f compose.quickstart.yaml run --rm --no-deps install cat /run/ne
 
 Die Datei enthält URL, Mandant, Administrator-E-Mail und zufälliges Erstpasswort. Standardmandant ist `netfusion`, die Administrator-E-Mail `admin@example.org`. Eigene Angaben lassen sich **beim ersten Start** mit `ERP_BOOTSTRAP_TENANT`, `ERP_BOOTSTRAP_COMPANY`, `ERP_BOOTSTRAP_NAME` und `ERP_BOOTSTRAP_EMAIL` setzen, beispielsweise über eine lokale, nicht eingecheckte `.env`. Diese Angaben müssen bei späteren Starts gleich bleiben. Zugangsdaten nicht ins Repository, in Tickets oder in Chatnachrichten kopieren.
 
-Der Schnellstart verwendet ein von Caddy erzeugtes internes HTTPS-Zertifikat. Für vertrauenswürdiges HTTPS auf den verwendeten Geräten die **öffentliche Stammzertifikatsdatei** exportieren und im Zertifikatsspeicher der Geräte bzw. des Browsers installieren:
+Der HTTPS-Schnellstart verwendet ein von Caddy erzeugtes internes Zertifikat; im HTTP-Testmodus entfallen Zertifikatsschritte. Für vertrauenswürdiges HTTPS auf den verwendeten Geräten die **öffentliche Stammzertifikatsdatei** exportieren und im Zertifikatsspeicher der Geräte bzw. des Browsers installieren:
 
 ```sh
 mkdir -p .local
 docker compose -f compose.quickstart.yaml cp caddy:/data/caddy/pki/authorities/local/root.crt .local/netfusion-root.crt
 ```
 
-Nur `root.crt` verteilen; der private CA-Schlüssel verbleibt im geschützten Caddy-Volume. Die Adresse muss zum beim Start gewählten Hostnamen bzw. zur IP passen. Die Anwendung verwendet auch auf Port 8070 HTTPS und sichere Sitzungscookies. Für öffentlich vertrauenswürdige Domainzertifikate bleibt die getrennte [Produktionskonfiguration](../compose.yaml) mit DNS und Caddy auf 80/443 verfügbar.
+Nur `root.crt` verteilen; der private CA-Schlüssel verbleibt im geschützten Caddy-Volume. Die Adresse muss zum beim Start gewählten Hostnamen bzw. zur IP passen. Im HTTPS-Modus verwendet die Anwendung auch auf Port8070 HTTPS und Secure-Sitzungscookies. Der ausdrücklich gewählte HTTP-Testmodus verwendet HttpOnly-/SameSite-Cookies ohne Secure-Attribut und deaktiviert HSTS sowie erzwungene HTTPS-Upgrades; CSRF-/Originprüfung, Rollen und RLS bleiben aktiv. Für öffentlich vertrauenswürdige Domainzertifikate bleibt die getrennte [Produktionskonfiguration](../compose.yaml) mit DNS und Caddy auf 80/443 verfügbar.
 
 ## Betrieb und Aktualisierung
 

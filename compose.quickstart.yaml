@@ -5,6 +5,7 @@ services:
     user: "0:0"
     command: [node, /installer.mjs, initialize]
     environment:
+      ERP_INSTALL_PROTOCOL: ${ERP_INSTALL_PROTOCOL:-https}
       ERP_DOMAIN: ${ERP_DOMAIN:-localhost}
       ERP_BOOTSTRAP_TENANT: ${ERP_BOOTSTRAP_TENANT:-netfusion}
       ERP_BOOTSTRAP_COMPANY: ${ERP_BOOTSTRAP_COMPANY:-NetFusion IT}
@@ -38,7 +39,7 @@ services:
       retries: 24
   install:
     build: .
-    image: netfusion-erp:${ERP_IMAGE_TAG:-0.28.0-preview.1}
+    image: netfusion-erp:${ERP_IMAGE_TAG:-0.29.0-preview.1}
     command: [sh, -c, "node scripts/docker-install.mjs migrate && node scripts/docker-install.mjs bootstrap"]
     volumes: ["install-state:/run/netfusion-install"]
     depends_on:
@@ -48,7 +49,7 @@ services:
     tmpfs: [/tmp]
     security_opt: [no-new-privileges:true]
   api:
-    image: netfusion-erp:${ERP_IMAGE_TAG:-0.28.0-preview.1}
+    image: netfusion-erp:${ERP_IMAGE_TAG:-0.29.0-preview.1}
     restart: unless-stopped
     command: [node, scripts/docker-install.mjs, api]
     volumes: ["app-secrets:/run/netfusion-app:ro"]
@@ -64,6 +65,7 @@ services:
     environment:
       NO_PROXY: api,db,localhost,127.0.0.1,::1
       no_proxy: api,db,localhost,127.0.0.1,::1
+      ERP_INSTALL_PROTOCOL: ${ERP_INSTALL_PROTOCOL:-https}
       ERP_DOMAIN: ${ERP_DOMAIN:-localhost}
     ports: ["8070:443"]
     volumes:

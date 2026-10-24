@@ -1,0 +1,5 @@
+# Explicit HTTP test installation; combined with compose.quickstart.yaml.
+services:
+  caddy:
+    volumes:
+      - ./deploy/Caddyfile.http:/etc/caddy/Caddyfile:ro

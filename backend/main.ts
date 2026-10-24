@@ -1,3 +1,4 @@
+import{ReturnInspection}from'./return-inspection';import{ReturnInspectionController}from'./return-inspection.controller';
 import {CustomerReturns} from './customer-returns';
 import {CustomerReturnsController} from './customer-returns.controller';
 import 'reflect-metadata';
@@ -70,7 +71,7 @@ import { Sla } from './sla';
 import { Operations } from './operations';
 import { Dispatch } from './dispatch';
 import { OperationsController } from './operations.controller';
-@Module({controllers:[CustomerReturnsController,SalesReportingController,CustomerCreditsController,DocumentSettingsController,PurchasingOrganizationController,DirectProcurementController,SalesFulfillmentController,ServiceQuotesController,SalesOrdersController,InventoryCountsController,WarehouseController,SupplierReversalsController,IncomingInvoicesController,BillingController,PartnerFinanceController,AttachmentsController,ServiceDeliveriesController,NumberSeriesController,MaterialPlanningController,InventoryController,ProcurementController,FinanceController,WorkController,CommerceController,HealthController,AuthController,ApiController,ODataController,WorkflowController,OperationsController],providers:[CustomerReturns,SalesReporting,CustomerCredits,DocumentSettings,PurchasingOrganization,DirectProcurement,SalesFulfillment,ServiceQuotes,SalesOrders,InventoryCounts,Warehouse,SupplierReversals,SupplierPosting,IncomingInvoiceMatching,IncomingInvoices,Billing,PartnerFinance,Attachments,ServiceDeliveries,NumberSeries,MaterialPlanning,Inventory,Procurement,Finance,Work,Commerce,Db,AuthService,SessionGuard,Service,Admin,OData,Workflow,Collaboration,Sla,Operations,Dispatch]})
+@Module({controllers:[ReturnInspectionController,CustomerReturnsController,SalesReportingController,CustomerCreditsController,DocumentSettingsController,PurchasingOrganizationController,DirectProcurementController,SalesFulfillmentController,ServiceQuotesController,SalesOrdersController,InventoryCountsController,WarehouseController,SupplierReversalsController,IncomingInvoicesController,BillingController,PartnerFinanceController,AttachmentsController,ServiceDeliveriesController,NumberSeriesController,MaterialPlanningController,InventoryController,ProcurementController,FinanceController,WorkController,CommerceController,HealthController,AuthController,ApiController,ODataController,WorkflowController,OperationsController],providers:[ReturnInspection,CustomerReturns,SalesReporting,CustomerCredits,DocumentSettings,PurchasingOrganization,DirectProcurement,SalesFulfillment,ServiceQuotes,SalesOrders,InventoryCounts,Warehouse,SupplierReversals,SupplierPosting,IncomingInvoiceMatching,IncomingInvoices,Billing,PartnerFinance,Attachments,ServiceDeliveries,NumberSeries,MaterialPlanning,Inventory,Procurement,Finance,Work,Commerce,Db,AuthService,SessionGuard,Service,Admin,OData,Workflow,Collaboration,Sla,Operations,Dispatch]})
 class AppModule{}
 @Catch()
 class SafeErrors implements ExceptionFilter {
@@ -87,8 +88,9 @@ class SafeErrors implements ExceptionFilter {
 async function main(){
   const secret=process.env.ERP_SESSION_SECRET;
   if(!secret||secret.length<48)throw new Error('ERP_SESSION_SECRET muss mindestens 48 Zeichen besitzen.');
-  const prod=process.env.NODE_ENV==='production';
-  if(prod&&!process.env.ERP_PUBLIC_ORIGIN?.startsWith('https://'))throw new Error('Produktion benötigt ERP_PUBLIC_ORIGIN mit HTTPS.');
+  const prod=process.env.NODE_ENV==='production',httpTest=process.env.ERP_HTTP_TEST==='1';
+  if(httpTest&&!process.env.ERP_PUBLIC_ORIGIN?.startsWith('http://'))throw new Error('HTTP-Testmodus benötigt eine ausdrückliche HTTP-Origin.');
+  if(prod&&!httpTest&&!process.env.ERP_PUBLIC_ORIGIN?.startsWith('https://'))throw new Error('Produktion benötigt ERP_PUBLIC_ORIGIN mit HTTPS.');
   const app=await NestFactory.create(AppModule,{bodyParser:false,logger:['warn','error']});
   const capabilities=await app.get(Db).pool.query('SELECT rolsuper,rolbypassrls FROM pg_roles WHERE rolname=current_user');
   if(capabilities.rows[0].rolsuper||capabilities.rows[0].rolbypassrls)throw new Error('API darf nicht mit Superuser oder BYPASSRLS starten.');
@@ -96,7 +98,7 @@ async function main(){
   server.disable('x-powered-by');
   if(process.env.ERP_TRUST_PROXY==='1')server.set('trust proxy',1);
   app.use((req:any,res:any,next:any)=>{req.correlationId=randomUUID();res.set('X-Correlation-ID',req.correlationId);next();});
-  app.use(helmet({contentSecurityPolicy:{directives:{defaultSrc:["'self'"],scriptSrc:["'self'"],styleSrc:["'self'","'unsafe-inline'"],imgSrc:["'self'",'data:','blob:'],fontSrc:["'self'",'data:'],connectSrc:["'self'"],objectSrc:["'none'"],frameAncestors:["'none'"],upgradeInsecureRequests:prod?[]:null}},crossOriginEmbedderPolicy:false}));
+  app.use(helmet({contentSecurityPolicy:{directives:{defaultSrc:["'self'"],scriptSrc:["'self'"],styleSrc:["'self'","'unsafe-inline'"],imgSrc:["'self'",'data:','blob:'],fontSrc:["'self'",'data:'],connectSrc:["'self'"],objectSrc:["'none'"],frameAncestors:["'none'"],upgradeInsecureRequests:prod&&!httpTest?[]:null}},crossOriginEmbedderPolicy:false,strictTransportSecurity:httpTest?false:undefined}));
   app.use('/api/documents/:id/attachments/upload',express.raw({type:'application/pdf',limit:'5mb'}));
   app.use('/api/incoming-invoices/receive',express.raw({type:['application/xml','text/xml','application/pdf'],limit:'5mb'}));
   app.use('/api',express.json({limit:'32kb'}));
@@ -104,7 +106,7 @@ async function main(){
   app.use('/api',rateLimit({windowMs:60000,limit:300,standardHeaders:'draft-8',legacyHeaders:false,handler:limited}));
   app.use('/api/auth/login',rateLimit({windowMs:15*60000,limit:30,standardHeaders:'draft-8',legacyHeaders:false,skipSuccessfulRequests:true,handler:limited}));
   const store=new (connectPgSimple(session))({pool:app.get(Db).pool,tableName:'sessions',createTableIfMissing:false,pruneSessionInterval:60});
-  app.use(['/api','/odata'],session({name:'nf.sid',secret,store,resave:false,saveUninitialized:false,cookie:{httpOnly:true,secure:prod,sameSite:'lax',maxAge:8*60*60*1000}}));
+  app.use(['/api','/odata'],session({name:'nf.sid',secret,store,resave:false,saveUninitialized:false,cookie:{httpOnly:true,secure:prod&&!httpTest,sameSite:'lax',maxAge:8*60*60*1000}}));
   app.use(['/api','/odata'],(req:any,res:any,next:any)=>{res.set('Cache-Control','no-store');next();});
   const root=path.resolve(__dirname,'..');
   app.use('/resources',express.static(path.join(root,'ui5-dist','resources'),{maxAge:prod?'1d':0}));

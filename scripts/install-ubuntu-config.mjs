@@ -11,10 +11,11 @@ try{
   for(const[key,env]of fields)if(explicit.has(env)&&stored[key]!==requested[key])throw new Error('Bestehende Installation verwendet andere Einstellungen ('+env+'). Bestehende Werte bleiben erhalten; abweichende Umgebungsvariable entfernen.');
  }else if(process.env.ERP_INSTALL_DOMAIN_CONFIGURED!=='1'&&process.env.ERP_INSTALL_AUTO_DOMAIN)requested.host=process.env.ERP_INSTALL_AUTO_DOMAIN.toLowerCase();
  if(!stored&&process.env.ERP_INSTALL_DATABASE_EXISTS==='1')throw new Error('Installationskonfiguration fehlt bei vorhandenem Datenbankvolume. Vorhandene Daten werden nicht neu initialisiert.');
+ const protocol=process.env.ERP_INSTALL_PROTOCOL||stored?.protocol||(stored?.origin?.startsWith('http:')?'http':'https');if(!['http','https'].includes(protocol))throw new Error('ERP_INSTALL_PROTOCOL muss http oder https sein.');
  const chosen=stored||requested,host=chosen.host;
  if(typeof host!=='string'||host.length>253||!host.split('.').every(s=>/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(s)))throw new Error('ERP_DOMAIN muss Hostname oder IPv4-Adresse ohne Protokoll und Port sein.');
  if(!/^[a-z0-9-]{2,48}$/.test(chosen.tenant)||!chosen.company?.trim()||!chosen.name?.trim()||!/^\S+@\S+\.\S+$/.test(chosen.email))throw new Error('Mandant, Firma, Administratorname oder E-Mail ungültig.');
  let bootstrapped=false;try{await access(state+'/bootstrap.json');bootstrapped=true;}catch(e){if(e.code!=='ENOENT')throw e;}
  if(bootstrapped&&!stored)throw new Error('Installationskonfiguration fehlt trotz vorhandenem Erstinstallationsnachweis.');
- process.stdout.write(fields.map(([key])=>chosen[key]).concat(stored?'1':'0',bootstrapped?'1':'0').join('\0')+'\0');
-}catch(e){console.error(e.message?.startsWith('Bestehende Installation')||e.message?.startsWith('ERP_DOMAIN')||e.message?.startsWith('Mandant,')||e.message?.startsWith('Installationskonfiguration fehlt')?e.message:'Installationskonfiguration kann nicht sicher gelesen werden.');process.exitCode=1;}
+ process.stdout.write(fields.map(([key])=>chosen[key]).concat(stored?'1':'0',bootstrapped?'1':'0',protocol).join('\0')+'\0');
+}catch(e){console.error(e.message?.startsWith('Bestehende Installation')||e.message?.startsWith('ERP_DOMAIN')||e.message?.startsWith('ERP_INSTALL_PROTOCOL')||e.message?.startsWith('Mandant,')||e.message?.startsWith('Installationskonfiguration fehlt')?e.message:'Installationskonfiguration kann nicht sicher gelesen werden.');process.exitCode=1;}

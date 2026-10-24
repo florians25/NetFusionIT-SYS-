@@ -36,15 +36,15 @@ Tests erzeugen und entfernen eigene isolierte PostgreSQL-Datenbanken. Sie verän
 
 ## Ubuntu mit Docker
 
-**Installation und Updates mit einem Befehl** auf dem Ubuntu-Server mit Docker:
+**HTTP-Testinstallation und Updates mit einem Befehl** auf dem Ubuntu-Server mit Docker:
 
 ```sh
-sudo bash -c 'set -e; command -v curl >/dev/null || { apt-get update; apt-get install -y curl ca-certificates; }; t=$(mktemp); trap "rm -f -- \"$t\"" EXIT; curl -fsSL https://raw.githubusercontent.com/florians25/NetFusionIT-SYS-/main/scripts/install-ubuntu.sh -o "$t"; bash "$t"'
+sudo bash -c 'set -e; command -v curl >/dev/null || { apt-get update; apt-get install -y curl ca-certificates; }; t=$(mktemp); trap "rm -f -- \"$t\"" EXIT; curl -fsSL https://raw.githubusercontent.com/florians25/NetFusionIT-SYS-/main/scripts/install-ubuntu.sh -o "$t"; ERP_INSTALL_PROTOCOL=http bash "$t"'
 ```
 
-Der Installer klont nach `/opt/netfusion-erp`, führt `git pull --ff-only origin main` aus, baut das Produktionsimage und startet Migrationen/Anwendung auf **HTTPS-Port8070**. Die Server-IP wird beim ersten Start automatisch ermittelt; die fertige URL steht am Ende im Terminal. Vorhandene Installationseinstellungen und geänderte Passwörter bleiben bei Updates erhalten. Vor Migrationen sichert der Installer Datenbank, Rollen und die fünf Installations-/Caddy-Volumes. Lokale Git-Änderungen werden nicht überschrieben.
+Der Installer klont nach `/opt/netfusion-erp`, führt `git pull --ff-only origin main` aus, baut das Produktionsimage und startet Migrationen/Anwendung auf **HTTP-Port8070** (`http://SERVER-IP:8070`). HTTP ist für Testdaten im geschützten Testnetz vorgesehen. Die Server-IP wird beim ersten Start automatisch ermittelt; die fertige URL steht am Ende im Terminal. Vorhandene Installationseinstellungen und geänderte Passwörter bleiben bei Updates erhalten. Vor Migrationen sichert der Installer Datenbank, Rollen und die fünf Installations-/Caddy-Volumes. Lokale Git-Änderungen werden nicht überschrieben.
 
-Beim interaktiven ersten Start erscheinen die Erstzugangsdaten direkt im Terminal; zusätzlich liegen sie geschützt in `/opt/netfusion-erp/.local/initial-access.json`. Das öffentliche HTTPS-Stammzertifikat liegt daneben als `netfusion-root.crt`. [Eigene Domain, vorhandener Checkout, Sicherungen und Details](docs/docker-8070.md).
+Beim interaktiven ersten Start erscheinen die Erstzugangsdaten direkt im Terminal; zusätzlich liegen sie geschützt in `/opt/netfusion-erp/.local/initial-access.json`. Für HTTPS `ERP_INSTALL_PROTOCOL=http` im Befehl durch `ERP_INSTALL_PROTOCOL=https` ersetzen. Der Installer übernimmt bestehende Daten und Zugangsdaten; das öffentliche Stammzertifikat liegt anschließend als `netfusion-root.crt` daneben. [Eigene Domain, vorhandener Checkout, Sicherungen und Details](docs/docker-8070.md).
 
 ### Eigene Produktionskonfiguration mit Domain
 

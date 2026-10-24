@@ -369,6 +369,11 @@
           "name": "customerReturnReceipt",
           "pattern": "customer-return-receipts/{id}",
           "target": "CustomerReturnReceipt"
+        },
+        {
+          "name": "returnInspection",
+          "pattern": "return-inspection/{id}",
+          "target": "ReturnInspection"
         }
       ],
       "targets": {
@@ -557,6 +562,9 @@
         },
         "CustomerReturnReceipt": {
           "viewName": "CustomerReturnReceipt"
+        },
+        "ReturnInspection": {
+          "viewName": "ReturnInspection"
         }
       }
     }
