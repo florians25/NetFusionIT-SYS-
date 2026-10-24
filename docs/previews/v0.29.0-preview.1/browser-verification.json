@@ -1,0 +1,16 @@
+{
+  "time": "2026-10-24T09:55:08.392Z",
+  "nativeArrival": true,
+  "nativeBinScan": true,
+  "nativeInspectionSplit": true,
+  "nativeAcceptedRelease": true,
+  "nativeRejectedDispatch": true,
+  "nativeAttachments": true,
+  "desktopWidth": 1680,
+  "mobileWidth": 390,
+  "mobileReadOnlyView": true,
+  "noPageOverflow": true,
+  "pdfsDownloaded": 3,
+  "noArtificialServiceDocuments": true,
+  "errors": []
+}

@@ -1,0 +1,46 @@
+{
+  "time": "2026-10-24T09:58:15.656Z",
+  "image": "netfusion-erp:0.29.0-preview.1",
+  "imageId": "sha256:bda942be7044205bd58f394ab47541ecbec36b287295343b88d48eff5d9015ce",
+  "parent": "netfusion-erp:0.28.0-preview.1",
+  "scope": "Runtime refresh of previously validated dependency/JRE/UI5 base, one COPY layer containing newly compiled API/UI, immutable migrations and current installer scripts. Dependency versions unchanged. No new complete Dockerfile/npm rebuild claimed.",
+  "isolatedRuntimeFilesystemCompared": true,
+  "files": [
+    {
+      "file": "dist/main.js",
+      "sha256": "c796f3fb36e26ec38cd439870a5f34c87359cbc441e3de9041f80c41d40cab78"
+    },
+    {
+      "file": "dist/customer-returns.js",
+      "sha256": "920020e6a94323627a388515a4a6115f4e61988ea2cd3fe5c916a0b90af7a06f"
+    },
+    {
+      "file": "dist/return-inspection.js",
+      "sha256": "1047a21a1de409f441383fe8006d1b93f2f5d8b853f1bbc0c70b4a5683d07956"
+    },
+    {
+      "file": "ui5-dist/Component-preload.js",
+      "sha256": "e90cd075a263c6f1f47fc57886ff6b3262f48405db9b296083530ad504a5e1cc"
+    },
+    {
+      "file": "ui5-dist/util/HttpTestCrypto.js",
+      "sha256": "907aa47cb868d355efede2d88af6ffd9504feb44c16a1914541f9df53d372cbf"
+    },
+    {
+      "file": "backend/migrations/037_return_inspection_custody.sql",
+      "sha256": "4613f72af42c7cf30ab6eaaeab1d92a8d844a428cf0d7df8617d6f0ce76d9345"
+    },
+    {
+      "file": "scripts/migrate.mjs",
+      "sha256": "b92e363033e28f6b401184e034f275cac9d4333f1c1def2e9fbfece927433f61"
+    },
+    {
+      "file": "scripts/docker-install.mjs",
+      "sha256": "306c156b502ca228fe6736e0ef0eafd13564a53cb47fc59eb7c9763b70de0a00"
+    },
+    {
+      "file": "package.json",
+      "sha256": "35f700a53cbecdc454d71e237ce2ac7faf9030df9e161abde2cac7aae5e9f36c"
+    }
+  ]
+}

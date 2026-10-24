@@ -1,0 +1,8 @@
+{
+  "tests": 419,
+  "passed": 419,
+  "failed": 0,
+  "durationMs": 469270.522461,
+  "logSha256": "3d8cd449318c57a0bb0169f1264a2cc18f71918767ce58cc20994ba600d5e7fd",
+  "scope": "Full npm test suite; final affected API/UI policy tests additionally verified after final read-model and mobile UI changes."
+}

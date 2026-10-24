@@ -1,0 +1,20 @@
+{
+  "returnNumber": "RT-47000000",
+  "invoice": "RE-45000000",
+  "originalGross": "357.00",
+  "creditedQuantity": "1",
+  "creditGross": "119.00",
+  "remainingInvoice": "238.00",
+  "partialReceipt": "1",
+  "originalCost": "40.00",
+  "nativeReturnCreation": true,
+  "nativeRelease": true,
+  "nativeQuantityPreparation": true,
+  "nativeReceiptAndReversal": true,
+  "desktopWidth": 1680,
+  "mobileWidth": 390,
+  "nativeAttachments": true,
+  "pdfDownloaded": true,
+  "noAdditionalServiceDocuments": true,
+  "errors": []
+}

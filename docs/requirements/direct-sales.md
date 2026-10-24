@@ -2,7 +2,7 @@
 
 Beauftragt am 23.10.2026. **Status: teilweise geliefert bis Preview0.28.** Preview0.20/21 liefern direkten Lagerverkauf und Lieferfaktura;0.22 ergänzt AU-Bedarf, Lagerreservierung, BANF und Teilbestellungen. 0.23 ergänzt tatsächliche AU-Teilwareneingänge und den gebundenen Rechnungseingang einschließlich Finanzprüfung und Gegenbewegung. Weitere Korrektur-/Vertriebsfälle bleiben offen. Dieser Umfang ergänzt [SD-01–17 / BILL-01–10 / CRM-01–10](sales-billing-crm.md) und den [Masterbacklog](../master-backlog-index.md).
 
-Preview0.28 ergänzt drei zusammenhängende Teilprozesse: [eigene RT-Anmeldung, Teilmengengutschrift und tatsächliche Teil-Retoureneingänge/SB](customer-returns.md). Originale bleiben erhalten; physischer Eingang ist durch tatsächlich gebuchte GU-Menge und Original-Liefermenge begrenzt. Prüf-/Sperrbestand und weitere Retourenfolgeaktivitäten bleiben offen.
+Preview0.28 ergänzt drei zusammenhängende Teilprozesse: [eigene RT-Anmeldung, Teilmengengutschrift und tatsächliche Teil-Retoureneingänge/SB](customer-returns.md). Originale bleiben erhalten; physischer Eingang ist durch tatsächlich gebuchte GU-Menge und Original-Liefermenge begrenzt. Preview0.29 ergänzt [unbewerteten Kunden-Prüfbestand, Fachwahl/Scan, Inspektion, Eigenbestandsübernahme und Kundenrücksendung](return-inspection-custody.md). Bewerteter Sperrbestand, Wiederaufbereitung/Verschrottung und Ersatzlieferungsautomatik bleiben offen.
 
 ## Zwei ausdrücklich getrennte Ausführungswege
 

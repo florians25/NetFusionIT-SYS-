@@ -1,0 +1,35 @@
+[
+  {
+    "file": "custody-arrival.pdf",
+    "sha256": "f9a6fd82a6e73b219e9a127a8f79e1ead0f26158b3d4e04b8160b1642c872fc7",
+    "title": "Prüfeingangsbeleg",
+    "number": "WE-53000001",
+    "decodedCode128": "WE-53000001",
+    "originalDelivery": "LS-44000000",
+    "order": "AU-42000000",
+    "fullContact": "Martina Musterfrau",
+    "germanDate": "23.10.2026"
+  },
+  {
+    "file": "inspection-report.pdf",
+    "sha256": "36339207f701c76200dc9ccaa3bccc1ad637d57cd05bc0733f09a0359a53dbfa",
+    "title": "Retourenprüfprotokoll",
+    "number": "PR-88000000",
+    "decodedCode128": "PR-88000000",
+    "originalDelivery": "LS-44000000",
+    "order": "AU-42000000",
+    "fullContact": "Martina Musterfrau",
+    "germanDate": "24.10.2026"
+  },
+  {
+    "file": "return-delivery-note.pdf",
+    "sha256": "0814b9d9f50505d0e0eaea9651747cf723aa09085e083a47e68918b9c5425b79",
+    "title": "Rücksendelieferschein",
+    "number": "WA-54000001",
+    "decodedCode128": "WA-54000001",
+    "originalDelivery": "LS-44000000",
+    "order": "AU-42000000",
+    "fullContact": "Martina Musterfrau",
+    "germanDate": "24.10.2026"
+  }
+]
