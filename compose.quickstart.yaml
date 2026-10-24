@@ -67,7 +67,7 @@ services:
       no_proxy: api,db,localhost,127.0.0.1,::1
       ERP_INSTALL_PROTOCOL: ${ERP_INSTALL_PROTOCOL:-https}
       ERP_DOMAIN: ${ERP_DOMAIN:-localhost}
-    ports: ["8070:443"]
+    ports: ["8070:${ERP_GATEWAY_PORT:-443}"]
     volumes:
       - ./deploy/Caddyfile.quickstart:/etc/caddy/Caddyfile:ro
       - caddy-data:/data

@@ -91,7 +91,7 @@ main() {
   [[ ${#values[@]} -eq 8 ]] || fail 'Unvollständige Installationsmetadaten.'
   export ERP_DOMAIN="${values[0]}" ERP_BOOTSTRAP_TENANT="${values[1]}" ERP_BOOTSTRAP_COMPANY="${values[2]}" ERP_BOOTSTRAP_NAME="${values[3]}" ERP_BOOTSTRAP_EMAIL="${values[4]}"
   protocol="${values[7]}"; export ERP_INSTALL_PROTOCOL="$protocol"
-  if [[ $protocol == http ]]; then compose+=(-f "$install_dir/compose.quickstart.http.yaml"); fi
+  if [[ $protocol == http ]]; then export ERP_GATEWAY_PORT=80; compose+=(-f "$install_dir/compose.quickstart.http.yaml"); else export ERP_GATEWAY_PORT=443; fi
   "${compose[@]}" config --quiet
   old_api=$("${compose[@]}" ps -a -q api)
   if [[ -n $old_api ]]; then image_id=$(docker inspect --format '{{.Image}}' "$old_api"); else image_id=''; fi

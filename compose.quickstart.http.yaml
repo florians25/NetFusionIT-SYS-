@@ -1,4 +1,4 @@
-# Explicit HTTP test installation; combined with compose.quickstart.yaml.
+# HTTP test override; installer sets ERP_INSTALL_PROTOCOL=http and ERP_GATEWAY_PORT=80.
 services:
   caddy:
     volumes:

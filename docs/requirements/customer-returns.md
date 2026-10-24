@@ -33,3 +33,7 @@ RT und Eingänge haben eigene Detailmasken, kleine Anlagenlisten, native Positio
 Nicht enthalten: Prüf-/Sperrbestand vor GU, Inspektion und freie Folgeaktivität, Wiederaufbereitung/Verschrottung, Ersatzlieferungsautomatik, freie Ziel-Fachwahl, Service-/Preisgutschriften, bezahlte Rechnungen/Rückzahlungen, geänderte Steuer-/Finanzpartner oder vollständige Advanced Returns. Diese Punkte bleiben verbindlich im Masterbacklog.
 
 Migration035 ergänzt mengenbezogene GU, Migration036 RT und physische Gegenbewegungen.001–034 bleiben unverändert. Historische `FULL`-/`POSITIONS`-Belege behalten ihre Bedeutung; nur neue `QUANTITY`-Bezüge enthalten Teilmengen.
+
+## Fortschreibung0.29
+
+[Das nächste Fünferpaket](return-inspection-custody.md) ergänzt unbewerteten gesperrten Kunden-Prüfbestand vor GU, Fachwahl/Scan, Inspektion, geprüfte Übernahme auf ein tatsächliches Zielfach und Rücksendung abgelehnter Mengen. Die oben beschriebene0.28-Basis und ihre Originalbelege bleiben erhalten; ihre damalige Liste offener Punkte ist entsprechend teilweise überholt.

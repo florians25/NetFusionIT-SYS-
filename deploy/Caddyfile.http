@@ -2,7 +2,7 @@
     auto_https off
 }
 
-http://{$ERP_DOMAIN}:443 {
+http://{$ERP_DOMAIN}:80 {
     encode zstd gzip
     reverse_proxy api:3000
 }
