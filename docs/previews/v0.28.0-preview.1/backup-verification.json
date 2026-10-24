@@ -1,0 +1,9 @@
+{
+  "file": ".local/backups/before-035-2026-10-24T08-05-18.321Z.dump",
+  "bytes": 1002192,
+  "sha256": "e18e7139493ee6da05f55314b3f531461b22a830101da411868cc7f6e31472d9",
+  "mode": "600",
+  "catalogChecked": true,
+  "restoreTested": true,
+  "restoreProof": "restore-verification.json"
+}

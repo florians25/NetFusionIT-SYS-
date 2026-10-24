@@ -1,6 +1,6 @@
 # NetFusion · Enterprise Service ERP
 
-**Preview0.27.0-preview.1:** Positionsbezogene Teilgutschriften mit eigener unabhängiger Finanzfreigabe, mehreren GU je Rechnung und verbleibender Forderung. Breite native OpenUI5-Auswahlseite, verwerfbare Prüfstände, genaue Umsatz-/Kostenkorrektur und Freigabe einzelner ganzer Lieferungsrücknahmen. Beispiel357,00EUR →119,00EUR GU →238,00EUR Rest. [Screenshots, PDF/CII und396 Prüfungen](docs/previews/v0.27.0-preview.1/README.md).
+**Preview0.28.0-preview.1:** Eigene Kundenretouren-App, Teilmengengutschriften und tatsächliche Teil-Retoureneingänge mit exaktem Storno. Originalfach, Charge/Serie, historische Warenbewertung und FI bleiben gebunden; GU-Finanzfreigabe, OP-Rest und Reports berücksichtigen die tatsächlichen Mengen. [Screenshots, PDFs und Prüfnachweise](docs/previews/v0.28.0-preview.1/README.md).
 
 **Oberflächen-Update:** Belegfluss in19 Vorgangsmasken als nativer aufklappbarer OpenUI5-Baum, mit Einzelzweigen, Gesamtsteuerung und Belegsprung. [Bilder und Prüfungen](docs/previews/document-flow-tree/README.md).
 
@@ -57,13 +57,14 @@ docker compose --profile setup run --rm bootstrap
 
 Bootstrap legt einen echten Tenant, eine Serviceorganisation und einen Administrator an, überschreibt keine vorhandenen Mandanten und seedet keine Entwicklungskonten. Danach Bootstrap-Passwort aus `.env` entfernen. Kunden und interne Benutzer werden in der Administration angelegt. Vor produktivem Einsatz MFA/OIDC, zentralen Angriffsschutz, Backup/Restore, Monitoring, fachliche Regeln und Security-/Lasttests abschließen.
 
-Das Produktionsimage wurde in dieser Cloud mit isoliertem PostgreSQL, Migrationen, Bootstrap, Anmeldung, schreibgeschütztem unprivilegiertem Prozess und echter E-Rechnungsprüfung getestet. Der [Image-Nachweis](docs/previews/v0.27.0-preview.1/docker-smoke.json) gilt für genau dieses lokale Image. Auf dem vorgesehenen Ubuntu-Server stehen Domain/HTTPS, Antivirus, Ressourcen, Backup/Restore und tatsächliche Betriebskonfiguration noch zur Prüfung aus.
+Das Produktionsimage wurde in dieser Cloud mit isoliertem PostgreSQL, Migrationen, Bootstrap, Anmeldung, schreibgeschütztem unprivilegiertem Prozess und echter E-Rechnungsprüfung getestet. Der [Image-Nachweis](docs/previews/v0.28.0-preview.1/docker-smoke.json) gilt für genau dieses lokale Image. Auf dem vorgesehenen Ubuntu-Server stehen Domain/HTTPS, Antivirus, Ressourcen, Backup/Restore und tatsächliche Betriebskonfiguration noch zur Prüfung aus.
 
 ## Dokumentation
 
 - [Verbleibender Masterbacklog und aktuelle Arbeitsreihenfolge](docs/master-backlog-index.md)
 - [Direktvertrieb ohne Ticket/Serviceauftrag](docs/requirements/direct-sales.md), [Statistiken und Reports](docs/requirements/reporting.md) · Lagerverkauf/Faktura, AU-BANF/Bestellung und Teil-WE/Rechnungseingang geliefert; vollständige GU und ganze fakturierte Warenrücknahme sowie erste Umsatz-/Kostenberichte geliefert; RT-/Teilretouren und weitere Reports offen
 
+- [Preview0.28: RT, Teilmengen und tatsächliche Retoureneingänge](docs/previews/v0.28.0-preview.1/README.md), [Versionsnotizen](docs/releases/v0.28.0-preview.1.md)
 - [Preview0.27: Positionsgutschriften und Rechnungsrest](docs/previews/v0.27.0-preview.1/README.md), [Versionsnotizen](docs/releases/v0.27.0-preview.1.md)
 - [Preview0.26.0-preview.2: korrigiertes GU-Druckbild und erneut geprüftes Image](docs/previews/v0.26.0-preview.2/README.md), [Versionsnotizen](docs/releases/v0.26.0-preview.2.md)
 - [Preview0.26: Kundengutschrift und Umsatzberichte](docs/previews/v0.26.0-preview.1/README.md), [Versionsnotizen](docs/releases/v0.26.0-preview.1.md)

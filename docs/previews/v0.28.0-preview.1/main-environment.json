@@ -1,0 +1,22 @@
+{
+  "migrations": 36,
+  "allChecksumsVerified": true,
+  "documentConfiguration": 200,
+  "readiness": 200,
+  "customerCredits": 200,
+  "customerReturns": 200,
+  "reporting": 200,
+  "recordedExecutionPatches": [],
+  "artificialDocumentsCreated": 0,
+  "documentCounts": {
+    "service_orders": 0,
+    "sales_orders": 0,
+    "purchase_orders": 0,
+    "goods_receipts": 0,
+    "company_document_contacts": 0,
+    "invoices": 0,
+    "customer_credit_memos": 0,
+    "customer_returns": 0,
+    "customer_return_receipts": 0
+  }
+}

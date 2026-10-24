@@ -9,7 +9,7 @@ Der Zeitraum verwendet ausdrücklich das **FI-Buchungsdatum** jedes eigenen Bele
 | Kennzahl | Tatsächliche Grundlage |
 | --- | --- |
 | Fakturiert netto | Nettowerte der gebuchten Rechnungspositionen im Zeitraum |
-| Gutschriften netto | Gebuchte GU zum eigenen Buchungsdatum: vollständige Originalrechnung oder ab0.27 ausschließlich ausgewählte ganze Originalpositionen; ohne zusätzlichen Abzug der Gegen-FI |
+| Gutschriften netto | Gebuchte GU zum eigenen Buchungsdatum: vollständige Originalrechnung oder ab0.27 ausschließlich ausgewählte ganze Originalpositionen, ab0.28 auch tatsächliche Teilmengen; ohne zusätzlichen Abzug der Gegen-FI |
 | Nettoumsatz | Fakturiert netto abzüglich Gutschriften netto |
 | Warenwert Faktura | Ursprünglicher WA-Wert anteilig zur tatsächlich fakturierten Menge; GU korrigiert dieselbe analytische Zuordnung |
 | DB I Faktura | Nettoumsatz abzüglich fakturabezogenem Warenwert; kein vollständiger Unternehmensgewinn |
@@ -37,3 +37,7 @@ Ein wiederholbarer Lesestand umfasst die zusammengehörigen Summen, Gruppen, Sei
 Dies ist die geprüfte erste Teilbasis für RPT-01/02/03/06/12. Eigene gespeicherte Varianten, große Stammdatensuche, Kundengruppen/Warengruppen, zusätzliche Organisationsdimensionen, Gruppenvergleiche, Auftragsbestand/Pipeline, Einkauf/Lagerübersichten, Service-/Zeit-/SLA-Berichte, stichtagsbezogene OP-/Zahlungsberichte und Produktivlast bleiben offen. Geplante Kalkulation und weitere Ausführungsarten sind keine bereits vorhandene Istkostenbasis.
 
 Fachliche Orientierung: tatsächlich gelesene SAP-Kapitel F2271 und „Key Figures Based on Billing Documents“, [Referenzprotokoll](sap-reference-log.md). Der zusätzliche tatsächliche Periodenbeitrag ist eine ausdrücklich eigene Kennzahl. Es wird keine identische Implementierung sämtlicher SAP-Analytics-/CDS-Funktionen behauptet.
+
+## Fortschreibung Preview0.28
+
+Teilmengen-GU korrigieren ihre tatsächlich gutgeschriebene Menge und den centgenauen Anteil des ursprünglichen fakturabezogenen Warenwerts. Physische RT-Eingänge und exakte Stornos erscheinen separat mit dem jeweiligen FI-Datum im tatsächlichen Warenaufwand; die GU allein bucht keinen Bestand. Originale und verbrauchte Quellen bleiben erhalten. [Retourenregeln und Grenzen](customer-returns.md).

@@ -1,0 +1,20 @@
+{
+  "sourceCodeCommit": "51fe53929f2dcfb7d9d49c1b3527fcc91c947545",
+  "image": "netfusion-erp:0.28.0-preview.1",
+  "imageId": "sha256:98758733689df6b527b36bda1720e733810ec10fed105531c2f205d43239340f",
+  "completeDockerfileBaseImage": "sha256:9f1ba78f5bb1d06c82654b41448a5ad8225e00194104cc13c44558a3d7a88f72",
+  "finalRuntimeRefresh": "Compiled UI5/API and final migrations copied into the fully built production runtime after native form inspection.",
+  "runtimeFilesMatchSourceBuild": true,
+  "files": {
+    "dist/customer-returns.js": "c49673cd856793bae25f9a9a147346c7b67aa0ea2b3c9c36c5cd11181f40c36f",
+    "backend/migrations/035_quantity_customer_credits.sql": "e3265e33136bdebdb5565ea455a50d5b0331f1ce868a0112380a4c1675e3bd6d",
+    "backend/migrations/036_customer_returns.sql": "e404c010c4392312b6189fa5e31f5511a39a5145ec5f72237d77fb939937319e",
+    "ui5-dist/util/ReturnWorkspace.js": "b5f524fa387eb57deb2c062cf8d201a670c5ba8ca25499829b5c7acc57434c9f",
+    "ui5-dist/Component-preload.js": "956918461155d8824c9408cb72c2499658b95cb6f4702acfca1b785356122b0d",
+    "ui5-dist/manifest.json": "0ed658a8babfc92ab2b695b22bf03bbae077c557ec29ed0290e70d38155281fc"
+  },
+  "user": "node",
+  "workingDirectory": "/app",
+  "networkUsedForRefresh": false,
+  "scope": "Local production image; no registry push or target-server deployment."
+}

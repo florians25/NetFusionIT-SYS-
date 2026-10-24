@@ -1,0 +1,21 @@
+{
+  "source": "Actual quantity-credit output from isolated process test",
+  "number": "GU-46000000",
+  "pdfSha256": "1e9c260ed8c4b7b70b80da1d8e66bd090dfe32390f85b68df510f37be1bc1dd4",
+  "embeddedXmlSha256": "68f67c09b10d729c04c9f4f841d3ac2ba4f795984f5f2b1fb69b67ea13270900",
+  "decodedCode128": "GU-46000000",
+  "normativePdfValidation": "valid",
+  "validator": "Mustang-CLI2.26.0",
+  "originalInvoice": "RE-45000000",
+  "printedDate": "23.10.2026",
+  "contact": "Martina Musterfrau",
+  "contactLabel": "Vertriebsmitarbeiter",
+  "paymentDeadlinePrinted": false,
+  "noPaymentRequiredPrinted": true,
+  "creditGross": "119.00",
+  "originalInvoiceGross": "357.00",
+  "remainingInvoiceGross": "238.00",
+  "selectedInvoicePositions": 1,
+  "quantity": "1",
+  "originalQuantity": "3"
+}

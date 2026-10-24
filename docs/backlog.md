@@ -1,12 +1,16 @@
 # Fachlicher Backlog
 
-Stand: 23.10.2026. Der vollständige [Masterprompt](master-prompt.md) bleibt der Grundauftrag. Die folgenden Ergänzungen wurden zusätzlich vom Nutzer beauftragt. Sie sind Anforderungen, keine Behauptung bereits implementierter Funktionen. Oberflächen bestehen ausschließlich aus Standardcontrols von **OpenUI5**. [Verbindliche Navigations-/Maskenvorgaben](requirements/navigation.md): App-Zentrale als Einstieg, keine globalen App-Tabreiter und native Belegobjektseiten mit fachlichen Abschnitten. SAP-Dokumentation dient als fachliche Referenz; SAP-Backend-Dienste oder SAPUI5-exklusive Controls werden dadurch nicht vorausgesetzt.
+Stand: 24.10.2026. Der vollständige [Masterprompt](master-prompt.md) bleibt der Grundauftrag. Die folgenden Ergänzungen wurden zusätzlich vom Nutzer beauftragt. Sie sind Anforderungen, keine Behauptung bereits implementierter Funktionen. Oberflächen bestehen ausschließlich aus Standardcontrols von **OpenUI5**. [Verbindliche Navigations-/Maskenvorgaben](requirements/navigation.md): App-Zentrale als Einstieg, keine globalen App-Tabreiter und native Belegobjektseiten mit fachlichen Abschnitten. SAP-Dokumentation dient als fachliche Referenz; SAP-Backend-Dienste oder SAPUI5-exklusive Controls werden dadurch nicht vorausgesetzt.
 
 [Vollständiger Modulindex mit vorhandener Teilbasis und offenen Prozesslücken](master-backlog-index.md).
 
 ## Umfang und aktueller Lieferstand
 
 Der Masterprompt umfasst alle darin genannten Module; diese Ergänzungsliste ist keine vollständige Liste bereits gelieferter Funktionen. Ein Grundstamm, eine Tabellenmaske oder ein reservierter Nummernkreis erledigt keinen End-to-End-Prozess. Die jüngste [detaillierte SD-/Faktura-/CRM-Aufteilung](requirements/sales-billing-crm.md) enthält 17 Sales-Order-Abläufe, 10 Faktura- und 10 CRM-Arbeitspakete mit Abnahmekriterien. Preview0.18 liefert den eigenen AU mit unabhängiger Freigabe, AB und gebundener SA-Ausführung. Die vollständige SD-Abdeckung bleibt offen. Die eigenständige Angebotsbasis mit Kundenoriginal, selektiver Entscheidung und gebundener Übernahme ist in Preview0.19 geliefert; weitere Angebotsprozesse bleiben offen. Neu beauftragt sind [eigenständiger Direktvertrieb ohne Ticket/SA](requirements/direct-sales.md) und [ausführliche Statistik-/Berichtsfunktionen](requirements/reporting.md). Den tatsächlichen Restumfang und die aktuelle Reihenfolge zeigt der [Masterbacklog](master-backlog-index.md); frühere Versionsabschnitte unten dokumentieren jeweils ihren historischen Teilstand.
+
+## Preview0.28 · drei weitere zusammenhängende Prozesse
+
+Geliefert sind [RT-Anmeldung, Teilmengengutschrift und tatsächlicher Teil-Retoureneingang mit Storno](requirements/customer-returns.md). Native eigene App, breite Mengenerfassung, unabhängige GU-Finanzfreigabe, ursprüngliches Fach/-tracking/-bewertung/-FI, OP-Rest und echte Berichtsquellen. Die ursprünglichen AU-/AF-Quellen bleiben verbraucht. Weitere Retourenfolgeaktivitäten, Preis-/Service-/Zahlungskorrekturen und der gesamte übrige Modulindex bleiben offen. [Screenshots, Belege und Prüfungen](previews/v0.28.0-preview.1/README.md).
 
 ## Preview0.25 · aktuelle Masken- und Dokumentkorrektur
 

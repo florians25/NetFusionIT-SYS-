@@ -1,0 +1,35 @@
+{
+  "sourceCodeCommit": "51fe53929f2dcfb7d9d49c1b3527fcc91c947545",
+  "command": "npm test",
+  "results": {
+    "tests": 403,
+    "pass": 403,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "newProcessTests": 7,
+  "targetedCommand": "ERP_TEST_PORT_OFFSET=2000 node --test tests/customer-returns.test.mjs tests/quantity-customer-credits.test.mjs tests/customer-credit-upgrade.test.mjs",
+  "targetedPassed": 8,
+  "nativeBrowserScripts": [
+    "customer-returns-browser.mjs",
+    "selected-customer-credits-browser.mjs",
+    "customer-credits-browser.mjs",
+    "sales-reporting-browser.mjs"
+  ],
+  "phoneWidth": 390,
+  "fullBrowserMatrixRun": false,
+  "uiPolicyAndDocumentFlowTests": 10,
+  "sourceFrozenDuringFinalSuite": true,
+  "earlierAttemptsExcluded": [
+    "Insufficient temporary Docker/VFS disk space; only identified own obsolete caches removed.",
+    "A test restart correctly rejected a migration checksum changed during the earlier run; final suite started after the source was fixed."
+  ],
+  "builds": [
+    "npm run build:api",
+    "npm run build:ui:app",
+    "full production Dockerfile build plus verified final compiled runtime refresh"
+  ],
+  "scope": "Unpaid domestic DIRECT_SALES stock returns and quantity credits; remaining scope in customer-returns.md"
+}

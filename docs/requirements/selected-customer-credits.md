@@ -26,3 +26,7 @@ Die finanzielle GU erzeugt keinen Wareneingang. Eine **ganze ursprüngliche Ausl
 Weiter offen: Teilmengen innerhalb einer Rechnungsposition oder einer ursprünglichen Lagerauslieferung, eigene RT-Retourenanmeldung, Prüf-/Sperrbestand, Wiederaufbereitung, reine Preisgutschrift, gesonderte Rundungskorrektur, Servicekorrektur, bezahlte Rechnungen/Rückzahlungen und geänderte Steuer-/Finanzpartnerfälle. Eine Auswahl ganzer Rechnungspositionen ist keine vollständige Advanced-Returns-Implementierung.
 
 Migration034 ergänzt den Auswahlbezug und erweitert die bestehenden Prüfungen, Salden und Rücknahmeschranken.001–033 bleiben unverändert. Historische Vollgutschriften erhalten die Kennzeichnung `FULL`, neue ausgewählte Vorgänge `POSITIONS`. Die bestehende echte Gesamtgegenbuchung und ihr einmaliger Stornobezug bleiben erhalten. [Masterbacklog](../master-backlog-index.md).
+
+## Fortschreibung Preview0.28
+
+Die dort noch offenen Teilmengen innerhalb einer Rechnungsposition, eigene RT-Anmeldung und tatsächliche Teil-Retoureneingänge mit exaktem Storno sind nun für unbezahlte inländische DIRECT-Warenrechnungen ergänzt. [Regeln, Masken und verbleibende Grenzen](customer-returns.md). Die obigen Abschnitte beschreiben weiterhin den ursprünglichen0.27-Umfang ganzer Positionen.

@@ -1,0 +1,24 @@
+[
+  {
+    "file": "return-request.pdf",
+    "sha256": "ebf4afffda225be1ab14b0202fd00ad5472950e526a7e34c835a3b1425ec2a75",
+    "title": "Retourenanmeldung",
+    "number": "RT-47000000",
+    "decodedCode128": "RT-47000000",
+    "originalDelivery": "LS-44000000",
+    "order": "AU-42000000",
+    "fullContact": "Martina Musterfrau",
+    "germanDate": "24.10.2026"
+  },
+  {
+    "file": "partial-receipt.pdf",
+    "sha256": "2e7357ab6966534d04ba65d9cc85a9da75806abd97a41bc63c3e5ed41c7c0bb4",
+    "title": "Retoureneingangsbeleg",
+    "number": "WE-53000001",
+    "decodedCode128": "WE-53000001",
+    "originalDelivery": "LS-44000000",
+    "order": "AU-42000000",
+    "fullContact": "Martina Musterfrau",
+    "germanDate": "24.10.2026"
+  }
+]
