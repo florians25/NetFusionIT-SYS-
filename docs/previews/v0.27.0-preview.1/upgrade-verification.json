@@ -1,0 +1,14 @@
+{
+  "fromMigration": 29,
+  "toMigration": 34,
+  "quotationArchivePreserved": true,
+  "originalPdfHash": "c4ff712f2478fd63c9e2d70e69a573a0123d3e24e12c828739aa568390f10828",
+  "originalSourceChecksum": "0ca233c12fea1e954187d3ed29c25850d06c517807fd179a54dda9ce2368b6a3",
+  "executionPatch": {
+    "checksum": "726e2de8e3696f5a531ef0d2f2879de0c49aa6c6b9188abafb6d7c83b3d5feb4",
+    "migration": "033_preserve_quotation_output_compatibility.sql",
+    "originalStatementChecksum": "2a571eb3073c36a1922812fd99673bdb40d387bebc88327d3fda977556002f2a",
+    "replacementStatementChecksum": "a18eb97e36864014103c448bb1d982895c130cb563e55999461d39cca89bef52"
+  },
+  "idempotentUpgrade": true
+}

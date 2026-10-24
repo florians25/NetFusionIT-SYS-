@@ -1,0 +1,19 @@
+{
+  "nativeOpenUI5": true,
+  "netRevenue": "100.00",
+  "billedCost": "40.00",
+  "billingMargin": "60.00",
+  "actualStockExpense": "80.00",
+  "periodContribution": "20.00",
+  "currency": "EUR",
+  "comparisonFrom": "20.10.2026",
+  "comparisonTo": "21.10.2026",
+  "currentFrom": "22.10.2026",
+  "currentTo": "23.10.2026",
+  "groupDrilldown": true,
+  "invoiceDrilldown": true,
+  "actualCsvDownload": true,
+  "roleWithoutCosts": true,
+  "phoneWidth": 390,
+  "errors": []
+}

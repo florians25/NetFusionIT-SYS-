@@ -1,0 +1,16 @@
+{
+  "invoice": "RE-45000000",
+  "credit": "GU-46000000",
+  "originalGross": "357.00",
+  "selectedGross": "119.00",
+  "remainingGross": "238.00",
+  "nativeDesktopSelection": true,
+  "separateWorkspace": true,
+  "independentReview": true,
+  "actualPdfDownloaded": true,
+  "originalPositionClaimsVisible": true,
+  "mobileWidth": 390,
+  "mobileSelection": true,
+  "additionalServiceDocuments": false,
+  "errors": []
+}

@@ -1,0 +1,13 @@
+{
+  "invoice": "RE-45000000",
+  "originalGross": "357.00",
+  "firstCreditGross": "119.00",
+  "remainingAfterFirst": "238.00",
+  "finalOpenAmount": "0.00",
+  "originalPdfSha256": "c8914392d32877b4c58589afb3e87d9d7c4f8384564ee1d25c2e6547a8ecacbd",
+  "independentCredits": 2,
+  "cancelledDraftPreserved": true,
+  "actualDeliveriesReturnedIndividually": true,
+  "originalInvoicePreserved": true,
+  "noAdditionalServiceDocuments": true
+}

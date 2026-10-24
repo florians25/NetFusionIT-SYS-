@@ -1,0 +1,28 @@
+{
+  "sourceCodeCommit": "d18921f5c8c117c2aad886ad8cc398060dbdde2e",
+  "command": "npm test",
+  "results": {
+    "tests": 396,
+    "pass": 396,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "newSelectedCreditTests": 11,
+  "targetedCommand": "node --test tests/selected-customer-credits.test.mjs",
+  "targetedPassed": 11,
+  "builds": [
+    "npm run build:api",
+    "npm run build:ui:app",
+    "docker build netfusion-erp:0.27.0-preview.1"
+  ],
+  "nativeBrowserScripts": [
+    "selected-customer-credits-browser.mjs",
+    "customer-credits-browser.mjs",
+    "sales-reporting-browser.mjs"
+  ],
+  "phoneWidth": 390,
+  "fullBrowserMatrixRun": false,
+  "nativeUiPolicyAndDocumentFlowRecheckedAfterFinalUiChanges": true
+}

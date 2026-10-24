@@ -9,7 +9,7 @@ Der Zeitraum verwendet ausdrücklich das **FI-Buchungsdatum** jedes eigenen Bele
 | Kennzahl | Tatsächliche Grundlage |
 | --- | --- |
 | Fakturiert netto | Nettowerte der gebuchten Rechnungspositionen im Zeitraum |
-| Gutschriften netto | Vollständige gebuchte GU zum eigenen Buchungsdatum, ohne zusätzlichen Abzug der Gegen-FI |
+| Gutschriften netto | Gebuchte GU zum eigenen Buchungsdatum: vollständige Originalrechnung oder ab0.27 ausschließlich ausgewählte ganze Originalpositionen; ohne zusätzlichen Abzug der Gegen-FI |
 | Nettoumsatz | Fakturiert netto abzüglich Gutschriften netto |
 | Warenwert Faktura | Ursprünglicher WA-Wert anteilig zur tatsächlich fakturierten Menge; GU korrigiert dieselbe analytische Zuordnung |
 | DB I Faktura | Nettoumsatz abzüglich fakturabezogenem Warenwert; kein vollständiger Unternehmensgewinn |
