@@ -36,13 +36,15 @@ Tests erzeugen und entfernen eigene isolierte PostgreSQL-Datenbanken. Sie verän
 
 ## Ubuntu mit Docker
 
-**Schnellinstallation auf Port 8070** (im Repository-Verzeichnis, Server-IP anpassen):
+**Installation und Updates mit einem Befehl** auf dem Ubuntu-Server mit Docker:
 
 ```sh
-ERP_DOMAIN=192.168.1.20 docker compose -f compose.quickstart.yaml up -d --build
+sudo bash -c 'set -e; command -v curl >/dev/null || { apt-get update; apt-get install -y curl ca-certificates; }; t=$(mktemp); trap "rm -f -- \"$t\"" EXIT; curl -fsSL https://raw.githubusercontent.com/florians25/NetFusionIT-SYS-/main/scripts/install-ubuntu.sh -o "$t"; bash "$t"'
 ```
 
-Danach `https://192.168.1.20:8070` öffnen. Datenbank, Migrationen und Erstadministrator werden automatisch angelegt. [Zugangsdaten abrufen, internes HTTPS-Zertifikat und Neustarts](docs/docker-8070.md).
+Der Installer klont nach `/opt/netfusion-erp`, führt `git pull --ff-only origin main` aus, baut das Produktionsimage und startet Migrationen/Anwendung auf **HTTPS-Port8070**. Die Server-IP wird beim ersten Start automatisch ermittelt; die fertige URL steht am Ende im Terminal. Vorhandene Installationseinstellungen und geänderte Passwörter bleiben bei Updates erhalten. Vor Migrationen sichert der Installer Datenbank, Rollen und die fünf Installations-/Caddy-Volumes. Lokale Git-Änderungen werden nicht überschrieben.
+
+Beim interaktiven ersten Start erscheinen die Erstzugangsdaten direkt im Terminal; zusätzlich liegen sie geschützt in `/opt/netfusion-erp/.local/initial-access.json`. Das öffentliche HTTPS-Stammzertifikat liegt daneben als `netfusion-root.crt`. [Eigene Domain, vorhandener Checkout, Sicherungen und Details](docs/docker-8070.md).
 
 ### Eigene Produktionskonfiguration mit Domain
 

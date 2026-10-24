@@ -1,14 +1,43 @@
 # Docker-Installation auf Port 8070
 
-Im geklonten Repository genügt auf dem Ubuntu-Server mit Docker Engine und Compose v2:
+## Installation und Updates mit einem Befehl
+
+Auf dem Ubuntu-Server mit vorhandener Docker Engine ausführen:
+
+```sh
+sudo bash -c 'set -e; command -v curl >/dev/null || { apt-get update; apt-get install -y curl ca-certificates; }; t=$(mktemp); trap "rm -f -- \"$t\"" EXIT; curl -fsSL https://raw.githubusercontent.com/florians25/NetFusionIT-SYS-/main/scripts/install-ubuntu.sh -o "$t"; bash "$t"'
+```
+
+Der Bootstrap lädt das Skript zuerst vollständig in eine temporäre Datei; ein fehlgeschlagener Download wird nicht ausgeführt. Fehlendes Curl wird installiert. Der Installer ergänzt bei Bedarf Git, CA-Zertifikate, `flock` und das in den eingerichteten Paketquellen verfügbare Docker-Compose-v2-Plugin. Docker Compose ab2.20 und Zugriff auf den laufenden Docker-Dienst sind erforderlich.
+
+**Derselbe Befehl installiert neu und aktualisiert später.** Der Standardpfad ist bei `sudo` `/opt/netfusion-erp`, ohne Root `$HOME/netfusion-erp`. Ablauf:
+
+1. Checkout anlegen oder sauberen `main`-Checkout desselben Repositorys mit `git pull --ff-only origin main` aktualisieren. Andere Repositorys/Branches und lokale Änderungen werden abgewiesen; kein Reset oder Stash. Ein Lock verhindert parallele Läufe im selben Verzeichnis.
+2. Vorhandene nicht geheime Installationsangaben aus dem geschützten Volume übernehmen. Beim Erststart die Server-IPv4-Adresse erkennen; `ERP_DOMAIN` oder ein entsprechender `.env`-Eintrag hat Vorrang. Vorhandene Domain, Mandant, Firma und Administratorangaben werden ohne erneute Eingabe wiederverwendet. Bewusst abweichende Angaben werden vor dem Umbau abgewiesen. Bei vorhandenem Datenbankvolume und fehlender Installationskonfiguration wird nichts neu initialisiert.
+3. Produktionsimage bauen, während die bisherige Anwendung weiterlaufen kann. Erst nach erfolgreichem Build API/Caddy für das Update anhalten.
+4. Bei vorhandener Installation eine private Sicherung unter `.local/backups/<Zeitstempel>.<Kennung>` erzeugen: Custom-Format-DB-Dump mit geprüftem Katalog, globale Datenbankrollen, `install-state`, `app-secrets`, `db-secret`, `caddy-data`, `caddy-config`, vorheriger Checkout/Source-Archiv, Image-ID und gegebenenfalls `.env`. SHA256-Manifest prüfen. Verzeichnis0700, Dateien0600. Diese Archive enthalten Zugangsdaten/Schlüssel und gehören in den geschützten externen Sicherungsprozess. Die lokale Sicherung ist kein Ersatz für eine externe Wiederherstellungsvorsorge.
+5. Container mit erhaltenen Volumes neu anlegen, Migrationen ausführen und den vorhandenen Administrator erhalten. Keine Entwicklungskonten oder Demo-Belege anlegen. Bereits geänderte Passwörter werden nicht zurückgesetzt.
+6. Öffentliches Caddy-Stammzertifikat exportieren und die tatsächliche HTTPS-Readiness auf8070 mit diesem Zertifikat prüfen. Fertige URL und Pfade im Terminal anzeigen.
+
+Nach dem ersten interaktiven Start stehen die **Erstzugangsdaten direkt im eigenen Terminal**. Bei umgeleiteter Ausgabe werden keine Passwörter in das Installationslog geschrieben. Zusätzlich liegen sie mit Modus0600 in `.local/initial-access.json`. Bei Updates werden sie nicht erneut angezeigt; die Datei dokumentiert weiterhin das ursprüngliche Erstpasswort. Ein später geändertes Passwort bleibt gültig.
+
+Das öffentliche `root.crt` wird als `.local/netfusion-root.crt` exportiert. Dieses Zertifikat auf den verwendeten Geräten/Browsern als vertrauenswürdig installieren. Der private CA-Schlüssel bleibt im geschützten Volume bzw. in der geschützten Sicherung. Port8070 muss zum Server erreichbar sein. Der erste Build lädt die festgelegten Node-/Java-/OpenUI5-Komponenten; auf Ubuntu selbst sind Node/npm/Java nicht erforderlich.
+
+### Eigene Domain oder vorhandener Checkout
+
+Optionen als Umgebungsvariablen **hinter `sudo` vor `bash`** ergänzen, beispielsweise `sudo ERP_DOMAIN=erp.example.org ERP_INSTALL_DIR=/srv/netfusion bash -c '…'` mit demselben vollständigen Bootstrap-Inhalt oben. Für eine bestehende Schnellstartinstallation mit abweichendem Compose-Projektnamen zusätzlich `ERP_INSTALL_PROJECT=<bisheriger Projektname>` angeben. Standard ist `netfusion-erp-8070`; eine Installation aus `compose.yaml` hat ein anderes Daten-/Secret-Konzept und benötigt einen geprüften Umzug.
+
+Eine neue benutzerdefinierte Domain benötigt den passenden DNS-Eintrag. Bei der ersten Einrichtung können zusätzlich `ERP_BOOTSTRAP_TENANT`, `ERP_BOOTSTRAP_COMPANY`, `ERP_BOOTSTRAP_NAME` und `ERP_BOOTSTRAP_EMAIL` gesetzt werden. Vorhandene abweichende Einstellungen werden nicht automatisch geändert. Der Installer startet keine andere Installation und entfernt keine vorhandenen Volumes, Backups oder Images. Bei Fehlern beendet er den Ablauf; er führt keinen automatischen Datenbank-Rollback aus. Nach bereits angehaltenen Diensten Status/Sicherung prüfen, bevor erneut gestartet wird.
+
+### Bereits geklont: bisheriger direkter Compose-Start
 
 ```sh
 ERP_DOMAIN=192.168.1.20 docker compose -f compose.quickstart.yaml up -d --build
 ```
 
-`192.168.1.20` durch die tatsächliche Server-IP oder den Hostnamen ersetzen, ohne Protokoll und Port. Anschließend **`https://192.168.1.20:8070`** öffnen. Für einen ausschließlich lokalen Start kann `ERP_DOMAIN=…` entfallen; die Adresse lautet dann `https://localhost:8070`. Port 8070 muss auf dem Server erreichbar sein. Der erste Build lädt die festgelegten Node-/Java-/OpenUI5-Komponenten und benötigt entsprechend Zeit und Speicher.
+Dieser direkte Start umfasst keinen Git-Pull und keine automatische Sicherung. Beim neuen Installer sind diese Schritte enthalten.
 
-Der Befehl erzeugt zufällige Datenbankpasswörter, Sitzungsschlüssel und ein Administratorpasswort in geschützten Docker-Volumes. Danach laufen Migrationen und die einmalige Mandanteneinrichtung automatisch. Es entstehen keine Demo-Konten oder Beispielbelege. Die API läuft als unprivilegierter Benutzer mit schreibgeschütztem Dateisystem; die Datenbank erhält keinen veröffentlichten Hostport. Der API stehen weder das Datenbank-Administratorpasswort noch das Erstpasswort zur Verfügung.
+[Prüfnachweis des neuen Git-/Installer-/Backupablaufs](previews/ubuntu-installer/README.md).
 
 ## Anmeldung und HTTPS
 
@@ -38,7 +67,7 @@ docker compose -f compose.quickstart.yaml ps -a
 docker compose -f compose.quickstart.yaml logs --tail 100 initialize install api caddy
 ```
 
-Für Neustarts und Aktualisierungen denselben Startbefehl mit **derselben `ERP_DOMAIN` und denselben Erstinstallationsangaben** verwenden. Alternativ diese nicht geheimen Angaben dauerhaft in `.env` hinterlegen. Bestehende Mandanten und geänderte Benutzerpasswörter werden beim erneuten Start nicht überschrieben. `access.json` enthält das ursprüngliche Erstpasswort; nach einer Passwortänderung ist es kein aktueller Passwortnachweis.
+Für Aktualisierungen vorzugsweise den neuen Ein-Befehl-Installer oben verwenden: Er übernimmt bestehende Angaben und erstellt die Sicherung automatisch. Beim direkten Compose-Start weiterhin **dieselbe `ERP_DOMAIN` und dieselben Erstinstallationsangaben** verwenden. Alternativ diese nicht geheimen Angaben dauerhaft in `.env` hinterlegen. Bestehende Mandanten und geänderte Benutzerpasswörter werden beim erneuten Start nicht überschrieben. `access.json` enthält das ursprüngliche Erstpasswort; nach einer Passwortänderung ist es kein aktueller Passwortnachweis.
 
 ```sh
 docker compose -f compose.quickstart.yaml stop

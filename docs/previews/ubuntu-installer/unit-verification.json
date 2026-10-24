@@ -1,0 +1,22 @@
+{
+  "command": "npm run test:installer",
+  "results": {
+    "tests": 8,
+    "pass": 8,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "bashSyntaxCheck": true,
+  "nodeSyntaxChecks": true,
+  "testedFileSha256": {
+    "scripts/install-ubuntu.sh": "80adcecb2d2fad6b3939d9af99b8426414981e5273c16b366c4c84417ea03fbe",
+    "scripts/install-ubuntu-config.mjs": "5d998c874c06f19b92fcb69ebb623e510e968e1cdaa2d2694000e8c2adc44d38",
+    "tests/ubuntu-installer.test.mjs": "4125c83c1fc818bf92459bd9ac1aedf00a152bde31116a675843834c394e4376",
+    "tests/ubuntu-installer-smoke.mjs": "8de5ef30970bd6f2b1492e563b83c3ae4b9ab8f95a8d8236dc884201d9de0650"
+  },
+  "realIntegrationProof": "verification.json",
+  "erpRuntimeChanged": false,
+  "mainSchemaMigrations": 36
+}
