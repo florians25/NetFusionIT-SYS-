@@ -36,6 +36,7 @@ export function visibleDocuments(u:Principal){
  if(can(u.role,'billing.read.internal'))clauses.push("d.kind='BILLING_REQUEST'");
  if(can(u.role,'partner.account.read'))clauses.push("d.kind IN ('PARTNER_ACCOUNT','COMPANY_BILLING_PROFILE')");
  if(can(u.role,'billing.read'))clauses.push(`(d.kind='INVOICE' AND d.id IN(SELECT i.id FROM invoices i WHERE i.tenant_id=$1 AND i.sealed${u.role==='CUSTOMER'?' AND i.partner_id=$3':''}))`);
+ if(can(u.role,'settlement.read'))clauses.push("d.kind='PAYMENT'");
  if(can(u.role,'billing.credit.read'))clauses.push("d.kind='CREDIT_NOTE'");
  if(u.role==='CUSTOMER')clauses.push("(d.kind='CREDIT_NOTE' AND d.id IN(SELECT h.id FROM customer_credit_memos h JOIN invoices i ON i.tenant_id=h.tenant_id AND i.id=h.invoice_id WHERE h.tenant_id=$1 AND h.sealed AND i.partner_id=$3))");
  if(can(u.role,'finance.read'))clauses.push("d.kind='ACCOUNTING'");

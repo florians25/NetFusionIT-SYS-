@@ -45,7 +45,7 @@ export class Db {
     const db=await this.pool.connect();
     try{
       await db.query(readSnapshot?'BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY':'BEGIN');
-      await db.query("SELECT set_config('app.tenant_id',$1,true)",[u.tenantId]);
+      await db.query("SELECT set_config('app.tenant_id',$1,true),set_config('app.user_id',$2,true)",[u.tenantId,u.id]);
       const result=await fn(db);await db.query('COMMIT');return result;
     }catch(e){await db.query('ROLLBACK');throw e;}finally{db.release();}
   }

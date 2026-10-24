@@ -374,6 +374,31 @@
           "name": "returnInspection",
           "pattern": "return-inspection/{id}",
           "target": "ReturnInspection"
+        },
+        {
+          "name": "customerSettlements",
+          "pattern": "customer-settlements",
+          "target": "CustomerSettlements"
+        },
+        {
+          "name": "customerSettlement",
+          "pattern": "customer-settlements/{id}",
+          "target": "CustomerSettlement"
+        },
+        {
+          "name": "orderReport",
+          "pattern": "reports/orders",
+          "target": "OperationalReport"
+        },
+        {
+          "name": "pipelineReport",
+          "pattern": "reports/pipeline",
+          "target": "OperationalReport"
+        },
+        {
+          "name": "agingReport",
+          "pattern": "reports/aging",
+          "target": "OperationalReport"
         }
       ],
       "targets": {
@@ -565,6 +590,15 @@
         },
         "ReturnInspection": {
           "viewName": "ReturnInspection"
+        },
+        "CustomerSettlements": {
+          "viewName": "CustomerSettlements"
+        },
+        "CustomerSettlement": {
+          "viewName": "CustomerSettlement"
+        },
+        "OperationalReport": {
+          "viewName": "OperationalReport"
         }
       }
     }

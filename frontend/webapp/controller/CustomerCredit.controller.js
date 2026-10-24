@@ -9,7 +9,7 @@ sap.ui.define(['netfusion/erp/controller/Base.controller','netfusion/erp/util/Fo
   onPost:function(){this.run(async function(){await this.api('/api/customer-credits/'+this.id+'/post',{method:'POST',key:crypto.randomUUID(),body:{version:this.vm().getProperty('/version')}});await this.load();});},
   onOutput:function(){this.run(async function(){await this.api('/api/customer-credits/'+this.id+'/output',{method:'POST',body:{}});await this.load();});},
   onInvoice:function(){this.route('invoice',{id:this.vm().getProperty('/invoiceId')});},
-  onOrder:function(){this.route('salesOrder',{id:this.vm().getProperty('/orderId')});},
+  onOrder:function(){this.route(this.vm().getProperty('/orderKind')==='SERVICE_ORDER'?'order':'salesOrder',{id:this.vm().getProperty('/orderId')});},
   onOriginalJournal:function(){this.route('journal',{id:this.vm().getProperty('/sourceJournal/id')});},
   onCounterJournal:function(){this.route('journal',{id:this.vm().getProperty('/journal/id')});},
   onPdf:function(){mobile.URLHelper.redirect('/api/customer-credits/'+this.id+'/pdf',true);},
