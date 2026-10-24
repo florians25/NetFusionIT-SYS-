@@ -1,0 +1,27 @@
+{
+  "time": "2026-10-24T11:29:39.026669+00:00",
+  "command": "ERP_TEST_PORT_OFFSET=2000 npm test",
+  "buildApiPassed": true,
+  "buildNativeUiPassed": true,
+  "tests": 445,
+  "pass": 445,
+  "fail": 0,
+  "cancelled": 0,
+  "skipped": 0,
+  "todo": 0,
+  "meaningfulScope": [
+    "Legacy ERP transactions and tenant isolation",
+    "Price/service/residual credits and immutable source values",
+    "Partial customer receipts, refunds and exact reversals",
+    "Historical report balances and private variants",
+    "Atomic initial company setup, invalid input, rollback and idempotency",
+    "Internal ticket qualification, priority, asset history and access",
+    "Actual terminal wizard and installer metadata preservation"
+  ],
+  "finalInstallerAndUiPolicySubset": {
+    "tests": 14,
+    "pass": 14,
+    "fail": 0,
+    "reason": "Final native heading/label review and combined hidden-read/prompt correction after the full run; subset is not additional to445."
+  }
+}

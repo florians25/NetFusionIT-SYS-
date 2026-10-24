@@ -1,0 +1,20 @@
+[
+  {
+    "file": "zahlungseingang.pdf",
+    "sha256": "f573e7da5cda16b72fba70f8a5cba437a56a0f136ff8008424365131c84cf209",
+    "number": "ZE-81000000",
+    "decodedCode128": "ZE-81000000",
+    "originalInvoice": "RE-45000000",
+    "fullContact": "Martina Musterfrau",
+    "germanDate": "23.10.2026"
+  },
+  {
+    "file": "preisgutschrift.pdf",
+    "sha256": "2ed80c4ed23314f4f984a81350c31d80ce5fed0ee3cd313ecaa815e29f09e298",
+    "number": "GU-46000000",
+    "decodedCode128": "GU-46000000",
+    "originalInvoice": "RE-45000000",
+    "fullContact": "Martina Musterfrau",
+    "germanDate": "23.10.2026"
+  }
+]

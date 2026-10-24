@@ -116,3 +116,6 @@ HTTP-Testinstallation auf8070 mit echtem Clone/Pull, unverändertem Mandanten/ge
 ## Preview0.30: Erstassistent und interne Ticketqualifikation
 
 Der unveränderte Ein-Befehl-Installer baut0.30.0-preview.1. Der Terminalassistent und die native Unternehmens-Ersteinrichtung ergänzen Git-Pull, Sicherung und Update um die tatsächliche Erstkonfiguration. [Aktuelle Oberflächen und finale Nachweise](previews/v0.30.0-preview.1/README.md). Migrationen038–042 erweitern Korrekturen, Zahlungen, Berichtsvarianten, interne Ticketqualifikation und die Erstkonfiguration; ältere angewandte Migrationen bleiben unverändert.
+
+
+0.30 wurde mit echter interaktiver HTTP-Erstinstallation einschließlich verdeckt eingegebenem eigenem Passwort, tatsächlich eingebundener und entfernter Passwortdatei, Browseranmeldung, Git-Update, Passworterhalt und Backup/Restore geprüft. HTTPS inklusive Zertifikat und Secure-Cookie lief separat mit demselben Update-/Restoreprozess. [HTTP](previews/v0.30.0-preview.1/http-installer-verification.json), [HTTPS](previews/v0.30.0-preview.1/https-installer-verification.json).

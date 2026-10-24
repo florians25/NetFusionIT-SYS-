@@ -1,0 +1,19 @@
+{
+  "time": "2026-10-24T11:29:39.026962+00:00",
+  "legacyCustomerDispatcherTechnicianBrowser": "Browserprozess bestanden: Kundenformular → Ticket/Fall → OData-Listen → Dispatcherzuweisung → Technikerstatus; Kundenanlage, Administration und mobile Darstellung.",
+  "ticketWorkTimesWotSrmBillingReadyBrowser": "OpenUI5-Ticketprozess bestanden: Work Order Task → Ticket-Timer/Pause → Ticketzeit → Auftragsübernahme → WOT-Abschluss erzeugt SRM mit Korrelation → Kundenbestätigung → Freigabe → technischer Abschluss → Fakturabereitschaft, Desktop/Mobil.",
+  "commercialPackageBrowser": {
+    "nativeOpenUI5": true,
+    "desktopWidth": 1920,
+    "mobileWidth": 390,
+    "actualQuoteDecisions": true,
+    "personalVariantSaved": true,
+    "actualCsvDownloaded": true,
+    "priceCorrectionWorkspace": true,
+    "independentPaymentReview": true,
+    "postedPayment": true,
+    "attachmentList": true,
+    "errors": []
+  },
+  "testDataOnly": true
+}
