@@ -34,6 +34,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller","sap/m/MessageBox","sap/ui/model/jso
     onAttachments:function(e){var source=e.getSource(),ctx=source.getBindingContext('view')||source.getBindingContext(),id=source.data('documentId')||(ctx&&ctx.getProperty('id'))||this.id;this.run(function(){if(!id)throw new Error('Zuerst einen Vorgang auswählen.');return attachments(this,id);});},
     onSuppliers:function(){this.route("suppliers");},
     onIncomingInvoices:function(){this.route("incomingInvoices");},
+    onInitialSetup:function(){this.route("initialSetup");},
     onSettlements:function(){this.route("customerSettlements");},onOrderReport:function(){this.route("orderReport");},onPipelineReport:function(){this.route("pipelineReport");},onAgingReport:function(){this.route("agingReport");},
     onSalesReporting:function(){this.route("salesReporting");},
     onCustomerReturns:function(){this.route("customerReturns");},

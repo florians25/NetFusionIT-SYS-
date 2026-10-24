@@ -1,3 +1,4 @@
+import {enterAppCenter} from './helpers/ui5-navigation.mjs';
 import {editingSurface} from './helpers/editing-surface.mjs';
 import {selectTicketTab} from './helpers/ui5-navigation.mjs';
 import { chromium } from 'playwright-core';
@@ -21,7 +22,7 @@ try{
     await page.getByRole('textbox',{name:'E-Mail-Adresse',exact:true}).fill(a.email);
     await page.getByRole('textbox',{name:'Passwort',exact:true}).fill(a.password);
     await page.getByRole('button',{name:'Anmelden',exact:true}).click();
-    await page.locator('[id$="--appCenterTitle"]').waitFor();
+    await enterAppCenter(page);
     assert.equal(await page.locator('[id$="--appNavigation"]').isVisible(),false,'App-Zentrale ohne globale Anwendungs-Tabs');
     await page.getByRole('button',{name:/Service-Cockpit/}).click();
     await page.getByRole('heading',{name:'Service-Cockpit',exact:true}).last().waitFor();
@@ -42,7 +43,7 @@ try{
   await editingSurface(page).getByText(/wurden gespeichert/).waitFor();
   await page.getByRole('button',{name:'OK',exact:true}).click();
   await page.getByRole('heading',{name:'VPN-Verbindung am Standort Berlin unterbrochen',exact:true}).waitFor();
-  await page.getByRole('tab',{name:'Kommunikation',exact:true}).click();
+  await selectTicketTab(page,'Kommunikation');
   await page.getByRole('textbox',{name:'Kommentar zum Ticket verfassen'}).fill('Kundenkommentar aus dem Browserprozess.');
   await page.getByRole('button',{name:'Kommentar senden',exact:true}).click();
   await page.getByText('Kundenkommentar aus dem Browserprozess.',{exact:true}).waitFor();
@@ -64,7 +65,7 @@ try{
   await page.getByText('Techniker zugewiesen',{exact:true}).last().waitFor();
   await logout();await login('TECHNICIAN');
   await go(ticketHash.slice(1));
-  await page.getByRole('tab',{name:'Bearbeitung',exact:true}).click();
+  await selectTicketTab(page,'Bearbeitung');
   await page.getByRole('button',{name:'Status übernehmen',exact:true}).click();
   await page.getByText('In Bearbeitung',{exact:true}).filter({visible:true}).first().waitFor();
   await logout();await login('ADMIN');
@@ -98,7 +99,7 @@ try{
   await page.waitForLoadState('networkidle');
   await settle();await page.screenshot({path:'test-results/cockpit-desktop.png',fullPage:true});
   await page.getByRole('button',{name:'App-Zentrale',exact:true}).click();
-  await page.locator('[id$="--appCenterTitle"]').waitFor();await page.waitForLoadState('networkidle');
+  await enterAppCenter(page);await page.waitForLoadState('networkidle');
   assert.equal(await page.getByText('Zuletzt eingegangene Tickets',{exact:true}).count(),0);
   await settle();await page.screenshot({path:'test-results/workspace-desktop.png',fullPage:true});
   await go(ticketHash.slice(1));await page.getByRole('heading',{name:'VPN-Verbindung am Standort Berlin unterbrochen',exact:true}).waitFor();await page.waitForLoadState('networkidle');

@@ -1,3 +1,4 @@
+import {intakeInput} from './ticket-intake-schema';
 import { Injectable, BadRequestException, ConflictException } from '@nestjs/common';
 import { Pool, PoolClient } from 'pg';
 import { createHash, randomUUID } from 'node:crypto';
@@ -16,7 +17,7 @@ export function parse<T>(schema:z.ZodType<T>,value:unknown):T {
 export const ticketInput=z.object({
   title:z.string().trim().min(5).max(160), description:z.string().trim().min(10).max(10000),
   type:z.enum(['INCIDENT','SERVICE_REQUEST','PROBLEM','CHANGE','MAINTENANCE','REPAIR','INSTALLATION','COMPLAINT','WARRANTY','INTERNAL']),
-  priority:z.enum(['LOW','MEDIUM','HIGH','CRITICAL']), partnerId:uuid.optional(),contractId:uuid.optional(),technicalObjectId:uuid.optional()
+  intake:intakeInput.optional(),assetIds:z.array(z.uuid()).max(100).refine(a=>new Set(a).size===a.length).optional(),priority:z.enum(['LOW','MEDIUM','HIGH','CRITICAL']), partnerId:uuid.optional(),contractId:uuid.optional(),technicalObjectId:uuid.optional()
 }).strict();
 export const transitions:Record<string,string[]>={
   NEW:['QUALIFYING','ESCALATED','CANCELLED'], QUALIFYING:['ESCALATED','CANCELLED'],

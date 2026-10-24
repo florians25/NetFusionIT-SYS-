@@ -5,11 +5,71 @@ umask 077
 
 fail() { printf 'FEHLER: %s\n' "$*" >&2; exit 1; }
 phase() { printf '\n%s\n' "$*"; }
+# Interactive first-installation assistant; no secret is passed through argv or env.
+wizard_open() {
+  local mode=${ERP_INSTALL_WIZARD:-auto}
+  [[ $mode == auto || $mode == 0 || $mode == 1 ]] || fail 'ERP_INSTALL_WIZARD muss auto, 0 oder 1 sein.'
+  wizard_enabled=0
+  if [[ $mode == 1 || ( $mode == auto && -t 0 && -t 1 ) ]]; then
+    { exec 3<>/dev/tty; } 2>/dev/null || fail 'Interaktiver Assistent benötigt ein Terminal. Für Automation ERP_INSTALL_WIZARD=0 verwenden.'
+    wizard_enabled=1
+  fi
+}
+wizard_value() {
+  local label=$1 fallback=$2 variable=$3 rule=$4 entered
+  while :; do
+    printf '%s%s: ' "$label" "${fallback:+ [$fallback]}" >&3
+    IFS= read -r -u 3 entered || fail 'Installationsassistent abgebrochen.'
+    entered=${entered:-$fallback}
+    if [[ $entered =~ $rule ]]; then printf -v "$variable" '%s' "$entered"; return; fi
+    printf 'Eingabe ungültig; bitte erneut eingeben.\n' >&3
+  done
+}
+wizard_target() {
+  printf '\nNetFusion · Erstinstallationsassistent (Port8070)\nDocker und Compose sind verfügbar.\n' >&3
+  wizard_value 'Installationsverzeichnis' "$install_dir" install_dir '^/[^[:cntrl:]]+$'
+  wizard_value 'Docker-Projektname' "$project" project '^[a-z0-9][a-z0-9_-]*$'
+}
+wizard_setup() {
+  local first='' last='' choice='' answer='' pass='' confirm='' name=${ERP_BOOTSTRAP_NAME:-}
+  printf '\nServer und Anwendung einrichten\nCheckout: %s\nDocker-Projekt: %s\n' "$install_dir" "$project" >&3
+  wizard_value 'Serveradresse / DNS-Name ohne Protokoll und Port' "${ERP_DOMAIN:-${values[0]}}" ERP_DOMAIN '^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?)*$'
+  printf '1 = HTTP-Testsystem   2 = HTTPS mit lokalem Caddy-Zertifikat\n' >&3
+  choice=1; [[ ${ERP_INSTALL_PROTOCOL:-} != https ]] || choice=2
+  wizard_value 'Betriebsart' "$choice" choice '^[12]$'
+  if [[ $choice == 1 ]]; then ERP_INSTALL_PROTOCOL=http; else ERP_INSTALL_PROTOCOL=https; fi
+  wizard_value 'Mandantenkennung' "${ERP_BOOTSTRAP_TENANT:-${values[1]}}" ERP_BOOTSTRAP_TENANT '^[a-z0-9-]{2,48}$'
+  wizard_value 'Vollständiger Firmenname' "${ERP_BOOTSTRAP_COMPANY:-${values[2]}}" ERP_BOOTSTRAP_COMPANY '[^[:space:]]'
+  if [[ $name == *' '* ]]; then first=${name%% *}; last=${name#* }; fi
+  wizard_value 'Vorname der Administration' "$first" first '[^[:space:]]'
+  wizard_value 'Nachname der Administration' "$last" last '[^[:space:]]'
+  ERP_BOOTSTRAP_NAME="$first $last"
+  wizard_value 'E-Mail der Administration' "${ERP_BOOTSTRAP_EMAIL:-${values[4]}}" ERP_BOOTSTRAP_EMAIL '^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]+$'
+  while :; do
+    IFS= read -r -s -u 3 -p 'Adminpasswort (mindestens20 Zeichen; leer = sicher generieren): ' pass 2>&3 || fail 'Installationsassistent abgebrochen.'; printf '\n' >&3
+    [[ -n $pass ]] || break
+    if [[ ${#pass} -lt 20 || ${#pass} -gt 128 ]]; then printf '20 bis128 Zeichen erforderlich.\n' >&3; continue; fi
+    IFS= read -r -s -u 3 -p 'Adminpasswort wiederholen: ' confirm 2>&3 || fail 'Installationsassistent abgebrochen.'; printf '\n' >&3
+    [[ $pass == "$confirm" ]] && break
+    printf 'Die Passwörter stimmen nicht überein.\n' >&3
+  done
+  printf '\nInstallationsübersicht\nAdresse: %s://%s:8070\nMandant: %s\nFirma: %s\nAdministration: %s · %s\nZeitzone der Fachoberfläche: Europe/Berlin\nPasswort: %s\n' "$ERP_INSTALL_PROTOCOL" "$ERP_DOMAIN" "$ERP_BOOTSTRAP_TENANT" "$ERP_BOOTSTRAP_COMPANY" "$ERP_BOOTSTRAP_NAME" "$ERP_BOOTSTRAP_EMAIL" "$(if [[ -n $pass ]]; then printf 'verdeckt festgelegt'; else printf 'wird sicher generiert'; fi)" >&3
+  wizard_value 'Installation jetzt ausführen? (ja/nein)' ja answer '^(ja|nein)$'
+  [[ $answer == ja ]] || fail 'Installation vor Initialisierung der Geschäftsdaten abgebrochen.'
+  if [[ -n $pass ]]; then
+    wizard_password_file=$(mktemp "$local_dir/admin-password.XXXXXXXX")
+    chmod 600 "$wizard_password_file"; printf '%s' "$pass" >"$wizard_password_file"
+  fi
+  unset pass confirm
+  export ERP_DOMAIN ERP_INSTALL_PROTOCOL ERP_BOOTSTRAP_TENANT ERP_BOOTSTRAP_COMPANY ERP_BOOTSTRAP_NAME ERP_BOOTSTRAP_EMAIL
+}
+
 main() {
   local repo_url='https://github.com/florians25/NetFusionIT-SYS-.git'
   local install_dir="${ERP_INSTALL_DIR:-}" project="${ERP_INSTALL_PROJECT:-netfusion-erp-8070}"
   local missing=() tool compose_version major minor old_commit='' auto_domain='' configured=0 explicit='' metadata
-  local backup='' old_api='' volume source_version image_id database_exists=0
+  local backup='' old_api='' volume source_version image_id database_exists=0 wizard_enabled=0 wizard_password_file=''
+  trap '[[ -z ${wizard_password_file:-} ]] || rm -f -- "$wizard_password_file"' EXIT
   local protocol caddy_file ca_args=() local_dir ca_file access_file access_temporary readiness_file i ready=0
   [[ $# -eq 0 ]] || fail 'Optionen werden als ERP_INSTALL_DIR, ERP_DOMAIN oder ERP_INSTALL_PROJECT und ERP_INSTALL_PROTOCOL=http|https gesetzt.'
   for tool in git curl flock; do command -v "$tool" >/dev/null 2>&1 || missing+=("$tool"); done
@@ -40,6 +100,9 @@ main() {
   if [[ -z $install_dir ]]; then
     if [[ $(id -u) -eq 0 ]]; then install_dir=/opt/netfusion-erp; else install_dir="${HOME:?}/netfusion-erp"; fi
   fi
+  wizard_open
+  if [[ $wizard_enabled == 1 && ! -e $install_dir ]]; then wizard_target; fi
+  [[ $project =~ ^[a-z0-9][a-z0-9_-]*$ ]] || fail 'Ungültiger Docker-Projektname.'
   install_dir=$(realpath -m -- "$install_dir")
   [[ $install_dir != / && $install_dir != /opt && $install_dir != /home ]] || fail 'Eigenes Installationsverzeichnis wählen.'
   mkdir -p -- "$(dirname -- "$install_dir")"
@@ -81,7 +144,7 @@ main() {
   if docker volume inspect "${project}_postgres-data" >/dev/null 2>&1; then database_exists=1; fi
   metadata=$(mktemp "$local_dir/installer-metadata.XXXXXXXX")
   # ERR traps remove only this non-secret temporary file. Existing data/volumes stay intact.
-  trap 'printf "Installation angehalten. Vorhandene Daten bleiben erhalten; Diagnose: docker compose -f %q -p %q ps -a\n" "$install_dir/compose.quickstart.yaml" "$project" >&2; rm -f -- "$metadata"' ERR
+  trap 'printf "Installation angehalten. Vorhandene Daten bleiben erhalten; Diagnose: docker compose -f %q -p %q ps -a\n" "$install_dir/compose.quickstart.yaml" "$project" >&2; rm -f -- "$metadata" "${wizard_password_file:-}"' ERR
   phase 'Vorhandene Installationseinstellungen übernehmen.'
   "${compose[@]}" run --rm --no-deps --quiet-pull \
     -e "ERP_INSTALL_PROTOCOL=${ERP_INSTALL_PROTOCOL:-}" -e "ERP_INSTALL_DATABASE_EXISTS=$database_exists" -e "ERP_INSTALL_EXPLICIT_KEYS=$explicit" -e "ERP_INSTALL_AUTO_DOMAIN=$auto_domain" -e "ERP_INSTALL_DOMAIN_CONFIGURED=$configured" \
@@ -89,10 +152,18 @@ main() {
     initialize node /installer-config.mjs >"$metadata"
   local values=(); mapfile -d '' -t values <"$metadata"; rm -f -- "$metadata"
   [[ ${#values[@]} -eq 8 ]] || fail 'Unvollständige Installationsmetadaten.'
+  if [[ ${values[5]} == 0 && $wizard_enabled == 1 ]]; then
+    wizard_setup
+    values[0]=$ERP_DOMAIN; values[1]=$ERP_BOOTSTRAP_TENANT; values[2]=$ERP_BOOTSTRAP_COMPANY; values[3]=$ERP_BOOTSTRAP_NAME; values[4]=$ERP_BOOTSTRAP_EMAIL; values[7]=$ERP_INSTALL_PROTOCOL
+  fi
   export ERP_DOMAIN="${values[0]}" ERP_BOOTSTRAP_TENANT="${values[1]}" ERP_BOOTSTRAP_COMPANY="${values[2]}" ERP_BOOTSTRAP_NAME="${values[3]}" ERP_BOOTSTRAP_EMAIL="${values[4]}"
   protocol="${values[7]}"; export ERP_INSTALL_PROTOCOL="$protocol"
   if [[ $protocol == http ]]; then export ERP_GATEWAY_PORT=80; compose+=(-f "$install_dir/compose.quickstart.http.yaml"); else export ERP_GATEWAY_PORT=443; fi
   "${compose[@]}" config --quiet
+  if [[ -n $wizard_password_file ]]; then
+    "${compose[@]}" run --rm --no-deps --quiet-pull -e ERP_BOOTSTRAP_PASSWORD_FILE=/run/netfusion-bootstrap-password -v "$wizard_password_file:/run/netfusion-bootstrap-password:ro" initialize
+    rm -f -- "$wizard_password_file"; wizard_password_file=''
+  fi
   old_api=$("${compose[@]}" ps -a -q api)
   if [[ -n $old_api ]]; then image_id=$(docker inspect --format '{{.Image}}' "$old_api"); else image_id=''; fi
   phase 'Produktionsimage bauen; laufende Anwendung bleibt während des Builds erreichbar.'
@@ -149,10 +220,8 @@ main() {
   phase "Bereit: $protocol://$ERP_DOMAIN:8070"
   printf 'Checkout: %s\nErstzugang (geschützt): %s\n' "$install_dir" "$access_file"
   if [[ $protocol == https ]]; then printf 'Öffentliches HTTPS-Stammzertifikat: %s\n' "$ca_file"; else printf 'HTTP-Testmodus aktiv: ausschließlich mit Testdaten im geschützten Testnetz verwenden.\n'; fi
-  if [[ ${values[6]} == 0 && -t 1 ]]; then
-    printf '\nEinmalige Erstzugangsdaten für dieses Terminal:\n'; cat -- "$access_file"
-  else printf 'Bereits geänderte Passwörter bleiben erhalten; initial-access.json dokumentiert ausschließlich den Erstzugang.\n'; fi
+  printf 'Zugangsdaten werden ausschließlich in der geschützten Datei gespeichert. Bereits geänderte Passwörter bleiben erhalten.\n'
   printf 'Für Installation und Updates denselben Ein-Befehl-Installer verwenden.\n'
   trap - ERR
 }
-main "$@"
+if [[ ${BASH_SOURCE[0]} == "$0" ]]; then main "$@"; fi

@@ -8,6 +8,8 @@ export const grants:Record<string,readonly Role[]>={
  'document.configure':['ADMIN','MASTER_DATA'],
  'attachment.write':ROLES.filter(r=>r!=='CUSTOMER'),
  'service.read':service,'service.create':['ADMIN','SERVICE_MANAGER','DISPATCHER','SUPPORT','CUSTOMER'],
+ 'ticket.intake.read':['ADMIN','SERVICE_MANAGER','DISPATCHER','SUPPORT','TECHNICIAN','FIELD_TECHNICIAN'],
+ 'ticket.intake.write':['ADMIN','SERVICE_MANAGER','DISPATCHER','SUPPORT','TECHNICIAN','FIELD_TECHNICIAN'],
  'service.manage':['ADMIN','SERVICE_MANAGER','DISPATCHER','SUPPORT'],
  'service.assign':['ADMIN','SERVICE_MANAGER','DISPATCHER'],
  'service.config.read':['ADMIN','SERVICE_MANAGER','DISPATCHER','SUPPORT','SALES'],

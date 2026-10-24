@@ -1,6 +1,6 @@
 # NetFusion · Enterprise Service ERP
 
-**Preview0.29.0-preview.1:** Fünf Retourenpakete: unbewerteter Kunden-Prüfeingang vor GU, freie Fachwahl/Scan, dokumentierte Inspektion, geprüfte Eigenbestandsübernahme und Rücksendung abgelehnter Mengen einschließlich Gegenbewegungen. Zusätzlich vollständiger HTTP-Testinstaller auf8070 mit Git-Pull/Backup/Update.419/419 Gesamttests. [Screenshots, PDFs und Prüfnachweise](docs/previews/v0.29.0-preview.1/README.md).
+**Preview0.30.0-preview.1:** Zehn Backlog-Pakete zu Preis-/Servicegutschriften, Teilzahlungen/Rückzahlungen und drei neuen Berichtsapps. Zusätzlich Erstinstallationsassistent mit Unternehmens-/Steuerdaten, Werken/Lagern, Einkauf/Vertrieb, Konten und Bank sowie breite interne Ticketqualifikation mit mehreren Assets. [Screenshots und Prüfnachweise](docs/previews/v0.30.0-preview.1/README.md).
 
 **Oberflächen-Update:** Belegfluss in19 Vorgangsmasken als nativer aufklappbarer OpenUI5-Baum, mit Einzelzweigen, Gesamtsteuerung und Belegsprung. [Bilder und Prüfungen](docs/previews/document-flow-tree/README.md).
 
@@ -44,7 +44,7 @@ sudo bash -c 'set -e; command -v curl >/dev/null || { apt-get update; apt-get in
 
 Der Installer klont nach `/opt/netfusion-erp`, führt `git pull --ff-only origin main` aus, baut das Produktionsimage und startet Migrationen/Anwendung auf **HTTP-Port8070** (`http://SERVER-IP:8070`). HTTP ist für Testdaten im geschützten Testnetz vorgesehen. Die Server-IP wird beim ersten Start automatisch ermittelt; die fertige URL steht am Ende im Terminal. Vorhandene Installationseinstellungen und geänderte Passwörter bleiben bei Updates erhalten. Vor Migrationen sichert der Installer Datenbank, Rollen und die fünf Installations-/Caddy-Volumes. Lokale Git-Änderungen werden nicht überschrieben.
 
-Beim interaktiven ersten Start erscheinen die Erstzugangsdaten direkt im Terminal; zusätzlich liegen sie geschützt in `/opt/netfusion-erp/.local/initial-access.json`. Für HTTPS `ERP_INSTALL_PROTOCOL=http` im Befehl durch `ERP_INSTALL_PROTOCOL=https` ersetzen. Der Installer übernimmt bestehende Daten und Zugangsdaten; das öffentliche Stammzertifikat liegt anschließend als `netfusion-root.crt` daneben. [Eigene Domain, vorhandener Checkout, Sicherungen und Details](docs/docker-8070.md).
+Beim interaktiven Erststart fragt der Terminalassistent Server, Betriebsart, Firma, Mandant und die Administration mit Vor- und Nachnamen ab. Ein eigenes Passwort kann verdeckt eingegeben oder sicher erzeugt werden; die Zugangsdaten liegen ausschließlich geschützt in `/opt/netfusion-erp/.local/initial-access.json`. Nach der ersten Administratoranmeldung fragt der native OpenUI5-Assistent USt-IdNr., Steuer-/Registerdaten, Anschrift/Ansprechpartner, Werke/Lagerorte/erste Regale, Einkauf/Vertrieb, Konten/Perioden und Bankdaten ab. Für HTTPS `ERP_INSTALL_PROTOCOL=http` im Befehl durch `ERP_INSTALL_PROTOCOL=https` ersetzen. Der Installer übernimmt bestehende Daten und Zugangsdaten; das öffentliche Stammzertifikat liegt anschließend als `netfusion-root.crt` daneben. [Eigene Domain, vorhandener Checkout, Sicherungen und Details](docs/docker-8070.md).
 
 ### Eigene Produktionskonfiguration mit Domain
 
@@ -59,7 +59,7 @@ docker compose --profile setup run --rm bootstrap
 
 Bootstrap legt einen echten Tenant, eine Serviceorganisation und einen Administrator an, überschreibt keine vorhandenen Mandanten und seedet keine Entwicklungskonten. Danach Bootstrap-Passwort aus `.env` entfernen. Kunden und interne Benutzer werden in der Administration angelegt. Vor produktivem Einsatz MFA/OIDC, zentralen Angriffsschutz, Backup/Restore, Monitoring, fachliche Regeln und Security-/Lasttests abschließen.
 
-Das Produktionsimage wurde in dieser Cloud mit isoliertem PostgreSQL, Migrationen, Bootstrap, Anmeldung, schreibgeschütztem unprivilegiertem Prozess und echter E-Rechnungsprüfung getestet. Der [Image-Nachweis](docs/previews/v0.29.0-preview.1/docker-smoke.json) gilt für genau dieses lokale Image. Auf dem vorgesehenen Ubuntu-Server stehen Domain/HTTPS, Antivirus, Ressourcen, Backup/Restore und tatsächliche Betriebskonfiguration noch zur Prüfung aus.
+Das Produktionsimage wurde in dieser Cloud mit isoliertem PostgreSQL, Migrationen, Bootstrap, Anmeldung, schreibgeschütztem unprivilegiertem Prozess und echter E-Rechnungsprüfung getestet. Der [Image-Nachweis](docs/previews/v0.30.0-preview.1/docker-smoke.json) gilt für genau dieses lokale Image. Auf dem vorgesehenen Ubuntu-Server stehen Domain/HTTPS, Antivirus, Ressourcen, Backup/Restore und tatsächliche Betriebskonfiguration noch zur Prüfung aus.
 
 ## Dokumentation
 

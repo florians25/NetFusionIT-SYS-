@@ -1,3 +1,4 @@
+import {enterAppCenter} from './helpers/ui5-navigation.mjs';
 import {editingSurface} from './helpers/editing-surface.mjs';
 import { chromium } from 'playwright-core';
 import { mkdir } from 'node:fs/promises';
@@ -10,7 +11,7 @@ try{
  browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
  page=await browser.newPage({viewport:{width:1600,height:1050}});
  page.setDefaultTimeout(15000);page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});page.on('response',r=>{if(r.status()>=400)errors.push(r.status()+' '+new URL(r.url()).pathname);});
- await page.goto(h.base+'/#login');const admin=h.accounts.find(a=>a.role==='ADMIN');await page.getByRole('textbox',{name:'E-Mail-Adresse',exact:true}).fill(admin.email);await page.getByRole('textbox',{name:'Passwort',exact:true}).fill(admin.password);await page.getByRole('button',{name:'Anmelden',exact:true}).click();await page.locator('[id$="--appCenterTitle"]').waitFor();
+ await page.goto(h.base+'/#login');const admin=h.accounts.find(a=>a.role==='ADMIN');await page.getByRole('textbox',{name:'E-Mail-Adresse',exact:true}).fill(admin.email);await page.getByRole('textbox',{name:'Passwort',exact:true}).fill(admin.password);await page.getByRole('button',{name:'Anmelden',exact:true}).click();await enterAppCenter(page);
  async function fill(name,value){await editingSurface(page).getByLabel(name,{exact:true}).fill(value);}
  async function save(){const d=editingSurface(page).filter({has:page.getByRole('button',{name:'Speichern',exact:true})}),id=await d.getAttribute('id');await d.getByRole('button',{name:'Speichern',exact:true}).click();await page.locator('[id="'+id+'"]').waitFor({state:'hidden'});}
  async function select(name,text){const c=editingSurface(page).getByRole('combobox',{name,exact:true});await c.locator('..').click();await page.getByRole('option',{name:text,exact:true}).click();await editingSurface(page,{name:'Verfügbare Werte',exact:true}).waitFor({state:'hidden'});}

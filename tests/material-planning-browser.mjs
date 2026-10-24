@@ -1,3 +1,4 @@
+import {enterAppCenter} from './helpers/ui5-navigation.mjs';
 import {editingSurface} from './helpers/editing-surface.mjs';
 import {chromium} from 'playwright-core';
 import assert from 'node:assert/strict';
@@ -14,7 +15,7 @@ try{
  function observe(p){p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>{if(m.type()==='error')errors.push(m.text());});p.on('response',r=>{if(r.status()>=400)errors.push(r.status()+' '+new URL(r.url()).pathname);});}observe(page);
  async function settle(p=page){await p.waitForLoadState('networkidle');await p.waitForFunction(()=>!document.querySelector('.sapMNavItemFading,.sapMNavItemTransparent,.sapMNavItemSlideCenterToLeft,.sapMNavItemSlideRightToCenter,[aria-busy="true"]'));await p.locator('.sapUiBLy:visible').waitFor({state:'hidden'});}
  async function go(hash){const target=h.base+'/#'+hash;if(page.url()===target)await page.reload();else await page.goto(target);await settle();}
- async function login(){await go('login');const a=h.accounts.find(a=>a.role==='TECHNICIAN');await page.getByRole('textbox',{name:'E-Mail-Adresse',exact:true}).fill(a.email);await page.getByRole('textbox',{name:'Passwort',exact:true}).fill(a.password);await page.getByRole('button',{name:'Anmelden',exact:true}).click();await page.locator('[id$="--appCenterTitle"]').waitFor();await settle();}
+ async function login(){await go('login');const a=h.accounts.find(a=>a.role==='TECHNICIAN');await page.getByRole('textbox',{name:'E-Mail-Adresse',exact:true}).fill(a.email);await page.getByRole('textbox',{name:'Passwort',exact:true}).fill(a.password);await page.getByRole('button',{name:'Anmelden',exact:true}).click();await enterAppCenter(page);await settle();}
  async function shot(name){await settle();await page.waitForFunction(()=>Array.from(document.querySelectorAll('.sapMMessageToast')).every(e=>e.getClientRects().length===0));await page.screenshot({path:'test-results/'+name+'.png',fullPage:true});}
  async function plan(button,save){await page.getByRole('row').filter({hasText:'SPARE-10'}).getByRole('button',{name:new RegExp(button+'$')}).click();await editingSurface(page).getByRole('button',{name:save,exact:true}).click();await editingSurface(page).waitFor({state:'hidden'});await settle();}
  await mkdir('test-results',{recursive:true});await login();await go('service-orders/'+order.id);await shot('order-positions-expanded');await page.getByRole('tab',{name:'Allgemeine Informationen',exact:true}).click();await shot('order-business-context');await page.getByRole('tab',{name:'Material & Beschaffung',exact:true}).click();await shot('material-availability');

@@ -1,3 +1,4 @@
+import {enterAppCenter} from './helpers/ui5-navigation.mjs';
 import {editingSurface} from './helpers/editing-surface.mjs';
 import {chromium} from 'playwright-core';
 import assert from 'node:assert/strict';
@@ -24,7 +25,7 @@ try{
   if(!modal)await p.locator('.sapUiBLy:visible').waitFor({state:'hidden'});
  }
  async function go(hash){await page.goto(h.base+'/#'+hash);await settle();}
- async function login(role){await go('login');const a=h.accounts.find(a=>a.role===role);await page.getByRole('textbox',{name:'E-Mail-Adresse',exact:true}).fill(a.email);await page.getByRole('textbox',{name:'Passwort',exact:true}).fill(a.password);await page.getByRole('button',{name:'Anmelden',exact:true}).click();await page.locator('[id$="--appCenterTitle"]').waitFor();await settle();}
+ async function login(role){await go('login');const a=h.accounts.find(a=>a.role===role);await page.getByRole('textbox',{name:'E-Mail-Adresse',exact:true}).fill(a.email);await page.getByRole('textbox',{name:'Passwort',exact:true}).fill(a.password);await page.getByRole('button',{name:'Anmelden',exact:true}).click();await enterAppCenter(page);await settle();}
  async function select(name,text,p=page){const field=editingSurface(p).getByRole('combobox',{name,exact:true});await field.locator('..').click();await p.getByRole('option',{name:text,exact:true}).click();await p.getByRole('option',{name:text,exact:true}).waitFor({state:'hidden'});}
  async function shot(name){await settle();await page.waitForFunction(()=>Array.from(document.querySelectorAll('.sapMMessageToast')).every(e=>e.getClientRects().length===0));await page.screenshot({path:'test-results/'+name+'.png',fullPage:true});}
  async function openList(){await page.getByRole('button',{name:'Anlagenliste',exact:true}).first().click();await editingSurface(page,{name:/Anlagenliste/}).waitFor();await settle();}

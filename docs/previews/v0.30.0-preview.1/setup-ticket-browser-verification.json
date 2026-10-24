@@ -1,0 +1,17 @@
+{
+  "nativeOpenUI5Wizard": true,
+  "actualCompanyVatAndTaxNumberSaved": true,
+  "plants": 2,
+  "storageLocations": 3,
+  "emptyRackBins": 20,
+  "accounts": 12,
+  "periods": 12,
+  "independentBankApprovalRequired": true,
+  "nativeTicketIntake": true,
+  "multipleActualAssetsLinked": 2,
+  "impactUrgencyPriority": "CRITICAL",
+  "qualificationWorkspace": true,
+  "desktopWidth": 1920,
+  "mobileWidth": 390,
+  "errors": []
+}

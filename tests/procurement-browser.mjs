@@ -1,3 +1,4 @@
+import {enterAppCenter} from './helpers/ui5-navigation.mjs';
 import {editingSurface} from './helpers/editing-surface.mjs';
 import {chromium} from 'playwright-core';
 import assert from 'node:assert/strict';
@@ -18,7 +19,7 @@ try{
  async function approve(number){await go('workflow');await page.getByRole('row').filter({hasText:number}).getByRole('button',{name:'Freigeben',exact:true}).click();await editingSurface(page).getByRole('textbox').fill('Stammdaten, Kontierung und Beschaffungsmengen fachlich geprüft.');await page.getByRole('button',{name:'Entscheidung speichern',exact:true}).click();await editingSurface(page).waitFor({state:'hidden'});await settle();}
  async function submit(){await page.getByRole('button',{name:'Einreichen',exact:true}).click();await page.getByText('In Prüfung',{exact:true}).filter({visible:true}).first().waitFor();await settle();}
  async function screenshot(name,modal=false){await settle(page,modal);await page.waitForFunction(()=>Array.from(document.querySelectorAll('.sapMMessageToast')).every(e=>e.getClientRects().length===0));await page.screenshot({path:'test-results/'+name+'.png',fullPage:true});}
- await mkdir('test-results',{recursive:true});await login('ADMIN');await page.locator('[id$="--appCenterTitle"]').waitFor();await page.getByRole('button',{name:/^Lieferanten/}).click();await page.getByRole('button',{name:'Lieferant anlegen',exact:true}).click();
+ await mkdir('test-results',{recursive:true});await login('ADMIN');await enterAppCenter(page);await page.getByRole('button',{name:/^Lieferanten/}).click();await page.getByRole('button',{name:'Lieferant anlegen',exact:true}).click();
  for(const [name,value] of [['Lieferantenname','Netzwerk Ersatzteilhandel GmbH'],['E-Mail','einkauf@example.test'],['Straße','Lieferantenstraße 2'],['Postleitzahl','20095'],['Ort','Hamburg'],['Ländercode','DE'],['Zahlungsziel in Tagen','30']])await editingSurface(page).getByLabel(name,{exact:true}).fill(value);
  await save();const supplier=ok(await f.admin('/api/procurement/suppliers'),200)[0];await page.getByRole('row').filter({hasText:supplier.name}).getByText('Einreichen',{exact:true}).click();await page.getByText('In Prüfung',{exact:true}).filter({visible:true}).first().waitFor();await logout();await login('SUPPORT');await approve(supplier.number);
  await logout();await login('TECHNICIAN');await go('service-orders/'+f.order.id);await page.getByRole('tab',{name:'Material & Beschaffung',exact:true}).click();await page.getByRole('button',{name:'Teile bestellen',exact:true}).first().click();await save('Teile bestellen');

@@ -8,7 +8,7 @@
 sudo bash -c 'set -e; command -v curl >/dev/null || { apt-get update; apt-get install -y curl ca-certificates; }; t=$(mktemp); trap "rm -f -- \"$t\"" EXIT; curl -fsSL https://raw.githubusercontent.com/florians25/NetFusionIT-SYS-/main/scripts/install-ubuntu.sh -o "$t"; ERP_INSTALL_PROTOCOL=http bash "$t"'
 ```
 
-Aufruf anschließend unter `http://SERVER-IP:8070`. Dieser Modus ist für Testdaten im geschützten Testnetz bestimmt. Für HTTPS im selben Befehl `ERP_INSTALL_PROTOCOL=https` setzen. Die Wahl bleibt gespeichert; der Installer kann sie bei einem späteren Lauf ausdrücklich umstellen, ohne Mandant oder Passwörter zurückzusetzen. Der normale Installer ohne Protokollangabe übernimmt die gespeicherte Wahl und verwendet bei einer neuen Installation HTTPS.
+Aufruf anschließend unter `http://SERVER-IP:8070`. Dieser Modus ist für Testdaten im geschützten Testnetz bestimmt. Für HTTPS im selben Befehl `ERP_INSTALL_PROTOCOL=https` setzen. Die Wahl bleibt gespeichert; der Installer kann sie bei einem späteren Lauf ausdrücklich umstellen, ohne Mandant oder Passwörter zurückzusetzen. Der normale Installer übernimmt die gespeicherte Wahl. Bei einer neuen interaktiven Installation fragt er die Betriebsart ab (HTTP-Testsystem vorbelegt); ohne Terminal bleibt HTTPS der Standard.
 
 Der Bootstrap lädt das Skript zuerst vollständig in eine temporäre Datei; ein fehlgeschlagener Download wird nicht ausgeführt. Fehlendes Curl wird installiert. Der Installer ergänzt bei Bedarf Git, CA-Zertifikate, `flock` und das in den eingerichteten Paketquellen verfügbare Docker-Compose-v2-Plugin. Docker Compose ab2.20 und Zugriff auf den laufenden Docker-Dienst sind erforderlich.
 
@@ -21,7 +21,9 @@ Der Bootstrap lädt das Skript zuerst vollständig in eine temporäre Datei; ein
 5. Container mit erhaltenen Volumes neu anlegen, Migrationen ausführen und den vorhandenen Administrator erhalten. Keine Entwicklungskonten oder Demo-Belege anlegen. Bereits geänderte Passwörter werden nicht zurückgesetzt.
 6. Tatsächliche Readiness auf8070 im gewählten HTTP-/HTTPS-Modus prüfen; bei HTTPS das öffentliche Caddy-Stammzertifikat exportieren und verwenden. Fertige URL und Pfade im Terminal anzeigen.
 
-Nach dem ersten interaktiven Start stehen die **Erstzugangsdaten direkt im eigenen Terminal**. Bei umgeleiteter Ausgabe werden keine Passwörter in das Installationslog geschrieben. Zusätzlich liegen sie mit Modus0600 in `.local/initial-access.json`. Bei Updates werden sie nicht erneut angezeigt; die Datei dokumentiert weiterhin das ursprüngliche Erstpasswort. Ein später geändertes Passwort bleibt gültig.
+Der interaktive Erstassistent fragt Serveradresse/Betriebsart, Mandant, Firma sowie Vorname/Nachname/E-Mail der Administration ab; ein eigenes Passwort kann verdeckt festgelegt werden. Zugangsdaten werden ausschließlich in `.local/initial-access.json` mit Modus0600 gespeichert. Ein später geändertes Passwort bleibt bei Updates gültig; die Datei dokumentiert das Erstpasswort. `ERP_INSTALL_WIZARD=0` unterdrückt Fragen für automatisierte Abläufe, `=1` verlangt ein tatsächliches Terminal.
+
+Nach der ersten Administratoranmeldung folgt der native Unternehmensassistent: USt-IdNr., Steuernummer/Register/Geschäftsführung, Firmenanschrift und vollständiger Ansprechpartner, mehrere Werke/Lagerorte/erste Regale, Vertriebsbereich/Geschäftsbedingungen, Einkaufsorganisation/-gruppe, Konten/Buchungsperioden und Bankdaten. Vor dem gemeinsamen Speichern wird alles zur Prüfung angezeigt. Vorhandene Firmen werden nicht überschrieben; Bankdaten bleiben bis zur unabhängigen Freigabe Entwurf. [Vollständige Feldliste und Grenzen](requirements/initial-setup-internal-tickets.md).
 
 Das öffentliche `root.crt` wird als `.local/netfusion-root.crt` exportiert. Dieses Zertifikat auf den verwendeten Geräten/Browsern als vertrauenswürdig installieren. Der private CA-Schlüssel bleibt im geschützten Volume bzw. in der geschützten Sicherung. Port8070 muss zum Server erreichbar sein. Der erste Build lädt die festgelegten Node-/Java-/OpenUI5-Komponenten; auf Ubuntu selbst sind Node/npm/Java nicht erforderlich.
 
@@ -109,3 +111,8 @@ Migration034 und der mitgelieferte Runner erweitern vorhandene Vollgutschriften 
 ## Aktueller Prüfstand0.29
 
 HTTP-Testinstallation auf8070 mit echtem Clone/Pull, unverändertem Mandanten/geändertem Passwort, privater Sicherung, tatsächlichem Restore und Browseranmeldung über eine unverschlüsselte Testadresse geprüft. Die UUID-Erzeugung funktioniert dort auch außerhalb eines Secure Context. HTTPS mit Zertifikatsprüfung/Secure-Cookie und demselben Update-/Restoreablauf separat gegengeprüft. Der Installer setzt den internen Gateway-Port passend zum Protokoll; der äußere Port bleibt8070. [HTTP-/HTTPS-Nachweise und Screenshots](previews/v0.29.0-preview.1/README.md). Der echte vorgesehene Ubuntu-Zielserver bleibt separat abzunehmen.
+
+
+## Preview0.30: Erstassistent und interne Ticketqualifikation
+
+Der unveränderte Ein-Befehl-Installer baut0.30.0-preview.1. Der Terminalassistent und die native Unternehmens-Ersteinrichtung ergänzen Git-Pull, Sicherung und Update um die tatsächliche Erstkonfiguration. [Aktuelle Oberflächen und finale Nachweise](previews/v0.30.0-preview.1/README.md). Migrationen038–042 erweitern Korrekturen, Zahlungen, Berichtsvarianten, interne Ticketqualifikation und die Erstkonfiguration; ältere angewandte Migrationen bleiben unverändert.

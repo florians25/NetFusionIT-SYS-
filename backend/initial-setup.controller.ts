@@ -1,0 +1,3 @@
+import {Controller,Get,Post,Body,Req,UseGuards} from '@nestjs/common';import {AuthRequest,SessionGuard,csrf} from './auth';import {Permission} from './permissions';import {InitialSetup} from './initial-setup';
+@Controller('api/initial-setup')@UseGuards(SessionGuard)@Permission('admin.write')
+export class InitialSetupController{constructor(private setup:InitialSetup){}@Get('status')status(@Req()r:AuthRequest){return this.setup.status(r.user);}@Get()context(@Req()r:AuthRequest){return this.setup.context(r.user);}@Post()apply(@Req()r:AuthRequest,@Body()b:unknown){csrf(r);return this.setup.apply(r.user,b,r.get('Idempotency-Key'),r.correlationId);}}

@@ -1,3 +1,4 @@
+import {enterAppCenter} from './helpers/ui5-navigation.mjs';
 import {editingSurface} from './helpers/editing-surface.mjs';
 import {selectTicketTab} from './helpers/ui5-navigation.mjs';
 import {chromium} from 'playwright-core';
@@ -13,7 +14,7 @@ try{
  function observe(p){p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>{if(m.type()==='error')errors.push(m.text());});p.on('response',r=>{if(r.status()>=400)errors.push(r.status()+' '+new URL(r.url()).pathname);});}observe(page);
  async function settle(p=page){await p.waitForLoadState('networkidle');await p.waitForFunction(()=>!document.querySelector('.sapMNavItemFading,.sapMNavItemTransparent,.sapMNavItemSlideCenterToLeft,.sapMNavItemSlideRightToCenter,[aria-busy="true"]'));await p.locator('.sapUiBLy:visible').waitFor({state:'hidden'});}
  async function go(hash){const target=h.base+'/#'+hash;if(page.url()===target)await page.reload();else await page.goto(target);await settle();}
- async function login(role){await go('login');const a=h.accounts.find(a=>a.role===role);await page.getByRole('textbox',{name:'E-Mail-Adresse',exact:true}).fill(a.email);await page.getByRole('textbox',{name:'Passwort',exact:true}).fill(a.password);await page.getByRole('button',{name:'Anmelden',exact:true}).click();await page.locator('[id$="--appCenterTitle"]').waitFor();await settle();}
+ async function login(role){await go('login');const a=h.accounts.find(a=>a.role===role);await page.getByRole('textbox',{name:'E-Mail-Adresse',exact:true}).fill(a.email);await page.getByRole('textbox',{name:'Passwort',exact:true}).fill(a.password);await page.getByRole('button',{name:'Anmelden',exact:true}).click();await enterAppCenter(page);await settle();}
  async function logout(){await settle();const name=await page.evaluate(async()=>{const s=await (await fetch('/api/auth/session')).json();return s.user.name;});await page.getByTitle(name,{exact:true}).click();await page.getByRole('button',{name:'Abmelden',exact:true}).click();await page.getByRole('heading',{name:'Willkommen zurück',exact:true}).waitFor();}
  async function fill(name,value){await editingSurface(page).getByLabel(name,{exact:true}).fill(value);}
  async function save(name='Speichern'){const d=editingSurface(page).filter({has:page.getByRole('button',{name,exact:true})}),id=await d.getAttribute('id');await d.getByRole('button',{name,exact:true}).click();await page.locator('[id="'+id+'"]').waitFor({state:'hidden'});await settle();}

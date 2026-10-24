@@ -34,7 +34,9 @@ async function initialize(){
   if(config){
     for(const key of Object.keys(requested).filter(k=>k!=='protocol'))if(config[key]!==requested[key])throw new Error('Bestehende Installation verwendet andere Einstellungen ('+key+'). Vorhandene Daten und Zugangsdaten werden nicht überschrieben.');
   }else{
-    config={schema:1,...requested,origin:requested.protocol+'://'+requested.host+':8070',postgresPassword:randomBytes(32).toString('hex'),applicationPassword:randomBytes(32).toString('hex'),sessionSecret:randomBytes(48).toString('hex'),password:randomBytes(24).toString('base64url')};
+    let password=randomBytes(24).toString('base64url');
+    if(process.env.ERP_BOOTSTRAP_PASSWORD_FILE){if(process.env.ERP_BOOTSTRAP_PASSWORD_FILE!=='/run/netfusion-bootstrap-password')throw new Error('Ungültige Passwortdatei.');password=await readFile(process.env.ERP_BOOTSTRAP_PASSWORD_FILE,'utf8');if(password.length<20||password.length>128||/[\r\n]/.test(password))throw new Error('Initiales Passwort benötigt20 bis128 Zeichen ohne Zeilenumbruch.');}
+    config={schema:1,...requested,origin:requested.protocol+'://'+requested.host+':8070',postgresPassword:randomBytes(32).toString('hex'),applicationPassword:randomBytes(32).toString('hex'),sessionSecret:randomBytes(48).toString('hex'),password};
     await owned(state+'/configuration.json',JSON.stringify(config)+'\n');
   }
   if(config.schema!==1)throw new Error('Nicht unterstützter Installationsstand.');

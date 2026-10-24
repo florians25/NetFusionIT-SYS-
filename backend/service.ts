@@ -1,3 +1,4 @@
+import {saveTicketIntakeWithin} from './ticket-intake';import {intakePriority} from './ticket-intake-schema';
 import { Injectable, NotFoundException, ConflictException, ForbiddenException } from '@nestjs/common';
 import { PoolClient } from 'pg';
 import { randomUUID } from 'node:crypto';
@@ -19,12 +20,13 @@ export class Service {
     parse(uuid,id);
     return this.db.as(u,async db=>{
       const ticket=await this.ticket(db,u,id);
-      const events=await db.query("SELECT a.id,a.action,a.details,a.created_at AS \"createdAt\",u.name AS \"actorName\" FROM audit_events a JOIN users u ON u.tenant_id=a.tenant_id AND u.id=a.actor_id WHERE a.tenant_id=$1 AND a.document_id=$2 AND ($3::boolean OR (NOT(a.action='COMMENT_ADDED' AND a.details->>'visibility'='INTERNAL') AND a.action !~ '^(TIME_|TIMER_|TICKET_CHARGE_|TICKET_WORK_|WORK_ORDER_TASK_)')) ORDER BY a.created_at,a.id",[u.tenantId,id,u.role!=='CUSTOMER']);
+      const events=await db.query("SELECT a.id,a.action,a.details,a.created_at AS \"createdAt\",u.name AS \"actorName\" FROM audit_events a JOIN users u ON u.tenant_id=a.tenant_id AND u.id=a.actor_id WHERE a.tenant_id=$1 AND a.document_id=$2 AND ($3::boolean OR (NOT(a.action='COMMENT_ADDED' AND a.details->>'visibility'='INTERNAL') AND a.action !~ '^(TIME_|TIMER_|TICKET_CHARGE_|TICKET_WORK_|TICKET_INTAKE_|WORK_ORDER_TASK_)')) ORDER BY a.created_at,a.id",[u.tenantId,id,u.role!=='CUSTOMER']);
       return {...ticket,allowedTransitions:allowedTransitions(u.role,ticket.status),events:events.rows};
     });
   }
   async create(u:Principal,raw:unknown,key:unknown,correlation:string){
     const input=parse(ticketInput,raw);
+    if(u.role==='CUSTOMER'&&(input.intake||input.assetIds))throw new ForbiddenException('Interne Ticketqualifikation.');
     if(u.role==='CUSTOMER'&&input.partnerId&&input.partnerId!==u.partnerId)throw new ForbiddenException('Fremder Kundenbezug.');
     const partnerId=u.role==='CUSTOMER'?u.partnerId:input.partnerId;
     if(!partnerId)throw new ConflictException('Kundenbezug erforderlich.');
@@ -35,7 +37,7 @@ export class Service {
       const number=await nextNumber(db,u.tenantId,'TCK'),caseNumber=await nextNumber(db,u.tenantId,'SVC');
       for(const [id,num,kind] of [[ticketId,number,'TICKET'],[caseId,caseNumber,'SERVICE_CASE']])await db.query('INSERT INTO documents(id,tenant_id,organization_id,number,kind,created_by) VALUES($1,$2,$3,$4,$5,$6)',[id,u.tenantId,org,num,kind,u.id]);
       await db.query('INSERT INTO service_cases(id,tenant_id,partner_id,title) VALUES($1,$2,$3,$4)',[caseId,u.tenantId,partnerId,input.title]);
-      await db.query('INSERT INTO tickets(id,tenant_id,partner_id,case_id,title,description,type,priority,source,correlation_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)',[ticketId,u.tenantId,partnerId,caseId,input.title,input.description,input.type,input.priority,u.role==='CUSTOMER'?'CUSTOMER_PORTAL':'INTERNAL',correlation]);
+      await db.query('INSERT INTO tickets(id,tenant_id,partner_id,case_id,title,description,type,priority,source,correlation_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)',[ticketId,u.tenantId,partnerId,caseId,input.title,input.description,input.type,input.intake?intakePriority(input.intake):input.priority,u.role==='CUSTOMER'?'CUSTOMER_PORTAL':'INTERNAL',correlation]);
       await db.query("INSERT INTO document_relations(id,tenant_id,source_id,target_id,kind) VALUES($1,$2,$3,$4,'BELONGS_TO')",[randomUUID(),u.tenantId,ticketId,caseId]);
       if(input.contractId){
         const started=(await db.query('SELECT created_at FROM documents WHERE tenant_id=$1 AND id=$2',[u.tenantId,ticketId])).rows[0].created_at;
@@ -48,6 +50,7 @@ export class Service {
         if(!object.rowCount)throw new NotFoundException('Aktives technisches Objekt dieses Kunden fehlt.');
         await db.query('INSERT INTO case_objects VALUES($1,$2,$3)',[u.tenantId,caseId,input.technicalObjectId]);await relate(db,u,caseId,input.technicalObjectId,'AFFECTS');
       }
+      if(input.intake||input.assetIds||input.technicalObjectId)await saveTicketIntakeWithin(db,u,ticketId,input.intake,[...new Set([...(input.assetIds||[]),...(input.technicalObjectId?[input.technicalObjectId]:[])])]);
       await audit(db,u,correlation,'TICKET_CREATED',ticketId,{caseId,source:u.role==='CUSTOMER'?'CUSTOMER_PORTAL':'INTERNAL'});
       await audit(db,u,correlation,'SERVICE_CASE_CREATED',caseId,{ticketId});
       return {id:ticketId,number,caseId,caseNumber,correlationId:correlation,version:1};
