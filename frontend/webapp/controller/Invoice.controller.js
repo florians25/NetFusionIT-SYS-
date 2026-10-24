@@ -2,6 +2,7 @@ sap.ui.define(['netfusion/erp/controller/Base.controller','sap/m/library','netfu
  'use strict';return Base.extend('netfusion.erp.controller.Invoice',{
   onInit:function(){this.model({invoice:{snapshot:{items:[],taxes:[],seller:{},buyer:{}}}});this.getOwnerComponent().getRouter().getRoute('invoice').attachPatternMatched(function(e){this.id=e.getParameter('arguments').id;this.load();},this);},
   load:async function(){if(!await this.guard('billingRead'))return;return this.run(async function(){var id=this.id,userId=this.state('/user/id'),r=await Promise.all([this.api('/api/billing/invoices/'+id),this.api('/api/documents/'+id+'/flow')]);if(this.id!==id||this.state('/user/id')!==userId)return;this.vm().setData({invoice:r[0],flow:this.documentFlow(r[1],r[0],'INVOICE')});});},
+  onCreateQuantityCredit:function(){return creditPreparation(this,true);},
   onCreateSelectedCredit:function(){creditPreparation(this);},
   onCreditRow:function(e){var id=e.getSource().getBindingContext('view').getProperty('id');this.route('customerCredit',{id:id});},
   onCreditRowPdf:function(e){var id=e.getSource().getBindingContext('view').getProperty('id');mobileLibrary.URLHelper.redirect('/api/customer-credits/'+id+'/pdf',true);},

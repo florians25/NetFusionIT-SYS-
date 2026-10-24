@@ -37,8 +37,9 @@ const eventsSql=`WITH original AS (
  FROM original o
  UNION ALL
  SELECT cm.id,d.number,'CREDIT_NOTE','CREDIT_NOTE',o.line_id,o.position,cm.posting_date,cm.document_date,o.invoice_id,o.number,coalesce(o.sales_order_id,o.order_id),o.snapshot->>'orderNumber',CASE WHEN o.sales_order_id IS NULL THEN 'SERVICE' ELSE 'DIRECT_SALES' END,
- o.partner_id,o.snapshot->'buyer'->>'name',o.product_id,o.sales_area_id,o.line_snapshot->>'sku',o.line_snapshot->>'description',-o.quantity,o.line_snapshot->>'unit',-o.net,-o.line_tax,-o.billed_cost,0::numeric
+ o.partner_id,o.snapshot->'buyer'->>'name',o.product_id,o.sales_area_id,o.line_snapshot->>'sku',o.line_snapshot->>'description',-CASE WHEN cm.correction_mode='QUANTITY' THEN (qa.a->>'quantity')::numeric ELSE o.quantity END,o.line_snapshot->>'unit',-CASE WHEN cm.correction_mode='QUANTITY' THEN (qa.a->>'net')::numeric ELSE o.net END,-CASE WHEN cm.correction_mode='QUANTITY' THEN (qa.a->>'tax')::numeric ELSE o.line_tax END,-CASE WHEN cm.correction_mode='QUANTITY' THEN round(o.billed_cost*((qa.a->>'priorQuantity')::numeric+(qa.a->>'quantity')::numeric)/o.quantity,2)-round(o.billed_cost*(qa.a->>'priorQuantity')::numeric/o.quantity,2) ELSE o.billed_cost END,0::numeric
  FROM original o JOIN customer_credit_memos cm ON cm.tenant_id=$1 AND cm.invoice_id=o.invoice_id AND cm.sealed JOIN documents d ON d.tenant_id=cm.tenant_id AND d.id=cm.id
+ LEFT JOIN LATERAL(SELECT a FROM jsonb_array_elements(cm.prepared_snapshot->'selection'->'allocations') a WHERE a->>'invoiceItemId'=o.line_id::text) qa ON true
  WHERE cm.correction_mode='FULL' OR EXISTS(SELECT 1 FROM customer_credit_lines cl WHERE cl.tenant_id=cm.tenant_id AND cl.credit_id=cm.id AND cl.invoice_item_id=o.line_id)
  UNION ALL
  SELECT g.id,d.number,'GOODS_ISSUE',CASE g.movement_type WHEN 'ISSUE' THEN 'STOCK_ISSUE' ELSE 'STOCK_RETURN' END,gi.id,gi.position,g.posting_date,g.document_date,NULL::uuid,NULL::text,h.id,od.number,'DIRECT_SALES',h.partner_id,
@@ -47,6 +48,10 @@ const eventsSql=`WITH original AS (
  FROM goods_issues g JOIN documents d ON d.tenant_id=g.tenant_id AND d.id=g.id JOIN goods_issue_items gi ON gi.tenant_id=g.tenant_id AND gi.issue_id=g.id JOIN sales_orders h ON h.tenant_id=g.tenant_id AND h.id=g.sales_order_id
  JOIN documents od ON od.tenant_id=h.tenant_id AND od.id=h.id JOIN sales_order_items si ON si.tenant_id=gi.tenant_id AND si.id=gi.sales_item_id
  WHERE g.tenant_id=$1 AND g.company_id=$2 AND d.organization_id=ANY($3::uuid[]) AND g.sealed AND $8::boolean
+ UNION ALL
+ SELECT rr.id,d.number,'CUSTOMER_RETURN_RECEIPT',CASE rr.movement_type WHEN 'RECEIPT' THEN 'STOCK_RETURN' ELSE 'STOCK_ISSUE' END,ri.id,gi.position,rr.posting_date,rr.document_date,NULL::uuid,NULL::text,so.id,od.number,'DIRECT_SALES',so.partner_id,so.released_snapshot->'commercial'->'header'->>'partnerName',gi.product_id,so.sales_area_id,si.price_snapshot->'product'->>'sku',si.description,CASE rr.movement_type WHEN 'RECEIPT' THEN -ri.quantity ELSE ri.quantity END,si.unit,0::numeric,0::numeric,0::numeric,CASE rr.movement_type WHEN 'RECEIPT' THEN -ri.value ELSE ri.value END
+ FROM customer_return_receipts rr JOIN documents d ON d.tenant_id=rr.tenant_id AND d.id=rr.id JOIN customer_return_receipt_items ri ON ri.tenant_id=rr.tenant_id AND ri.receipt_id=rr.id JOIN customer_returns rt ON rt.tenant_id=rr.tenant_id AND rt.id=rr.return_id JOIN customer_return_lines rl ON rl.tenant_id=ri.tenant_id AND rl.id=ri.return_line_id JOIN goods_issue_items gi ON gi.tenant_id=rl.tenant_id AND gi.id=rl.issue_item_id JOIN sales_orders so ON so.tenant_id=rt.tenant_id AND so.id=rt.sales_order_id JOIN documents od ON od.tenant_id=so.tenant_id AND od.id=so.id JOIN sales_order_items si ON si.tenant_id=gi.tenant_id AND si.id=gi.sales_item_id
+ WHERE rr.tenant_id=$1 AND rr.company_id=$2 AND rr.sealed AND d.organization_id=ANY($3::uuid[]) AND $8::boolean
 ),filtered AS (
  SELECT * FROM events WHERE posting_date BETWEEN $4::date AND $5::date AND ($6::uuid IS NULL OR partner_id=$6) AND ($7::uuid IS NULL OR product_id=$7) AND ($9::text='ALL' OR process=$9) AND ($10::uuid IS NULL OR sales_area_id=$10) AND ($11::uuid IS NULL OR order_id=$11)
 )`;

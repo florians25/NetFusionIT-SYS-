@@ -7,17 +7,18 @@ import {document,createDocument,version,relate} from './business';
 import {companyWithin,periodWithin,automaticJournal} from './finance';
 import {documentContact} from './document-settings';
 import {can,requirePermission} from './permissions';
+import {quantity} from './pricing';
 import {InvoiceData,createValidatedEInvoice,EInvoiceBusyError} from './einvoice';
 
 const preparation=z.object({version:z.number().int().positive(),periodId:uuid,postingDate:z.iso.date(),documentDate:z.iso.date(),reason:z.string().trim().min(15).max(2000)}).strict();
-const creation=preparation.extend({invoiceItemIds:z.array(uuid).min(1).max(200).optional()}).strict();
+const creation=preparation.extend({invoiceItemIds:z.array(uuid).min(1).max(200).optional(),items:z.array(z.object({invoiceItemId:uuid,quantity}).strict()).min(1).max(200).optional()}).strict().refine(i=>!(i.items&&i.invoiceItemIds),'Nur eine Auswahlart übergeben.');
 const hash=(v:string|Buffer)=>createHash('sha256').update(v).digest('hex');
 export async function lockCustomerCredit(db:PoolClient,u:Principal,id:string){
  const h=(await db.query('SELECT company_id FROM customer_credit_memos WHERE tenant_id=$1 AND id=$2',[u.tenantId,id])).rows[0];
  if(h)await companyWithin(db,u,h.company_id,true);
 }
 async function credit(db:PoolClient,u:Principal,id:string,lock=false){
- const d=await document(db,u,id,lock),h=(await db.query(`SELECT *,posting_date::text AS posting_day,document_date::text AS document_day,(SELECT array_agg(l.invoice_item_id ORDER BY ii.position) FROM customer_credit_lines l JOIN invoice_items ii ON ii.tenant_id=l.tenant_id AND ii.id=l.invoice_item_id WHERE l.tenant_id=customer_credit_memos.tenant_id AND l.credit_id=customer_credit_memos.id) AS line_ids FROM customer_credit_memos WHERE tenant_id=$1 AND id=$2${lock?' FOR UPDATE':''}`,[u.tenantId,id])).rows[0];
+ const d=await document(db,u,id,lock),h=(await db.query(`SELECT *,posting_date::text AS posting_day,document_date::text AS document_day,(SELECT array_agg(l.invoice_item_id ORDER BY ii.position) FROM customer_credit_lines l JOIN invoice_items ii ON ii.tenant_id=l.tenant_id AND ii.id=l.invoice_item_id WHERE l.tenant_id=customer_credit_memos.tenant_id AND l.credit_id=customer_credit_memos.id) AS line_ids,(SELECT jsonb_agg(jsonb_build_object('invoiceItemId',l.invoice_item_id,'quantity',l.quantity::text) ORDER BY ii.position) FROM customer_credit_lines l JOIN invoice_items ii ON ii.tenant_id=l.tenant_id AND ii.id=l.invoice_item_id WHERE l.tenant_id=customer_credit_memos.tenant_id AND l.credit_id=customer_credit_memos.id) AS quantity_choices FROM customer_credit_memos WHERE tenant_id=$1 AND id=$2${lock?' FOR UPDATE':''}`,[u.tenantId,id])).rows[0];
  if(!h)throw new NotFoundException('Gutschrift fehlt.');return {...h,number:d.number,created_by:d.created_by};
 }
 async function source(db:PoolClient,u:Principal,id:string){
@@ -38,7 +39,10 @@ async function plan(db:PoolClient,u:Principal,h:any){
  // configured full contact is captured once on preparation, never guessed.
  const contact=h.prepared_snapshot?.creditData?.seller?.contact||await documentContact(db,u,i.company_id);
  let selection:any=null;
- if(h.correction_mode==='POSITIONS'){
+ if(h.correction_mode==='QUANTITY'){
+  try{selection=(await db.query('SELECT customer_credit_quantity_selection($1,$2,$3,$4::jsonb) AS value',[u.tenantId,i.id,h.id,JSON.stringify(h.quantity_choices)])).rows[0].value;}catch(e){if((e as any).code==='P0001')throw new ConflictException((e as Error).message);throw e;}
+ }else if(h.correction_mode==='POSITIONS'){
+  if((await db.query("SELECT 1 FROM customer_credit_memos WHERE tenant_id=$1 AND invoice_id=$2 AND correction_mode='QUANTITY' AND status<>'CANCELLED' AND id<>$3",[u.tenantId,i.id,h.id])).rowCount)throw new ConflictException('Nach Teilmengenkorrektur die verbliebenen Mengen über Teilmengen gutschreiben.');
   if((await db.query("SELECT 1 FROM customer_credit_lines l JOIN customer_credit_memos c ON c.tenant_id=l.tenant_id AND c.id=l.credit_id WHERE l.tenant_id=$1 AND l.invoice_item_id=ANY($2::uuid[]) AND c.id<>$3 AND c.status<>'CANCELLED'",[u.tenantId,h.line_ids,h.id])).rowCount)throw new ConflictException('Eine ausgewählte Originalposition ist bereits in einer anderen Gutschrift gebunden.');
   try{selection=(await db.query('SELECT customer_credit_selection($1,$2,$3::uuid[]) AS value',[u.tenantId,i.id,h.line_ids])).rows[0].value;}catch(e){if((e as any).code==='P0001')throw new ConflictException((e as Error).message);throw e;}
  }
@@ -62,9 +66,10 @@ export class CustomerCredits{
   requirePermission(u.role,'billing.credit.write');parse(uuid,id);const input=parse(creation,raw);
   return this.db.as(u,db=>idempotent(db,u,'CUSTOMER_CREDIT_CREATE:'+id,key,input,async()=>{
    const initial=await source(db,u,id);await companyWithin(db,u,initial.company_id,true);await document(db,u,id,true);const i=await source(db,u,id);version(i.version,input.version);
-   if((await db.query("SELECT 1 FROM customer_credit_memos WHERE tenant_id=$1 AND invoice_id=$2 AND status<>'CANCELLED' AND ($3::boolean OR correction_mode='FULL' OR status<>'POSTED')",[u.tenantId,id,!input.invoiceItemIds])).rowCount)throw new ConflictException('Aktive oder vollständige Gutschrift besteht bereits; vorhandenen Vorgang bearbeiten oder zuerst abschließen.');
-   const c=await companyWithin(db,u,i.company_id),d=await createDocument(db,u,'CREDIT_NOTE','GU',c.organization_id),h={...d,correction_mode:input.invoiceItemIds?'POSITIONS':'FULL',line_ids:input.invoiceItemIds,invoice_id:id,period_id:input.periodId,posting_day:input.postingDate,document_day:input.documentDate,reason:input.reason,prepared_by:u.id,prepared_at:new Date()},p=await plan(db,u,h);
+   if((await db.query("SELECT 1 FROM customer_credit_memos WHERE tenant_id=$1 AND invoice_id=$2 AND status<>'CANCELLED' AND ($3::boolean OR correction_mode='FULL' OR status<>'POSTED')",[u.tenantId,id,!input.invoiceItemIds&&!input.items])).rowCount)throw new ConflictException('Aktive oder vollständige Gutschrift besteht bereits; vorhandenen Vorgang bearbeiten oder zuerst abschließen.');
+   const c=await companyWithin(db,u,i.company_id),d=await createDocument(db,u,'CREDIT_NOTE','GU',c.organization_id),h={...d,correction_mode:input.items?'QUANTITY':input.invoiceItemIds?'POSITIONS':'FULL',line_ids:input.invoiceItemIds,quantity_choices:input.items,invoice_id:id,period_id:input.periodId,posting_day:input.postingDate,document_day:input.documentDate,reason:input.reason,prepared_by:u.id,prepared_at:new Date()},p=await plan(db,u,h);
    await db.query('INSERT INTO customer_credit_memos(id,tenant_id,invoice_id,company_id,period_id,posting_date,document_date,reason,prepared_by,prepared_at,prepared_snapshot,correction_mode) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)',[d.id,u.tenantId,id,i.company_id,input.periodId,input.postingDate,input.documentDate,input.reason,u.id,h.prepared_at,JSON.stringify(p.snapshot),h.correction_mode]);
+   for(const line of input.items||[])await db.query('INSERT INTO customer_credit_lines(tenant_id,credit_id,invoice_item_id,quantity) VALUES($1,$2,$3,$4)',[u.tenantId,d.id,line.invoiceItemId,line.quantity]);
    for(const lineId of input.invoiceItemIds||[])await db.query('INSERT INTO customer_credit_lines(tenant_id,credit_id,invoice_item_id) VALUES($1,$2,$3)',[u.tenantId,d.id,lineId]);
    await relate(db,u,id,d.id,'CREDIT_REQUEST');await relate(db,u,i.sales_order_id,d.id,'CUSTOMER_CREDIT');await audit(db,u,corr,'CUSTOMER_CREDIT_CREATED',d.id,{invoiceId:id,reason:input.reason});return {...d,status:'DRAFT',version:1};
   }));
@@ -102,7 +107,7 @@ export class CustomerCredits{
    const reviewer=(await db.query('SELECT role,name,active FROM users WHERE tenant_id=$1 AND id=$2 FOR SHARE',[u.tenantId,h.reviewed_by])).rows[0];if(!reviewer?.active||!['ADMIN','ACCOUNTANT'].includes(reviewer.role)||(await db.query('SELECT 1 FROM user_organizations WHERE tenant_id=$1 AND user_id=$2 AND organization_id=(SELECT organization_id FROM documents WHERE tenant_id=$1 AND id=$3)',[u.tenantId,h.reviewed_by,id])).rowCount===0)throw new ConflictException('Finanzfreigabeverantwortung hat sich geändert.');
    const p=await validateCustomerCredit(db,u,id),lines=(p.snapshot.selection?.lines||p.i.lines).map(({position,code,name,...l}:any)=>({...l,side:l.side==='DEBIT'?'CREDIT':'DEBIT'}));
    const journal=await automaticJournal(db,u,{companyId:h.company_id,periodId:h.period_id,postingDate:h.posting_day,documentDate:h.document_day,description:'Gutschrift '+h.number+' zu '+p.i.number,reference:p.i.number,lines},id,corr,h.correction_mode==='FULL'?{id:p.i.journal.id,reason:h.reason}:undefined);
-   if(h.correction_mode==='POSITIONS')await relate(db,u,p.i.journal.id,journal.id,'CORRECTED_BY');
+   if(h.correction_mode!=='FULL')await relate(db,u,p.i.journal.id,journal.id,'CORRECTED_BY');
    await db.query('INSERT INTO customer_credit_open_items(credit_id,tenant_id,invoice_id,company_id,partner_id,account_id,currency,amount) VALUES($1,$2,$3,$4,$5,$6,$7,$8)',[id,u.tenantId,h.invoice_id,h.company_id,p.i.partner_id,p.i.openItem.account_id,p.i.currency,p.snapshot.gross]);
    const snapshot={...p.snapshot,review:{actorId:h.reviewed_by,name:reviewer.name,note:h.review_note,at:new Date(h.reviewed_at).toISOString()}};
    await db.query("UPDATE customer_credit_memos SET status='POSTED',journal_id=$3,snapshot=$4,sealed=true,posted_at=now(),version=version+1 WHERE tenant_id=$1 AND id=$2",[u.tenantId,id,journal.id,JSON.stringify(snapshot)]);
@@ -113,7 +118,7 @@ export class CustomerCredits{
  async selection(u:Principal,id:string){
   requirePermission(u.role,'billing.credit.write');parse(uuid,id);return this.db.as(u,async db=>{
    const i=await source(db,u,id);await companyWithin(db,u,i.company_id);
-   const items=(await db.query(`SELECT ii.id,ii.position,ii.quantity::text,ii.net::text,ii.tax_rate::text AS "taxRate",(SELECT jsonb_build_object('id',h.id,'number',d.number,'status',h.status) FROM customer_credit_memos h JOIN documents d ON d.tenant_id=h.tenant_id AND d.id=h.id WHERE h.tenant_id=ii.tenant_id AND h.invoice_id=ii.invoice_id AND h.status<>'CANCELLED' AND (h.correction_mode='FULL' OR EXISTS(SELECT 1 FROM customer_credit_lines l WHERE l.tenant_id=h.tenant_id AND l.credit_id=h.id AND l.invoice_item_id=ii.id)) LIMIT 1) AS claim FROM invoice_items ii WHERE ii.tenant_id=$1 AND ii.invoice_id=$2 ORDER BY ii.position`,[u.tenantId,id])).rows.map(l=>({...i.snapshot.items.find((x:any)=>x.position===l.position),...l,selected:false,available:!l.claim}));
+   const items=(await db.query(`SELECT ii.id,ii.position,ii.quantity::text,ii.net::text,ii.tax_rate::text AS "taxRate",(SELECT quantity::text FROM customer_credit_amounts(ii.tenant_id,ii.id)) AS "creditedQuantity",(ii.quantity-(SELECT quantity FROM customer_credit_amounts(ii.tenant_id,ii.id)))::text AS "remainingQuantity",(SELECT jsonb_build_object('id',h.id,'number',d.number,'status',h.status) FROM customer_credit_memos h JOIN documents d ON d.tenant_id=h.tenant_id AND d.id=h.id WHERE h.tenant_id=ii.tenant_id AND h.invoice_id=ii.invoice_id AND h.status<>'CANCELLED' AND (h.correction_mode='FULL' OR EXISTS(SELECT 1 FROM customer_credit_lines l WHERE l.tenant_id=h.tenant_id AND l.credit_id=h.id AND l.invoice_item_id=ii.id)) LIMIT 1) AS claim FROM invoice_items ii WHERE ii.tenant_id=$1 AND ii.invoice_id=$2 ORDER BY ii.position`,[u.tenantId,id])).rows.map(l=>({...i.snapshot.items.find((x:any)=>x.position===l.position),...l,selected:false,available:!l.claim,quantityAvailable:Number(l.remainingQuantity)>0&&(!l.claim||l.claim.status==='POSTED')}));
    return {invoiceId:id,number:i.number,version:i.version,currency:i.currency,items,periods:(await db.query("SELECT id,year,period FROM fiscal_periods WHERE tenant_id=$1 AND company_id=$2 AND status='OPEN' ORDER BY date_from",[u.tenantId,i.company_id])).rows};
   });
  }

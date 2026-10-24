@@ -19,6 +19,7 @@ export function visibleDocuments(u:Principal){
   clauses.push(`(d.kind='SALES_ORDER' AND d.id IN(SELECT h.id FROM sales_orders h WHERE h.tenant_id=$1 AND h.execution_mode='DIRECT_SALES' AND h.status='RELEASED'${own}))`);
   clauses.push(`(d.kind='GOODS_ISSUE' AND d.id IN(SELECT g.id FROM goods_issues g JOIN sales_orders h ON h.tenant_id=g.tenant_id AND h.id=g.sales_order_id WHERE g.tenant_id=$1 AND g.sealed AND h.status='RELEASED'${own}))`);
  }
+ if(can(u.role,'sales.return.read'))clauses.push("d.kind IN('CUSTOMER_RETURN','CUSTOMER_RETURN_RECEIPT')");
  if(can(u.role,'sales.procurement.read')){
   clauses.push(`(d.kind='SALES_ORDER' AND d.id IN(SELECT h.id FROM sales_orders h WHERE h.tenant_id=$1 AND h.execution_mode='DIRECT_SALES' AND h.status='RELEASED'))`);
   clauses.push(`(d.kind IN ('MATERIAL_REQUIREMENT','REQUISITION','PURCHASE_ORDER') AND d.id IN(SELECT id FROM order_requirements WHERE tenant_id=$1 AND sales_order_id IS NOT NULL UNION ALL SELECT id FROM purchase_requisitions WHERE tenant_id=$1 AND sales_order_id IS NOT NULL UNION ALL SELECT id FROM purchase_orders WHERE tenant_id=$1 AND sales_order_id IS NOT NULL))`);
