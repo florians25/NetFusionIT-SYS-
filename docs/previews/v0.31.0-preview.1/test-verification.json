@@ -1,0 +1,40 @@
+{
+  "fullSuite": {
+    "tests": 474,
+    "passed": 474,
+    "failed": 0,
+    "sourceLogSha256": "5fbceec1921d1a6eb8081e7da1b35952064467387a9dae4b1454219158eeec04"
+  },
+  "finalAffectedChecks": [
+    {
+      "tests": 20,
+      "passed": 20,
+      "scope": "Service/CRM/asset visit isolation and six operational reports"
+    },
+    {
+      "tests": 6,
+      "passed": 6,
+      "scope": "Supplier payment controls, partial payment, exact reversal, concurrency, original protection and PDF"
+    },
+    {
+      "tests": 7,
+      "passed": 7,
+      "scope": "Six operational reports plus actual purchase-order draft → independent review → release reporting regression"
+    },
+    {
+      "tests": 17,
+      "passed": 17,
+      "scope": "Payment PDFs with full justification text, customer/supplier settlement and shared business-PDF geometry"
+    }
+  ],
+  "browserBusinessSuites": 38,
+  "applicationCatalog": {
+    "applications": 48,
+    "checks": 96,
+    "errors": 0
+  },
+  "nativeOpenUI5": "1.152.1",
+  "actualPostgreSQL": "18.4",
+  "migrations": 46,
+  "note": "The full suite passed 474 tests. Later visit-isolation and purchase-draft regression cases and the payment-PDF correction were verified by the listed affected reruns; no second full-run count is asserted."
+}

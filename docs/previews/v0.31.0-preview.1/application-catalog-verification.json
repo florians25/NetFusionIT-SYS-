@@ -1,0 +1,684 @@
+{
+  "actualApiFixture": true,
+  "role": "ADMIN",
+  "desktopWidth": 1920,
+  "mobileViewportWidth": 390,
+  "scope": "Every parameter-free application route, native controls. Browser viewport check, not physical mobile acceptance. Parameterized document workflows are covered by the separate business browser suite.",
+  "routeCount": 48,
+  "checks": 96,
+  "results": [
+    {
+      "route": "servicePlaybooks",
+      "target": "ServiceLibrary",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "serviceKnowledge",
+      "target": "ServiceLibrary",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "salesProcurements",
+      "target": "SalesProcurements",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "salesFulfillments",
+      "target": "SalesFulfillments",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "cockpit",
+      "target": "TicketDashboard",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "home",
+      "target": "Home",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 0
+    },
+    {
+      "route": "tickets",
+      "target": "Tickets",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "newTicket",
+      "target": "NewTicket",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "cases",
+      "target": "Cases",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "dispatch",
+      "target": "Dispatch",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "partners",
+      "target": "Partners",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "admin",
+      "target": "Admin",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "roadmap",
+      "target": "Roadmap",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 0
+    },
+    {
+      "route": "workflow",
+      "target": "Workflow",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 2
+    },
+    {
+      "route": "planning",
+      "target": "Planning",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 2
+    },
+    {
+      "route": "serviceMaster",
+      "target": "ServiceMaster",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "serviceSetup",
+      "target": "ServiceSetup",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 2
+    },
+    {
+      "route": "catalog",
+      "target": "Catalog",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "pricing",
+      "target": "Pricing",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "orders",
+      "target": "Orders",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "finance",
+      "target": "Finance",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "suppliers",
+      "target": "Suppliers",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "purchasingSetup",
+      "target": "PurchasingSetup",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 5
+    },
+    {
+      "route": "inventory",
+      "target": "inventory",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "billing",
+      "target": "Billing",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "incomingInvoices",
+      "target": "IncomingInvoices",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "warehouse",
+      "target": "Warehouse",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "inventoryCounts",
+      "target": "InventoryCounts",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "salesOrders",
+      "target": "SalesOrders",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "salesSetup",
+      "target": "SalesSetup",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "quotes",
+      "target": "Quotes",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "estimates",
+      "target": "Quotes",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "documentSettings",
+      "target": "documentSettings",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "customerCredits",
+      "target": "CustomerCredits",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "salesReporting",
+      "target": "SalesReporting",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "customerReturns",
+      "target": "CustomerReturns",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "customerSettlements",
+      "target": "CustomerSettlements",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "orderReport",
+      "target": "OperationalReport",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 0
+    },
+    {
+      "route": "pipelineReport",
+      "target": "OperationalReport",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 0
+    },
+    {
+      "route": "agingReport",
+      "target": "OperationalReport",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "initialSetup",
+      "target": "InitialSetup",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 0
+    },
+    {
+      "route": "supplierPayments",
+      "target": "SupplierSettlements",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "purchasingReport",
+      "target": "EnterpriseReport",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "deliveryReliabilityReport",
+      "target": "EnterpriseReport",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "stockReport",
+      "target": "EnterpriseReport",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "movementReport",
+      "target": "EnterpriseReport",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "ticketSlaReport",
+      "target": "EnterpriseReport",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "serviceTimeReport",
+      "target": "EnterpriseReport",
+      "width": 1920,
+      "bodyWidth": 1920,
+      "nativeTables": 1
+    },
+    {
+      "route": "servicePlaybooks",
+      "target": "ServiceLibrary",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "serviceKnowledge",
+      "target": "ServiceLibrary",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "salesProcurements",
+      "target": "SalesProcurements",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "salesFulfillments",
+      "target": "SalesFulfillments",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "cockpit",
+      "target": "TicketDashboard",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "home",
+      "target": "Home",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 0
+    },
+    {
+      "route": "tickets",
+      "target": "Tickets",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "newTicket",
+      "target": "NewTicket",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "cases",
+      "target": "Cases",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "dispatch",
+      "target": "Dispatch",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "partners",
+      "target": "Partners",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "admin",
+      "target": "Admin",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "roadmap",
+      "target": "Roadmap",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 0
+    },
+    {
+      "route": "workflow",
+      "target": "Workflow",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 2
+    },
+    {
+      "route": "planning",
+      "target": "Planning",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 2
+    },
+    {
+      "route": "serviceMaster",
+      "target": "ServiceMaster",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "serviceSetup",
+      "target": "ServiceSetup",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 2
+    },
+    {
+      "route": "catalog",
+      "target": "Catalog",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "pricing",
+      "target": "Pricing",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "orders",
+      "target": "Orders",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "finance",
+      "target": "Finance",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "suppliers",
+      "target": "Suppliers",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "purchasingSetup",
+      "target": "PurchasingSetup",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 5
+    },
+    {
+      "route": "inventory",
+      "target": "inventory",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "billing",
+      "target": "Billing",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "incomingInvoices",
+      "target": "IncomingInvoices",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "warehouse",
+      "target": "Warehouse",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "inventoryCounts",
+      "target": "InventoryCounts",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "salesOrders",
+      "target": "SalesOrders",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "salesSetup",
+      "target": "SalesSetup",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "quotes",
+      "target": "Quotes",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "estimates",
+      "target": "Quotes",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "documentSettings",
+      "target": "documentSettings",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "customerCredits",
+      "target": "CustomerCredits",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "salesReporting",
+      "target": "SalesReporting",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 2
+    },
+    {
+      "route": "customerReturns",
+      "target": "CustomerReturns",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "customerSettlements",
+      "target": "CustomerSettlements",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "orderReport",
+      "target": "OperationalReport",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "pipelineReport",
+      "target": "OperationalReport",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "agingReport",
+      "target": "OperationalReport",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 2
+    },
+    {
+      "route": "initialSetup",
+      "target": "InitialSetup",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 0
+    },
+    {
+      "route": "supplierPayments",
+      "target": "SupplierSettlements",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 1
+    },
+    {
+      "route": "purchasingReport",
+      "target": "EnterpriseReport",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 2
+    },
+    {
+      "route": "deliveryReliabilityReport",
+      "target": "EnterpriseReport",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 2
+    },
+    {
+      "route": "stockReport",
+      "target": "EnterpriseReport",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 2
+    },
+    {
+      "route": "movementReport",
+      "target": "EnterpriseReport",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 2
+    },
+    {
+      "route": "ticketSlaReport",
+      "target": "EnterpriseReport",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 2
+    },
+    {
+      "route": "serviceTimeReport",
+      "target": "EnterpriseReport",
+      "width": 390,
+      "bodyWidth": 390,
+      "nativeTables": 2
+    }
+  ],
+  "errors": []
+}

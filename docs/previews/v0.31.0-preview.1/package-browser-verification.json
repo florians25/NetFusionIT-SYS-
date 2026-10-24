@@ -1,0 +1,16 @@
+{
+  "desktopWidth": 1920,
+  "mobileWidth": 390,
+  "nativeOpenUI5": true,
+  "sixReportApps": true,
+  "actualOriginalReceiptAndTicketTime": true,
+  "independentPaymentBlockRelease": true,
+  "independentPaymentReview": true,
+  "actualPartialPayment": true,
+  "pdfAttachmentList": true,
+  "personalReportVariant": true,
+  "personalTableView": true,
+  "appCenterFavorites": true,
+  "csvDownload": true,
+  "errors": []
+}

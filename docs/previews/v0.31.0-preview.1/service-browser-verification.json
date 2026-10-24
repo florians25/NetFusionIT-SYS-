@@ -1,0 +1,14 @@
+{
+  "nativeOpenUI5": true,
+  "actualChecklistCreatedAndPublished": true,
+  "actualKnownErrorCreatedAndPublished": true,
+  "ticketTemplatePrefillsWithoutReset": true,
+  "watcherHistory": true,
+  "knowledgeWorkaroundAdopted": true,
+  "taskChecklistAssigned": true,
+  "actualWorkerConfirmedPoints": 2,
+  "crmActivityCreated": true,
+  "desktopWidth": 1920,
+  "mobileWidth": 390,
+  "errors": []
+}

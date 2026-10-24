@@ -1,0 +1,649 @@
+{
+  "time": "2026-10-24T13:16:09.494Z",
+  "image": "netfusion-erp:0.31.0-preview.1",
+  "imageId": "sha256:fe12be385d83d0531ce62eecad5e4008bae18ef0419a0f0cd52b15baaba4cb50",
+  "parent": "netfusion-erp:0.30.0-preview.1",
+  "parentImageId": "sha256:a546d017c8b2c8c70da686734f05679617f9bcc7855f83adb39d0f644973616b",
+  "scope": "Runtime refresh of previously validated dependency/JRE/OpenUI5 base, one COPY layer with current compiled API/UI, immutable migrations and installer files. Dependency versions unchanged. No new full Dockerfile/npm rebuild claimed.",
+  "isolatedRuntimeFilesystemCompared": true,
+  "productionAndHttpsSmokeImageMatched": true,
+  "matchedFiles": 159,
+  "files": [
+    {
+      "file": "dist/accepted-quote.js",
+      "sha256": "882b280887718cabbf23224c4b2544749ac668695ec3dd376e3185a193720707"
+    },
+    {
+      "file": "dist/admin.js",
+      "sha256": "c61a809972dbcd355bf364d7e5b63f4f935a3c38c5568582009481a05a80ffff"
+    },
+    {
+      "file": "dist/attachment-scanner.js",
+      "sha256": "720028786830b95471733f00ac15dfdbf5d1e31a188b6ec7b78d5723fd1df9cb"
+    },
+    {
+      "file": "dist/attachments.controller.js",
+      "sha256": "c69f8ce3f8d7483464a8d50c38ca8f2abeddce27b3c54acdb25010eccd79abbf"
+    },
+    {
+      "file": "dist/attachments.js",
+      "sha256": "0810a55b9f144b647934ce2e0eeb4bc5f2e93f6462f6d2e0daba93f8baa323c1"
+    },
+    {
+      "file": "dist/auth.js",
+      "sha256": "f6f3b51655ce5a96e6f03abe9b1b226c2f795607a8bcc27ebd68ea840d2811cc"
+    },
+    {
+      "file": "dist/billing.controller.js",
+      "sha256": "8fc3e288f2be7fb3b159c6f2a0d848b975d1b952ecd21f2733ac5a2a0e5685cc"
+    },
+    {
+      "file": "dist/billing.js",
+      "sha256": "7a430b793471c128ef205256b6bf000dd4096e6f011b5cfbdc2d6a92ba5b1f17"
+    },
+    {
+      "file": "dist/business-pdf-v5.js",
+      "sha256": "418fa4fbc4b0ffff0ff3e72fbc68b7b8375c30b141e3fd8bb3314c8b8a8528eb"
+    },
+    {
+      "file": "dist/business-pdf.js",
+      "sha256": "e7fd98c0f6b09980837deab2791654b2584cd783a9c8bea15fcb537671e03c9c"
+    },
+    {
+      "file": "dist/business.js",
+      "sha256": "07e98651e03d58d8548f759d5d90c88bd62b4f3cf79c94c433a7dbdd3eb60dfa"
+    },
+    {
+      "file": "dist/calendar.js",
+      "sha256": "4f667a5116f996e9ce8b182edae0a2311265d237900d30300ccd5bba61248110"
+    },
+    {
+      "file": "dist/collaboration.js",
+      "sha256": "79ff1589f49fd587b700acc50b84fab38e5f0ef347fe35ff95ff7f07200ae060"
+    },
+    {
+      "file": "dist/commerce.controller.js",
+      "sha256": "7628dad7d928075578427749026094fad065e7b55a703437e75ffbaa46cc9d6c"
+    },
+    {
+      "file": "dist/commerce.js",
+      "sha256": "a6b55ad1af0e55c9236d5020fff12fa371e2a4d72c2cdb0a5c19bed3d6218cee"
+    },
+    {
+      "file": "dist/commercial-pricing.js",
+      "sha256": "18217c0a57cc0e6c2d830dea1c172d4a4131d8cb8540011199115dedc4a7a34f"
+    },
+    {
+      "file": "dist/controllers.js",
+      "sha256": "2ed9d591a433283a32094dc9068da5ce819b9bda9fbeb91c08fc3e18af104c87"
+    },
+    {
+      "file": "dist/core.js",
+      "sha256": "71b74b53642fe33e191de0b13dd723390f8823962c5c298d39cf17ddd59c7b30"
+    },
+    {
+      "file": "dist/customer-credits.controller.js",
+      "sha256": "7583ae7e5d27141b7473bbc83aef6deb51a7068bb60b048923a734addd4a8de2"
+    },
+    {
+      "file": "dist/customer-credits.js",
+      "sha256": "e2dc5f21da9a613fe103f8e78f0ddfbfc0f865be1fb4ad98de98ce094f9aa805"
+    },
+    {
+      "file": "dist/customer-returns.controller.js",
+      "sha256": "91bfbfc8e9921a5417ee3c072c79ea0053bbf66fad5069063eeab18e8d56fe57"
+    },
+    {
+      "file": "dist/customer-returns.js",
+      "sha256": "920020e6a94323627a388515a4a6115f4e61988ea2cd3fe5c916a0b90af7a06f"
+    },
+    {
+      "file": "dist/customer-settlements.controller.js",
+      "sha256": "26eee903c75d73a6bec7189b3230e0953cc8a8d9005ab23d881f0a9b72aa1832"
+    },
+    {
+      "file": "dist/customer-settlements.js",
+      "sha256": "a2015135e37ec12bbfd705cc11d6c71754cde3cdf1f5e66f6e144fd5373010b3"
+    },
+    {
+      "file": "dist/direct-procurement-state.js",
+      "sha256": "2f6f6910cd8e782d277eb40300abbfcfa3541d7bdaa52633a4a57d1678d4b9ea"
+    },
+    {
+      "file": "dist/direct-procurement.controller.js",
+      "sha256": "12a22e2730a285d2d75acd637a5571d3e3bc735ee7378e2f1f365542a26509a5"
+    },
+    {
+      "file": "dist/direct-procurement.js",
+      "sha256": "2fe6480fcfe21e7e14f529c413a1f7e785660dd1307823a7df8f675acca641a3"
+    },
+    {
+      "file": "dist/dispatch.js",
+      "sha256": "64f175fc85272b8ea39e6daa4762a2f463d1a8d624047df88e9dd56a966f5a6e"
+    },
+    {
+      "file": "dist/document-access.js",
+      "sha256": "59c7480e1d4b998c253683cd5342dd678bd5f6d6ccdcb802c81f7b2caf0b0a40"
+    },
+    {
+      "file": "dist/document-settings.controller.js",
+      "sha256": "8fd06cfc9552bd8a507f512464bce7d7cddb4e5dd4d272ff5bb1f92207e73297"
+    },
+    {
+      "file": "dist/document-settings.js",
+      "sha256": "7841b0c80cdec6b836b2e2a816c62ab4d35e0eb6eb43ea3f5b57c939c848e001"
+    },
+    {
+      "file": "dist/einvoice.js",
+      "sha256": "467e9998f19da7c8aea7ffd3afe7987cf037183c1e81a528b344672b6e79ac6d"
+    },
+    {
+      "file": "dist/enterprise-reporting.controller.js",
+      "sha256": "7c69879bb09941e65c613aa27c772d8700294ff53fdafdcf3170eb2c8cda37bc"
+    },
+    {
+      "file": "dist/enterprise-reporting.js",
+      "sha256": "19bcd4b8117833a3d1c780bce18a6e98dc9bbb9a5446e51830d6b4f154555aff"
+    },
+    {
+      "file": "dist/finance.controller.js",
+      "sha256": "a2f64e81ba336963943638859b6de824b6e331d4b3bd4f23ea9ef74caf933f52"
+    },
+    {
+      "file": "dist/finance.js",
+      "sha256": "1080720310ce1dbd4af74faeee8c453e9d4296202eb52b2dce82271823d23b00"
+    },
+    {
+      "file": "dist/incoming-invoice-matching.js",
+      "sha256": "7a906e90a0e10f2c1baf50a0eed68d6eff54360eef5272a43d058ff9d3e6d509"
+    },
+    {
+      "file": "dist/incoming-invoice-xml.js",
+      "sha256": "cda90fb4b74c90b4d842f0ee226f768b40d7ebf167ead62b7f23002a92f07ecd"
+    },
+    {
+      "file": "dist/incoming-invoices.controller.js",
+      "sha256": "a6c4725f195f8393e27df7c24cbd1073d1a32b5bd966f5b7321cf69bee5ddb26"
+    },
+    {
+      "file": "dist/incoming-invoices.js",
+      "sha256": "8e7e570d8a5bb3c1357afe778e3f769e1f5f9e2eeb0a8d5acb67f835ba90d187"
+    },
+    {
+      "file": "dist/initial-setup.controller.js",
+      "sha256": "51654afec95f5141badf04a231687fd02ce8978f6f33b0cf9e4e80b1b065b54d"
+    },
+    {
+      "file": "dist/initial-setup.js",
+      "sha256": "85e1524d0f187daf75c6e62a07169549eab2f0bba9a6a9d6d6940d4154d73d7d"
+    },
+    {
+      "file": "dist/inventory-count-valuation.js",
+      "sha256": "8e65e2c48134f416fb4a151142240afd1d7f774222bcb2f7198cc057b2a29138"
+    },
+    {
+      "file": "dist/inventory-counts.controller.js",
+      "sha256": "0aef4cdd56bdddd562be05974cddeb65144c3b4e70278486f84b8febd7edae7d"
+    },
+    {
+      "file": "dist/inventory-counts.js",
+      "sha256": "8836e99d0364e022ce7593538533bcb087adf04e8da3171752e63efd4709282a"
+    },
+    {
+      "file": "dist/inventory.controller.js",
+      "sha256": "0aa921ab4cc3ecc1e50667a14e6297fbf68cadc7a1cacc2854bee5c61a4a71b3"
+    },
+    {
+      "file": "dist/inventory.js",
+      "sha256": "c24ff3ddf83d61a4ff4e69501042e6428c99bf784004205268995f89fe7b33f6"
+    },
+    {
+      "file": "dist/main.js",
+      "sha256": "b6eb3bba32903b1968163a3437c7f533be43f7badc40ea0ddf1a8684982a55cc"
+    },
+    {
+      "file": "dist/material-planning.controller.js",
+      "sha256": "3060d813393664f4559a578c6f189edb1a5e63e103173fbebd487aaa433205ea"
+    },
+    {
+      "file": "dist/material-planning.js",
+      "sha256": "fd8fa455f5c8ec3a9ab10ea31f6ecc8c5d89c6f2b44872658f1f62e558bdc8ec"
+    },
+    {
+      "file": "dist/material-state.js",
+      "sha256": "691f2d5837c115b47f5461ec04ea80de996576dc61eeae526bd17198ad0b73fb"
+    },
+    {
+      "file": "dist/number-allocation.js",
+      "sha256": "6bab03e5e3bf24157d60a6a846163520b64a8a5ece6ae8cc2f2ccba5e4bc9c72"
+    },
+    {
+      "file": "dist/number-catalog.js",
+      "sha256": "34ba5a175e4728aa0c853c2f3fcb010bdcd0cd1e1ffbd936819b177d031a0529"
+    },
+    {
+      "file": "dist/number-series.controller.js",
+      "sha256": "516e09670e40560533389bbde199d2d3df2f84f956504578d171efc66d0c594b"
+    },
+    {
+      "file": "dist/number-series.js",
+      "sha256": "fde9d3164c8b6b880940fb85c117fb2cf09676f172a88e2ad86976bb4fcab11a"
+    },
+    {
+      "file": "dist/odata.js",
+      "sha256": "0e2fd3b3fe37298d03e596f92a0b9424581ba85505c715b7b2aa850ce20d3ba2"
+    },
+    {
+      "file": "dist/operational-reporting.controller.js",
+      "sha256": "e5534573f7ee2a7e84158b41724a4f563bfaac5e3e8fd70ca7c5e343440d10db"
+    },
+    {
+      "file": "dist/operational-reporting.js",
+      "sha256": "0af5422e295072207bfa24ea278341db9fda1af974e1df97e12ec8598ffca7a8"
+    },
+    {
+      "file": "dist/operations.controller.js",
+      "sha256": "fa313f3ed77651daa816142d806efe3fecea5af9da2d25449723be21d1031750"
+    },
+    {
+      "file": "dist/operations.js",
+      "sha256": "6c581faa0969a502e4b653903f53047152f85a3167eea14519bc236da4cbf2cb"
+    },
+    {
+      "file": "dist/partner-finance.js",
+      "sha256": "600852726d8f1d0409b0c85ff014f060fb02a2dab731bc9692b21bbdccbd4d2d"
+    },
+    {
+      "file": "dist/permissions.js",
+      "sha256": "911d408ab797f86cc4b6ee00ae8c18a83868b3dde3e386fd489621720272c9c8"
+    },
+    {
+      "file": "dist/personal-workspaces.controller.js",
+      "sha256": "f8ce8f67cb567d65dbd5f2d214b87ba763daca2ce64cced2f7a8a4c38842a053"
+    },
+    {
+      "file": "dist/personal-workspaces.js",
+      "sha256": "913cfe53358b2194467b66442bd017336238345598e28603cb82f7bb6a804fa3"
+    },
+    {
+      "file": "dist/pricing.js",
+      "sha256": "32ab59d70d686c536382b1974cc8c678a920f02d509f856718068fd7f2d12674"
+    },
+    {
+      "file": "dist/procurement.controller.js",
+      "sha256": "4690b04b0719aec003bc12e54d785a9a41d8e85fece2e30ecd8d7a3f51f6c8a0"
+    },
+    {
+      "file": "dist/procurement.js",
+      "sha256": "6eeec858150ba7bbc88ecb932212b6124aba9678dcb11f5adaff17d7ac15e577"
+    },
+    {
+      "file": "dist/purchasing-organization.controller.js",
+      "sha256": "5604edb7adccfa93399e9711e7dd181097ad35a7099eda8b150dc27d124c3e70"
+    },
+    {
+      "file": "dist/purchasing-organization.js",
+      "sha256": "6b827ca2e63550c1c5d5bd291494222e9ca089d5cf6ace07c901723485b1c914"
+    },
+    {
+      "file": "dist/return-inspection.controller.js",
+      "sha256": "2cd2607d614d09fe9e458910965816c3378cac5918f0be01ba6a8b833cf87138"
+    },
+    {
+      "file": "dist/return-inspection.js",
+      "sha256": "1047a21a1de409f441383fe8006d1b93f2f5d8b853f1bbc0c70b4a5683d07956"
+    },
+    {
+      "file": "dist/sales-billing-source.js",
+      "sha256": "2055decc7208eaa1092fc090c09e8e22bfd91766cd5c1bf9b0356c7f62d2fa74"
+    },
+    {
+      "file": "dist/sales-fulfillment.controller.js",
+      "sha256": "6564aae6301fd6c41bbf4fb1758fb54795c8b2203077ec87304b80d446b4d07c"
+    },
+    {
+      "file": "dist/sales-fulfillment.js",
+      "sha256": "2f03165879353eb50481760af600563d4c304070150f3d19ebf646959b936b09"
+    },
+    {
+      "file": "dist/sales-order-source.js",
+      "sha256": "cc79c85ff0932f65af47fc4168584fefacf70282eb91e894eea5befffc644787"
+    },
+    {
+      "file": "dist/sales-orders.controller.js",
+      "sha256": "067264ce1e598363fe5e565d73ed11b804193a142192cc1994e5f2aa3f77720e"
+    },
+    {
+      "file": "dist/sales-orders.js",
+      "sha256": "892449b04acfde617e975fac0fb27314cb3024eac07097f859dc3c3e633d57e0"
+    },
+    {
+      "file": "dist/sales-reporting.controller.js",
+      "sha256": "b4ed9bb09a62ac06f0cffee9b245715d105f3d3c41b40041ceffaa9a1258dedc"
+    },
+    {
+      "file": "dist/sales-reporting.js",
+      "sha256": "cdb0d3c19c4c6386c95de4ad249fb568f37ea1b8ccbe70a8b227585d553507f7"
+    },
+    {
+      "file": "dist/schema.js",
+      "sha256": "a5d8675f09d1edc2949ee5bc5c5ef09b84c395ce95c3938aac175bc62a8494b5"
+    },
+    {
+      "file": "dist/service-deliveries.controller.js",
+      "sha256": "55c9408c06c6ffec90f915b9e134a0a2b2e21b7774606e17ff1b43f208223418"
+    },
+    {
+      "file": "dist/service-deliveries.js",
+      "sha256": "57344fc789f3e2ebe4ae0af403ab79e68ff6790a57be7fb06429d8406e9c0bcc"
+    },
+    {
+      "file": "dist/service-desk.controller.js",
+      "sha256": "37f1599813c8e76cd1439184592f3092f629fa1c187b9e072dbb5cedc26ac69b"
+    },
+    {
+      "file": "dist/service-desk.js",
+      "sha256": "11e9e31932ee26ecf66ec4b9838d9b15eb27671068ffdf3b6fe03b6b9093c0ca"
+    },
+    {
+      "file": "dist/service-quote-pdf.js",
+      "sha256": "c2fbb30f6872d14d1e3589cc8bfa05cb36a848eb135ee3764dbe28dbd8ebd217"
+    },
+    {
+      "file": "dist/service-quotes.controller.js",
+      "sha256": "11fd3f5a279a2977de9c253c6b76cb9e35ccf4b1a87906bf28a44cbf348db851"
+    },
+    {
+      "file": "dist/service-quotes.js",
+      "sha256": "5b880982b82a39eaa300d76159af1b20ae1bda9d91129e5a02b0d379e4a3e82b"
+    },
+    {
+      "file": "dist/service.js",
+      "sha256": "88829765bdccc430cbd03d1be7d228c2a6862e83c0f4e7b6920e980fd90d5e13"
+    },
+    {
+      "file": "dist/sla.js",
+      "sha256": "c3670694265e5a97e891af87d28b843b0542377c9b16369d7efc093cb46005b7"
+    },
+    {
+      "file": "dist/supplier-posting.js",
+      "sha256": "24d3f1d639d16f6a22a27941c9278d4e96e77a13f24937fd8bef686483ac2470"
+    },
+    {
+      "file": "dist/supplier-reversals.controller.js",
+      "sha256": "3e60e1dca32bca80cd27b1d2d2356985257ef34854ce795a41fb1c29de763b8b"
+    },
+    {
+      "file": "dist/supplier-reversals.js",
+      "sha256": "f55af0425d2e1dad995c254a2b59dd0e63c3cb11632f58e88a6d740029e8c40c"
+    },
+    {
+      "file": "dist/supplier-settlements.controller.js",
+      "sha256": "e1ad7f628adce88bdda0ab5830ce838b0694409d13cff1c5fdc35b2eee3b6690"
+    },
+    {
+      "file": "dist/supplier-settlements.js",
+      "sha256": "ef686486f9f39f50837e60505a089c8f9445702db44cbe22ee47d9c1436bb717"
+    },
+    {
+      "file": "dist/ticket-intake-schema.js",
+      "sha256": "648fb72fe1e62269ccedb0e4e7e1a536daf3a20d4730fd4698de8b1e69cf66a8"
+    },
+    {
+      "file": "dist/ticket-intake.controller.js",
+      "sha256": "b5498775840708f494f2a4c9bb53d652b7dfc6b6ae51b0cbde9cbc52516d14f7"
+    },
+    {
+      "file": "dist/ticket-intake.js",
+      "sha256": "11792183a48268ea73949a56d3df5c5436b4b92f85b9758ec91cef54d18f401f"
+    },
+    {
+      "file": "dist/warehouse-label.js",
+      "sha256": "230ed490f781a0a7baee9bbda5c35147e91cabb321fd2b735d90cac527a25824"
+    },
+    {
+      "file": "dist/warehouse-state.js",
+      "sha256": "8e15f0015ab58654cf2aedf2c5da273395d9df0852bd6ffb2f05c8c77ae4fb0a"
+    },
+    {
+      "file": "dist/warehouse.controller.js",
+      "sha256": "8645a25557bd5774175b4ba53e91cc588604d2805be9be9094e52cbaaaf92bdb"
+    },
+    {
+      "file": "dist/warehouse.js",
+      "sha256": "aefc3498f26cf2d784c500bb5d42e94d0adf666f8eb9c2d30d56a97e9e4daed6"
+    },
+    {
+      "file": "dist/work.controller.js",
+      "sha256": "22a98fe3c102b7a59e95eafcb7feb855e09cbb0b542dd419d98e3d62507aa7b7"
+    },
+    {
+      "file": "dist/work.js",
+      "sha256": "9a09a9ab0e847a988f246a6cebb193675a7c7e46430529826285638cb9f54349"
+    },
+    {
+      "file": "dist/workflow.controller.js",
+      "sha256": "dcf8442f4a08ecf204a2452248c1836c6c110d9a1703ccd97573aec237e3d071"
+    },
+    {
+      "file": "dist/workflow.js",
+      "sha256": "7a600803fd5e270af445377b27e992aa99300c053b0d6016cb8f4c05c516cf15"
+    },
+    {
+      "file": "ui5-dist/Component-preload.js",
+      "sha256": "1c5bc42caf8ce7ede0b3ca3aecd47c7880a6c84dc498291d15658671f11baf6c"
+    },
+    {
+      "file": "ui5-dist/index.html",
+      "sha256": "1411d8f9e39b6f092bc6c9fda22ec0e8f9c6754915ef3224f220599141de4aa2"
+    },
+    {
+      "file": "ui5-dist/manifest.json",
+      "sha256": "12ae420a49f01fa00dd372f6336b1d125bec33075c88c1d92b366f4a1efab0aa"
+    },
+    {
+      "file": "ui5-dist/controller/SupplierSettlements.controller.js",
+      "sha256": "921a30c954ae1d4b5c1ade8244902a949b9f7621d00149cde3d071b60c94c485"
+    },
+    {
+      "file": "backend/migrations/001_foundation.sql",
+      "sha256": "004ef9ae0f9aaf37ee5d2292daaf0fb85c47a29f79e36daadb15d7534d58ad36"
+    },
+    {
+      "file": "backend/migrations/002_workflow_and_collaboration.sql",
+      "sha256": "25ae9e2e802ef24cf619406eb342f7fb1f55138e30e292d209bf87a9f533bbcb"
+    },
+    {
+      "file": "backend/migrations/003_service_operations.sql",
+      "sha256": "dcc4b43c613b7d10e6260202157b5916df4599594f32cbce1d26449552c97e60"
+    },
+    {
+      "file": "backend/migrations/004_service_commerce.sql",
+      "sha256": "e60e161392d32293c58b4ec5f77eb7aeb4587aefbe1fa372700a3873c19e978b"
+    },
+    {
+      "file": "backend/migrations/005_service_execution.sql",
+      "sha256": "027ba4abc8d8c078fe3ff6b33768c69913c0cdb67b7d0411f3e7b49a5e1e61b6"
+    },
+    {
+      "file": "backend/migrations/006_accounting_core.sql",
+      "sha256": "674aba4d87dbfe0c61065c7d721391a8f456019db1a47344c450a9b80bd8948d"
+    },
+    {
+      "file": "backend/migrations/007_order_procurement.sql",
+      "sha256": "d92aa6bacba07d4b092c8321ee88501bb9367a0d7b12e95ff6ca2e08a9d7699b"
+    },
+    {
+      "file": "backend/migrations/008_valued_goods_receipts.sql",
+      "sha256": "cfadc21fe8769a757d3940bdd8453587e0be58fa8c8adf262d93cabde24aabce"
+    },
+    {
+      "file": "backend/migrations/009_automatic_material_planning.sql",
+      "sha256": "0fafa03081edd5ac1e7672cfb22a6c15addb300f4276308b4302e59933707da5"
+    },
+    {
+      "file": "backend/migrations/010_business_number_series.sql",
+      "sha256": "9d1557312b83774751e3fc7ab4ae843f18d218910b508270eab47b260f76510f"
+    },
+    {
+      "file": "backend/migrations/011_service_order_deliveries.sql",
+      "sha256": "d885c8959c52d49c553413705f4f01ef08066507d5b048a9a1233cc26e7c2a9d"
+    },
+    {
+      "file": "backend/migrations/012_document_attachments.sql",
+      "sha256": "418f198b85716ea8fbca59e314a3943f5464f7760ab51100404d062b04c7d5d1"
+    },
+    {
+      "file": "backend/migrations/013_billing_and_partner_accounts.sql",
+      "sha256": "da815dd6eca77adbd06baff360d9c05b4f381d142e42e486329dc6b3fd107fe2"
+    },
+    {
+      "file": "backend/migrations/014_invoice_ticket_references.sql",
+      "sha256": "bfb9aa0a7ab2aa2743da35b2fe5842c325116a2c505429c008a8d808c8490ea3"
+    },
+    {
+      "file": "backend/migrations/015_supplier_invoice_intake.sql",
+      "sha256": "8b15970bc889d72662eab9ca234d711812808e3795344f7d4c29fd894659103a"
+    },
+    {
+      "file": "backend/migrations/016_supplier_invoice_matching.sql",
+      "sha256": "4fc10e9f78dcbef7aee67009d95054b1545d4ddf492d479f6b3f9d2970d4e3ab"
+    },
+    {
+      "file": "backend/migrations/017_supplier_invoice_posting.sql",
+      "sha256": "8031d09ef72ebd9795cfa5bbe59915c12861557ed14b04a7eadf25d286d4c86d"
+    },
+    {
+      "file": "backend/migrations/018_supplier_invoice_reversals.sql",
+      "sha256": "e8881fef7d010becab0a748278b5fc98c188fe4ff13c490adb42d04bcdaeaa09"
+    },
+    {
+      "file": "backend/migrations/019_physical_warehouse.sql",
+      "sha256": "ced0a3960ec240103460b5206e0a051db99608d464a53ebbe9ad1477b03bb1f4"
+    },
+    {
+      "file": "backend/migrations/020_location_transfers.sql",
+      "sha256": "7b448d14546d38d75f99e8f166d92646c024392b8bef95f8f0093bc271a92d1d"
+    },
+    {
+      "file": "backend/migrations/021_inventory_counts.sql",
+      "sha256": "3c9dadbfe11c6d5e49933258172072aba64028e45b0b61390a1e004e62a309bd"
+    },
+    {
+      "file": "backend/migrations/022_sales_orders.sql",
+      "sha256": "6dd493d924074276595d0ea8d91c4a9ee782b5967f0ad4d9649697b46d66cbc3"
+    },
+    {
+      "file": "backend/migrations/023_service_quotes.sql",
+      "sha256": "022585f3c9d54d6041581b91a85c63b721c20483f80ab706af01052db13a1b8b"
+    },
+    {
+      "file": "backend/migrations/024_direct_sales_stock.sql",
+      "sha256": "3a2d8dab3fb0e195dd61841bb36b895e2323bc170fdc6a4914fcb67cf5a25dc5"
+    },
+    {
+      "file": "backend/migrations/025_direct_sales_billing.sql",
+      "sha256": "b7adab226727112e3ab2fdf2889ecc2ab981e03b9db3a1b21e2058cc9a5b620e"
+    },
+    {
+      "file": "backend/migrations/026_direct_sales_procurement.sql",
+      "sha256": "201869c60053a95c714e807efd9e8c3192aff076e832dc52e0fd0d29c750ceae"
+    },
+    {
+      "file": "backend/migrations/027_direct_sales_receipts_and_payables.sql",
+      "sha256": "a90baea3e4e5b36e46a1c01677997fc539c233554503e0420464bf2c299a8695"
+    },
+    {
+      "file": "backend/migrations/028_purchasing_organization.sql",
+      "sha256": "5abd5663a5d183f8dffd272594c5601f07d4820b5db211c3339a777839fd7d3c"
+    },
+    {
+      "file": "backend/migrations/029_document_contacts_and_person_names.sql",
+      "sha256": "17551bf7e35a8af6cebb98b8fce00c9b8fec54b433e5260b74b1b62703ba4238"
+    },
+    {
+      "file": "backend/migrations/030_customer_credit_memos.sql",
+      "sha256": "0ca233c12fea1e954187d3ed29c25850d06c517807fd179a54dda9ce2368b6a3"
+    },
+    {
+      "file": "backend/migrations/031_customer_credit_snapshot_validation.sql",
+      "sha256": "ac74f2d5f19ec573b57b18fddb3e6973a211f8c8c7bec0c68372d67508bd420e"
+    },
+    {
+      "file": "backend/migrations/032_reporting_source_indexes.sql",
+      "sha256": "64bb1d0392cec11bba3f14c2d987e60acfa89ce804deea2884a554da01a800ef"
+    },
+    {
+      "file": "backend/migrations/033_preserve_quotation_output_compatibility.sql",
+      "sha256": "726e2de8e3696f5a531ef0d2f2879de0c49aa6c6b9188abafb6d7c83b3d5feb4"
+    },
+    {
+      "file": "backend/migrations/034_selected_customer_credits.sql",
+      "sha256": "49d72b6cd0e51c3f55346a26a8012525dd8dd3bb0ae0796a71a5a7d4da1a3013"
+    },
+    {
+      "file": "backend/migrations/035_quantity_customer_credits.sql",
+      "sha256": "e3265e33136bdebdb5565ea455a50d5b0331f1ce868a0112380a4c1675e3bd6d"
+    },
+    {
+      "file": "backend/migrations/036_customer_returns.sql",
+      "sha256": "e404c010c4392312b6189fa5e31f5511a39a5145ec5f72237d77fb939937319e"
+    },
+    {
+      "file": "backend/migrations/037_return_inspection_custody.sql",
+      "sha256": "4613f72af42c7cf30ab6eaaeab1d92a8d844a428cf0d7df8617d6f0ce76d9345"
+    },
+    {
+      "file": "backend/migrations/038_price_and_service_credits.sql",
+      "sha256": "ea00a8388f9f0f212c50b342819bce197a7c1664de087c9dcae186bbc6eae01a"
+    },
+    {
+      "file": "backend/migrations/039_customer_settlements.sql",
+      "sha256": "dc968f9d1a12d8d31045b28100411e21f3b22afde539173cb248ff75280f753c"
+    },
+    {
+      "file": "backend/migrations/040_operational_report_variants.sql",
+      "sha256": "1d384f998bd5ca8ff8fdb7543ea5d27c6fcb51e77f82f03b1ca2377f47935b4d"
+    },
+    {
+      "file": "backend/migrations/041_internal_ticket_intake.sql",
+      "sha256": "ee7528fd10649144e3e3bcfa61c97646671b6aecf4d9444e8f95f4abbe5ebc28"
+    },
+    {
+      "file": "backend/migrations/042_initial_setup_wizard.sql",
+      "sha256": "53e16257953777671a2f6aab56ef118c3c92a168c23101c4ec1171a4b30f98a7"
+    },
+    {
+      "file": "backend/migrations/043_personal_workspaces.sql",
+      "sha256": "0035acea4d1166f86bb1890de2b127a42d931eef070906d4ec4b7056c0151654"
+    },
+    {
+      "file": "backend/migrations/044_service_desk_workspace.sql",
+      "sha256": "7baaba0ab219c88a14601561b68eb7160b38d507aff4e89e75ec9ed9d2a498c5"
+    },
+    {
+      "file": "backend/migrations/045_supplier_payments.sql",
+      "sha256": "78324dfc425a00397624d9d624e2a7c16b04ce457bd6397f854de8d01cd77b16"
+    },
+    {
+      "file": "backend/migrations/046_enterprise_report_variants.sql",
+      "sha256": "e3e00afe9a5f9ceeb35f5293163138760ff9fa972ea897e59b6d75569fc65c7d"
+    },
+    {
+      "file": "scripts/migrate.mjs",
+      "sha256": "e709a6b2e1fd47e0606a8f56df42c06e9c4282356b6ccf28eec74a8d61f65487"
+    },
+    {
+      "file": "scripts/docker-install.mjs",
+      "sha256": "5f826169bcfa8781135ea5ef8731521e5e43ade65d852147a108c0e914045267"
+    },
+    {
+      "file": "package.json",
+      "sha256": "8a5bd648841c291a60bae61cb949769970d49adcd9e65f9c72783d8f9e1b77eb"
+    },
+    {
+      "file": "package-lock.json",
+      "sha256": "e19b854ba3d39413f990b9551807ec89241fc4366893a64e71886251e62bd60f"
+    }
+  ]
+}

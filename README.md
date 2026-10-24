@@ -1,6 +1,6 @@
 # NetFusion · Enterprise Service ERP
 
-**Preview0.30.0-preview.1:** Zehn Backlog-Pakete zu Preis-/Servicegutschriften, Teilzahlungen/Rückzahlungen und drei neuen Berichtsapps. Zusätzlich Erstinstallationsassistent mit Unternehmens-/Steuerdaten, Werken/Lagern, Einkauf/Vertrieb, Konten und Bank sowie breite interne Ticketqualifikation mit mehreren Assets. [Screenshots und Prüfnachweise](docs/previews/v0.30.0-preview.1/README.md).
+**Preview 0.31.0-preview.1:** Überarbeitete native Fachoberflächen und 20 Backlog-Punkte zu Ticketvorlagen, Pflichtchecklisten, Wissen/Known Errors, Assethistorie, CRM, sechs neuen Berichtsapps, Lieferantenzahlungen und persönlichen Arbeitsansichten. [Screenshots und Prüfnachweise](docs/previews/v0.31.0-preview.1/README.md).
 
 **Oberflächen-Update:** Belegfluss in19 Vorgangsmasken als nativer aufklappbarer OpenUI5-Baum, mit Einzelzweigen, Gesamtsteuerung und Belegsprung. [Bilder und Prüfungen](docs/previews/document-flow-tree/README.md).
 

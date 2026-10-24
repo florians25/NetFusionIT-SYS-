@@ -1,0 +1,202 @@
+{
+  "completed": true,
+  "passed": true,
+  "count": 38,
+  "desktopAndPhone": true,
+  "initialRunFailuresRecorded": true,
+  "initialSelectorFailures": 5,
+  "storageAffectedInitialFailures": 6,
+  "reason": "Initial unapproved/native overflow selectors updated without removing business assertions; Docker installer temporary storage exhaustion affected six later database creations. All affected suites rerun successfully after targeted task cleanup. No production rate limit weakened.",
+  "results": [
+    {
+      "test": "tests/browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/workflow-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/operations-browser.mjs",
+      "passed": true,
+      "verification": "successful native-selector/overflow correction rerun; final actual asset → original visit navigation passed"
+    },
+    {
+      "test": "tests/commerce-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/work-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/finance-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/procurement-browser.mjs",
+      "passed": true,
+      "verification": "successful native-selector/overflow correction rerun"
+    },
+    {
+      "test": "tests/inventory-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/material-planning-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/number-series-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/service-deliveries-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/attachments-browser.mjs",
+      "passed": true,
+      "verification": "successful native-selector/overflow correction rerun"
+    },
+    {
+      "test": "tests/billing-browser.mjs",
+      "passed": true,
+      "verification": "successful native-selector/overflow correction rerun"
+    },
+    {
+      "test": "tests/incoming-invoices-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/incoming-matching-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/supplier-posting-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/supplier-reversal-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/warehouse-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/location-transfers-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/inventory-counts-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/sales-orders-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/service-quotes-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/direct-sales-stock-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/direct-sales-billing-browser.mjs",
+      "passed": true,
+      "verification": "successful native-selector/overflow correction rerun"
+    },
+    {
+      "test": "tests/direct-procurement-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/direct-receipts-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/direct-payables-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/document-flow-tree-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/purchasing-organization-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/workspaces-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/customer-credits-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/sales-reporting-browser.mjs",
+      "passed": true,
+      "verification": "initial complete run"
+    },
+    {
+      "test": "tests/selected-customer-credits-browser.mjs",
+      "passed": true,
+      "verification": "sequential rerun after Docker storage cleanup"
+    },
+    {
+      "test": "tests/customer-returns-browser.mjs",
+      "passed": true,
+      "verification": "sequential rerun after Docker storage cleanup"
+    },
+    {
+      "test": "tests/commercial-package-browser.mjs",
+      "passed": true,
+      "verification": "sequential rerun after Docker storage cleanup"
+    },
+    {
+      "test": "tests/setup-ticket-browser.mjs",
+      "passed": true,
+      "verification": "sequential rerun after Docker storage cleanup"
+    },
+    {
+      "test": "tests/service-desk-browser.mjs",
+      "passed": true,
+      "verification": "sequential rerun after Docker storage cleanup"
+    },
+    {
+      "test": "tests/preview031-browser.mjs",
+      "passed": true,
+      "verification": "sequential rerun after Docker storage cleanup; final full-name payment PDF fixture passed"
+    }
+  ]
+}

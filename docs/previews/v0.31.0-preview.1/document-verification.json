@@ -1,0 +1,12 @@
+{
+  "file": "lieferantenzahlung.pdf",
+  "sha256": "6b7cf8c0e761fdd074dcb31d92c2c44056f71eab67a4c5d6a605f49bb537bacc",
+  "number": "ZA-82000000",
+  "decodedCode128": "ZA-82000000",
+  "originalExternalInvoice": "LF-ORIGINAL-001",
+  "contact": "Martina Musterfrau",
+  "preparedBy": "Sofia Richter",
+  "germanDate": "24.10.2026",
+  "amount": "50,00 EUR",
+  "source": "Actual generated/archived supplier partial-payment record from isolated API/browser fixture; no edited PDF or screenshot mockup."
+}
